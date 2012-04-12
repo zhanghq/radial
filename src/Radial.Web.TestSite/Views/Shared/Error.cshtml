@@ -1,0 +1,19 @@
+﻿@{
+    Layout = null;
+    HandleErrorInfo m = Model;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error</title>
+</head>
+<body>
+    <h2>
+        Sorry, an error occurred while processing your request.
+    </h2>
+    @if (m != null)
+    {
+        @m.Exception.ToString()
+    }
+</body>
+</html>

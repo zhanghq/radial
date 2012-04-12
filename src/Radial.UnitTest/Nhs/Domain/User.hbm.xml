@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Radial.UnitTest" namespace="Radial.UnitTest.Nhs.Domain">
+  <class name="User">
+    <id name="Id">
+      <generator class="assigned"/>
+    </id>
+    <property name="Name" not-null="true" length="50"/>
+  </class>
+</hibernate-mapping>

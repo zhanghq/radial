@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E9EC1CB9-79B6-47BC-AF82-E8B7B7AFFCEA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Radial</RootNamespace>
+    <AssemblyName>Radial</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\out\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\out\Debug\Radial.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\out\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\out\Release\Radial.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\..\lib\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\..\lib\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AutoTransaction.cs" />
+    <Compile Include="Base62Encoder.cs" />
+    <Compile Include="Cache\CacheStatic.cs" />
+    <Compile Include="Cache\EmptyCache.cs" />
+    <Compile Include="Cache\ICache.cs" />
+    <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Data\OrderBySnippet.cs" />
+    <Compile Include="Drawing\Captcha.cs" />
+    <Compile Include="Checker.cs" />
+    <Compile Include="CompileType.cs" />
+    <Compile Include="ComponentContainer.cs" />
+    <Compile Include="Drawing\ImageKits.cs" />
+    <Compile Include="EnumItemAttribute.cs" />
+    <Compile Include="FileWatcher.cs" />
+    <Compile Include="ISequentialKeyBuilder.cs" />
+    <Compile Include="KnownFaultException.cs" />
+    <Compile Include="LocalComputer.cs" />
+    <Compile Include="Lock\EmptyLock.cs" />
+    <Compile Include="Lock\ILock.cs" />
+    <Compile Include="Lock\LockEntry.cs" />
+    <Compile Include="Lock\LockObject.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Param\AppParam.cs" />
+    <Compile Include="Param\ConfigurationParam.cs" />
+    <Compile Include="Param\IParam.cs" />
+    <Compile Include="Param\ParamObject.cs" />
+    <Compile Include="Param\XmlParam.cs" />
+    <Compile Include="Pinyin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomCode.cs" />
+    <Compile Include="Security\CryptoProvider.cs" />
+    <Compile Include="Security\X509CertificateProvider.cs" />
+    <Compile Include="Serialization\BooleanJsonConverter.cs" />
+    <Compile Include="Serialization\DateJsonConverter.cs" />
+    <Compile Include="Serialization\DateTimeJsonConverter.cs" />
+    <Compile Include="Serialization\JsonSerializer.cs" />
+    <Compile Include="Serialization\UnixTimeJsonConverter.cs" />
+    <Compile Include="Serialization\XmlSerializer.cs" />
+    <Compile Include="Net\SmtpMail.cs" />
+    <Compile Include="SystemVariables.cs" />
+    <Compile Include="Toolkits.cs" />
+    <Compile Include="Validator.cs" />
+    <Compile Include="Net\FileFormData.cs" />
+    <Compile Include="Net\IMultipartFormData.cs" />
+    <Compile Include="Net\PlainTextFormData.cs" />
+    <Compile Include="Net\HttpResponseObj.cs" />
+    <Compile Include="Net\HttpWebHost.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

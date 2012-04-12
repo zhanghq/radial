@@ -1,0 +1,127 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Net;
+using System.IO;
+
+namespace Radial.Net
+{
+    /// <summary>
+    /// The wrapper object of HTTP web response.
+    /// </summary>
+    public sealed class HttpResponseObj
+    {
+        HttpStatusCode _code;
+        WebHeaderCollection _header;
+        string _characterSet;
+        byte[] _rawData;
+        string _text;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HttpResponseObj"/> class.
+        /// </summary>
+        /// <param name="webResp">The HttpWebResponse object.</param>
+        public HttpResponseObj(HttpWebResponse webResp)
+        {
+            Checker.Parameter(webResp != null, "HttpWebResponse object can not be null");
+            _code = webResp.StatusCode;
+            _header = webResp.Headers;
+            _characterSet = webResp.CharacterSet;
+
+            using (Stream respStream = webResp.GetResponseStream())
+            {
+                List<byte> blist = new List<byte>();
+                int b = 0;
+                while ((b = respStream.ReadByte()) > -1)
+                {
+                    blist.Add((byte)b);
+                }
+
+                _rawData = blist.ToArray();
+
+                using (MemoryStream ms = new MemoryStream(_rawData))
+                {
+                    ms.Position = 0;
+                    Encoding encoding = null;
+
+                    try
+                    {
+                        if (!string.IsNullOrWhiteSpace(_characterSet))
+                            encoding = Encoding.GetEncoding(_characterSet);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Default.Warn(ex);
+                    }
+
+                    StreamReader sr =null;
+                    if (encoding != null)
+                        sr = new StreamReader(ms, encoding);
+                    else
+                        sr = new StreamReader(ms);
+
+                    _text = sr.ReadToEnd();
+
+                    sr.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the response status code.
+        /// </summary>
+        public HttpStatusCode Code
+        {
+            get
+            {
+                return _code;
+            }
+        }
+
+        /// <summary>
+        /// Gets the response raw data.
+        /// </summary>
+        public byte[] RawData
+        {
+            get
+            {
+                return _rawData;
+            }
+        }
+
+        /// <summary>
+        /// Gets the response character set.
+        /// </summary>
+        public string CharacterSet
+        {
+            get
+            {
+                return _characterSet;
+            }
+        }
+
+        /// <summary>
+        /// Gets the response text.
+        /// </summary>
+        public string Text
+        {
+            get
+            {
+                return _text;
+            }
+        }
+
+        /// <summary>
+        /// Gets the response headers.
+        /// </summary>
+        public WebHeaderCollection Headers
+        {
+            get
+            {
+                return _header;
+            }
+        }
+
+    }
+}

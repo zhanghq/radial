@@ -1,0 +1,13 @@
+﻿@using Radial.Web.Mvc.Pagination
+@model Radial.Web.Mvc.Pagination.PagedList<Radial.Web.TestSite.Models.PagedItem>
+<div id="list_div">
+    <h2>
+        Ajax</h2>
+    @foreach (Radial.Web.TestSite.Models.PagedItem o in Model)
+    {
+        <p>
+            @o.Id
+        </p>
+    }
+    @Html.AjaxPager(Model, new PagerOptions { PageIndexParameterName = "pid" }, new AjaxOptions { UpdateTargetId = "list_div" })
+</div>

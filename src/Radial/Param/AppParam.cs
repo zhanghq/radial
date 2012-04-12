@@ -1,0 +1,426 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Radial.Param
+{
+    /// <summary>
+    /// The application parameter and configuration static class.
+    /// </summary>
+    public static class AppParam
+    {
+        const string CanNotConvertExceptionFormat = "can not convert the parameter value of the specified path \"{0}\" to {1}, please ensure it has been set properly";
+
+        /// <summary>
+        /// Get the IParam instance
+        /// </summary>
+        private static IParam Instance
+        {
+            get
+            {
+                if (!ComponentContainer.HasComponent(typeof(IParam)))
+                    return new ConfigurationParam();
+                return ComponentContainer.Resolve<IParam>();
+            }
+        }
+
+        /// <summary>
+        /// Determine whether the specified param object is exists.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified path is exists; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool Exist(string path)
+        {
+            return Instance.Exist(path);
+        }
+
+        /// <summary>
+        /// Get param object.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <returns>If path exists, return the object, otherwise return null.</returns>
+        public static ParamObject Get(string path)
+        {
+            return Instance.Get(path);
+        }
+
+        /// <summary>
+        /// Get the param value.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <returns>If path exists, return its value, otherwise return string.Empty.</returns>
+        public static string GetValue(string path)
+        {
+            return Instance.GetValue(path);
+        }
+
+        /// <summary>
+        /// Get next level objects.
+        /// </summary>
+        /// <param name="currentPath">The current parameter path (case insensitive and list all of first level objects when it sets to string.Empty or null).</param>
+        /// <returns>If data exists, return an objects list, otherwise return an empty list.</returns>
+        public static IList<ParamObject> Next(string currentPath)
+        {
+            return Instance.Next(currentPath);
+        }
+
+        /// <summary>
+        /// Get next level objects.
+        /// </summary>
+        /// <param name="currentPath">The current parameter path (case insensitive and list all of first level objects when it sets to string.Empty or null).</param>
+        /// <param name="pageSize">The list size per page.</param>
+        /// <param name="pageIndex">The index of page.</param>
+        /// <param name="objectTotal">The object total.</param>
+        /// <returns>If data exists, return an objects list, otherwise return an empty list.</returns>
+        public static IList<ParamObject> Next(string currentPath, int pageSize, int pageIndex, out int objectTotal)
+        {
+            return Instance.Next(currentPath, pageSize, pageIndex, out objectTotal);
+        }
+
+        /// <summary>
+        /// Search objects.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <returns>
+        /// If path matches, return an objects list, otherwise return an empty list.
+        /// </returns>
+        public static IList<ParamObject> Search(string path)
+        {
+            return Instance.Search(path);
+        }
+
+        /// <summary>
+        /// Search objects.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="pageSize">The list size per page.</param>
+        /// <param name="pageIndex">The index of page.</param>
+        /// <param name="objectTotal">The object total.</param>
+        /// <returns>
+        /// If path matches, return an objects list, otherwise return an empty list.
+        /// </returns>
+        public static IList<ParamObject> Search(string path, int pageSize, int pageIndex, out int objectTotal)
+        {
+            return Instance.Search(path, pageSize, pageIndex, out objectTotal);
+        }
+
+        /// <summary>
+        /// Create new param object.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>If successful created, return param object.</returns>
+        public static ParamObject Create(string path, string description, string value)
+        {
+            return Instance.Create(path, description, value);
+        }
+
+        /// <summary>
+        /// Update param object.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="description">The new description.</param>
+        /// <param name="value">The new value.</param>
+        /// <returns>If successful created, return param object.</returns>
+        public static ParamObject Update(string path, string description, string value)
+        {
+            return Instance.Update(path, description, value);
+        }
+
+        /// <summary>
+        /// Delete param object.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        public static void Delete(string path)
+        {
+            Instance.Delete(path);
+        }
+
+        #region All GetValues
+
+        /// <summary>
+        /// Get the param value.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <returns>
+        /// If path exists, return its value, otherwise throw an exception.
+        /// </returns>
+        public static bool GetValueBoolean(string path)
+        {
+            string paramValue = GetValue(path);
+
+            bool returnValue = false;
+
+            if (!bool.TryParse(paramValue, out returnValue))
+            {
+                if (paramValue == "1" || string.Compare(paramValue, "y", true) == 0 || string.Compare(paramValue, "yes", true) == 0)
+                {
+                    returnValue = true;
+                }
+                else
+                {
+                    if (paramValue == "0" || string.Compare(paramValue, "n", true) == 0 || string.Compare(paramValue, "no", true) == 0)
+                        returnValue = false;
+                    else
+                        Checker.Requires(!string.IsNullOrWhiteSpace(paramValue), CanNotConvertExceptionFormat, path, typeof(bool).FullName);
+                }
+
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Get the param value.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="defaultValue">The default value when param value empty or can not convert.</param>
+        /// <returns>
+        /// If path exists, return its value, otherwise return default value.
+        /// </returns>
+        public static bool GetValueBoolean(string path, bool defaultValue)
+        {
+            string paramValue = GetValue(path);
+            if (string.IsNullOrWhiteSpace(paramValue))
+                return defaultValue;
+
+            bool returnValue = false;
+
+            if (!bool.TryParse(paramValue, out returnValue))
+            {
+                paramValue = paramValue.Trim();
+
+                if (paramValue == "1" || string.Compare(paramValue, "y", true) == 0 || string.Compare(paramValue, "yes", true) == 0)
+                {
+                    returnValue = true;
+                }
+                else
+                {
+                    if (paramValue == "0" || string.Compare(paramValue, "n", true) == 0 || string.Compare(paramValue, "no", true) == 0)
+                        returnValue = false;
+                    else
+                        returnValue = defaultValue;
+                }
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Get the param value.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <returns>
+        /// If path exists, return its value, otherwise throw an exception.
+        /// </returns>
+        public static decimal GetValueDecimal(string path)
+        {
+            string paramValue = GetValue(path);
+
+            decimal returnValue = 0;
+
+            Checker.Requires(decimal.TryParse(paramValue.Trim(), out returnValue), CanNotConvertExceptionFormat, path, typeof(decimal).FullName);
+
+            return returnValue;
+        }
+
+
+        /// <summary>
+        /// Get the param value.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="defaultValue">The default value when param value empty or can not convert.</param>
+        /// <returns>
+        /// If path exists, return its value, otherwise return default value.
+        /// </returns>
+        public static decimal GetValueDecimal(string path, decimal defaultValue)
+        {
+            string paramValue = GetValue(path);
+            if (string.IsNullOrWhiteSpace(paramValue))
+                return defaultValue;
+
+            decimal returnValue = 0;
+
+            if (!decimal.TryParse(paramValue.Trim(), out returnValue))
+            {
+                returnValue = defaultValue;
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Get the param value.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <returns>
+        /// If path exists, return its value, otherwise throw an exception.
+        /// </returns>
+        public static double GetValueDouble(string path)
+        {
+            string paramValue = GetValue(path);
+
+            double returnValue = 0;
+
+            Checker.Requires(double.TryParse(paramValue.Trim(), out returnValue), CanNotConvertExceptionFormat, path, typeof(double).FullName);
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Get the param value.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="defaultValue">The default value when param value empty or can not convert.</param>
+        /// <returns>
+        /// If path exists, return its value, otherwise return default value.
+        /// </returns>
+        public static double GetValueDouble(string path, double defaultValue)
+        {
+            string paramValue = GetValue(path);
+            if (string.IsNullOrWhiteSpace(paramValue))
+                return defaultValue;
+
+            double returnValue = 0;
+
+            if (!double.TryParse(paramValue.Trim(), out returnValue))
+            {
+                returnValue = defaultValue;
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Get the param value.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <returns>
+        /// If path exists, return its value, otherwise throw an exception.
+        /// </returns>
+        public static int GetValueInt32(string path)
+        {
+            string paramValue = GetValue(path);
+
+            int returnValue = 0;
+
+            Checker.Requires(int.TryParse(paramValue.Trim(), out returnValue), CanNotConvertExceptionFormat, path, typeof(int).FullName);
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Get the param value.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="defaultValue">The default value when param value empty or can not convert.</param>
+        /// <returns>
+        /// If path exists, return its value, otherwise return default value.
+        /// </returns>
+        public static int GetValueInt32(string path, int defaultValue)
+        {
+            string paramValue = GetValue(path);
+            if (string.IsNullOrWhiteSpace(paramValue))
+                return defaultValue;
+
+            int returnValue = 0;
+
+            if (!int.TryParse(paramValue.Trim(), out returnValue))
+            {
+                returnValue = defaultValue;
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Get the param value.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <returns>
+        /// If path exists, return its value, otherwise throw an exception.
+        /// </returns>
+        public static long GetValueInt64(string path)
+        {
+            string paramValue = GetValue(path);
+
+            long returnValue = 0;
+
+            Checker.Requires(long.TryParse(paramValue.Trim(), out returnValue), CanNotConvertExceptionFormat, path, typeof(long).FullName);
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Get the param value.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="defaultValue">The default value when param value empty or can not convert.</param>
+        /// <returns>
+        /// If path exists, return its value, otherwise return default value.
+        /// </returns>
+        public static long GetValueInt64(string path, long defaultValue)
+        {
+            string paramValue = GetValue(path);
+            if (string.IsNullOrWhiteSpace(paramValue))
+                return defaultValue;
+
+            long returnValue = 0;
+
+            if (!long.TryParse(paramValue.Trim(), out returnValue))
+            {
+                returnValue = defaultValue;
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Get the param value.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <returns>
+        /// If path exists, return its value, otherwise throw an exception.
+        /// </returns>
+        public static float GetValueSingle(string path)
+        {
+            string paramValue = GetValue(path);
+
+            float returnValue = 0;
+
+            Checker.Requires(float.TryParse(paramValue.Trim(), out returnValue), CanNotConvertExceptionFormat, path, typeof(float).FullName);
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Get the param value.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="defaultValue">The default value when param value empty or can not convert.</param>
+        /// <returns>
+        /// If path exists, return its value, otherwise return default value.
+        /// </returns>
+        public static float GetValueSingle(string path, float defaultValue)
+        {
+            string paramValue = GetValue(path);
+            if (string.IsNullOrWhiteSpace(paramValue))
+                return defaultValue;
+
+            float returnValue = 0;
+
+            if (!float.TryParse(paramValue.Trim(), out returnValue))
+            {
+                returnValue = defaultValue;
+            }
+
+            return returnValue;
+        }
+
+        #endregion
+    }
+}

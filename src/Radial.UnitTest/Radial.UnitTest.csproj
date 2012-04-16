@@ -48,11 +48,6 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\System.Data.SqlServerCe.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -73,7 +68,6 @@
     <Compile Include="Nhs\Mapping\UserClassMapper.cs" />
     <Compile Include="Nhs\Param\SqlServerFactoryPoolInitializer.cs" />
     <Compile Include="Nhs\Param\SqlServerTest.cs" />
-    <Compile Include="Nhs\Param\SqlCeTest.cs" />
     <Compile Include="Nhs\PartitionTest.cs" />
     <Compile Include="Nhs\PoolInitializer\MappingByCodeFactoryPoolInitializer.cs" />
     <Compile Include="Nhs\PoolInitializer\PartitionFactoryPoolInitializer.cs" />

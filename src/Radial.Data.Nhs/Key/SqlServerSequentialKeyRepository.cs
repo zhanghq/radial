@@ -13,12 +13,12 @@ namespace Radial.Data.Nhs.Key
     {
         const string SQLQUERY = "IF EXISTS(SELECT * FROM [SequentialKey] WHERE [Discriminator]=:Discriminator) "
                                 + "BEGIN "
-                                + "UPDATE [SequentialKey] SET [Value]=[Value]+:IncreaseStep,[UpdateTime]=:UpdateTime WHERE [Discriminator]=:Discriminator "
+                                + "UPDATE [SequentialKey] SET [Value]=[Value]+:IncreaseStep,[UpdateTime]=GETDATE() WHERE [Discriminator]=:Discriminator "
                                 + "SELECT [Value] FROM [SequentialKey] WHERE [Discriminator]=:Discriminator "
                                 + "END "
                                 + "ELSE "
                                 + "BEGIN "
-                                + "INSERT INTO [SequentialKey] ([Discriminator],[Value],[UpdateTime]) VALUES (:Discriminator,:IncreaseStep,:UpdateTime) "
+                                + "INSERT INTO [SequentialKey] ([Discriminator],[Value],[UpdateTime]) VALUES (:Discriminator,:IncreaseStep,GETDATE()) "
                                 + "SELECT [Value] FROM [SequentialKey] WHERE [Discriminator]=:Discriminator "
                                 + "END";
 
@@ -48,7 +48,6 @@ namespace Radial.Data.Nhs.Key
             ISQLQuery query = Session.CreateSQLQuery(SQLQUERY);
             query.SetString("Discriminator", discriminator);
             query.SetParameter<int>("IncreaseStep", (int)increaseStep);
-            query.SetDateTime("UpdateTime", DateTime.Now);
 
             return (ulong)query.UniqueResult<long>();
         }

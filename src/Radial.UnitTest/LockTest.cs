@@ -14,10 +14,8 @@ namespace Radial.UnitTest
         [Test]
         public void Acquire()
         {
-
             using (LockEntry e = LockEntry.Acquire("abc"))
             {
-
                 Assert.AreNotEqual(e.CreateTime, e.ExpireTime);
             }
         }

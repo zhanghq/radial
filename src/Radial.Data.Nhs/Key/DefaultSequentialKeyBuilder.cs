@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Radial.Lock;
 
 namespace Radial.Data.Nhs.Key
 {
@@ -100,10 +101,10 @@ namespace Radial.Data.Nhs.Key
 
             lock (S_SyncRoot)
             {
-                AutoTransaction.Complete(() =>
+                using (LockEntry.Acquire<SequentialKeyEntity>())
                 {
                     nextKey = _repository.Upsert(discriminator, increaseStep);
-                });
+                }
             }
 
             return nextKey;

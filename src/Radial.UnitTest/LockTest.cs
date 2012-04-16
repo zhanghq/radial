@@ -11,6 +11,18 @@ namespace Radial.UnitTest
     [TestFixture]
     public class LockTest
     {
+        public LockTest()
+        {
+            LockEntry.AcquireFailed += new AcquireFailedEventHandler(LockEntry_AcquireFailed);
+        }
+
+        void LockEntry_AcquireFailed(object sender, AcquireFailedEventArgs args)
+        {
+            Console.WriteLine(args.RetryTimes);
+            if (args.RetryTimes < 10)
+                args.KeepOnRetry = true;
+        }
+
         [Test]
         public void Acquire()
         {

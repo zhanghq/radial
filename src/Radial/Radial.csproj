@@ -81,6 +81,7 @@
     <Compile Include="Lock\ILock.cs" />
     <Compile Include="Lock\LockEntry.cs" />
     <Compile Include="Lock\LockObject.cs" />
+    <Compile Include="Lock\AcquireFailedEvent.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Param\AppParam.cs" />
     <Compile Include="Param\ConfigurationParam.cs" />

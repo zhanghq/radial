@@ -15,6 +15,10 @@ namespace Radial.Lock
         DateTime _createTime;
         DateTime _expireTime;
 
+        /// <summary>
+        /// Occurs when [lock acquire failed].
+        /// </summary>
+        public static event AcquireFailedEventHandler AcquireFailed;
 
         /// <summary>
         /// Prevents a default instance of the <see cref="LockEntry"/> class from being created.
@@ -198,7 +202,35 @@ namespace Radial.Lock
 
             Logger.GetInstance("Lock").Info("acquire lock key={0}", key);
 
-            Checker.Lock(Instance.Acquire(key, out obj));
+            bool successAcquired=false;
+            AcquireFailedEventArgs afea = new AcquireFailedEventArgs { LockKey = key };
+
+            do
+            {
+                afea.KeepOnRetry = false;
+                afea.Exception = null;
+
+                try
+                {
+                    if (Instance.Acquire(key, out obj))
+                    {
+                        successAcquired = true;
+                        break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    afea.Exception = e;
+                }
+
+                afea.RetryTimes++;
+
+                if (AcquireFailed != null)
+                    AcquireFailed(null, afea);
+            }
+            while (afea.KeepOnRetry);
+
+            Checker.Lock(successAcquired);
 
             return new LockEntry(obj.Key, obj.CreateTime, obj.ExpireTime);
         }

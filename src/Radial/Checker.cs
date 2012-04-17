@@ -46,14 +46,5 @@ namespace Radial
             if (!condition)
                 throw new ArgumentException(string.Format(messageFormat, args), paramName);
         }
-
-        /// <summary>
-        /// Check whether successful application for lock, otherwise throw a RuntimeException with ExceptionCode.ConflictLock.
-        /// </summary>
-        /// <param name="result">the result of application for lock.</param>
-        public static void Lock(bool result)
-        {
-            Requires(result, "some data has be locked, please try again later.");
-        }
     }
 }

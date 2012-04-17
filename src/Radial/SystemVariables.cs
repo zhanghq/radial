@@ -23,11 +23,6 @@ namespace Radial
         /// Application base configuration directory
         /// </summary>
         static string S_BasicConfigurationDirectory;
-        /// <summary>
-        /// Compile type
-        /// </summary>
-        static CompileType S_CompileType= CompileType.Release;
-
 
         /// <summary>
         /// Initializes the <see cref="SystemVariables"/> class.
@@ -38,21 +33,6 @@ namespace Radial
             S_BasicConfigurationDirectory = S_BaseDirectory + @"\Config";
         }
 
-
-        /// <summary>
-        /// Gets or sets the compile type.
-        /// </summary>
-        public static CompileType CompileType
-        {
-            get
-            {
-                return S_CompileType;
-            }
-            set
-            {
-                S_CompileType = value;
-            }
-        }
 
         /// <summary>
         /// Gets application base directory

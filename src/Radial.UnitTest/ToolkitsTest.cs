@@ -16,18 +16,6 @@ namespace Radial.UnitTest
         }
 
         [Test]
-        public void GetEnumItem()
-        {
-            Assert.AreEqual(CompileType.Debug, Toolkits.GetEnumItem<CompileType>(0));
-        }
-
-        [Test]
-        public void GetEnumItemDescription()
-        {
-            Assert.AreEqual("Debug Compile Model", Toolkits.GetEnumItemDescription<CompileType>(CompileType.Debug));
-        }
-
-        [Test]
         public void GetPingResult()
         {
             Assert.DoesNotThrow(() => {

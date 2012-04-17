@@ -20,6 +20,18 @@ namespace Radial.Lock
         /// </summary>
         public static event AcquireFailedEventHandler AcquireFailed;
 
+
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        private static Logger Logger
+        {
+            get
+            {
+                return Logger.GetInstance("Lock");
+            }
+        }
+
         /// <summary>
         /// Prevents a default instance of the <see cref="LockEntry"/> class from being created.
         /// </summary>
@@ -87,13 +99,12 @@ namespace Radial.Lock
         }
 
 
-
         /// <summary>
         /// Releases lock entry.
         /// </summary>
         public void Release()
         {
-            Logger.GetInstance("Lock").Info("release lock key={0}", Key);
+            Logger.Info("release lock key={0}", Key);
             Instance.Release(Key);
         }
 
@@ -200,21 +211,21 @@ namespace Radial.Lock
 
             LockObject obj = null;
 
-            Logger.GetInstance("Lock").Info("acquire lock key={0}", key);
+            Logger.Info("begin to acquire lock, key={0}", key);
 
-            bool successAcquired=false;
-            AcquireFailedEventArgs afea = new AcquireFailedEventArgs { LockKey = key };
+            bool successfullyAcquired = false;
+            AcquireFailedEventArgs afea = new AcquireFailedEventArgs { LockKey = key, OutputLogger = Logger };
 
             do
             {
-                afea.KeepOnRetry = false;
+                afea.CancelRetry = true;
                 afea.Exception = null;
 
                 try
                 {
                     if (Instance.Acquire(key, out obj))
                     {
-                        successAcquired = true;
+                        successfullyAcquired = true;
                         break;
                     }
                 }
@@ -228,9 +239,13 @@ namespace Radial.Lock
                 if (AcquireFailed != null)
                     AcquireFailed(null, afea);
             }
-            while (afea.KeepOnRetry);
+            while (!afea.CancelRetry);
 
-            Checker.Lock(successAcquired);
+            if (!successfullyAcquired)
+            {
+                Logger.Fatal("can not acquire lock, key={0}", key);
+                throw new Exception("some data has be locked, please try again later.");
+            }
 
             return new LockEntry(obj.Key, obj.CreateTime, obj.ExpireTime);
         }

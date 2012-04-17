@@ -15,7 +15,6 @@ namespace Radial.UnitTest
         public void SetUp()
         {
             SystemVariables.BasicConfigurationDirectory = SystemVariables.BasicConfigurationDirectory.Replace(@"\bin\Debug", string.Empty);
-            SystemVariables.CompileType = CompileType.Debug;
             Logger.Start();
         }
 

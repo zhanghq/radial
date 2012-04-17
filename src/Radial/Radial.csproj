@@ -69,7 +69,6 @@
     <Compile Include="Data\OrderBySnippet.cs" />
     <Compile Include="Drawing\Captcha.cs" />
     <Compile Include="Checker.cs" />
-    <Compile Include="CompileType.cs" />
     <Compile Include="ComponentContainer.cs" />
     <Compile Include="Drawing\ImageKits.cs" />
     <Compile Include="EnumItemAttribute.cs" />

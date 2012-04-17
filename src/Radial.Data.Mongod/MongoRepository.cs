@@ -351,16 +351,13 @@ namespace Radial.Data.Mongod
         /// </summary>
         public virtual void Clear()
         {
-            if (SystemVariables.CompileType == CompileType.Debug)
+            using (var db = CreateWriteDb())
             {
-                using (var db = CreateWriteDb())
+                try
                 {
-                    try
-                    {
-                        db.Database.DropCollection(CollectionName);
-                    }
-                    catch { }
+                    db.Database.DropCollection(CollectionName);
                 }
+                catch { }
             }
         }
 

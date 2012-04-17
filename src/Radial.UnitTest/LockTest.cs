@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using System.Threading;
 using Radial.Lock;
+using System.Threading.Tasks;
 
 namespace Radial.UnitTest
 {
@@ -18,18 +19,28 @@ namespace Radial.UnitTest
 
         void LockEntry_AcquireFailed(object sender, AcquireFailedEventArgs args)
         {
-            Console.WriteLine(args.RetryTimes);
-            if (args.RetryTimes < 10)
-                args.KeepOnRetry = true;
+            if (args.RetryTimes <= 3)
+            {
+                string txt = string.Format("{0} retry {1} sleep 100 thread {2}", args.LockKey, args.RetryTimes, Thread.CurrentThread.ManagedThreadId);
+
+                Console.WriteLine(txt);
+                args.OutputLogger.Warn(txt);
+
+                Thread.Sleep(100);
+                args.CancelRetry = false;
+            }
         }
 
         [Test]
         public void Acquire()
         {
-            using (LockEntry e = LockEntry.Acquire("abc"))
+            Parallel.For(0, 3, i =>
             {
-                Assert.AreNotEqual(e.CreateTime, e.ExpireTime);
-            }
+                using (LockEntry e = LockEntry.Acquire("abc" + i))
+                {
+                    Assert.AreEqual(e.CreateTime, e.ExpireTime);
+                }
+            });
         }
     }
 }

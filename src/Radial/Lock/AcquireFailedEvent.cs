@@ -18,12 +18,25 @@ namespace Radial.Lock
     public sealed class AcquireFailedEventArgs : EventArgs
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="AcquireFailedEventArgs"/> class.
+        /// </summary>
+        public AcquireFailedEventArgs()
+        {
+            CancelRetry = true;
+        }
+
+        /// <summary>
+        /// Gets the output logger.
+        /// </summary>
+        public Logger OutputLogger { get; internal set; }
+
+        /// <summary>
         /// Gets the lock key.
         /// </summary>
         public string LockKey { get; internal set; }
 
         /// <summary>
-        /// Gets the current retry times.
+        /// Gets the retry times.
         /// </summary>
         public int RetryTimes { get; internal set; }
 
@@ -33,11 +46,11 @@ namespace Radial.Lock
         public Exception Exception { get; internal set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether need to keep on retrying.
+        /// Gets or sets a value indicating whether need to cancel retry.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if need to keep on; otherwise, <c>false</c>.
+        ///   <c>true</c> if need to cancel; otherwise, <c>false</c>.
         /// </value>
-        public bool KeepOnRetry { get; set; }
+        public bool CancelRetry { get; set; }
     }
 }

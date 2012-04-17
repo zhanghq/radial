@@ -356,10 +356,7 @@ namespace Radial.Data.Nhs
         /// </summary>
         public virtual void Clear()
         {
-            if (SystemVariables.CompileType == CompileType.Debug)
-            {
-                Session.Delete(string.Format("from {0}", typeof(TObject).Name));
-            }
+            Session.Delete(string.Format("from {0}", typeof(TObject).Name));
         }
 
 

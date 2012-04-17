@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 //内部版本号和修订号规则：
 //      内部版本号=年份，例如2009年，则内部版本号为9
 //      修订号=月份+日期+修订次数，例如9月1日第1次修订，则修订号为911
-[assembly: AssemblyVersion("2.0.11.3152")]
+[assembly: AssemblyVersion("2.0.11.3153")]
 [assembly: AssemblyFileVersion("2.0.0.0")]

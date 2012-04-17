@@ -380,8 +380,7 @@ namespace Radial.DataLite
                 logText += paramText;
             if (Connection != null && Connection.State == ConnectionState.Open)
                 logText += string.Format("{0}--DataSource:{1} Version:{2}", string.IsNullOrEmpty(paramText) ? string.Empty : " ", DataSourceType, Connection.ServerVersion);
-            if (Transaction != null)
-                logText += " With DbTransaction";
+
             logText += Environment.NewLine;
 
             OnLog(new LogEventArgs(logText));

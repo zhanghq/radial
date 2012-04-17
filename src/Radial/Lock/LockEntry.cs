@@ -243,7 +243,7 @@ namespace Radial.Lock
 
             if (!successfullyAcquired)
             {
-                Logger.Fatal("can not acquire lock, key={0} retry={1}", key, afea.RetryTimes);
+                Logger.Fatal("can not acquire lock, key={0}", key);
                 throw new Exception("some data has be locked, please try again later.");
             }
 

@@ -32,7 +32,7 @@ namespace Radial.UnitTest.Nhs.Param
                 {
                     c.Dialect<MsSql2008Dialect>();
                     c.Driver<Sql2008ClientDriver>();
-                    c.ConnectionString = @"Data Source=.;Initial Catalog=nhs;Integrated Security=True";
+                    c.ConnectionString = @"Data Source=.;Initial Catalog=rdut;Integrated Security=True;";
                     c.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
                     c.ConnectionProvider<DriverConnectionProvider>();
                     c.BatchSize = 20;

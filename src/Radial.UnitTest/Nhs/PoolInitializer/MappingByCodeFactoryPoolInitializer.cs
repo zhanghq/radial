@@ -28,16 +28,16 @@ namespace Radial.UnitTest.Nhs.PoolInitializer
             Configuration configuration = new Configuration();
 
             configuration.DataBaseIntegration(c =>
-                {
-                    c.Dialect<MsSqlCe40Dialect>();
-                    c.Driver<SqlServerCeDriver>();
-                    c.ConnectionString = @"Data Source=Data\db.sdf";
-                    c.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
-                    c.ConnectionProvider<DriverConnectionProvider>();
-                    c.BatchSize = 20;
-                    c.LogSqlInConsole = true;
-                    c.HqlToSqlSubstitutions = "true 1, false 0, yes 'Y', no 'N'";
-                }).CurrentSessionContext<ThreadStaticSessionContext>();
+            {
+                c.Dialect<MsSql2008Dialect>();
+                c.Driver<Sql2008ClientDriver>();
+                c.ConnectionString = @"Data Source=.;Initial Catalog=rdut;Integrated Security=True;";
+                c.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
+                c.ConnectionProvider<DriverConnectionProvider>();
+                c.BatchSize = 20;
+                c.LogSqlInConsole = true;
+                c.HqlToSqlSubstitutions = "true 1, false 0, yes 'Y', no 'N'";
+            }).CurrentSessionContext<ThreadStaticSessionContext>();
 
 
             ModelMapper mapper = new ModelMapper();

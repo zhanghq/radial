@@ -104,7 +104,7 @@ namespace Radial.Lock
         /// </summary>
         public void Release()
         {
-            Logger.Info("release lock key={0}", Key);
+            Logger.Info("release lock, key={0}", Key);
             Instance.Release(Key);
         }
 
@@ -243,7 +243,7 @@ namespace Radial.Lock
 
             if (!successfullyAcquired)
             {
-                Logger.Fatal("can not acquire lock, key={0}", key);
+                Logger.Fatal("can not acquire lock, key={0} retry={1}", key, afea.RetryTimes);
                 throw new Exception("some data has be locked, please try again later.");
             }
 

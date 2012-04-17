@@ -46,7 +46,7 @@ namespace Radial.Data.Nhs.Param
             Bag(o => o.Children, m =>
             {
                 m.Access(Accessor.NoSetter);
-                m.Cascade(Cascade.All.Include(Cascade.DeleteOrphans));
+                m.Cascade(NHibernate.Mapping.ByCode.Cascade.All | NHibernate.Mapping.ByCode.Cascade.DeleteOrphans);
                 m.Inverse(true);
                 m.OrderBy("Name ASC");
                 m.Key(k => k.Column("ParentPath"));

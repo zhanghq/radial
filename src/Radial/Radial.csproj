@@ -65,6 +65,7 @@
     <Compile Include="Cache\CacheStatic.cs" />
     <Compile Include="Cache\EmptyCache.cs" />
     <Compile Include="Cache\ICache.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\OrderBySnippet.cs" />
     <Compile Include="Drawing\Captcha.cs" />

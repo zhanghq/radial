@@ -9,7 +9,7 @@ namespace Radial.Serialization
     /// <summary>
     /// Xml serializer.
     /// </summary>
-    public sealed class XmlSerializer
+    public static class XmlSerializer
     {
         /// <summary>
         /// Serializes object to xml.
@@ -56,9 +56,6 @@ namespace Radial.Serialization
         {
             Checker.Parameter(objType != null, "object type can not be null");
 
-            if (string.IsNullOrWhiteSpace(xml))
-                xml = string.Empty;
-
             object obj = null;
 
             if (!string.IsNullOrWhiteSpace(xml))
@@ -82,7 +79,17 @@ namespace Radial.Serialization
         /// </returns>
         public static TObject Deserialize<TObject>(string xml)
         {
-            return (TObject)Deserialize(xml, typeof(TObject));
+            TObject obj = default(TObject);
+
+            if (!string.IsNullOrWhiteSpace(xml))
+            {
+                System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(TObject));
+                using (TextReader tr = new StringReader(xml))
+                {
+                    obj = (TObject)serializer.Deserialize(tr);
+                }
+            }
+            return obj;
         }
     }
 }

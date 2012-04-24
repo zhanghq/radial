@@ -8,11 +8,11 @@ using Radial.Param;
 namespace Radial.Serialization.Converters
 {
     /// <summary>
-    /// DateTime json converter class.
+    /// DateTime with milliseconds json converter class.
     /// </summary>
-    public sealed class DateTimeJsonConverter : JsonConverter
+    public sealed class DateTimeMillisecondJsonConverter : JsonConverter
     {
-        string _format="yyyy/MM/dd HH:mm:ss";
+        string _format="yyyy/MM/dd HH:mm:ss.fff";
 
         /// <summary>
         /// Determines whether this instance can convert the specified object type.

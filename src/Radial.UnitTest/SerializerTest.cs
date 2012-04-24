@@ -7,6 +7,9 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Radial.Serialization;
 using Radial.Serialization.Converters;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace Radial.UnitTest
 {
@@ -51,6 +54,16 @@ namespace Radial.UnitTest
         B
     }
 
+    [Serializable]
+    public class Movie3
+    {
+        public string Title
+        { get; set; }
+
+        public int Rating
+        { get; set; }
+    }
+
     [TestFixture]
     public class SerializerTest
     {
@@ -81,6 +94,18 @@ namespace Radial.UnitTest
             var o4 = Radial.Serialization.JsonSerializer.Deserialize<Movie2>(s2);
             Assert.AreEqual(o3.ReleaseDate, o4.ReleaseDate);
             Assert.AreEqual(o3.IsNew, o4.IsNew);
+        }
+
+        [Test]
+        public void Binary()
+        {
+            Movie3 o = new Movie3 { Title = "测试", Rating = 100 };
+
+            byte[] bytes = BinarySerializer.Serialize(o);
+
+            Movie3 o2 = (Movie3)BinarySerializer.Deserialize(bytes);
+
+            Assert.AreEqual(o.Title, o2.Title);
         }
     }
 }

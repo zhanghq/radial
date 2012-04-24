@@ -93,9 +93,11 @@
     <Compile Include="RandomCode.cs" />
     <Compile Include="Security\CryptoProvider.cs" />
     <Compile Include="Security\X509CertificateProvider.cs" />
+    <Compile Include="Serialization\BinarySerializer.cs" />
     <Compile Include="Serialization\Converters\BooleanJsonConverter.cs" />
     <Compile Include="Serialization\Converters\DateJsonConverter.cs" />
     <Compile Include="Serialization\Converters\DateTimeJsonConverter.cs" />
+    <Compile Include="Serialization\Converters\DateTimeMillisecondJsonConverter.cs" />
     <Compile Include="Serialization\JsonSerializer.cs" />
     <Compile Include="Serialization\Converters\UnixTimeJsonConverter.cs" />
     <Compile Include="Serialization\XmlSerializer.cs" />

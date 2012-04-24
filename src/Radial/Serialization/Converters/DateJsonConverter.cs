@@ -15,16 +15,6 @@ namespace Radial.Serialization.Converters
         string _format="yyyy/MM/dd";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DateJsonConverter"/> class.
-        /// </summary>
-        public DateJsonConverter()
-        {
-            string formatConfig=AppParam.GetValue("System.DateJsonFormat");
-            if (!string.IsNullOrWhiteSpace(formatConfig))
-                _format = formatConfig.Trim();
-        }
-
-        /// <summary>
         /// Determines whether this instance can convert the specified object type.
         /// </summary>
         /// <param name="objectType">Type of the object.</param>

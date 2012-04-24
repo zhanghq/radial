@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace Radial.Serialization
+namespace Radial.Serialization.Converters
 {
     /// <summary>
-    /// DateTime to Unix TimeStamp json converter class.
+    /// Converter boolean value to 0 or 1
     /// </summary>
-    public sealed class UnixTimeJsonConverter : JsonConverter
+    public sealed class BooleanJsonConverter : JsonConverter
     {
+
         /// <summary>
         /// Determines whether this instance can convert the specified object type.
         /// </summary>
@@ -20,7 +21,7 @@ namespace Radial.Serialization
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            if (objectType == typeof(DateTime) || objectType == typeof(Nullable) || objectType.IsGenericType && objectType.GetGenericTypeDefinition() == typeof(Nullable<>))
+            if (objectType == typeof(bool) || objectType == typeof(Nullable) || objectType.IsGenericType && objectType.GetGenericTypeDefinition() == typeof(Nullable<>))
                 return true;
             else
                 return false;
@@ -38,29 +39,22 @@ namespace Radial.Serialization
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, Newtonsoft.Json.JsonSerializer serializer)
         {
-            
-            if (reader.ValueType == typeof(string))
+            if (reader.ValueType == typeof(string) || reader.ValueType == typeof(int) || reader.ValueType == typeof(long))
             {
                 string str = reader.Value == null ? string.Empty : reader.Value.ToString().Trim();
 
-                if (!string.IsNullOrWhiteSpace(str))
-                {
-                    long val;
-                    if (long.TryParse(str, out val))
-                        return Toolkits.FromUnixTimeStamp(val);
-                }
+                if (!string.IsNullOrWhiteSpace(str) && (str == "1" || string.Compare(str, bool.TrueString, true) == 0))
+                    return true;
             }
 
-            if (reader.ValueType == typeof(long))
-                return Toolkits.FromUnixTimeStamp((long)reader.Value);
 
-            if (reader.ValueType == typeof(DateTime))
+            if (reader.ValueType == typeof(bool))
                 return reader.Value;
 
             if (reader.ValueType == null && (objectType == typeof(Nullable) || objectType.IsGenericType && objectType.GetGenericTypeDefinition() == typeof(Nullable<>)))
                 return null;
 
-            return DateTime.MinValue;
+            return false;
         }
 
         /// <summary>
@@ -71,7 +65,7 @@ namespace Radial.Serialization
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, Newtonsoft.Json.JsonSerializer serializer)
         {
-            writer.WriteValue(Toolkits.ToUnixTimeStamp((DateTime)value));
+            writer.WriteValue(((bool)value) ? 1 : 0);
         }
     }
 }

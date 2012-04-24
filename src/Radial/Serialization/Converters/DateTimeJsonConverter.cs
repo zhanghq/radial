@@ -5,21 +5,21 @@ using System.Text;
 using Newtonsoft.Json;
 using Radial.Param;
 
-namespace Radial.Serialization
+namespace Radial.Serialization.Converters
 {
     /// <summary>
-    /// Date json converter class.
+    /// DateTime json converter class.
     /// </summary>
-    public sealed class DateJsonConverter : JsonConverter
+    public sealed class DateTimeJsonConverter : JsonConverter
     {
-        string _format="yyyy/MM/dd";
+        string _format="yyyy/MM/dd HH:mm:ss";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DateJsonConverter"/> class.
+        /// Initializes a new instance of the <see cref="DateTimeJsonConverter"/> class.
         /// </summary>
-        public DateJsonConverter()
+        public DateTimeJsonConverter()
         {
-            string formatConfig=AppParam.GetValue("System.DateJsonFormat");
+            string formatConfig = AppParam.GetValue("System.DateTimeJsonFormat");
             if (!string.IsNullOrWhiteSpace(formatConfig))
                 _format = formatConfig.Trim();
         }
@@ -51,7 +51,6 @@ namespace Radial.Serialization
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, Newtonsoft.Json.JsonSerializer serializer)
         {
-
             if (reader.ValueType == typeof(string))
             {
                 string str = reader.Value == null ? string.Empty : reader.Value.ToString().Trim();

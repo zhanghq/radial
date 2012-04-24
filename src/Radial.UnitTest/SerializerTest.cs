@@ -6,6 +6,7 @@ using NUnit.Framework;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Radial.Serialization;
+using Radial.Serialization.Converters;
 
 namespace Radial.UnitTest
 {

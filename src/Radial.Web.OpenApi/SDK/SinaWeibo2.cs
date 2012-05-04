@@ -30,12 +30,12 @@ namespace Radial.Web.OpenApi.SDK
         /// </summary>
         const string AccessTokenApiUrl = "https://api.weibo.com/oauth2/access_token";
 
-        /// <summary>
-        /// GetUidApiUrl
-        /// </summary>
-        const string GetUidApiUrl = "https://api.weibo.com/2/account/get_uid.json";
+        ///// <summary>
+        ///// GetUidApiUrl
+        ///// </summary>
+        //const string GetUidApiUrl = "https://api.weibo.com/2/account/get_uid.json";
 
-        long _current_uid = 0;
+        //long _current_uid = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SinaWeibo2"/> class.
@@ -86,21 +86,33 @@ namespace Radial.Web.OpenApi.SDK
         }
 
         /// <summary>
-        /// Gets the access token.
+        /// Gets the access token(grant_type="authorization_code").
         /// </summary>
-        /// <param name="grant_type">The grant_type.</param>
         /// <param name="code">The code.</param>
         /// <param name="redirect_uri">The redirect_uri.</param>
+        /// <param name="expires_in">The expires_in.</param>
+        /// <param name="remind_in">The remind_in.</param>
+        /// <param name="uid">The uid.</param>
+        /// <returns></returns>
+        public KeySecretPair GetAccessTokenWithCode(string code, string redirect_uri, out int expires_in, out int remind_in, out long uid)
+        {
+            return GetAccessToken("authorization_code", code, redirect_uri, string.Empty, string.Empty, out expires_in, out remind_in, out uid);
+        }
+
+        /// <summary>
+        /// Gets the access token(grant_type="password").
+        /// </summary>
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
-        /// <param name="refresh_token">The refresh_token.</param>
+        /// <param name="expires_in">The expires_in.</param>
+        /// <param name="remind_in">The remind_in.</param>
+        /// <param name="uid">The uid.</param>
         /// <returns></returns>
-        public KeySecretPair GetAccessToken(string grant_type, string code, string redirect_uri, string username, string password, string refresh_token)
+        public KeySecretPair GetAccessTokenWithPassword(string username, string password, out int expires_in, out int remind_in, out long uid)
         {
-            int expires_in;
-            string refresh_token_callback;
-            return GetAccessToken(grant_type, code, redirect_uri, username, password, refresh_token, out expires_in, out refresh_token_callback);
+            return GetAccessToken("password", string.Empty, string.Empty, username, password, out expires_in, out remind_in, out uid);
         }
+
 
         /// <summary>
         /// Gets the access token.
@@ -110,31 +122,15 @@ namespace Radial.Web.OpenApi.SDK
         /// <param name="redirect_uri">The redirect_uri.</param>
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
-        /// <param name="refresh_token">The refresh_token.</param>
         /// <param name="expires_in">The expires_in.</param>
+        /// <param name="remind_in">The remind_in.</param>
+        /// <param name="uid">The uid.</param>
         /// <returns></returns>
-        public KeySecretPair GetAccessToken(string grant_type, string code, string redirect_uri, string username, string password, string refresh_token, out int expires_in)
-        {
-            string refresh_token_callback;
-            return GetAccessToken(grant_type, code, redirect_uri, username, password, refresh_token, out expires_in, out refresh_token_callback);
-        }
-
-        /// <summary>
-        /// Gets the access token.
-        /// </summary>
-        /// <param name="grant_type">The grant_type.</param>
-        /// <param name="code">The code.</param>
-        /// <param name="redirect_uri">The redirect_uri.</param>
-        /// <param name="username">The username.</param>
-        /// <param name="password">The password.</param>
-        /// <param name="refresh_token">The refresh_token.</param>
-        /// <param name="expires_in">The expires_in.</param>
-        /// <param name="refresh_token_callback">The refresh_token_callback.</param>
-        /// <returns></returns>
-        public KeySecretPair GetAccessToken(string grant_type, string code, string redirect_uri, string username, string password, string refresh_token,out int expires_in,out string refresh_token_callback)
+        public KeySecretPair GetAccessToken(string grant_type, string code, string redirect_uri, string username, string password, out int expires_in, out int remind_in, out long uid)
         {
             expires_in = 0;
-            refresh_token_callback = null;
+            remind_in = 0;
+            uid = 0;
 
             IDictionary<string, dynamic> args = new Dictionary<string, dynamic>();
             args.Add("client_id", InitialPair.Key);
@@ -150,20 +146,19 @@ namespace Radial.Web.OpenApi.SDK
                 args.Add("username", username);
             if (!string.IsNullOrWhiteSpace(password))
                 args.Add("password", password);
-            if (!string.IsNullOrWhiteSpace(refresh_token))
-                args.Add("refresh_token", refresh_token);
 
             //use base method in order to bypass append access token to request url.
             HttpResponseObj resp = base.Post(AccessTokenApiUrl, args);
 
             Checker.Requires(resp.Code == System.Net.HttpStatusCode.OK, "request access token error, code: {0} text: {1}", resp.Code, resp.Text);
 
+            Logger.Default.Debug(resp.Text);
+
             dynamic o = JsonSerializer.Deserialize<dynamic>(resp.Text);
 
-            if (o.expires_in != null)
-                expires_in = o.expires_in;
-            if (o.refresh_token != null)
-                refresh_token_callback = o.refresh_token;
+            expires_in = o.expires_in;
+            remind_in = int.Parse(o.remind_in.ToString());
+            uid = long.Parse(o.uid.ToString());
             return new KeySecretPair { Secret = o.access_token };
         }
 
@@ -246,28 +241,28 @@ namespace Radial.Web.OpenApi.SDK
         }
 
 
-        /// <summary>
-        /// Gets the current user id.
-        /// </summary>
-        /// <returns></returns>
-        public long CurrentUserId
-        {
-            get
-            {
-                if (_current_uid == 0)
-                {
-                    HttpResponseObj resp = Get(GetUidApiUrl);
+        ///// <summary>
+        ///// Gets the current user id.
+        ///// </summary>
+        ///// <returns></returns>
+        //public long CurrentUserId
+        //{
+        //    get
+        //    {
+        //        if (_current_uid == 0)
+        //        {
+        //            HttpResponseObj resp = Get(GetUidApiUrl);
 
-                    Checker.Requires(resp.Code == System.Net.HttpStatusCode.OK, "request user id error, code: {0} text: {1}", resp.Code, resp.Text);
+        //            Checker.Requires(resp.Code == System.Net.HttpStatusCode.OK, "request user id error, code: {0} text: {1}", resp.Code, resp.Text);
 
-                    dynamic o = JsonSerializer.Deserialize<dynamic>(resp.Text);
+        //            dynamic o = JsonSerializer.Deserialize<dynamic>(resp.Text);
 
-                    _current_uid = o.uid;
-                }
+        //            _current_uid = o.uid;
+        //        }
 
-                return _current_uid;
-            }
-        }
+        //        return _current_uid;
+        //    }
+        //}
 
         /// <summary>
         /// Get the api response use HTTP GET

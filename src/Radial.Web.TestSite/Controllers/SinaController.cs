@@ -26,10 +26,12 @@ namespace Radial.Web.TestSite.Controllers
         public ActionResult Callback(string code)
         {
             int expires_in;
-            KeySecretPair pair = SinaWeibo2.Default.GetAccessToken("authorization_code", code, HttpKits.MakeAbsoluteUrl("~/sina/callback"), string.Empty, string.Empty, string.Empty, out expires_in);
+            int remind_in;
+            long uid;
+
+            KeySecretPair pair = SinaWeibo2.Default.GetAccessTokenWithCode(code, HttpKits.MakeAbsoluteUrl("~/sina/callback"), out expires_in, out remind_in,out uid);
             SinaWeibo2.Default.SetAccessToken(pair);
 
-            long uid = SinaWeibo2.Default.CurrentUserId;
 
             //IDictionary<string, dynamic> args = new Dictionary<string, dynamic>();
             //args.Add("status", "sdf你好!@#$%……~&*（）-=+" + Guid.NewGuid().ToString("n"));

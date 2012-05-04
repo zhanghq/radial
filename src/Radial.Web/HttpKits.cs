@@ -463,6 +463,20 @@ namespace Radial.Web
         /// <summary>
         /// Resolves the string to parameters.
         /// </summary>
+        /// <param name="uri">The URI.</param>
+        /// <returns>
+        /// Parameters collection, if parameter string is empty or null return an empty collection.
+        /// </returns>
+        public static NameValueCollection ResolveParameters(Uri uri)
+        {
+            Checker.Parameter(uri != null, "uri can not be null");
+
+            return ResolveParameters(uri.Query);
+        }
+
+        /// <summary>
+        /// Resolves the string to parameters.
+        /// </summary>
         /// <param name="paramString">The parameter string with &amp; separator.</param>
         /// <returns>Parameters collection, if parameter string is empty or null return an empty collection.</returns>
         public static NameValueCollection ResolveParameters(string paramString)

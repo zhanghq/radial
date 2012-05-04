@@ -13,48 +13,38 @@ namespace Radial.Web.OpenApi
     /// </summary>
     public class BasicSDK2
     {
-        KeySecretPair _initialPair;
-        ITokenPersistence _tokenPersistence;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicSDK2"/> class.
         /// </summary>
-        /// <param name="initialPair">The initial app key/secret pair allocated by the provider.</param>
-        /// <param name="tokenPersistence">The ITokenPersistence instance.</param>
-        public BasicSDK2(KeySecretPair initialPair, ITokenPersistence tokenPersistence)
+        /// <param name="appKey">The app key.</param>
+        /// <param name="appSecret">The app secret.</param>
+        public BasicSDK2(string appKey, string appSecret)
         {
-            Checker.Parameter(tokenPersistence != null, "ITokenPersistence instance can not be null");
+            Checker.Parameter(!string.IsNullOrWhiteSpace(appKey), "app key can not be empty or null");
+            Checker.Parameter(!string.IsNullOrWhiteSpace(appSecret), "app secret can not be empty or null");
 
-            Checker.Parameter(!string.IsNullOrWhiteSpace(initialPair.Key), "appKey can not be empty or null");
-            Checker.Parameter(!string.IsNullOrWhiteSpace(initialPair.Secret), "appSecret can not be empty or null");
-
-            _initialPair = initialPair;
-
-
-
-            _tokenPersistence = tokenPersistence;
+            AppKey = appKey;
+            AppSecret = appSecret;
         }
 
         /// <summary>
-        /// Gets the token persistence instance.
+        /// Gets the app key.
         /// </summary>
-        public ITokenPersistence TokenPersistence
+        public string AppKey
         {
-            get
-            {
-                return _tokenPersistence;
-            }
+            get;
+            internal set;
         }
 
         /// <summary>
-        /// Gets the initial app key/secret pair allocated by the provider.
+        /// Gets the app secret.
         /// </summary>
-        public KeySecretPair InitialPair
+        public string AppSecret
         {
-            get
-            {
-                return _initialPair;
-            }
+            get;
+            internal set;
         }
 
         /// <summary>
@@ -65,23 +55,6 @@ namespace Radial.Web.OpenApi
         public virtual string UrlEncode(string input)
         {
             return HttpKits.EscapeUrl(input);
-        }
-
-        /// <summary>
-        /// Sets the access token using ITokenPersistence instance.
-        /// </summary>
-        /// <param name="token">The access token.</param>
-        public virtual void SetAccessToken(KeySecretPair token)
-        {
-            TokenPersistence.SetAccessToken(token);
-        }
-
-        /// <summary>
-        /// Clear the access token.
-        /// </summary>
-        public virtual void ClearAccessToken()
-        {
-            TokenPersistence.ClearAccessToken();
         }
 
         /// <summary>
@@ -186,7 +159,13 @@ namespace Radial.Web.OpenApi
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(apiUrl), "apiUrl can not be empty or null");
 
-            return HttpWebHost.Post(BuildRequestUrl(apiUrl, new Dictionary<string, dynamic>()));
+            Uri uri = new Uri(apiUrl);
+            NameValueCollection nvc = HttpKits.ResolveParameters(uri);
+            IDictionary<string, dynamic> args = new Dictionary<string, dynamic>();
+            foreach (string name in nvc)
+                args.Add(new KeyValuePair<string, dynamic>(name, nvc[name]));
+
+            return Post(uri.AbsoluteUri.Replace(uri.Query, string.Empty), args);
 
         }
 

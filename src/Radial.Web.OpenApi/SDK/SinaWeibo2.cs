@@ -7,12 +7,12 @@ using Radial.Serialization;
 using Radial.Net;
 using System.Collections.Specialized;
 
-namespace Radial.Web.OpenApi.Sina
+namespace Radial.Web.OpenApi.SDK
 {
     /// <summary>
     /// Sina weibo sdk for OAuth 2.0
     /// </summary>
-    public sealed class SinaWeiboSDK
+    public sealed class SinaWeibo2 : BasicSDK2
     {
         /// <summary>
         /// SingleWeiboMessageUrlTemplate
@@ -34,46 +34,21 @@ namespace Radial.Web.OpenApi.Sina
         string _accessToken;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SinaWeiboSDK"/> class.
+        /// Initializes a new instance of the <see cref="SinaWeibo2"/> class.
         /// </summary>
         /// <param name="appKey">The app key.</param>
         /// <param name="appSecret">The app secret.</param>
-        public SinaWeiboSDK(string appKey, string appSecret)
+        public SinaWeibo2(string appKey, string appSecret)
+            : base(appKey, appSecret)
         {
-            Checker.Parameter(!string.IsNullOrWhiteSpace(appKey), "app key can not be empty or null");
-            Checker.Parameter(!string.IsNullOrWhiteSpace(appSecret), "app secret can not be empty or null");
-
-            AppKey = appKey;
-            AppSecret = appSecret;
         }
 
         /// <summary>
-        /// Gets the default SinaWeibo2 instance.
+        /// Initializes a new instance of the <see cref="SinaWeibo2"/> class using the default parameter values.
         /// </summary>
-        public static SinaWeiboSDK Default
+        public SinaWeibo2()
+            : this(AppParam.GetValue("sinaweibo.appkey"), AppParam.GetValue("sinaweibo.appsecret"))
         {
-            get
-            {
-                return new SinaWeiboSDK(AppParam.GetValue("sinaweibo.appkey"), AppParam.GetValue("sinaweibo.appsecret"));
-            }
-        }
-
-        /// <summary>
-        /// Gets the app key.
-        /// </summary>
-        public string AppKey
-        {
-            get;
-            internal set;
-        }
-
-        /// <summary>
-        /// Gets the app secret.
-        /// </summary>
-        public string AppSecret
-        {
-            get;
-            internal set;
         }
 
         /// <summary>
@@ -99,58 +74,6 @@ namespace Radial.Web.OpenApi.Sina
             }
         }
 
-        /// <summary>
-        /// URLs the encode.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <returns></returns>
-        public string UrlEncode(string input)
-        {
-            return HttpKits.EscapeUrl(input);
-        }
-
-        /// <summary>
-        /// Builds the request url.
-        /// </summary>
-        /// <param name="apiUrl">The API URL.</param>
-        /// <param name="args">The args.</param>
-        /// <returns></returns>
-        private string BuildRequestUrl(string apiUrl, IDictionary<string, dynamic> args)
-        {
-            Checker.Parameter(!string.IsNullOrWhiteSpace(apiUrl), "apiUrl can not be empty or null");
-
-            if (args != null)
-            {
-                foreach (KeyValuePair<string, dynamic> item in args)
-                {
-                    apiUrl = AppendQuery(apiUrl, item.Key, item.Value);
-                }
-            }
-
-            return apiUrl;
-
-        }
-
-        /// <summary>
-        /// Append parameter to the end of url query string
-        /// </summary>
-        /// <param name="url">The url.</param>
-        /// <param name="pName">The parameter name.</param>
-        /// <param name="pValue">The parameter value.</param>
-        /// <returns>
-        /// New url with query string
-        /// </returns>
-        private string AppendQuery(string url, string pName, dynamic pValue)
-        {
-            Checker.Parameter(!string.IsNullOrWhiteSpace(url), "url can not be empty or null");
-            Checker.Parameter(!string.IsNullOrWhiteSpace(pName), "parameter name can not be empty or null");
-            Checker.Parameter(pValue != null, "parameter value can not be null");
-
-            string query = string.Format("{0}={1}", pName, UrlEncode(pValue.ToString()));
-            if (url.Contains('?'))
-                return string.Join("&", url, query);
-            return string.Join("?", url, query);
-        }
 
         /// <summary>
         /// Gets the authorization url(response_type="code").
@@ -214,13 +137,13 @@ namespace Radial.Web.OpenApi.Sina
         /// </summary>
         /// <param name="code">The code.</param>
         /// <param name="redirect_uri">The redirect_uri.</param>
-        /// <param name="expires_in">The expires_in.</param>
-        /// <param name="remind_in">The remind_in.</param>
-        /// <param name="uid">The uid.</param>
-        /// <returns>Access Token</returns>
-        public string GetAccessTokenWithCode(string code, string redirect_uri, out int expires_in, out int remind_in, out long uid)
+        /// <param name="allResponseData">All response data.</param>
+        /// <returns>
+        /// Access Token
+        /// </returns>
+        public string GetAccessTokenWithCode(string code, string redirect_uri, out dynamic allResponseData)
         {
-            return GetAccessToken("authorization_code", code, redirect_uri, string.Empty, string.Empty, out expires_in, out remind_in, out uid);
+            return GetAccessToken("authorization_code", code, redirect_uri, string.Empty, string.Empty, out allResponseData);
         }
 
         /// <summary>
@@ -228,13 +151,13 @@ namespace Radial.Web.OpenApi.Sina
         /// </summary>
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
-        /// <param name="expires_in">The expires_in.</param>
-        /// <param name="remind_in">The remind_in.</param>
-        /// <param name="uid">The uid.</param>
-        /// <returns>Access Token</returns>
-        public string GetAccessTokenWithPassword(string username, string password, out int expires_in, out int remind_in, out long uid)
+        /// <param name="allResponseData">All response data.</param>
+        /// <returns>
+        /// Access Token
+        /// </returns>
+        public string GetAccessTokenWithPassword(string username, string password, out dynamic allResponseData)
         {
-            return GetAccessToken("password", string.Empty, string.Empty, username, password, out expires_in, out remind_in, out uid);
+            return GetAccessToken("password", string.Empty, string.Empty, username, password, out allResponseData);
         }
 
 
@@ -246,15 +169,12 @@ namespace Radial.Web.OpenApi.Sina
         /// <param name="redirect_uri">The redirect_uri.</param>
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
-        /// <param name="expires_in">The expires_in.</param>
-        /// <param name="remind_in">The remind_in.</param>
-        /// <param name="uid">The uid.</param>
-        /// <returns>Access Token</returns>
-        private string GetAccessToken(string grant_type, string code, string redirect_uri, string username, string password, out int expires_in, out int remind_in, out long uid)
+        /// <param name="allResponseData">All response data.</param>
+        /// <returns>
+        /// Access Token
+        /// </returns>
+        private string GetAccessToken(string grant_type, string code, string redirect_uri, string username, string password, out dynamic allResponseData)
         {
-            expires_in = 0;
-            remind_in = 0;
-            uid = 0;
 
             IDictionary<string, dynamic> args = new Dictionary<string, dynamic>();
             args.Add("client_id", AppKey);
@@ -276,12 +196,9 @@ namespace Radial.Web.OpenApi.Sina
 
             Checker.Requires(resp.Code == System.Net.HttpStatusCode.OK, "request access token error, code: {0} text: {1}", resp.Code, resp.Text);
 
-            dynamic o = JsonSerializer.Deserialize<dynamic>(resp.Text);
+            allResponseData = JsonSerializer.Deserialize<dynamic>(resp.Text);
 
-            expires_in = o.expires_in;
-            remind_in = int.Parse(o.remind_in.ToString());
-            uid = long.Parse(o.uid.ToString());
-            SetAccessToken((string)o.access_token);
+            SetAccessToken((string)allResponseData.access_token);
 
             return AccessToken;
         }
@@ -347,7 +264,6 @@ namespace Radial.Web.OpenApi.Sina
         /// <returns></returns>
         public string GetWeiboUrl(long uid)
         {
-
             return string.Format(WeiboUrlTemplate, "u/" + uid);
         }
 
@@ -364,64 +280,6 @@ namespace Radial.Web.OpenApi.Sina
             return string.Format(WeiboUrlTemplate, udomain);
         }
 
-        /// <summary>
-        /// Get the api response use HTTP GET
-        /// </summary>
-        /// <param name="apiUrl">The api url(include query string).</param>
-        /// <returns>
-        /// The HttpResponseObj instance(never null).
-        /// </returns>
-        public HttpResponseObj Get(string apiUrl)
-        {
-            return Get(apiUrl, null, true);
-        }
-
-        /// <summary>
-        /// Get the api response use HTTP GET
-        /// </summary>
-        /// <param name="apiUrl">The api url(include query string).</param>
-        /// <param name="useAuth">if set to <c>true</c> [use auth].</param>
-        /// <returns>
-        /// The HttpResponseObj instance(never null).
-        /// </returns>
-        public HttpResponseObj Get(string apiUrl, bool useAuth)
-        {
-            return Get(apiUrl, null, useAuth);
-        }
-
-        /// <summary>
-        /// Get the api response use HTTP GET
-        /// </summary>
-        /// <param name="apiUrl">The api url(exclude query string).</param>
-        /// <param name="args">The args(append access_token automatically).</param>
-        /// <returns>
-        /// The HttpResponseObj instance(never null).
-        /// </returns>
-        public HttpResponseObj Get(string apiUrl, IDictionary<string, dynamic> args)
-        {
-            return Get(apiUrl, args, true);
-        }
-
-        /// <summary>
-        /// Get the api response use HTTP POST(ContentType="application/x-www-form-urlencoded").
-        /// </summary>
-        /// <param name="apiUrl">The api url(include query string).</param>
-        /// <returns>
-        /// The HttpResponseObj instance(never null).
-        /// </returns>
-        public HttpResponseObj Post(string apiUrl)
-        {
-            Checker.Parameter(!string.IsNullOrWhiteSpace(apiUrl), "apiUrl can not be empty or null");
-
-            Uri uri = new Uri(apiUrl);
-            NameValueCollection nvc = HttpKits.ResolveParameters(uri.Query);
-            IDictionary<string, dynamic> args = new Dictionary<string, dynamic>();
-            foreach (string name in nvc)
-                args.Add(new KeyValuePair<string, dynamic>(name, nvc[name]));
-
-            return Post(uri.AbsoluteUri.Replace(uri.Query, string.Empty), args);
-
-        }
 
         /// <summary>
         /// Get the api response use HTTP GET
@@ -432,7 +290,7 @@ namespace Radial.Web.OpenApi.Sina
         /// <returns>
         /// The HttpResponseObj instance(never null).
         /// </returns>
-        public HttpResponseObj Get(string apiUrl, IDictionary<string, dynamic> args, bool useAuth)
+        public override HttpResponseObj Get(string apiUrl, IDictionary<string, dynamic> args, bool useAuth)
         {
             if (args == null)
                 args = new Dictionary<string, dynamic>();
@@ -443,8 +301,7 @@ namespace Radial.Web.OpenApi.Sina
                     args.Add("access_token", AccessToken);
             }
 
-
-            return HttpWebHost.Get(BuildRequestUrl(apiUrl, args));
+            return base.Get(apiUrl, args, useAuth);
         }
 
         /// <summary>
@@ -455,16 +312,15 @@ namespace Radial.Web.OpenApi.Sina
         /// <returns>
         /// The HttpResponseObj instance(never null).
         /// </returns>
-        public HttpResponseObj Post(string apiUrl, IDictionary<string, dynamic> args)
+        public override HttpResponseObj Post(string apiUrl, IDictionary<string, dynamic> args)
         {
-
             if (args == null)
                 args = new Dictionary<string, dynamic>();
 
             if (args.Count(o => string.Compare(o.Key, "access_token", true) == 0) == 0)
                 args.Add("access_token", AccessToken);
 
-            return HttpWebHost.Post(BuildRequestUrl(apiUrl, args));
+            return base.Post(apiUrl, args);
         }
 
         /// <summary>
@@ -475,7 +331,7 @@ namespace Radial.Web.OpenApi.Sina
         /// <returns>
         /// The HttpResponseObj instance(never null).
         /// </returns>
-        public HttpResponseObj Post(string apiUrl, IMultipartFormData[] postDatas)
+        public override HttpResponseObj Post(string apiUrl, IMultipartFormData[] postDatas)
         {
             Checker.Parameter(postDatas != null, "post data can not be null");
 
@@ -484,7 +340,7 @@ namespace Radial.Web.OpenApi.Sina
             if (postDataList.FirstOrDefault(o => string.Compare(o.ParamName, "access_token", true) == 0) == null)
                 postDataList.Add(new PlainTextFormData("access_token", AccessToken));
 
-            return HttpWebHost.Post(apiUrl, postDatas);
+            return base.Post(apiUrl, postDataList.ToArray());
         }
     }
 }

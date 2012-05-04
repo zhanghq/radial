@@ -68,7 +68,7 @@ namespace Radial.Net
 
             Uri uri = new Uri(url);
 
-            return Post((HttpWebRequest)HttpWebRequest.Create(uri.AbsoluteUri.Replace(uri.Query, string.Empty)), uri.Query.TrimStart('?'));
+            return Post((HttpWebRequest)HttpWebRequest.Create(uri.AbsoluteUri.Replace(uri.Query, string.Empty)), uri.Query.Trim('?', '&'));
         }
 
         /// <summary>

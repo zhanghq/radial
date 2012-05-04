@@ -11,7 +11,7 @@ namespace Radial.Web.OpenApi
     public struct KeySecretPair
     {
         /// <summary>
-        /// Gets ort sets the key(not used in OAuth 2.0).
+        /// Gets ort sets the key.
         /// </summary>
         public string Key;
         /// <summary>

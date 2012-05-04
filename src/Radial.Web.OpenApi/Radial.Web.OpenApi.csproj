@@ -54,7 +54,6 @@
     <Compile Include="SDK\QQWeibo.cs" />
     <Compile Include="SDK\SinaWeibo.cs" />
     <Compile Include="SDK\SinaWeibo2.cs" />
-    <Compile Include="SDK\TencentWeibo.cs" />
     <Compile Include="SignatureTypes.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -127,9 +127,9 @@
       <Project>{E8C8DDF8-642E-4ED2-8903-5AB537972011}</Project>
       <Name>Radial.Web.Mvc</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Radial.Web.OpenApi\Radial.Web.OpenApi.csproj">
-      <Project>{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}</Project>
-      <Name>Radial.Web.OpenApi</Name>
+    <ProjectReference Include="..\Radial.Web.OpenApi.Sina\Radial.Web.OpenApi.Sina.csproj">
+      <Project>{805F2720-5D53-4B77-9CE0-6E139713EC43}</Project>
+      <Name>Radial.Web.OpenApi.Sina</Name>
     </ProjectReference>
     <ProjectReference Include="..\Radial.Web\Radial.Web.csproj">
       <Project>{3C6D4547-3AEB-4166-A8EC-AA3217D72838}</Project>

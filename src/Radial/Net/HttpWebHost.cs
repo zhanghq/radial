@@ -65,7 +65,10 @@ namespace Radial.Net
         public static HttpResponseObj Post(string url)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(url), "url can not be null");
-            return Post((HttpWebRequest)HttpWebRequest.Create(url.Substring(0, url.IndexOf("?"))), url.Substring(url.IndexOf("?") + 1));
+
+            Uri uri = new Uri(url);
+
+            return Post((HttpWebRequest)HttpWebRequest.Create(uri.AbsoluteUri.Replace(uri.Query, string.Empty)), uri.Query.TrimStart('?'));
         }
 
         /// <summary>

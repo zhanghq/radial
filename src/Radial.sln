@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Data.Nhs", "Radial.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Web.TestSite", "Radial.Web.TestSite\Radial.Web.TestSite.csproj", "{7130BE43-2464-40EC-9C20-2AB364D64773}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Web.OpenApi", "Radial.Web.OpenApi\Radial.Web.OpenApi.csproj", "{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Data.Mongod", "Radial.Data.Mongod\Radial.Data.Mongod.csproj", "{80C5F7DF-190A-4EA3-8AA0-318A596757B2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Radial.Lock", "Radial.Lock", "{10DC1D20-8A91-4921-922E-EBF9AFD77B56}"
@@ -26,6 +24,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Lock.Client", "Radial.Lock.Client\Radial.Lock.Client.csproj", "{C2421E5C-5685-403B-9CD9-24B3EFB7DE24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Data.Nhs.Mvc", "Radial.Data.Nhs.Mvc\Radial.Data.Nhs.Mvc.csproj", "{554184B3-EC8E-4F85-9018-9B4B6EA505A3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Radial.Web.OpenApi", "Radial.Web.OpenApi", "{2AE7FD38-44D1-44EC-9DEB-77C44D69DCFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Web.OpenApi.Sina", "Radial.Web.OpenApi.Sina\Radial.Web.OpenApi.Sina.csproj", "{805F2720-5D53-4B77-9CE0-6E139713EC43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,16 +109,6 @@ Global
 		{7130BE43-2464-40EC-9C20-2AB364D64773}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7130BE43-2464-40EC-9C20-2AB364D64773}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7130BE43-2464-40EC-9C20-2AB364D64773}.Release|x86.ActiveCfg = Release|Any CPU
-		{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}.Release|x86.ActiveCfg = Release|Any CPU
 		{80C5F7DF-190A-4EA3-8AA0-318A596757B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{80C5F7DF-190A-4EA3-8AA0-318A596757B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80C5F7DF-190A-4EA3-8AA0-318A596757B2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -157,6 +149,16 @@ Global
 		{554184B3-EC8E-4F85-9018-9B4B6EA505A3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{554184B3-EC8E-4F85-9018-9B4B6EA505A3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{554184B3-EC8E-4F85-9018-9B4B6EA505A3}.Release|x86.ActiveCfg = Release|Any CPU
+		{805F2720-5D53-4B77-9CE0-6E139713EC43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{805F2720-5D53-4B77-9CE0-6E139713EC43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{805F2720-5D53-4B77-9CE0-6E139713EC43}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{805F2720-5D53-4B77-9CE0-6E139713EC43}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{805F2720-5D53-4B77-9CE0-6E139713EC43}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{805F2720-5D53-4B77-9CE0-6E139713EC43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{805F2720-5D53-4B77-9CE0-6E139713EC43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{805F2720-5D53-4B77-9CE0-6E139713EC43}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{805F2720-5D53-4B77-9CE0-6E139713EC43}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{805F2720-5D53-4B77-9CE0-6E139713EC43}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -164,5 +166,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3B4657D5-4E7D-48B0-B327-3AC0A515DEFB} = {10DC1D20-8A91-4921-922E-EBF9AFD77B56}
 		{C2421E5C-5685-403B-9CD9-24B3EFB7DE24} = {10DC1D20-8A91-4921-922E-EBF9AFD77B56}
+		{805F2720-5D53-4B77-9CE0-6E139713EC43} = {2AE7FD38-44D1-44EC-9DEB-77C44D69DCFB}
 	EndGlobalSection
 EndGlobal

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Radial.Web.OpenApi.SDK;
+using Radial.Web.OpenApi.Sina;
 using Radial.Web.OpenApi;
 using Radial.Web.Mvc;
 using Radial.Net;
@@ -18,7 +18,7 @@ namespace Radial.Web.TestSite.Controllers
         [HandleDataSession]
         public ActionResult Index()
         {
-            ViewBag.AuthUrl = SinaWeibo2.Default.GetAuthorizationUrl(HttpKits.MakeAbsoluteUrl("~/sina/callback"), "code", string.Empty, string.Empty);
+            ViewBag.AuthUrl = SinaWeiboSDK.Default.GetAuthorizationUrlWithCode(HttpKits.MakeAbsoluteUrl("~/sina/callback"), string.Empty, string.Empty);
             return View();
         }
 
@@ -29,8 +29,9 @@ namespace Radial.Web.TestSite.Controllers
             int remind_in;
             long uid;
 
-            KeySecretPair pair = SinaWeibo2.Default.GetAccessTokenWithCode(code, HttpKits.MakeAbsoluteUrl("~/sina/callback"), out expires_in, out remind_in,out uid);
-            SinaWeibo2.Default.SetAccessToken(pair);
+            string access_token= SinaWeiboSDK.Default.GetAccessTokenWithCode(code, HttpKits.MakeAbsoluteUrl("~/sina/callback"), out expires_in, out remind_in, out uid);
+
+            //SinaWeiboSDK.Default.SetAccessToken(access_token);
 
 
             //IDictionary<string, dynamic> args = new Dictionary<string, dynamic>();

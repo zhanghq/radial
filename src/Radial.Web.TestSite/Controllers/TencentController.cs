@@ -31,7 +31,8 @@ namespace Radial.Web.TestSite.Controllers
             TencentWeibo _client = new TencentWeibo();
             NameValueCollection nvc = new NameValueCollection();
             string access_token = _client.GetAccessTokenWithCode(code, HttpKits.MakeAbsoluteUrl("~/tencent/callback"), out nvc);
-            _client.SetAccessToken(access_token);
+            //if not use GetAccessTokenWithCode, you must call SetAccessToken before request api
+            //_client.SetAccessToken(access_token);
             _client.SetOpenId(openid);
             _client.SetClientIp(Request.UserHostAddress);
 

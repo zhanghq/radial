@@ -32,7 +32,8 @@ namespace Radial.Web.TestSite.Controllers
             SinaWeibo2 _client = new SinaWeibo2();
 
             string access_token = _client.GetAccessTokenWithCode(code, HttpKits.MakeAbsoluteUrl("~/sina/callback"), out otherResponseData);
-            _client.SetAccessToken(access_token);
+            //if not use GetAccessTokenWithCode, you must call SetAccessToken before request api
+            //_client.SetAccessToken(access_token);
 
             IDictionary<string, dynamic> args = new Dictionary<string, dynamic>();
             args.Add("status", "sdf你好!@#$%……~&*（）-=+" + Guid.NewGuid().ToString("n"));

@@ -9,6 +9,7 @@ using Radial.Web.Mvc;
 using Radial.Net;
 using Radial.Data.Nhs.Mvc;
 using System.Collections.Specialized;
+using System.Threading;
 
 namespace Radial.Web.TestSite.Controllers
 {
@@ -40,9 +41,11 @@ namespace Radial.Web.TestSite.Controllers
 
             HttpResponseObj obj1 = _client.Post("https://api.weibo.com/2/statuses/update.json", args);
 
+            Thread.Sleep(5000);
+
             List<IMultipartFormData> postdatas = new List<IMultipartFormData>();
             postdatas.Add(new PlainTextFormData("status", "sdafsdf你好!@#$%……~&*（）-=+" + Guid.NewGuid().ToString("n")));
-            postdatas.Add(new FileFormData(@"D:\Pictures\460.jpg", "pic"));
+            postdatas.Add(new FileFormData(Server.MapPath("~/Images/460.jpg"), "pic"));
 
             HttpResponseObj obj2 = _client.Post("https://api.weibo.com/2/statuses/upload.json", postdatas.ToArray());
             return this.NewJson(new { uid = otherResponseData["uid"], resp1 = obj1.Text, resp2 = obj2.Text });

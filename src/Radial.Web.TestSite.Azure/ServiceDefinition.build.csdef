@@ -13,12 +13,12 @@
     <Sites>
       <Site name="Web">
         <Bindings>
-          <Binding name="DefaultEndpoint" endpointName="DefaultEndpoint" />
+          <Binding name="DefaultBinding" endpointName="HTTP" />
         </Bindings>
       </Site>
     </Sites>
     <Endpoints>
-      <InputEndpoint name="DefaultEndpoint" protocol="http" port="80" />
+      <InputEndpoint name="HTTP" protocol="http" port="80" />
     </Endpoints>
     <Imports>
       <Import moduleName="Diagnostics" />

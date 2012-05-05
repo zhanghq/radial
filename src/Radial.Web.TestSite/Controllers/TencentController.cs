@@ -43,7 +43,7 @@ namespace Radial.Web.TestSite.Controllers
 
             List<IMultipartFormData> postdatas = new List<IMultipartFormData>();
             postdatas.Add(new PlainTextFormData("content", "sdf你好!@#$%……~&*（）-=+" + Guid.NewGuid().ToString("n")));
-            postdatas.Add(new FileFormData(@"D:\Pictures\460.jpg", "pic"));
+            postdatas.Add(new FileFormData(Server.MapPath("~/Images/460.jpg"), "pic"));
 
             HttpResponseObj obj2 = _client.Post("https://open.t.qq.com/api/t/add_pic", postdatas.ToArray());
 

@@ -6,6 +6,8 @@ using Radial.Param;
 using Radial.Serialization;
 using Radial.Net;
 using System.Collections.Specialized;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Radial.Web.OpenApi.SDK
 {
@@ -137,13 +139,13 @@ namespace Radial.Web.OpenApi.SDK
         /// </summary>
         /// <param name="code">The code.</param>
         /// <param name="redirect_uri">The redirect_uri.</param>
-        /// <param name="allResponseData">All response data.</param>
+        /// <param name="otherResponseData">The other response data.</param>
         /// <returns>
         /// Access Token
         /// </returns>
-        public string GetAccessTokenWithCode(string code, string redirect_uri, out dynamic allResponseData)
+        public string GetAccessTokenWithCode(string code, string redirect_uri, out NameValueCollection otherResponseData)
         {
-            return GetAccessToken("authorization_code", code, redirect_uri, string.Empty, string.Empty, out allResponseData);
+            return GetAccessToken("authorization_code", code, redirect_uri, string.Empty, string.Empty, out otherResponseData);
         }
 
         /// <summary>
@@ -151,13 +153,13 @@ namespace Radial.Web.OpenApi.SDK
         /// </summary>
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
-        /// <param name="allResponseData">All response data.</param>
+        /// <param name="otherResponseData">The other response data.</param>
         /// <returns>
         /// Access Token
         /// </returns>
-        public string GetAccessTokenWithPassword(string username, string password, out dynamic allResponseData)
+        public string GetAccessTokenWithPassword(string username, string password, out NameValueCollection otherResponseData)
         {
-            return GetAccessToken("password", string.Empty, string.Empty, username, password, out allResponseData);
+            return GetAccessToken("password", string.Empty, string.Empty, username, password, out otherResponseData);
         }
 
 
@@ -169,11 +171,11 @@ namespace Radial.Web.OpenApi.SDK
         /// <param name="redirect_uri">The redirect_uri.</param>
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
-        /// <param name="allResponseData">All response data.</param>
+        /// <param name="otherResponseData">The other response data.</param>
         /// <returns>
         /// Access Token
         /// </returns>
-        private string GetAccessToken(string grant_type, string code, string redirect_uri, string username, string password, out dynamic allResponseData)
+        private string GetAccessToken(string grant_type, string code, string redirect_uri, string username, string password, out NameValueCollection otherResponseData)
         {
 
             IDictionary<string, dynamic> args = new Dictionary<string, dynamic>();
@@ -196,9 +198,19 @@ namespace Radial.Web.OpenApi.SDK
 
             Checker.Requires(resp.Code == System.Net.HttpStatusCode.OK, "request access token error, code: {0} text: {1}", resp.Code, resp.Text);
 
-            allResponseData = JsonSerializer.Deserialize<dynamic>(resp.Text);
+            JObject obj = Radial.Serialization.JsonSerializer.Deserialize<JObject>(resp.Text);
 
-            SetAccessToken((string)allResponseData.access_token);
+            otherResponseData = new NameValueCollection();
+
+            foreach (JProperty p in obj.AsJEnumerable())
+            {
+                if (p.Name != "access_token")
+                {
+                    otherResponseData.Add(p.Name, p.Value.ToString());
+                }
+                else
+                    SetAccessToken(p.Value.ToString());
+            }
 
             return AccessToken;
         }

@@ -85,6 +85,7 @@
     <Compile Include="Controllers\PagerController.cs" />
     <Compile Include="Controllers\SequentialKeyController.cs" />
     <Compile Include="Controllers\SinaController.cs" />
+    <Compile Include="Controllers\TencentController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

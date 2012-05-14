@@ -19,10 +19,10 @@ namespace Radial.Data.Nhs.Param
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultParam"/> class.
         /// </summary>
-        /// <param name="repository">The repository.</param>
+        /// <param name="repository">The IParamRepository instance.</param>
         public DefaultParam(IParamRepository repository)
         {
-            Checker.Parameter(repository != null, "IParamRepository repository can not be null");
+            Checker.Parameter(repository != null, "IParamRepository instance can not be null");
             _repository = repository;
         }
 

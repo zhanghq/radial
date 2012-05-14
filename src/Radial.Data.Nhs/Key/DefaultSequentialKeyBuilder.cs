@@ -18,10 +18,10 @@ namespace Radial.Data.Nhs.Key
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultSequentialKeyBuilder"/> class.
         /// </summary>
-        /// <param name="repository">The ISequentialKeyRepository repository.</param>
+        /// <param name="repository">The ISequentialKeyRepository instance.</param>
         public DefaultSequentialKeyBuilder(ISequentialKeyRepository repository)
         {
-            Checker.Parameter(repository != null, "ISequentialKeyRepository repository can not be null");
+            Checker.Parameter(repository != null, "ISequentialKeyRepository instance can not be null");
             _repository = repository;
         }
 

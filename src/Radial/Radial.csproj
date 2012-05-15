@@ -77,11 +77,11 @@
     <Compile Include="ISequentialKeyBuilder.cs" />
     <Compile Include="KnownFaultException.cs" />
     <Compile Include="LocalComputer.cs" />
-    <Compile Include="Lock\EmptyLock.cs" />
-    <Compile Include="Lock\ILock.cs" />
-    <Compile Include="Lock\LockEntry.cs" />
-    <Compile Include="Lock\LockObject.cs" />
-    <Compile Include="Lock\AcquireFailedEvent.cs" />
+    <Compile Include="DistLock\EmptyLock.cs" />
+    <Compile Include="DistLock\ILock.cs" />
+    <Compile Include="DistLock\LockEntry.cs" />
+    <Compile Include="DistLock\LockObject.cs" />
+    <Compile Include="DistLock\AcquireFailedEvent.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Param\AppParam.cs" />
     <Compile Include="Param\ConfigurationParam.cs" />

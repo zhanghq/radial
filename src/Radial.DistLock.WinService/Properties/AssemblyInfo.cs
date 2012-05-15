@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息通过以下
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("Radial")]
+[assembly: AssemblyTitle("Radial.DistLock.WinService")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Radial")]
+[assembly: AssemblyProduct("Radial.DistLock.WinService")]
 [assembly: AssemblyCopyright("Copyright © Rick 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("6f52ce19-7bfc-4316-b11c-f7c352602492")]
+[assembly: Guid("a2870904-a44a-445a-8ced-90f526ef94a4")]
 
 // 程序集的版本信息由下面四个值组成:
 //
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // 可以指定所有这些值，也可以使用“内部版本号”和“修订号”的默认值，
 // 方法是按如下所示使用“*”:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.20416.8")]
-[assembly: AssemblyFileVersion("1.0.20416.8")]
+[assembly: AssemblyVersion("1.0.11116.0")]
+[assembly: AssemblyFileVersion("1.0.11116.0")]

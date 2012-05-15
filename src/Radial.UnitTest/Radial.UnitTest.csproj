@@ -38,10 +38,6 @@
     <Reference Include="NHibernate">
       <HintPath>..\..\lib\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Norm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Norm.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -60,8 +56,7 @@
     <Compile Include="CryptoProviderTest.cs" />
     <Compile Include="HttpKitsTest.cs" />
     <Compile Include="LocalComputerTest.cs" />
-    <Compile Include="LockTest.cs" />
-    <Compile Include="MongodTest.cs" />
+    <Compile Include="DistLockTest.cs" />
     <Compile Include="Nhs\AliasRouting\UserAliasRouting.cs" />
     <Compile Include="Nhs\Domain\User.cs" />
     <Compile Include="Nhs\MappingByCodeTest.cs" />
@@ -85,17 +80,13 @@
     <Compile Include="HttpWebHostTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Radial.Data.Mongod\Radial.Data.Mongod.csproj">
-      <Project>{80C5F7DF-190A-4EA3-8AA0-318A596757B2}</Project>
-      <Name>Radial.Data.Mongod</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Radial.Data.Nhs\Radial.Data.Nhs.csproj">
       <Project>{3F92CFFD-F387-43BF-A548-C6E2683A318F}</Project>
       <Name>Radial.Data.Nhs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Radial.Lock.Client\Radial.Lock.Client.csproj">
+    <ProjectReference Include="..\Radial.DistLock.Client\Radial.DistLock.Client.csproj">
       <Project>{C2421E5C-5685-403B-9CD9-24B3EFB7DE24}</Project>
-      <Name>Radial.Lock.Client</Name>
+      <Name>Radial.DistLock.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Radial.Web\Radial.Web.csproj">
       <Project>{3C6D4547-3AEB-4166-A8EC-AA3217D72838}</Project>
@@ -110,9 +101,6 @@
     <None Include="App.config" />
     <None Include="Config\Components.config" />
     <None Include="Config\log4net.config" />
-    <None Include="Config\Mongod.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Config\NHibernate.config">
       <SubType>Designer</SubType>
     </None>

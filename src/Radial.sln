@@ -15,17 +15,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Data.Nhs", "Radial.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Web.TestSite", "Radial.Web.TestSite\Radial.Web.TestSite.csproj", "{7130BE43-2464-40EC-9C20-2AB364D64773}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Data.Mongod", "Radial.Data.Mongod\Radial.Data.Mongod.csproj", "{80C5F7DF-190A-4EA3-8AA0-318A596757B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.DistLock.WinService", "Radial.DistLock.WinService\Radial.DistLock.WinService.csproj", "{3B4657D5-4E7D-48B0-B327-3AC0A515DEFB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Radial.Lock", "Radial.Lock", "{10DC1D20-8A91-4921-922E-EBF9AFD77B56}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Lock.WinService", "Radial.Lock.WinService\Radial.Lock.WinService.csproj", "{3B4657D5-4E7D-48B0-B327-3AC0A515DEFB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Lock.Client", "Radial.Lock.Client\Radial.Lock.Client.csproj", "{C2421E5C-5685-403B-9CD9-24B3EFB7DE24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.DistLock.Client", "Radial.DistLock.Client\Radial.DistLock.Client.csproj", "{C2421E5C-5685-403B-9CD9-24B3EFB7DE24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Data.Nhs.Mvc", "Radial.Data.Nhs.Mvc\Radial.Data.Nhs.Mvc.csproj", "{554184B3-EC8E-4F85-9018-9B4B6EA505A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Web.OpenApi", "Radial.Web.OpenApi\Radial.Web.OpenApi.csproj", "{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Radial.DistLock", "Radial.DistLock", "{B378FC39-4977-49FE-BDBE-CE60D3F1769A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,16 +105,6 @@ Global
 		{7130BE43-2464-40EC-9C20-2AB364D64773}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7130BE43-2464-40EC-9C20-2AB364D64773}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7130BE43-2464-40EC-9C20-2AB364D64773}.Release|x86.ActiveCfg = Release|Any CPU
-		{80C5F7DF-190A-4EA3-8AA0-318A596757B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80C5F7DF-190A-4EA3-8AA0-318A596757B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80C5F7DF-190A-4EA3-8AA0-318A596757B2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{80C5F7DF-190A-4EA3-8AA0-318A596757B2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{80C5F7DF-190A-4EA3-8AA0-318A596757B2}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{80C5F7DF-190A-4EA3-8AA0-318A596757B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80C5F7DF-190A-4EA3-8AA0-318A596757B2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{80C5F7DF-190A-4EA3-8AA0-318A596757B2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{80C5F7DF-190A-4EA3-8AA0-318A596757B2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{80C5F7DF-190A-4EA3-8AA0-318A596757B2}.Release|x86.ActiveCfg = Release|Any CPU
 		{3B4657D5-4E7D-48B0-B327-3AC0A515DEFB}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{3B4657D5-4E7D-48B0-B327-3AC0A515DEFB}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{3B4657D5-4E7D-48B0-B327-3AC0A515DEFB}.Debug|Mixed Platforms.Build.0 = Debug|x86
@@ -162,7 +150,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{3B4657D5-4E7D-48B0-B327-3AC0A515DEFB} = {10DC1D20-8A91-4921-922E-EBF9AFD77B56}
-		{C2421E5C-5685-403B-9CD9-24B3EFB7DE24} = {10DC1D20-8A91-4921-922E-EBF9AFD77B56}
+		{C2421E5C-5685-403B-9CD9-24B3EFB7DE24} = {B378FC39-4977-49FE-BDBE-CE60D3F1769A}
+		{3B4657D5-4E7D-48B0-B327-3AC0A515DEFB} = {B378FC39-4977-49FE-BDBE-CE60D3F1769A}
 	EndGlobalSection
 EndGlobal

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Radial.Param;
 using Radial.Cache;
-using Radial.Lock;
+using Radial.DistLock;
 
 namespace Radial.Data.Nhs.Param
 {

@@ -5,6 +5,7 @@ using System.Text;
 using Castle.Windsor;
 using Castle.MicroKernel.Registration;
 using System.IO;
+using System.Collections;
 
 namespace Radial
 {
@@ -137,6 +138,44 @@ namespace Radial
             }
         }
 
+        /// <summary>
+        /// Retrieve a component instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns>
+        /// Return a component instance, if not properly configured throw an exception
+        /// </returns>
+        public static TService Resolve<TService>(IDictionary arguments) where TService : class
+        {
+            lock (S_SyncRoot)
+            {
+                if (S_Container == null)
+                    return null;
+
+                return S_Container.Resolve<TService>(arguments);
+            }
+        }
+
+        /// <summary>
+        /// Retrieve a component instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="argumentsAsAnonymousType">argumentsAsAnonymousType.</param>
+        /// <returns>
+        /// Return a component instance, if not properly configured throw an exception
+        /// </returns>
+        public static TService Resolve<TService>(object argumentsAsAnonymousType) where TService : class
+        {
+            lock (S_SyncRoot)
+            {
+                if (S_Container == null)
+                    return null;
+
+                return S_Container.Resolve<TService>(argumentsAsAnonymousType);
+            }
+        }
+
 
         /// <summary>
         /// Retrieve a component instance.
@@ -156,6 +195,43 @@ namespace Radial
             }
         }
 
+        /// <summary>
+        /// Retrieve a component instance.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns>
+        /// Return a component instance, if not properly configured throw an exception
+        /// </returns>
+        public static object Resolve(Type serviceType, IDictionary arguments)
+        {
+            lock (S_SyncRoot)
+            {
+                if (S_Container == null)
+                    return null;
+
+                return S_Container.Resolve(serviceType, arguments);
+            }
+        }
+
+        /// <summary>
+        /// Retrieve a component instance.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="argumentsAsAnonymousType">argumentsAsAnonymousType.</param>
+        /// <returns>
+        /// Return a component instance, if not properly configured throw an exception
+        /// </returns>
+        public static object Resolve(Type serviceType, object argumentsAsAnonymousType)
+        {
+            lock (S_SyncRoot)
+            {
+                if (S_Container == null)
+                    return null;
+
+                return S_Container.Resolve(serviceType, argumentsAsAnonymousType);
+            }
+        }
 
         /// <summary>
         /// Resolve all valid components that match this service the service to match
@@ -176,6 +252,44 @@ namespace Radial
         /// <summary>
         /// Resolve all valid components that match this service the service to match
         /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns>
+        /// The Array of services to match
+        /// </returns>
+        public static Array ResolveAll(Type serviceType, IDictionary arguments)
+        {
+            lock (S_SyncRoot)
+            {
+                if (S_Container == null)
+                    return new object[] { };
+
+                return S_Container.ResolveAll(serviceType, arguments);
+            }
+        }
+
+        /// <summary>
+        /// Resolve all valid components that match this service the service to match
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="argumentsAsAnonymousType">argumentsAsAnonymousType.</param>
+        /// <returns>
+        /// The Array of services to match
+        /// </returns>
+        public static Array ResolveAll(Type serviceType, object argumentsAsAnonymousType)
+        {
+            lock (S_SyncRoot)
+            {
+                if (S_Container == null)
+                    return new object[] { };
+
+                return S_Container.ResolveAll(serviceType, argumentsAsAnonymousType);
+            }
+        }
+
+        /// <summary>
+        /// Resolve all valid components that match this service the service to match
+        /// </summary>
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <returns>
         /// The Array of services to match.
@@ -188,6 +302,44 @@ namespace Radial
                     return new TService[] { };
 
                 return S_Container.ResolveAll<TService>();
+            }
+        }
+
+        /// <summary>
+        /// Resolve all valid components that match this service the service to match
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns>
+        /// The Array of services to match.
+        /// </returns>
+        public static TService[] ResolveAll<TService>(IDictionary arguments) where TService : class
+        {
+            lock (S_SyncRoot)
+            {
+                if (S_Container == null)
+                    return new TService[] { };
+
+                return S_Container.ResolveAll<TService>(arguments);
+            }
+        }
+
+        /// <summary>
+        /// Resolve all valid components that match this service the service to match
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="argumentsAsAnonymousType">argumentsAsAnonymousType.</param>
+        /// <returns>
+        /// The Array of services to match.
+        /// </returns>
+        public static TService[] ResolveAll<TService>(object argumentsAsAnonymousType) where TService : class
+        {
+            lock (S_SyncRoot)
+            {
+                if (S_Container == null)
+                    return new TService[] { };
+
+                return S_Container.ResolveAll<TService>(argumentsAsAnonymousType);
             }
         }
 

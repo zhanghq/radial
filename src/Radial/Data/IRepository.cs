@@ -98,11 +98,16 @@ namespace Radial.Data
         long GetTotalInt64(Expression<Func<TObject, bool>> where);
 
         /// <summary>
-        /// Get object by key.
+        /// Get object with the specified key.
         /// </summary>
         /// <param name="key">The object key.</param>
         /// <returns>If data exists, return the object, otherwise return null.</returns>
         TObject Get(TKey key);
+
+        /// <summary>
+        /// Gets the object with the specified key.
+        /// </summary>
+        TObject this[TKey key] { get; }
 
         /// <summary>
         /// Get object.

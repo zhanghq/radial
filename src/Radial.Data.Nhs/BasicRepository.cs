@@ -201,7 +201,7 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Get object by key.
+        /// Get object with the specified key.
         /// </summary>
         /// <param name="key">The object key.</param>
         /// <returns>If data exists, return the object, otherwise return null.</returns>
@@ -234,6 +234,14 @@ namespace Radial.Data.Nhs
         {
             Checker.Parameter(where != null, "where condition can not be null");
             return Session.QueryOver<TObject>().Where(where).SingleOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the object with the specified key.
+        /// </summary>
+        public TObject this[TKey key]
+        {
+            get { return Get(key); }
         }
 
         /// <summary>
@@ -775,7 +783,5 @@ namespace Radial.Data.Nhs
         }
 
         #endregion
-
-        
     }
 }

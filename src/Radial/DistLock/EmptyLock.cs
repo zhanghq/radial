@@ -22,7 +22,7 @@ namespace Radial.DistLock
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(key), "key can not be empty or null");
             DateTime createTime = DateTime.Now;
-            obj = new LockObject { Key = key.ToLower().Trim(), CreateTime = createTime, ExpireTime = createTime };
+            obj = new LockObject { Id = Guid.NewGuid().ToString("n"), Key = key.ToLower().Trim(), CreateTime = createTime, ExpireTime = createTime };
             Logger.GetInstance("Lock").Debug("Lock key:{0} acquired", obj.Key);
             return true;
         }

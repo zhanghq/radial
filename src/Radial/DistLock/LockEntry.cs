@@ -42,6 +42,7 @@ namespace Radial.DistLock
         /// <param name="expireTime">The expire time.</param>
         private LockEntry(string id, string key, DateTime createTime, DateTime expireTime)
         {
+            Checker.Parameter(!string.IsNullOrWhiteSpace(id), "id can not be empty or null");
             Checker.Parameter(!string.IsNullOrWhiteSpace(key), "key can not be empty or null");
 
             _id = id.Trim();

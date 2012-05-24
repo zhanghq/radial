@@ -14,7 +14,7 @@ namespace Radial.Data
         /// Gets the storage alias.
         /// </summary>
         /// <param name="keys">The keys according to.</param>
-        /// <returns>The storage alias</returns>
+        /// <returns>The storage alias.</returns>
         string GetAlias(params object[] keys);
 
 

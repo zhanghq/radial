@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AliasRouter.cs" />
     <Compile Include="AppStartModule.cs" />
     <Compile Include="BasicRepository.cs" />
     <Compile Include="ContextBoundSession.cs" />
@@ -64,9 +63,7 @@
     <Compile Include="Param\ParamEntityMapper.cs" />
     <Compile Include="Param\SqlServerParamRepository.cs" />
     <Compile Include="SessionFactoryPool.cs" />
-    <Compile Include="IAliasRouting.cs" />
     <Compile Include="NamingStrategy\SqliteNamingStrategy.cs" />
-    <Compile Include="RoutingClass.cs" />
     <Compile Include="SessionFactoryWrapper.cs" />
     <Compile Include="HibernateEngine.cs" />
     <Compile Include="IFactoryPoolInitializer.cs" />

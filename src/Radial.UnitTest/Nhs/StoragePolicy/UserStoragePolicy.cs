@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using Radial.Data.Nhs;
 
-namespace Radial.UnitTest.Nhs.AliasRouting
+namespace Radial.UnitTest.Nhs.StoragePolicy
 {
-    public class UserAliasRouting : IAliasRouting
+    public class UserStoragePolicy : Radial.Data.IStoragePolicy
     {
-        #region IAliasRouting Members
+        #region IStoragePolicy Members
 
         /// <summary>
-        /// Gets the session factory alias.
+        /// Gets the storage alias.
         /// </summary>
         /// <param name="keys">The keys according to.</param>
         /// <returns>
-        /// The session factory alias
+        /// The storage alias
         /// </returns>
         public string GetAlias(params object[] keys)
         {
@@ -30,10 +30,10 @@ namespace Radial.UnitTest.Nhs.AliasRouting
         }
 
         /// <summary>
-        /// Get all available aliases to this instance.
+        /// Get all available storage aliases.
         /// </summary>
         /// <returns>
-        /// The session factory alias array.
+        /// The storage alias array.
         /// </returns>
         public string[] GetAliases()
         {

@@ -9,6 +9,7 @@ using NHibernate;
 using Radial.UnitTest.Nhs.Domain;
 using Radial.UnitTest.Nhs.Repository;
 using System.Threading.Tasks;
+using Radial.Data;
 
 namespace Radial.UnitTest.Nhs
 {
@@ -19,7 +20,6 @@ namespace Radial.UnitTest.Nhs
         public void SetUp()
         {
             ComponentContainer.RegisterPerThread<IFactoryPoolInitializer, PartitionFactoryPoolInitializer>();
-            SessionFactoryPool.Initialize();
 
             CleanUp();
 
@@ -37,7 +37,7 @@ namespace Radial.UnitTest.Nhs
 
         public void CleanUp()
         {
-            foreach (string alias in AliasRouter.GetAliases<User>())
+            foreach (string alias in StorageRouter.GetStorageAliases<User>())
             {
                 AutoTransaction.Complete(() =>
                 {
@@ -82,10 +82,10 @@ namespace Radial.UnitTest.Nhs
         }
 
         [Test]
-        public void Routing()
+        public void StorageAlias()
         {
-            Assert.AreEqual("partition1", AliasRouter.GetAlias<User>(1));
-            Assert.AreEqual("partition2", AliasRouter.GetAlias<User>(2));
+            Assert.AreEqual("partition1", StorageRouter.GetStorageAlias<User>(1));
+            Assert.AreEqual("partition2", StorageRouter.GetStorageAlias<User>(2));
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace Radial.UnitTest.Nhs
             {
                 var u = new User { Id = i, Name = "测试" + i };
 
-                string alias = AliasRouter.GetAlias<User>(u.Id);
+                string alias = StorageRouter.GetStorageAlias<User>(u.Id);
 
                 if (!ugroup.ContainsKey(alias))
                     ugroup[alias] = new List<User>();
@@ -107,7 +107,7 @@ namespace Radial.UnitTest.Nhs
             }
 
             //insert
-            foreach (string alias in AliasRouter.GetAliases<User>())
+            foreach (string alias in StorageRouter.GetStorageAliases<User>())
             {
                 AutoTransaction.Complete(() =>
                 {
@@ -124,7 +124,7 @@ namespace Radial.UnitTest.Nhs
 
             List<User> selectlist = new List<User>();
 
-            Parallel.ForEach<string>(SessionFactoryPool.GetAliases(), alias =>
+            Parallel.ForEach<string>(SessionFactoryPool.GetFactoryAliases(), alias =>
             {
                 using (ISession session = SessionFactoryPool.OpenSession(alias))
                 {

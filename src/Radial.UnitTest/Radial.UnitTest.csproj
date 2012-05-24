@@ -57,7 +57,7 @@
     <Compile Include="HttpKitsTest.cs" />
     <Compile Include="LocalComputerTest.cs" />
     <Compile Include="DistLockTest.cs" />
-    <Compile Include="Nhs\AliasRouting\UserAliasRouting.cs" />
+    <Compile Include="Nhs\StoragePolicy\UserStoragePolicy.cs" />
     <Compile Include="Nhs\Domain\User.cs" />
     <Compile Include="Nhs\MappingByCodeTest.cs" />
     <Compile Include="Nhs\Mapping\UserClassMapper.cs" />
@@ -104,7 +104,7 @@
     <None Include="Config\NHibernate.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Config\AliasRouting.config" />
+    <None Include="Config\StoragePolicy.config" />
     <None Include="Config\XmlParam.config" />
   </ItemGroup>
   <ItemGroup>

@@ -32,8 +32,6 @@ namespace Radial.Data.Nhs
         {
             lock (S_SyncRoot)
             {
-                if (!SessionFactoryPool.HasInitialized)
-                    SessionFactoryPool.Initialize();
                 SessionFactory = SessionFactoryPool.First;
             }
         }

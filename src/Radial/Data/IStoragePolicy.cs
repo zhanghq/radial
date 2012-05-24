@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Radial.Data.Nhs
+namespace Radial.Data
 {
     /// <summary>
-    /// Session factory alias routing.
+    /// Storage policy.
     /// </summary>
-    public interface IAliasRouting
+    public interface IStoragePolicy
     {
         /// <summary>
-        /// Gets the session factory alias.
+        /// Gets the storage alias.
         /// </summary>
         /// <param name="keys">The keys according to.</param>
-        /// <returns>The session factory alias</returns>
+        /// <returns>The storage alias</returns>
         string GetAlias(params object[] keys);
 
 
         /// <summary>
-        /// Get all available aliases to this instance.
+        /// Get all available storage aliases.
         /// </summary>
-        /// <returns>The session factory alias array.</returns>
+        /// <returns>The storage alias array.</returns>
         string[] GetAliases();
     }
 }

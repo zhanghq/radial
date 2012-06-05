@@ -78,7 +78,6 @@
     <Compile Include="FileWatcher.cs" />
     <Compile Include="ISequentialKeyBuilder.cs" />
     <Compile Include="KnownFaultException.cs" />
-    <Compile Include="LocalComputer.cs" />
     <Compile Include="DistLock\EmptyLock.cs" />
     <Compile Include="DistLock\ILock.cs" />
     <Compile Include="DistLock\LockEntry.cs" />

@@ -55,7 +55,6 @@
     <Compile Include="Base62Test.cs" />
     <Compile Include="CryptoProviderTest.cs" />
     <Compile Include="HttpKitsTest.cs" />
-    <Compile Include="LocalComputerTest.cs" />
     <Compile Include="DistLockTest.cs" />
     <Compile Include="Nhs\StoragePolicy\UserStoragePolicy.cs" />
     <Compile Include="Nhs\Domain\User.cs" />

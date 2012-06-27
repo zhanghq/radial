@@ -13,7 +13,7 @@ namespace Radial.Web.Mvc.Filters
         /// <summary>
         /// Not set the output style, use system default.
         /// </summary>
-        Default,
+        System,
         /// <summary>
         /// Wraps the exception to XML output format.
         /// </summary>

@@ -8,7 +8,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using Radial.Serialization;
 using System.Data;
-using Radial.Web.Mvc.Models;
+using System.Net;
 
 namespace Radial.Web.Mvc
 {
@@ -145,19 +145,6 @@ namespace Radial.Web.Mvc
         /// Renders Excel file to the response.
         /// </summary>
         /// <param name="c">The controller.</param>
-        /// <param name="ds">The DataSet.</param>
-        /// <param name="fileName">The file name(not contains extension).</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <returns>ExcelResult instance.</returns>
-        public static ExcelResult Excel(this Controller c, DataSet ds, string fileName, Encoding encoding)
-        {
-            return new ExcelResult(ds, fileName, encoding);
-        }
-
-        /// <summary>
-        /// Renders Excel file to the response.
-        /// </summary>
-        /// <param name="c">The controller.</param>
         /// <param name="dt">The DataTable.</param>
         /// <param name="fileName">The file name(not contains extension).</param>
         /// <returns>ExcelResult instance.</returns>
@@ -167,28 +154,16 @@ namespace Radial.Web.Mvc
         }
 
         /// <summary>
-        /// Renders Excel file to the response.
-        /// </summary>
-        /// <param name="c">The controller.</param>
-        /// <param name="dt">The DataTable.</param>
-        /// <param name="fileName">The file name(not contains extension).</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <returns>ExcelResult instance.</returns>
-        public static ExcelResult Excel(this Controller c, DataTable dt, string fileName, Encoding encoding)
-        {
-            return new ExcelResult(dt, fileName, encoding);
-        }
-
-        /// <summary>
         /// Throws a new KnownFaultException and let the system itself to decide how to deal with.
         /// </summary>
         /// <param name="c">The controller.</param>
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message.</param>
+        /// <param name="httpStatusCode">The HTTP status code(200 by default).</param>
         /// <returns>ThrowKnownFaultResult instance.</returns>
-        public static KnownFaultResult KnownFault(this Controller c, int errorCode, string message)
+        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message, HttpStatusCode? httpStatusCode = HttpStatusCode.OK)
         {
-            return KnownFault(c, errorCode, message, null);
+            return KnownFault(c, errorCode, message, null, httpStatusCode);
         }
 
         /// <summary>
@@ -198,23 +173,11 @@ namespace Radial.Web.Mvc
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message.</param>
         /// <param name="innerException">The inner exception.</param>
+        /// <param name="httpStatusCode">The HTTP status code(200 by default).</param>
         /// <returns>ThrowKnownFaultResult instance.</returns>
-        public static KnownFaultResult KnownFault(this Controller c, int errorCode, string message, Exception innerException)
+        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message, Exception innerException, HttpStatusCode? httpStatusCode = HttpStatusCode.OK)
         {
-            return new KnownFaultResult(errorCode, message, innerException);
-        }
-
-        /// <summary>
-        /// Throws a new KnownFaultException and let the system itself to decide how to deal with.
-        /// </summary>
-        /// <param name="c">The controller.</param>
-        /// <param name="model">The known fault model.</param>
-        /// <returns>
-        /// ThrowKnownFaultResult instance.
-        /// </returns>
-        public static KnownFaultResult KnownFault(this Controller c, KnownFaultModel model)
-        {
-            return new KnownFaultResult(model);
+            return new HttpKnownFaultResult(errorCode, message, innerException, httpStatusCode);
         }
     }
 }

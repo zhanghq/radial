@@ -8,7 +8,7 @@ namespace Radial
     /// <summary>
     /// Known fault exception.
     /// </summary>
-    public sealed class KnownFaultException : Exception
+    public class KnownFaultException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="KnownFaultException"/> class.

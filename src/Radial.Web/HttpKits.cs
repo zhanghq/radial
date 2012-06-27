@@ -36,6 +36,11 @@ namespace Radial.Web
         public const string JsonContentType = "application/json";
 
         /// <summary>
+        /// Default encoding name (UTF-8).
+        /// </summary>
+        public const string DefaultEncodingName = "UTF-8";
+
+        /// <summary>
         /// Gets the current HttpContext instance.
         /// </summary>
         public static HttpContext CurrentContext
@@ -213,7 +218,7 @@ namespace Radial.Web
 
                 CurrentContext.Response.OutputStream.Write(ms.GetBuffer(), 0, (int)ms.Length);
             }
-            
+
             if (string.IsNullOrWhiteSpace(contentType))
                 CurrentContext.Response.ContentType = "image/" + format.ToString().ToLower();
             else
@@ -266,12 +271,14 @@ namespace Radial.Web
             WritePlainText(text, string.Empty);
         }
 
+
         /// <summary>
         /// Write the plain text to response stream (use return statement to bypass other codes if necessary).
         /// </summary>
         /// <param name="text">The plain text</param>
         /// <param name="contentType">the content type</param>
-        public static void WritePlainText(string text, string contentType)
+        /// <param name="statusCode">The http response status code(200 by default).</param>
+        public static void WritePlainText(string text, string contentType, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
             if (string.IsNullOrWhiteSpace(contentType))
                 CurrentContext.Response.ContentType = PlainTextContentType;
@@ -279,6 +286,8 @@ namespace Radial.Web
                 CurrentContext.Response.ContentType = contentType.Trim();
 
             CurrentContext.Response.Write(text);
+            if (statusCode.HasValue)
+                CurrentContext.Response.StatusCode = (int)statusCode.Value;
             CurrentContext.ApplicationInstance.CompleteRequest();
         }
 
@@ -287,54 +296,50 @@ namespace Radial.Web
         /// </summary>
         /// <typeparam name="T">The object type.</typeparam>
         /// <param name="obj">The object.</param>
-        public static void WriteJson<T>(T obj)
+        /// <param name="statusCode">The http response status code(200 by default).</param>
+        public static void WriteJson<T>(T obj, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WritePlainText(JsonSerializer.Serialize<T>(obj), JsonContentType);
+            WritePlainText(JsonSerializer.Serialize<T>(obj), JsonContentType, statusCode);
         }
 
         /// <summary>
         /// Write the json text to response stream (use return statement to bypass other codes if necessary).
         /// </summary>
         /// <param name="obj">The object.</param>
-        public static void WriteJson(object obj)
+        /// <param name="statusCode">The http response status code(200 by default).</param>
+        public static void WriteJson(object obj, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WritePlainText(JsonSerializer.Serialize(obj), JsonContentType);
+            WritePlainText(JsonSerializer.Serialize(obj), JsonContentType, statusCode);
         }
 
         /// <summary>
         /// Write the json text to response stream (use return statement to bypass other codes if necessary).
         /// </summary>
         /// <param name="json">The json text</param>
-        public static void WriteJson(string json)
+        /// <param name="statusCode">The http response status code(200 by default).</param>
+        public static void WriteJson(string json, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WritePlainText(json, JsonContentType);
+            WritePlainText(json, JsonContentType, statusCode);
         }
+
 
         /// <summary>
         /// Write the xml text to response stream (use return statement to bypass other codes if necessary).
         /// </summary>
         /// <param name="xml">The xml text</param>
-        public static void WriteXml(string xml)
+        /// <param name="statusCode">The http response status code(200 by default).</param>
+        public static void WriteXml(string xml, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WriteXml(xml, "UTF-8");
-        }
-
-        /// <summary>
-        /// Write the xml text to response stream (use return statement to bypass other codes if necessary).
-        /// </summary>
-        /// <param name="xml">The xml text</param>
-        /// <param name="charset">The xml charset</param>
-        public static void WriteXml(string xml, string charset)
-        {
-            if (string.IsNullOrWhiteSpace(charset))
-                charset = "UTF-8";
+            Encoding encoding = Encoding.GetEncoding(DefaultEncodingName);
 
             if (string.IsNullOrWhiteSpace(xml))
-                xml = string.Format("<?xml version=\"1.0\" encoding=\"{0}\"?>", charset);
+                xml = string.Format("<?xml version=\"1.0\" encoding=\"{0}\"?>", encoding.BodyName);
 
             CurrentContext.Response.ContentType = XmlContentType;
-            CurrentContext.Response.Charset = charset;
+            CurrentContext.Response.Charset = encoding.BodyName;
             CurrentContext.Response.Write(xml);
+            if (statusCode.HasValue)
+                CurrentContext.Response.StatusCode = (int)statusCode.Value;
             CurrentContext.ApplicationInstance.CompleteRequest();
         }
 
@@ -342,19 +347,10 @@ namespace Radial.Web
         /// Write the xml text to response stream (use return statement to bypass other codes if necessary).
         /// </summary>
         /// <param name="obj">The obj.</param>
-        public static void WriteXml(object obj)
+        /// <param name="statusCode">The http response status code(200 by default).</param>
+        public static void WriteXml(object obj, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WriteXml(obj, "UTF-8");
-        }
-
-        /// <summary>
-        /// Write the xml text to response stream (use return statement to bypass other codes if necessary).
-        /// </summary>
-        /// <param name="obj">The obj.</param>
-        /// <param name="charset">The charset.</param>
-        public static void WriteXml(object obj, string charset)
-        {
-            WriteXml(Serialization.XmlSerializer.Serialize(obj), charset);
+            WriteXml(Serialization.XmlSerializer.Serialize(obj), statusCode);
         }
 
         /// <summary>
@@ -362,20 +358,10 @@ namespace Radial.Web
         /// </summary>
         /// <typeparam name="T">The object type</typeparam>
         /// <param name="obj">The obj.</param>
-        public static void WriteXml<T>(T obj)
+        /// <param name="statusCode">The http response status code(200 by default).</param>
+        public static void WriteXml<T>(T obj, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WriteXml(obj, "UTF-8");
-        }
-
-        /// <summary>
-        /// Write the xml text to response stream (use return statement to bypass other codes if necessary).
-        /// </summary>
-        /// <typeparam name="T">The object type</typeparam>
-        /// <param name="obj">The obj.</param>
-        /// <param name="charset">The charset.</param>
-        public static void WriteXml<T>(T obj, string charset)
-        {
-            WriteXml(Serialization.XmlSerializer.Serialize<T>(obj), charset);
+            WriteXml(Serialization.XmlSerializer.Serialize<T>(obj), statusCode);
         }
 
         /// <summary>
@@ -385,19 +371,9 @@ namespace Radial.Web
         /// <param name="fileName">The Excel file name(not contains extension)</param>
         public static void ExportToExcel(DataSet ds, string fileName)
         {
-            ExportToExcel(ds,fileName,Encoding.UTF8);
-        }
+            Encoding encoding = Encoding.GetEncoding(DefaultEncodingName);
 
-        /// <summary>
-        /// Export dataset to Excel file (use return statement to bypass other codes if necessary).
-        /// </summary>
-        /// <param name="ds">The dataset object</param>
-        /// <param name="fileName">The Excel file name(not contains extension)</param>
-        /// <param name="encoding">The encoding.</param>
-        public static void ExportToExcel(DataSet ds, string fileName,Encoding encoding)
-        {
             Checker.Parameter(ds != null, "dataset object can not be null");
-            Checker.Parameter(encoding!=null, "encoding can not be null");
             Checker.Parameter(!string.IsNullOrWhiteSpace(fileName), "fileName can not be empty or null");
 
             StringBuilder strb = new StringBuilder();
@@ -452,7 +428,7 @@ namespace Radial.Web
             CurrentContext.Response.Clear();
             CurrentContext.Response.Buffer = true;
             CurrentContext.Response.Charset = encoding.BodyName;
-            CurrentContext.Response.AppendHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(fileName, encoding)+".xls");
+            CurrentContext.Response.AppendHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(fileName, encoding) + ".xls");
             CurrentContext.Response.ContentEncoding = encoding;
             CurrentContext.Response.ContentType = "application/vnd.ms-excel";
             CurrentContext.Response.Write(strb);
@@ -534,7 +510,7 @@ namespace Radial.Web
             if (string.IsNullOrWhiteSpace(relativeUrl))
                 relativeUrl = "";
             else
-                relativeUrl=relativeUrl.Trim('~', '/');
+                relativeUrl = relativeUrl.Trim('~', '/');
 
             if (relativeUrl.ToLower().StartsWith("http://") || relativeUrl.ToLower().StartsWith("https://") || relativeUrl.ToLower().StartsWith("ftp://"))
                 return relativeUrl;
@@ -563,7 +539,7 @@ namespace Radial.Web
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(absoluteUrl), "absoluteUrl can not be empty or null");
 
-            absoluteUrl=absoluteUrl.Trim();
+            absoluteUrl = absoluteUrl.Trim();
 
             string url = string.Format("{0}://{1}", CurrentContext.Request.Url.Scheme, CurrentContext.Request.Url.Host);
 
@@ -726,7 +702,7 @@ namespace Radial.Web
 
             string serverUrl = string.Format("http://opendata.baidu.com/api.php?query={0}&resource_id=6006&format=json", ipAddress.Trim());
 
-            HttpResponseObj resp= HttpWebHost.Get(serverUrl);
+            HttpResponseObj resp = HttpWebHost.Get(serverUrl);
 
             if (resp.Code == System.Net.HttpStatusCode.OK)
             {

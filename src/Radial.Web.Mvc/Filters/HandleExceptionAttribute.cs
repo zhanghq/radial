@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using System.Web;
+using System.Net;
 
 namespace Radial.Web.Mvc.Filters
 {
@@ -17,7 +18,7 @@ namespace Radial.Web.Mvc.Filters
         /// Initializes a new instance of the <see cref="HandleExceptionAttribute"/> class.
         /// </summary>
         public HandleExceptionAttribute()
-            : this(ExceptionOutputStyle.Default, 9999)
+            : this(ExceptionOutputStyle.System, 9999)
         {
         }
 
@@ -61,7 +62,7 @@ namespace Radial.Web.Mvc.Filters
             Logger.Default.Fatal(filterContext.Exception);
 
 
-            if (OutputStyle == ExceptionOutputStyle.Default)
+            if (OutputStyle == ExceptionOutputStyle.System)
             {
                 base.OnException(filterContext);
                 return;
@@ -69,9 +70,11 @@ namespace Radial.Web.Mvc.Filters
 
             filterContext.ExceptionHandled = true;
 
+            HttpKnownFaultException hkfe = filterContext.Exception as HttpKnownFaultException;
+
             ExceptionOutputData data = new ExceptionOutputData
             {
-                ErrorCode = filterContext.Exception is KnownFaultException ? ((KnownFaultException)filterContext.Exception).ErrorCode : DefaultErrorCode,
+                ErrorCode = hkfe != null ? hkfe.ErrorCode : DefaultErrorCode,
                 RequestUrl = HttpKits.MakeRelativeUrl(filterContext.HttpContext.Request.Url.ToString()).Replace("~", string.Empty),
                 ErrorMessage = filterContext.Exception.Message
             };
@@ -81,7 +84,12 @@ namespace Radial.Web.Mvc.Filters
             if (OutputStyle == ExceptionOutputStyle.Xml)
                 HttpKits.WriteXml(data.ToXml());
 
-            filterContext.Result = new EmptyResult();
+            HttpStatusCode scode = HttpStatusCode.OK;
+
+            if (hkfe != null && hkfe.StatusCode.HasValue)
+                scode = hkfe.StatusCode.Value;
+
+            filterContext.Result = new HttpStatusCodeResult((int)scode);
         }
     }
 }

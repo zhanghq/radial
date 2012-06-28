@@ -711,9 +711,8 @@ namespace Radial.Web
                 if (obj != null && obj.data != null && obj.data.Count == 1)
                 {
                     if (obj.data[0].location != null)
-                        return ((string)obj.data[0].location).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
+                        return (string)obj.data[0].location;
                 }
-                return string.Empty;
             }
 
             return string.Empty;

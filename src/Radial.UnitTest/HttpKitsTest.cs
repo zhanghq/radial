@@ -21,7 +21,7 @@ namespace Radial.UnitTest
         [Test]
         public void GetLocation()
         {
-            Console.WriteLine(HttpKits.GetLocation("202.171.64.4"));
+            Console.WriteLine(HttpKits.GetLocation("60.171.140.55"));
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Radial.Data.Mongod.Cfg
 
 
         /// <summary>
-        /// Gets the collection.
+        /// Gets the collection name.
         /// </summary>
         public string Collection { get; internal set; }
     }

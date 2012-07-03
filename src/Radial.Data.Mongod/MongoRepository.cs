@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Norm;
-using Norm.Collections;
-using Norm.Responses;
-using Norm.Linq;
 using Radial.Data.Mongod.Cfg;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace Radial.Data.Mongod
 {
@@ -17,85 +15,87 @@ namespace Radial.Data.Mongod
     /// <typeparam name="TKey">The type of the object key.</typeparam>
     public abstract class MongoRepository<TObject, TKey> : IRepository<TObject, TKey> where TObject : class
     {
+
+        string _collectionName;
+        MongoDatabase _readDatabase;
+        MongoDatabase _writeDatabase;
+
+
         /// <summary>
-        /// Gets the mongod context.
+        /// Initializes a new instance of the <see cref="MongoRepository&lt;TObject, TKey&gt;"/> class.
         /// </summary>
-        protected MongodContext DbContext
+        public MongoRepository()
         {
-            get
-            {
-                return MongodConfig.GetContext<TObject>();
-            }
+            PersistenceConfig persistenceConfig = MongodConfig.GetPersistenceConfig<TObject>();
+
+            var readUrlBuilder = new MongoUrlBuilder(persistenceConfig.Servers.Read.Connection);
+            var writeUrlBuilder = new MongoUrlBuilder(persistenceConfig.Servers.Read.Connection);
+
+            _collectionName = persistenceConfig.Collection;
+            _readDatabase = MongoServer.Create(persistenceConfig.Servers.Read.Connection).GetDatabase(readUrlBuilder.DatabaseName);
+            _writeDatabase = MongoServer.Create(persistenceConfig.Servers.Write.Connection).GetDatabase(writeUrlBuilder.DatabaseName);
         }
 
         /// <summary>
-        /// Gets the servers.
-        /// </summary>
-        protected ServerGroup Servers
-        {
-            get
-            {
-                return DbContext.Servers;
-            }
-        }
-
-        /// <summary>
-        /// Gets the name of the collection.
+        /// Gets the persistent collection name.
         /// </summary>
         protected string CollectionName
         {
             get
             {
-                string name = DbContext.CollectionName;
-                if (string.IsNullOrWhiteSpace(name))
-                    return typeof(TObject).Name;
-                return name;
+                return _collectionName;
             }
         }
 
         /// <summary>
-        /// Creates IMongo object of the read database .
+        /// Gets new MongoDatabase object of the read database .
         /// </summary>
-        /// <returns>IMongo object.</returns>
-        protected IMongo CreateReadDb()
+        /// <returns>MongoDatabase object.</returns>
+        protected MongoDatabase ReadDatabase
         {
-            return Mongo.Create(Servers.Read.Connection);
-        }
-
-        /// <summary>
-        /// Creates IMongo object of the write database .
-        /// </summary>
-        /// <returns>IMongo object.</returns>
-        protected IMongo CreateWriteDb()
-        {
-            return Mongo.Create(Servers.Write.Connection);
-        }
-
-
-        /// <summary>
-        /// Maps the reduce.
-        /// </summary>
-        /// <param name="map">The map.</param>
-        /// <param name="reduce">The reduce.</param>
-        /// <returns></returns>
-        public virtual TObject MapReduce(string map, string reduce)
-        {
-            TObject result = default(TObject);
-            using (var db = CreateReadDb())
+            get
             {
-                var mr = db.Database.CreateMapReduce();
-                MapReduceResponse response =
-                    mr.Execute(new MapReduceOptions(CollectionName)
-                    {
-                        Map = map,
-                        Reduce = reduce
-                    });
-                IMongoCollection<MapReduceResult<TObject>> coll = response.GetCollection<MapReduceResult<TObject>>();
-                MapReduceResult<TObject> r = coll.Find().FirstOrDefault();
-                result = r.Value;
+                return _readDatabase;
             }
-            return result;
         }
+
+        /// <summary>
+        /// Gets new MongoDatabase object of the write database .
+        /// </summary>
+        /// <returns>MongoDatabase object.</returns>
+        protected MongoDatabase WriteDatabase
+        {
+            get
+            {
+                return _writeDatabase;
+            }
+        }
+
+
+        ///// <summary>
+        ///// Maps the reduce.
+        ///// </summary>
+        ///// <param name="map">The map.</param>
+        ///// <param name="reduce">The reduce.</param>
+        ///// <returns></returns>
+        //public virtual TObject MapReduce(string map, string reduce)
+        //{
+        //    TObject result = default(TObject);
+        //    using (var db = CreateReadDb())
+        //    {
+        //        var mr = db.Database.CreateMapReduce();
+        //        MapReduceResponse response =
+        //            mr.Execute(new MapReduceOptions(CollectionName)
+        //            {
+        //                Map = map,
+        //                Reduce = reduce
+        //            });
+        //        IMongoCollection<MapReduceResult<TObject>> coll = response.GetCollection<MapReduceResult<TObject>>();
+        //        MapReduceResult<TObject> r = coll.Find().FirstOrDefault();
+        //        result = r.Value;
+        //    }
+        //    return result;
+        //}
 
 
         #region IRepository<TObject,TKey> Members
@@ -118,10 +118,7 @@ namespace Radial.Data.Mongod
         {
             if (objs != null)
             {
-                using (var db = CreateWriteDb())
-                {
-                    db.GetCollection<TObject>(CollectionName).Insert(objs);
-                }
+                WriteDatabase.GetCollection<TObject>(CollectionName).InsertBatch<TObject>(objs);
             }
         }
 
@@ -133,10 +130,7 @@ namespace Radial.Data.Mongod
         {
             if (obj != null)
             {
-                using (var db = CreateWriteDb())
-                {
-                    db.GetCollection<TObject>(CollectionName).Save(obj);
-                }
+                WriteDatabase.GetCollection<TObject>(CollectionName).Save<TObject>(obj);
             }
         }
 
@@ -154,10 +148,7 @@ namespace Radial.Data.Mongod
         {
             if (obj != null)
             {
-                using (var db = CreateWriteDb())
-                {
-                    db.GetCollection<TObject>(CollectionName).Delete(obj);
-                }
+                //WriteDatabase.GetCollection<TObject>(CollectionName).Remove(obj);
             }
         }
 
@@ -194,14 +185,12 @@ namespace Radial.Data.Mongod
         /// <returns></returns>
         public virtual int GetTotal(System.Linq.Expressions.Expression<Func<TObject, bool>> where)
         {
-            using (var db = CreateReadDb())
-            {
-                var query = db.GetCollection<TObject>(CollectionName).AsQueryable();
+            var query = ReadDatabase.GetCollection<TObject>(CollectionName).AsQueryable();
 
-                if (where != null)
-                    query = query.Where(where);
-                return query.Count();
-            }
+            if (where != null)
+                query = query.Where(where);
+            return query.Count();
+
         }
 
         /// <summary>
@@ -220,14 +209,11 @@ namespace Radial.Data.Mongod
         /// <returns></returns>
         public virtual long GetTotalInt64(System.Linq.Expressions.Expression<Func<TObject, bool>> where)
         {
-            using (var db = CreateReadDb())
-            {
-                var query = db.GetCollection<TObject>(CollectionName).AsQueryable();
+            var query = ReadDatabase.GetCollection<TObject>(CollectionName).AsQueryable();
 
-                if (where != null)
-                    query = query.Where(where);
-                return query.LongCount();
-            }
+            if (where != null)
+                query = query.Where(where);
+            return query.LongCount();
         }
 
         /// <summary>
@@ -246,10 +232,8 @@ namespace Radial.Data.Mongod
         {
             Checker.Parameter(where != null, "where condition can not be null");
 
-            using (var db = CreateReadDb())
-            {
-                return db.GetCollection<TObject>(CollectionName).AsQueryable().Where(where).SingleOrDefault();
-            }
+            return ReadDatabase.GetCollection<TObject>(CollectionName).AsQueryable().Where(where).SingleOrDefault();
+
         }
 
         /// <summary>
@@ -258,7 +242,7 @@ namespace Radial.Data.Mongod
         /// <returns></returns>
         public virtual IList<TObject> Gets()
         {
-            return Gets(null,null);
+            return Gets(null, null);
         }
 
         /// <summary>
@@ -279,18 +263,23 @@ namespace Radial.Data.Mongod
         /// <returns></returns>
         public virtual IList<TObject> Gets(System.Linq.Expressions.Expression<Func<TObject, bool>> where, params OrderBySnippet<TObject>[] orderBys)
         {
+            var query = ReadDatabase.GetCollection<TObject>(CollectionName).AsQueryable();
+
+            if (where != null)
+                query = query.Where(where);
+
             if (orderBys != null)
-                throw new NotSupportedException("OrderBySnippet<TObject> is not supported in MongoRepository, please use native Linq to specify order by");
-
-            using (var db = CreateReadDb())
             {
-                var query = db.GetCollection<TObject>(CollectionName).AsQueryable();
-
-                if (where != null)
-                    query = query.Where(where);
-
-                return query.ToList();
+                foreach (OrderBySnippet<TObject> order in orderBys)
+                {
+                    if (order.IsAscending)
+                        query = query.OrderBy(order.Property);
+                    else
+                        query = query.OrderByDescending(order.Property);
+                }
             }
+
+            return query.ToList();
         }
 
         /// <summary>
@@ -330,20 +319,25 @@ namespace Radial.Data.Mongod
         /// <returns></returns>
         public virtual IList<TObject> Gets(System.Linq.Expressions.Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal)
         {
+            var query = ReadDatabase.GetCollection<TObject>(CollectionName).AsQueryable();
+
+            if (where != null)
+                query = query.Where(where);
+
+            objectTotal = query.Count();
+
             if (orderBys != null)
-                throw new NotSupportedException("OrderBySnippet<TObject> is not supported in MongoRepository, please use native Linq to specify order by");
-
-            using (var db = CreateReadDb())
             {
-                var query = db.GetCollection<TObject>(CollectionName).AsQueryable();
-
-                if (where != null)
-                    query = query.Where(where);
-
-                objectTotal = query.Count();
-
-                return query.Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
+                foreach (OrderBySnippet<TObject> order in orderBys)
+                {
+                    if (order.IsAscending)
+                        query = query.OrderBy(order.Property);
+                    else
+                        query = query.OrderByDescending(order.Property);
+                }
             }
+
+            return query.Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
         }
 
         /// <summary>
@@ -351,14 +345,13 @@ namespace Radial.Data.Mongod
         /// </summary>
         public virtual void Clear()
         {
-            using (var db = CreateWriteDb())
+
+            try
             {
-                try
-                {
-                    db.Database.DropCollection(CollectionName);
-                }
-                catch { }
+                WriteDatabase.GetCollection<TObject>(CollectionName).RemoveAll();
             }
+            catch { }
+
         }
 
 
@@ -411,18 +404,23 @@ namespace Radial.Data.Mongod
         /// </returns>
         public virtual IList<TObject> Gets(System.Linq.Expressions.Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int returnObjectCount)
         {
+            var query = ReadDatabase.GetCollection<TObject>(CollectionName).AsQueryable();
+
+            if (where != null)
+                query = query.Where(where);
+
             if (orderBys != null)
-                throw new NotSupportedException("OrderBySnippet<TObject> is not supported in MongoRepository, please use native Linq to specify order by");
-
-            using (var db = CreateReadDb())
             {
-                var query = db.GetCollection<TObject>(CollectionName).AsQueryable();
-
-                if (where != null)
-                    query = query.Where(where);
-
-                return query.Take(returnObjectCount).ToList();
+                foreach (OrderBySnippet<TObject> order in orderBys)
+                {
+                    if (order.IsAscending)
+                        query = query.OrderBy(order.Property);
+                    else
+                        query = query.OrderByDescending(order.Property);
+                }
             }
+
+            return query.Take(returnObjectCount).ToList();
         }
 
         /// <summary>
@@ -464,20 +462,33 @@ namespace Radial.Data.Mongod
         /// </returns>
         public virtual IList<TObject> Gets(System.Linq.Expressions.Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex)
         {
+            var query = ReadDatabase.GetCollection<TObject>(CollectionName).AsQueryable();
+
+            if (where != null)
+                query = query.Where(where);
+
             if (orderBys != null)
-                throw new NotSupportedException("OrderBySnippet<TObject> is not supported in MongoRepository, please use native Linq to specify order by");
-
-            using (var db = CreateReadDb())
             {
-                var query = db.GetCollection<TObject>(CollectionName).AsQueryable();
-
-                if (where != null)
-                    query = query.Where(where);
-
-                return query.Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
+                foreach (OrderBySnippet<TObject> order in orderBys)
+                {
+                    if (order.IsAscending)
+                        query = query.OrderBy(order.Property);
+                    else
+                        query = query.OrderByDescending(order.Property);
+                }
             }
+
+            return query.Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets the object with the specified key.
+        /// </summary>
+        public TObject this[TKey key]
+        {
+            get { return Get(key); }
+        }
     }
 }

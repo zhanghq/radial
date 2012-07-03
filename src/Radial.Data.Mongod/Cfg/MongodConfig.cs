@@ -123,8 +123,14 @@ namespace Radial.Data.Mongod.Cfg
 
                             PersistenceConfig p = new PersistenceConfig();
                             p.Type = Type.GetType(typeName);
-                            if (!string.IsNullOrWhiteSpace(collection))
+                            if (string.IsNullOrWhiteSpace(collection))
+                            {
+                                Logger.Info("no collection name specified, use class type name instead");
+                                p.Collection = p.Type.Name;
+                            }
+                            else
                                 p.Collection = collection;
+
                             p.Servers = new ServerGroup { Read = readServer, Write = writeServer };
                             S_Config.PersistenceSet.Add(p);
                         }
@@ -162,21 +168,23 @@ namespace Radial.Data.Mongod.Cfg
 
 
         /// <summary>
-        /// Gets the context.
+        /// Gets the persistence configuration.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static MongodContext GetContext<T>()
+        /// <typeparam name="T">The type of persistence class</typeparam>
+        /// <returns>
+        /// PersistenceConfig instance.
+        /// </returns>
+        public static PersistenceConfig GetPersistenceConfig<T>()
         {
-            return GetContext(typeof(T));
+            return GetPersistenceConfig(typeof(T));
         }
 
         /// <summary>
-        /// Gets the context.
+        /// Gets the persistence configuration.
         /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns></returns>
-        public static MongodContext GetContext(Type type)
+        /// <param name="type">The type of persistence class.</param>
+        /// <returns>PersistenceConfig instance.</returns>
+        public static PersistenceConfig GetPersistenceConfig(Type type)
         {
             Checker.Parameter(type != null, "type can not be null");
 
@@ -187,9 +195,8 @@ namespace Radial.Data.Mongod.Cfg
                 if (pc == null)
                     return null;
 
-                return new MongodContext { CollectionName = pc.Collection, Servers = pc.Servers };
+                return pc;
             }
-
         }
     }
 }

@@ -33,8 +33,11 @@
     <DocumentationFile>..\..\out\Release\Radial.Data.Mongod.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Norm">
-      <HintPath>..\..\lib\Norm.dll</HintPath>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\..\lib\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\..\lib\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,7 +52,6 @@
     <Compile Include="Cfg\ServerConfig.cs" />
     <Compile Include="Cfg\MongodConfig.cs" />
     <Compile Include="Cfg\ServerGroup.cs" />
-    <Compile Include="MongodContext.cs" />
     <Compile Include="MongoRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Web.OpenApi", "Radia
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Radial.DistLock", "Radial.DistLock", "{B378FC39-4977-49FE-BDBE-CE60D3F1769A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Cache.Memcached", "Radial.Cache.Memcached\Radial.Cache.Memcached.csproj", "{CC555389-A855-4FB6-A2E5-DD52522F22B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -145,6 +147,16 @@ Global
 		{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4FF6D140-68CB-4F49-9526-FEB8E7DF3AEF}.Release|x86.ActiveCfg = Release|Any CPU
+		{CC555389-A855-4FB6-A2E5-DD52522F22B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC555389-A855-4FB6-A2E5-DD52522F22B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC555389-A855-4FB6-A2E5-DD52522F22B0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{CC555389-A855-4FB6-A2E5-DD52522F22B0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{CC555389-A855-4FB6-A2E5-DD52522F22B0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CC555389-A855-4FB6-A2E5-DD52522F22B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC555389-A855-4FB6-A2E5-DD52522F22B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC555389-A855-4FB6-A2E5-DD52522F22B0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CC555389-A855-4FB6-A2E5-DD52522F22B0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{CC555389-A855-4FB6-A2E5-DD52522F22B0}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

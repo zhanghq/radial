@@ -56,6 +56,7 @@
     <Compile Include="CryptoProviderTest.cs" />
     <Compile Include="HttpKitsTest.cs" />
     <Compile Include="DistLockTest.cs" />
+    <Compile Include="MemcachedTest.cs" />
     <Compile Include="Nhs\StoragePolicy\UserStoragePolicy.cs" />
     <Compile Include="Nhs\Domain\User.cs" />
     <Compile Include="Nhs\MappingByCodeTest.cs" />
@@ -79,6 +80,10 @@
     <Compile Include="HttpWebHostTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Radial.Cache.Memcached\Radial.Cache.Memcached.csproj">
+      <Project>{CC555389-A855-4FB6-A2E5-DD52522F22B0}</Project>
+      <Name>Radial.Cache.Memcached</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Radial.Data.Nhs\Radial.Data.Nhs.csproj">
       <Project>{3F92CFFD-F387-43BF-A548-C6E2683A318F}</Project>
       <Name>Radial.Data.Nhs</Name>

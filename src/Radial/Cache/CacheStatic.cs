@@ -26,9 +26,8 @@ namespace Radial.Cache
         /// <summary>
         /// Set cache data.
         /// </summary>
-        /// <param name="key">The cache key.</param>
+        /// <param name="key">The cache key(case insensitive).</param>
         /// <param name="value">The cache value.</param>
-        /// <remarks>The cache will be discarding only if memory lack or explicitly removed.</remarks>
         public static void Set(string key, object value)
         {
             Instance.Set(key, value);
@@ -37,9 +36,8 @@ namespace Radial.Cache
         /// Set cache data.
         /// </summary>
         /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="key">The cache key.</param>
+        /// <param name="key">The cache key(case insensitive).</param>
         /// <param name="value">The cache value.</param>
-        /// <remarks>The cache will be discarding only if memory lack or explicitly removed.</remarks>
         public static void Set<T>(string key, T value)
         {
             Instance.Set(key, value);
@@ -48,10 +46,9 @@ namespace Radial.Cache
         /// <summary>
         /// Set cache data.
         /// </summary>
-        /// <param name="key">The cache key.</param>
+        /// <param name="key">The cache key(case insensitive).</param>
         /// <param name="value">The cache value.</param>
         /// <param name="cacheSeconds">The cache holding seconds.</param>
-        /// <remarks>The cache will be discarding only if memory lack or explicitly removed.</remarks>
         public static void Set(string key, object value, int cacheSeconds)
         {
             Instance.Set(key, value, cacheSeconds);
@@ -60,10 +57,9 @@ namespace Radial.Cache
         /// <summary>
         /// Set cache data.
         /// </summary>
-        /// <param name="key">The cache key.</param>
+        /// <param name="key">The cache key(case insensitive).</param>
         /// <param name="value">The cache value.</param>
         /// <param name="ts">The cache holding time.</param>
-        /// <remarks>The cache will be discarding only if memory lack or explicitly removed.</remarks>
         public static void Set(string key, object value, TimeSpan ts)
         {
             Instance.Set(key, value, ts);
@@ -73,10 +69,9 @@ namespace Radial.Cache
         /// Set cache data.
         /// </summary>
         /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="key">The cache key.</param>
+        /// <param name="key">The cache key(case insensitive).</param>
         /// <param name="value">The cache value.</param>
         /// <param name="cacheSeconds">The cache holding seconds.</param>
-        /// <remarks>The cache will be discarding only if memory lack or explicitly removed.</remarks>
         public static void Set<T>(string key, T value, int cacheSeconds)
         {
             Instance.Set<T>(key, value, cacheSeconds);
@@ -86,18 +81,18 @@ namespace Radial.Cache
         /// Set cache data.
         /// </summary>
         /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="key">The cache key.</param>
+        /// <param name="key">The cache key(case insensitive).</param>
         /// <param name="value">The cache value.</param>
         /// <param name="ts">The cache holding time.</param>
-        /// <remarks>The cache will be discarding only if memory lack or explicitly removed.</remarks>
         public static void Set<T>(string key, T value, TimeSpan ts)
         {
             Instance.Set<T>(key, value, ts);
         }
+
         /// <summary>
         /// Retrieve cached data.
         /// </summary>
-        /// <param name="key">The cache key.</param>
+        /// <param name="key">The cache key(case insensitive).</param>
         /// <returns>If there has matched data, return the cached object, otherwise return null.</returns>
         public static object Get(string key)
         {
@@ -107,7 +102,7 @@ namespace Radial.Cache
         /// Retrieve cached data.
         /// </summary>
         /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="key">The cache key.</param>
+        /// <param name="key">The cache key(case insensitive).</param>
         /// <returns>If there has matched data, return the cached object, otherwise return null.</returns>
         public static T Get<T>(string key)
         {
@@ -117,7 +112,7 @@ namespace Radial.Cache
         /// <summary>
         /// Retrieve cached data.
         /// </summary>
-        /// <param name="keys">The cache keys.</param>
+        /// <param name="keys">The cache keys(case insensitive).</param>
         /// <returns>If there has matched data, return the cached objects, otherwise return an empty array.</returns>
         public static object[] Gets(string[] keys)
         {
@@ -127,7 +122,7 @@ namespace Radial.Cache
         /// Retrieve cached data.
         /// </summary>
         /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="keys">The cache keys.</param>
+        /// <param name="keys">The cache keys(case insensitive).</param>
         /// <returns>If there has matched data, return the cached objects, otherwise return an empty array.</returns>
         public static T[] Gets<T>(string[] keys)
         {
@@ -137,7 +132,7 @@ namespace Radial.Cache
         /// <summary>
         /// Remove cache key and its value.
         /// </summary>
-        /// <param name="key">The cache key.</param>
+        /// <param name="key">The cache key(case insensitive).</param>
         public static void Remove(string key)
         {
             Instance.Remove(key);

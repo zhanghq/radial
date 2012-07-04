@@ -72,32 +72,6 @@ namespace Radial.Data.Mongod
         }
 
 
-        ///// <summary>
-        ///// Maps the reduce.
-        ///// </summary>
-        ///// <param name="map">The map.</param>
-        ///// <param name="reduce">The reduce.</param>
-        ///// <returns></returns>
-        //public virtual TObject MapReduce(string map, string reduce)
-        //{
-        //    TObject result = default(TObject);
-        //    using (var db = CreateReadDb())
-        //    {
-        //        var mr = db.Database.CreateMapReduce();
-        //        MapReduceResponse response =
-        //            mr.Execute(new MapReduceOptions(CollectionName)
-        //            {
-        //                Map = map,
-        //                Reduce = reduce
-        //            });
-        //        IMongoCollection<MapReduceResult<TObject>> coll = response.GetCollection<MapReduceResult<TObject>>();
-        //        MapReduceResult<TObject> r = coll.Find().FirstOrDefault();
-        //        result = r.Value;
-        //    }
-        //    return result;
-        //}
-
-
         #region IRepository<TObject,TKey> Members
 
         /// <summary>
@@ -138,19 +112,16 @@ namespace Radial.Data.Mongod
         /// Removes an object with the specified key from the repository.
         /// </summary>
         /// <param name="key">The object key.</param>
-        public abstract void Remove(TKey key);
+        public virtual void Remove(TKey key)
+        {
+            Remove(Get(key));
+        }
 
         /// <summary>
         /// Removes the specified object from the repository.
         /// </summary>
         /// <param name="obj">The object.</param>
-        public virtual void Remove(TObject obj)
-        {
-            if (obj != null)
-            {
-                //WriteDatabase.GetCollection<TObject>(CollectionName).Remove(obj);
-            }
-        }
+        public abstract void Remove(TObject obj);
 
         /// <summary>
         /// Exists the specified key.
@@ -270,13 +241,14 @@ namespace Radial.Data.Mongod
 
             if (orderBys != null)
             {
-                foreach (OrderBySnippet<TObject> order in orderBys)
-                {
-                    if (order.IsAscending)
-                        query = query.OrderBy(order.Property);
-                    else
-                        query = query.OrderByDescending(order.Property);
-                }
+                Checker.Requires(orderBys.Length == 1, "Only one OrderBy or OrderByDescending clause is allowed (use ThenBy or ThenByDescending for multiple order by clauses in your own code)");
+
+                OrderBySnippet<TObject> order = orderBys[0];
+
+                if (order.IsAscending)
+                    query = query.OrderBy(order.Property);
+                else
+                    query = query.OrderByDescending(order.Property);
             }
 
             return query.ToList();
@@ -328,14 +300,16 @@ namespace Radial.Data.Mongod
 
             if (orderBys != null)
             {
-                foreach (OrderBySnippet<TObject> order in orderBys)
-                {
-                    if (order.IsAscending)
-                        query = query.OrderBy(order.Property);
-                    else
-                        query = query.OrderByDescending(order.Property);
-                }
+                Checker.Requires(orderBys.Length == 1, "Only one OrderBy or OrderByDescending clause is allowed (use ThenBy or ThenByDescending for multiple order by clauses in your own code)");
+
+                OrderBySnippet<TObject> order = orderBys[0];
+
+                if (order.IsAscending)
+                    query = query.OrderBy(order.Property);
+                else
+                    query = query.OrderByDescending(order.Property);
             }
+            
 
             return query.Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
         }
@@ -345,13 +319,7 @@ namespace Radial.Data.Mongod
         /// </summary>
         public virtual void Clear()
         {
-
-            try
-            {
-                WriteDatabase.GetCollection<TObject>(CollectionName).RemoveAll();
-            }
-            catch { }
-
+            WriteDatabase.GetCollection<TObject>(CollectionName).RemoveAll();
         }
 
 
@@ -411,13 +379,14 @@ namespace Radial.Data.Mongod
 
             if (orderBys != null)
             {
-                foreach (OrderBySnippet<TObject> order in orderBys)
-                {
-                    if (order.IsAscending)
-                        query = query.OrderBy(order.Property);
-                    else
-                        query = query.OrderByDescending(order.Property);
-                }
+                Checker.Requires(orderBys.Length == 1, "Only one OrderBy or OrderByDescending clause is allowed (use ThenBy or ThenByDescending for multiple order by clauses in your own code)");
+
+                OrderBySnippet<TObject> order = orderBys[0];
+
+                if (order.IsAscending)
+                    query = query.OrderBy(order.Property);
+                else
+                    query = query.OrderByDescending(order.Property);
             }
 
             return query.Take(returnObjectCount).ToList();
@@ -469,13 +438,14 @@ namespace Radial.Data.Mongod
 
             if (orderBys != null)
             {
-                foreach (OrderBySnippet<TObject> order in orderBys)
-                {
-                    if (order.IsAscending)
-                        query = query.OrderBy(order.Property);
-                    else
-                        query = query.OrderByDescending(order.Property);
-                }
+                Checker.Requires(orderBys.Length == 1, "Only one OrderBy or OrderByDescending clause is allowed (use ThenBy or ThenByDescending for multiple order by clauses in your own code)");
+
+                OrderBySnippet<TObject> order = orderBys[0];
+
+                if (order.IsAscending)
+                    query = query.OrderBy(order.Property);
+                else
+                    query = query.OrderByDescending(order.Property);
             }
 
             return query.Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();

@@ -31,6 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MongoDB.Bson, Version=1.5.0.4566, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=1.5.0.4566, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\MongoDB.Driver.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.0.2.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
@@ -57,6 +65,7 @@
     <Compile Include="HttpKitsTest.cs" />
     <Compile Include="DistLockTest.cs" />
     <Compile Include="MemcachedTest.cs" />
+    <Compile Include="MongodTest.cs" />
     <Compile Include="Nhs\StoragePolicy\UserStoragePolicy.cs" />
     <Compile Include="Nhs\Domain\User.cs" />
     <Compile Include="Nhs\MappingByCodeTest.cs" />
@@ -84,6 +93,10 @@
       <Project>{CC555389-A855-4FB6-A2E5-DD52522F22B0}</Project>
       <Name>Radial.Cache.Memcached</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Radial.Data.Mongod\Radial.Data.Mongod.csproj">
+      <Project>{80C5F7DF-190A-4EA3-8AA0-318A596757B2}</Project>
+      <Name>Radial.Data.Mongod</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Radial.Data.Nhs\Radial.Data.Nhs.csproj">
       <Project>{3F92CFFD-F387-43BF-A548-C6E2683A318F}</Project>
       <Name>Radial.Data.Nhs</Name>
@@ -105,6 +118,9 @@
     <None Include="App.config" />
     <None Include="Config\Components.config" />
     <None Include="Config\log4net.config" />
+    <None Include="Config\Mongod.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Config\NHibernate.config">
       <SubType>Designer</SubType>
     </None>

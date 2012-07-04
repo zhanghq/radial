@@ -5,7 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using Radial.Data.Mongod;
 using Radial.Data;
-using Norm;
+using MongoDB.Driver.Builders;
 
 namespace Radial.UnitTest
 {
@@ -20,11 +20,6 @@ namespace Radial.UnitTest
 
     public class MongoBookRepository : MongoRepository<MongoBook, string>
     {
-        public override void Remove(string key)
-        {
-            Remove(Get(key));
-
-        }
 
         public override bool Exist(string key)
         {
@@ -40,27 +35,12 @@ namespace Radial.UnitTest
             return Get(o => o.Id == key.Trim());
         }
 
-        public IList<MongoBook> OrderTest()
+        public override void Remove(MongoBook obj)
         {
-            using (var db = CreateReadDb())
+            if (obj != null)
             {
-                var query = db.GetCollection<MongoBook>(CollectionName).AsQueryable();
-
-                return query.Where(o => o.Date > DateTime.Now).OrderByDescending(o => o.Date).Take(2).Skip(2).ToList();
-            }
-        }
-
-        public override IList<MongoBook> Gets(System.Linq.Expressions.Expression<Func<MongoBook, bool>> where, int pageSize, int pageIndex, out int objectTotal)
-        {
-            using (var db = CreateReadDb())
-            {
-                var query = db.GetCollection<MongoBook>(CollectionName).AsQueryable();
-
-                if (where != null)
-                    query = query.Where(where);
-                objectTotal = query.Count();
-
-                return query.OrderByDescending(o => o.Date).Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
+                var query = Query.EQ("_id", obj.Id);
+                WriteDatabase.GetCollection<MongoBook>(CollectionName).Remove(query);
             }
         }
     }
@@ -68,7 +48,6 @@ namespace Radial.UnitTest
     [TestFixture]
     public class MongodTest
     {
-
 
         [Test]
         public void Exist()
@@ -105,7 +84,7 @@ namespace Radial.UnitTest
             repository.Add(bks);
 
             int objectTotal;
-            bks = repository.Gets(10, 1, out objectTotal);
+            bks = repository.Gets(null, new OrderBySnippet<MongoBook>[] { new OrderBySnippet<MongoBook>(o => o.Title) }, 10, 1, out objectTotal);
 
             Assert.AreEqual(30, objectTotal);
 

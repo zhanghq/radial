@@ -22,18 +22,13 @@ namespace Radial.Data.Nhs
         /// </summary>
         public static readonly ISessionFactory SessionFactory;
 
-        static object S_SyncRoot = new object();
-
 
         /// <summary>
         /// Initializes the <see cref="HibernateEngine"/> class.
         /// </summary>
         static HibernateEngine()
         {
-            lock (S_SyncRoot)
-            {
-                SessionFactory = SessionFactoryPool.First;
-            }
+            SessionFactory = SessionFactoryPool.First;
         }
 
         /// <summary>

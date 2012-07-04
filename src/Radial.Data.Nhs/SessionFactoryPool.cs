@@ -11,7 +11,6 @@ namespace Radial.Data.Nhs
     /// </summary>
     public static class SessionFactoryPool
     {
-        static object S_SyncRoot = new object();
         static ISet<SessionFactoryWrapper> S_FactoryWrapperSet;
 
         const string CanNotFindInstanceExceptionMessage = "can not find the specified ISessionFactory instance";
@@ -22,30 +21,27 @@ namespace Radial.Data.Nhs
         /// </summary>
         static SessionFactoryPool()
         {
-            lock (S_SyncRoot)
+            if (S_FactoryWrapperSet == null)
             {
-                if (S_FactoryWrapperSet == null)
+                Logger.Debug("begin initialize session factory pool");
+
+                IFactoryPoolInitializer initializer = null;
+                if (ComponentContainer.HasComponent<IFactoryPoolInitializer>())
                 {
-                    Logger.Debug("begin initialize session factory pool");
-
-                    IFactoryPoolInitializer initializer = null;
-                    if (ComponentContainer.HasComponent<IFactoryPoolInitializer>())
-                    {
-                        initializer = ComponentContainer.Resolve<IFactoryPoolInitializer>();
-                    }
-                    else
-                    {
-                        //use default when not set.
-                        Logger.Debug("can not found any session factory pool initializer, using DefaultFactoryPoolInitializer instead");
-                        initializer = new DefaultFactoryPoolInitializer();
-                    }
-
-                    S_FactoryWrapperSet = initializer.Execute();
-
-                    Checker.Requires(S_FactoryWrapperSet != null && S_FactoryWrapperSet.Count > 0, "failed to initialize: SessionFactoryWrapper set was null or empty");
-
-                    Logger.Debug("end initialize session factory pool");
+                    initializer = ComponentContainer.Resolve<IFactoryPoolInitializer>();
                 }
+                else
+                {
+                    //use default when not set.
+                    Logger.Debug("can not found any session factory pool initializer, using DefaultFactoryPoolInitializer instead");
+                    initializer = new DefaultFactoryPoolInitializer();
+                }
+
+                S_FactoryWrapperSet = initializer.Execute();
+
+                Checker.Requires(S_FactoryWrapperSet != null && S_FactoryWrapperSet.Count > 0, "failed to initialize: SessionFactoryWrapper set was null or empty");
+
+                Logger.Debug("end initialize session factory pool");
             }
         }
 

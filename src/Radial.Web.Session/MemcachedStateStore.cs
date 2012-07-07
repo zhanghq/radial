@@ -140,7 +140,6 @@ namespace Radial.Web.Session
         string _applicationName;
         MemcachedClient _memcachedClient;
         SessionStateSection _sessionStateConfig;
-        static object S_SyncRoot = new object();
 
         /// <summary>
         /// 获取一条简短的易懂描述，它适合在管理工具或其他用户界面 (UI) 中显示。
@@ -252,8 +251,7 @@ namespace Radial.Web.Session
 
             try
             {
-                lock (S_SyncRoot)
-                    _memcachedClient.Store(Enyim.Caching.Memcached.StoreMode.Add, cacheKey, data, TimeSpan.FromMinutes(data.Timeout));
+                _memcachedClient.Store(Enyim.Caching.Memcached.StoreMode.Add, cacheKey, data, TimeSpan.FromMinutes(data.Timeout));
             }
             catch (Exception e)
             {
@@ -355,34 +353,33 @@ namespace Radial.Web.Session
             try
             {
                 string cacheKey = BuildCacheKey(id);
-                lock (S_SyncRoot)
+
+                StateData data = _memcachedClient.Get<StateData>(cacheKey);
+
+                if (data != null)
                 {
-                    StateData data = _memcachedClient.Get<StateData>(cacheKey);
-
-                    if (data != null)
+                    if (!locked)
                     {
-                        if (!locked)
-                        {
-                            actions = data.ActionFlag;
+                        actions = data.ActionFlag;
 
-                            data.Locked = true;
-                            data.LockId++;
+                        data.Locked = true;
+                        data.LockId++;
 
 
-                            _memcachedClient.Store(Enyim.Caching.Memcached.StoreMode.Replace, cacheKey, data, TimeSpan.FromMinutes(data.Timeout));
+                        _memcachedClient.Store(Enyim.Caching.Memcached.StoreMode.Set, cacheKey, data, TimeSpan.FromMinutes(data.Timeout));
 
-                            if (actions == SessionStateActions.InitializeItem)
-                                obj = CreateNewStoreData(context, _sessionStateConfig.Timeout.Minutes);
-                            else
-                                obj = data.ToSessionStateStoreData(context);
-
-                            locked = data.Locked;
-                            lockId = data.LockId;
-                        }
+                        if (actions == SessionStateActions.InitializeItem)
+                            obj = CreateNewStoreData(context, _sessionStateConfig.Timeout.Minutes);
                         else
-                            lockAge = data.LockAge;
+                            obj = data.ToSessionStateStoreData(context);
+
+                        locked = data.Locked;
+                        lockId = data.LockId;
                     }
+                    else
+                        lockAge = data.LockAge;
                 }
+
             }
             catch (Exception e)
             {
@@ -413,19 +410,17 @@ namespace Radial.Web.Session
             {
                 string cacheKey = BuildCacheKey(id);
 
-                lock (S_SyncRoot)
+                StateData data = _memcachedClient.Get<StateData>(cacheKey);
+
+                if (data != null && data.Locked && data.LockId == (int)lockId)
                 {
-                    StateData data = _memcachedClient.Get<StateData>(cacheKey);
+                    data.Locked = false;
+                    data.LockId = 0;
 
-                    if (data != null && data.LockId == (int)lockId)
-                    {
-                        data.Locked = false;
-                        data.LockId = 0;
+                    _memcachedClient.Store(Enyim.Caching.Memcached.StoreMode.Set, cacheKey, data, TimeSpan.FromMinutes(data.Timeout));
 
-                        _memcachedClient.Store(Enyim.Caching.Memcached.StoreMode.Replace, cacheKey, data, TimeSpan.FromMinutes(data.Timeout));
-
-                    }
                 }
+
             }
             catch (Exception e)
             {
@@ -444,8 +439,7 @@ namespace Radial.Web.Session
         {
             try
             {
-                lock (S_SyncRoot)
-                    _memcachedClient.Remove(BuildCacheKey(id));
+                _memcachedClient.Remove(BuildCacheKey(id));
             }
             catch (Exception e)
             {
@@ -465,14 +459,11 @@ namespace Radial.Web.Session
             {
                 string cacheKey = BuildCacheKey(id);
 
-                lock (S_SyncRoot)
-                {
-                    StateData data = _memcachedClient.Get<StateData>(cacheKey);
+                StateData data = _memcachedClient.Get<StateData>(cacheKey);
 
-                    if (data != null)
-                    {
-                        _memcachedClient.Store(Enyim.Caching.Memcached.StoreMode.Replace, cacheKey, data, TimeSpan.FromMinutes(data.Timeout));
-                    }
+                if (data != null)
+                {
+                    _memcachedClient.Store(Enyim.Caching.Memcached.StoreMode.Set, cacheKey, data, TimeSpan.FromMinutes(data.Timeout));
                 }
             }
             catch (Exception e)
@@ -495,16 +486,12 @@ namespace Radial.Web.Session
 
             try
             {
-                lock (S_SyncRoot)
-                {
-                    string cacheKey = BuildCacheKey(id);
-                    StateData data = new StateData { Content = item.Serialize(), Timeout = item.Timeout, LockId = lockId != null ? (int)lockId : 0 };
 
-                    if (newItem)
-                        _memcachedClient.Store(Enyim.Caching.Memcached.StoreMode.Add, cacheKey, data, TimeSpan.FromMinutes(data.Timeout));
-                    else
-                        _memcachedClient.Store(Enyim.Caching.Memcached.StoreMode.Replace, cacheKey, data, TimeSpan.FromMinutes(data.Timeout));
-                }
+                string cacheKey = BuildCacheKey(id);
+                StateData data = new StateData { Content = item.Serialize(), Timeout = item.Timeout, LockId = lockId != null ? (int)lockId : 0 };
+
+                _memcachedClient.Store(Enyim.Caching.Memcached.StoreMode.Set, cacheKey, data, TimeSpan.FromMinutes(data.Timeout));
+
             }
             catch (Exception e)
             {

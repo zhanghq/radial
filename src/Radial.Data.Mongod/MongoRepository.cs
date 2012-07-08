@@ -39,7 +39,7 @@ namespace Radial.Data.Mongod
         /// <summary>
         /// Gets the persistent collection name.
         /// </summary>
-        protected string CollectionName
+        protected virtual string CollectionName
         {
             get
             {
@@ -51,7 +51,7 @@ namespace Radial.Data.Mongod
         /// Gets new MongoDatabase object of the read database .
         /// </summary>
         /// <returns>MongoDatabase object.</returns>
-        protected MongoDatabase ReadDatabase
+        protected virtual MongoDatabase ReadDatabase
         {
             get
             {
@@ -63,7 +63,7 @@ namespace Radial.Data.Mongod
         /// Gets new MongoDatabase object of the write database .
         /// </summary>
         /// <returns>MongoDatabase object.</returns>
-        protected MongoDatabase WriteDatabase
+        protected virtual MongoDatabase WriteDatabase
         {
             get
             {

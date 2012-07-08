@@ -2,87 +2,86 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO;
+using Radial.Param;
 using System.Xml.Linq;
-using System.Text.RegularExpressions;
+using Radial.Cache;
+using System.IO;
+using System.Xml;
 
-namespace Radial.Param
+namespace Radial.Data.Mongod.Param
 {
     /// <summary>
-    /// Xml param class.
+    /// Default MongoDB param implement.
     /// </summary>
-    public class XmlParam : IParam
+    public class DefaultParam : IParam
     {
-        static object SyncRoot = new object();
 
-        /// <summary>
-        /// xml ns
-        /// </summary>
+        MongoParamRepository _repository;
+        static object SyncRoot = new object();
         const string Xmlns = "urn:radial-xmlparam";
 
-        static XElement S_Root;
-
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="XmlParam"/> class.
+        /// The cache key.
         /// </summary>
-        static XmlParam()
-        {
-            Initial(ConfigurationPath);
-            FileWatcher.CreateMonitor(ConfigurationPath, Initial);
-        }
-
+        public const string CacheKey = "MongoParamCache";
 
         /// <summary>
-        /// Gets the configuration path.
+        /// Initializes a new instance of the <see cref="DefaultParam"/> class.
         /// </summary>
-        private static string ConfigurationPath
+        public DefaultParam()
         {
-            get
-            {
-                return SystemVariables.GetConfigurationPath("XmlParam.config");
-            }
+            _repository = new MongoParamRepository();
         }
 
         /// <summary>
-        /// Gets the logger.
+        /// Loads the root element.
         /// </summary>
-        private static Logger Logger
+        /// <returns></returns>
+        private XElement LoadRootElement()
         {
-            get
-            {
-                return Logger.GetInstance("XmlParam");
-            }
-        }
+            XDocument doc = new XDocument();
 
-        /// <summary>
-        /// Initials the specified config file path.
-        /// </summary>
-        /// <param name="configFilePath">The config file path.</param>
-        private static void Initial(string configFilePath)
-        {
+            string content = CacheStatic.Get<string>(CacheKey);
 
-            lock (SyncRoot)
+            if (string.IsNullOrWhiteSpace(content))
             {
-                XDocument doc = null;
-                if (!File.Exists(configFilePath))
-                {
-                    Logger.Debug("create new xmlparam settings");
-                    doc = new XDocument();
+                ItemEntity entity = _repository.Get(ItemEntity.EntityId);
+                if (entity == null)
                     doc.Add(new XElement(BuildXName("params")));
-                    doc.Save(configFilePath);
-                }
                 else
-                {
-                    Logger.Debug("load exists xmlparam settings");
-                    doc = XDocument.Load(configFilePath);
-                }
-
-                S_Root = doc.Root;
+                    doc = XDocument.Parse(entity.Content.Trim());
             }
+            else
+                doc = XDocument.Parse(content);
+
+            return doc.Root;
         }
 
+        /// <summary>
+        /// Saves the root element.
+        /// </summary>
+        /// <param name="root">The root.</param>
+        private void SaveRootElement(XElement root)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            using (StreamReader sr = new StreamReader(ms))
+            {
+                root.Save(ms);
+                string content = sr.ReadToEnd();
 
+                CacheStatic.Set<string>(CacheKey, content);
+
+                ItemEntity entity = _repository.Get(ItemEntity.EntityId);
+
+                if (entity == null)
+                    entity = new ItemEntity { Content = content };
+                else
+                    entity.Content = content;
+
+                _repository.Save(entity);
+            }
+        }
 
         /// <summary>
         /// Builds the name with xmlns.
@@ -104,7 +103,6 @@ namespace Radial.Param
         private ParamObject LoadObject(XElement e)
         {
             Checker.Parameter(e != null, "xelement can not be null");
-
 
             IList<string> pathRoutings = new List<string>();
 
@@ -146,23 +144,25 @@ namespace Radial.Param
         {
             path = ParamObject.NormalizePath(path);
 
-            string[] pathSplits = path.Split(new string[] { ParamObject.PathSeparator }, StringSplitOptions.RemoveEmptyEntries);
-
-            XElement e = S_Root;
-            for (int i = 0; i < pathSplits.Length; i++)
+            lock (SyncRoot)
             {
-                e = e.Descendants(BuildXName("item"))
-                    .Where(o => string.Compare(o.Attribute("name").Value, pathSplits[i].Trim(), true) == 0)
-                    .SingleOrDefault();
-                if (e == null)
-                    break;
+                string[] pathSplits = path.Split(new string[] { ParamObject.PathSeparator }, StringSplitOptions.RemoveEmptyEntries);
+
+                XElement e = LoadRootElement();
+                for (int i = 0; i < pathSplits.Length; i++)
+                {
+                    e = e.Descendants(BuildXName("item"))
+                        .Where(o => string.Compare(o.Attribute("name").Value, pathSplits[i].Trim(), true) == 0)
+                        .SingleOrDefault();
+                    if (e == null)
+                        break;
+                }
+
+                return e;
             }
-
-            return e;
-
         }
 
-        #region IParam Members
+        #region IParam members
 
         /// <summary>
         /// Determine whether the specified param object is exists.
@@ -171,7 +171,7 @@ namespace Radial.Param
         /// <returns>
         ///   <c>true</c> if the specified path is exists; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool Exist(string path)
+        public bool Exist(string path)
         {
             lock (SyncRoot)
             {
@@ -187,7 +187,7 @@ namespace Radial.Param
         /// <returns>
         /// If path exists, return the object, otherwise return null.
         /// </returns>
-        public virtual ParamObject Get(string path)
+        public ParamObject Get(string path)
         {
             path = ParamObject.NormalizePath(path);
 
@@ -213,7 +213,7 @@ namespace Radial.Param
         /// <returns>
         /// If path exists, return its value, otherwise return string.Empty.
         /// </returns>
-        public virtual string GetValue(string path)
+        public string GetValue(string path)
         {
             ParamObject o = Get(path);
 
@@ -230,7 +230,7 @@ namespace Radial.Param
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<ParamObject> Next(string currentPath)
+        public IList<ParamObject> Next(string currentPath)
         {
             IList<ParamObject> list = new List<ParamObject>();
 
@@ -239,9 +239,11 @@ namespace Radial.Param
             {
                 ParamObject obj = null;
 
+                XElement root = LoadRootElement();
+
                 if (string.IsNullOrWhiteSpace(currentPath))
                 {
-                    foreach (XElement e in S_Root.Elements(BuildXName("item")).OrderBy(o => o.Attribute("name").Value))
+                    foreach (XElement e in root.Elements(BuildXName("item")).OrderBy(o => o.Attribute("name").Value))
                     {
                         obj = LoadObject(e);
 
@@ -286,7 +288,7 @@ namespace Radial.Param
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<ParamObject> Next(string currentPath, int pageSize, int pageIndex, out int objectTotal)
+        public IList<ParamObject> Next(string currentPath, int pageSize, int pageIndex, out int objectTotal)
         {
             Checker.Parameter(pageSize >= 0, "pageSize must be greater than or equal to 0");
             Checker.Parameter(pageIndex >= 1, "pageIndex must be greater than or equal to 1");
@@ -301,9 +303,11 @@ namespace Radial.Param
 
                 if (string.IsNullOrWhiteSpace(currentPath))
                 {
-                    objectTotal = S_Root.Elements(BuildXName("item")).Count();
+                    XElement root = LoadRootElement();
 
-                    foreach (XElement e in S_Root.Elements(BuildXName("item")).OrderBy(o => o.Attribute("name").Value).Take(pageSize).Skip(pageSize * (pageIndex - 1)))
+                    objectTotal = root.Elements(BuildXName("item")).Count();
+
+                    foreach (XElement e in root.Elements(BuildXName("item")).OrderBy(o => o.Attribute("name").Value).Take(pageSize).Skip(pageSize * (pageIndex - 1)))
                     {
                         obj = LoadObject(e);
 
@@ -346,7 +350,7 @@ namespace Radial.Param
         /// <returns>
         /// If path matches, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<ParamObject> Search(string path)
+        public IList<ParamObject> Search(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
                 return Next(path);
@@ -357,8 +361,9 @@ namespace Radial.Param
 
             lock (SyncRoot)
             {
+                XElement root = LoadRootElement();
 
-                foreach (XElement e in S_Root.Descendants(BuildXName("item")).Where(o => o.Attribute("name").Value.StartsWith(path, StringComparison.OrdinalIgnoreCase)).OrderBy(o => o.Attribute("name").Value))
+                foreach (XElement e in root.Descendants(BuildXName("item")).Where(o => o.Attribute("name").Value.StartsWith(path, StringComparison.OrdinalIgnoreCase)).OrderBy(o => o.Attribute("name").Value))
                 {
                     ParamObject obj = LoadObject(e);
 
@@ -379,7 +384,7 @@ namespace Radial.Param
         /// <returns>
         /// If path matches, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<ParamObject> Search(string path, int pageSize, int pageIndex, out int objectTotal)
+        public IList<ParamObject> Search(string path, int pageSize, int pageIndex, out int objectTotal)
         {
             if (string.IsNullOrWhiteSpace(path))
                 return Next(path, pageSize, pageIndex, out objectTotal);
@@ -390,9 +395,11 @@ namespace Radial.Param
 
             lock (SyncRoot)
             {
-                objectTotal = S_Root.Descendants(BuildXName("item")).Where(o => o.Attribute("name").Value.StartsWith(path, StringComparison.OrdinalIgnoreCase)).Count();
+                XElement root = LoadRootElement();
 
-                foreach (XElement e in S_Root.Descendants(BuildXName("item")).Where(o => o.Attribute("name").Value.StartsWith(path)).OrderBy(o => o.Attribute("name").Value).Take(pageSize).Skip(pageSize * (pageIndex - 1)))
+                objectTotal = root.Descendants(BuildXName("item")).Where(o => o.Attribute("name").Value.StartsWith(path, StringComparison.OrdinalIgnoreCase)).Count();
+
+                foreach (XElement e in root.Descendants(BuildXName("item")).Where(o => o.Attribute("name").Value.StartsWith(path)).OrderBy(o => o.Attribute("name").Value).Take(pageSize).Skip(pageSize * (pageIndex - 1)))
                 {
                     ParamObject obj = LoadObject(e);
 
@@ -412,7 +419,7 @@ namespace Radial.Param
         /// <returns>
         /// If successful created, return param object.
         /// </returns>
-        public virtual ParamObject Create(string path, string description, string value)
+        public ParamObject Create(string path, string description, string value)
         {
             path = ParamObject.NormalizePath(path);
 
@@ -424,17 +431,19 @@ namespace Radial.Param
             {
                 obj.Description = description.Trim();
                 newElement.Add(new XAttribute("description", obj.Description));
-                
+
             }
             if (!string.IsNullOrWhiteSpace(value))
             {
                 obj.Value = value.Trim();
                 newElement.Add(new XElement(BuildXName("value"), new XCData(obj.Value)));
-                
+
             }
 
             lock (SyncRoot)
             {
+                XElement root = LoadRootElement();
+
                 Checker.Requires(!Exist(path), "duplicated path: \"{0}\"", path);
 
                 string parentPath = ParamObject.GetParentPath(path);
@@ -452,9 +461,9 @@ namespace Radial.Param
                         pElement.Add(new XElement(BuildXName("next"), newElement));
                 }
                 else
-                    S_Root.Add(newElement);
+                    root.Add(newElement);
 
-                S_Root.Save(ConfigurationPath);
+                SaveRootElement(root);
             }
 
             return obj;
@@ -469,12 +478,14 @@ namespace Radial.Param
         /// <returns>
         /// If successful created, return param object.
         /// </returns>
-        public virtual ParamObject Update(string path, string description, string value)
+        public ParamObject Update(string path, string description, string value)
         {
             path = ParamObject.NormalizePath(path);
 
             lock (SyncRoot)
             {
+                XElement root = LoadRootElement();
+
                 XElement e = GetElement(path);
 
                 Checker.Requires(e != null, "can not find path: \"{0}\"", path);
@@ -501,23 +512,24 @@ namespace Radial.Param
                     e.Element(BuildXName("value")).Remove();
                 e.Add(new XElement(BuildXName("value"), new XCData(obj.Value)));
 
-                S_Root.Save(ConfigurationPath);
+                SaveRootElement(root);
 
                 return obj;
             }
-
         }
 
         /// <summary>
         /// Delete param object.
         /// </summary>
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
-        public virtual void Delete(string path)
+        public void Delete(string path)
         {
             path = ParamObject.NormalizePath(path);
 
             lock (SyncRoot)
             {
+                XElement root = LoadRootElement();
+
                 XElement e = GetElement(path);
 
                 if (e != null)
@@ -542,9 +554,8 @@ namespace Radial.Param
                         }
                     }
 
-                    S_Root.Save(ConfigurationPath);
+                    SaveRootElement(root);
                 }
-
             }
         }
 

@@ -66,6 +66,7 @@
     <Compile Include="DistLockTest.cs" />
     <Compile Include="MemcachedTest.cs" />
     <Compile Include="MongodTest.cs" />
+    <Compile Include="MongoParamTest.cs" />
     <Compile Include="Nhs\StoragePolicy\UserStoragePolicy.cs" />
     <Compile Include="Nhs\Domain\User.cs" />
     <Compile Include="Nhs\MappingByCodeTest.cs" />

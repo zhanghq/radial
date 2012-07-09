@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MongoDB.Bson.Serialization.Attributes;
+using System.Xml.Linq;
 
 namespace Radial.Data.Mongod.Param
 {
@@ -29,5 +30,11 @@ namespace Radial.Data.Mongod.Param
         /// The xml based content.
         /// </value>
         public string Content { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets the SHA1 code of content.
+        /// </summary>
+        public string SHA1 { get; set; }
     }
 }

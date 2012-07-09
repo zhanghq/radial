@@ -53,7 +53,7 @@
     <Compile Include="Cfg\MongodConfig.cs" />
     <Compile Include="Cfg\ServerGroup.cs" />
     <Compile Include="MongoRepository.cs" />
-    <Compile Include="Param\DefaultParam.cs" />
+    <Compile Include="Param\MongoDefaultParam.cs" />
     <Compile Include="Param\ItemEntity.cs" />
     <Compile Include="Param\MongoParamRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

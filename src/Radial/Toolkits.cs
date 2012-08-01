@@ -182,7 +182,7 @@ namespace Radial
         }
 
         /// <summary>
-        /// 数据压缩
+        /// Compress
         /// </summary>
         /// <param name="data">The input data.</param>
         /// <returns>Compressed data.</returns>

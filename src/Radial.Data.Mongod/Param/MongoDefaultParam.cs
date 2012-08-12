@@ -37,8 +37,18 @@ namespace Radial.Data.Mongod.Param
         /// <summary>
         /// Loads the root element.
         /// </summary>
+        private XElement LoadRootElement()
+        {
+            string sha1;
+            return LoadRootElement(out sha1);
+        }
+
+        /// <summary>
+        /// Loads the root element.
+        /// </summary>
+        /// <param name="originalSHA1">the original sha1.</param>
         /// <returns></returns>
-        private XElement LoadRootElement(out string sha1)
+        private XElement LoadRootElement(out string originalSHA1)
         {
             XDocument doc = new XDocument();
 
@@ -49,18 +59,18 @@ namespace Radial.Data.Mongod.Param
                 entity = _repository.Get(ItemEntity.EntityId);
                 if (entity == null || string.IsNullOrWhiteSpace(entity.Content))
                 {
-                    sha1 = string.Empty;
+                    originalSHA1 = string.Empty;
                     doc.Add(new XElement(BuildXName("params")));
                 }
                 else
                 {
-                    sha1 = entity.SHA1;
+                    originalSHA1 = entity.SHA1;
                     doc = XDocument.Parse(entity.Content);
                 }
             }
             else
             {
-                sha1 = entity.SHA1;
+                originalSHA1 = entity.SHA1;
                 doc = XDocument.Parse(entity.Content);
             }
 
@@ -71,38 +81,34 @@ namespace Radial.Data.Mongod.Param
         /// Saves the root element.
         /// </summary>
         /// <param name="root">The root.</param>
-        /// <param name="oldSha1">The old sha1.</param>
-        private void SaveRootElement(XElement root, string oldSha1)
+        /// <param name="originalSHA1">The original sha1.</param>
+        private void SaveRootElement(XElement root, string originalSHA1)
         {
-            //Do not allow simultaneously written.
-            using (LockEntry.Acquire<ItemEntity>())
+            string xmlContent = string.Empty;
             using (MemoryStream ms = new MemoryStream())
             using (StreamReader sr = new StreamReader(ms))
             {
                 root.Save(ms);
                 ms.Position = 0;
-                string content = sr.ReadToEnd();
-
-                string sha1 = Radial.Security.CryptoProvider.SHA1Encrypt(content);
-
-                ItemEntity entity = _repository.Get(ItemEntity.EntityId);
-
-                if (entity != null)
-                {
-                    //conflicts
-                    if (!string.IsNullOrWhiteSpace(oldSha1))
-                        Checker.Requires(string.Compare(entity.SHA1, oldSha1, true) == 0, "entity content conflicts");
-
-                    entity.Content = content;
-                    entity.SHA1 = sha1;
-                }
-                else
-                    entity = new ItemEntity { Content = content, SHA1 = sha1 };
-
-                _repository.Save(entity);
-
-                CacheStatic.Set<ItemEntity>(CacheKey, entity);
+                xmlContent = sr.ReadToEnd();
             }
+
+            string newSHA1 = Radial.Security.CryptoProvider.SHA1Encrypt(xmlContent);
+
+            ItemEntity entity = new ItemEntity { Content = xmlContent, SHA1 = newSHA1 };
+
+            if (_repository.Exist(ItemEntity.EntityId))
+            {
+                //modify and check conflicts
+                //In order to use SHA1 check use Modify instead of Save
+                Checker.Requires(_repository.Modify(entity, originalSHA1), "mongo param item entity content conflicts");
+            }
+            else
+                //use add instead of Save, because if the same key exists then duplicate key error occurs
+                _repository.Add(entity);
+
+
+            CacheStatic.Set<ItemEntity>(CacheKey, entity);
 
         }
 
@@ -200,8 +206,7 @@ namespace Radial.Data.Mongod.Param
             lock (S_SyncRoot)
             {
                 path = ParamObject.NormalizePath(path);
-                string sha1;
-                XElement root = LoadRootElement(out sha1);
+                XElement root = LoadRootElement();
                 return GetElement(root, path) != null;
             }
         }
@@ -219,8 +224,7 @@ namespace Radial.Data.Mongod.Param
 
             lock (S_SyncRoot)
             {
-                string sha1;
-                XElement root = LoadRootElement(out sha1);
+                XElement root = LoadRootElement();
                 XElement e = GetElement(root, path);
 
                 if (e != null)
@@ -267,8 +271,7 @@ namespace Radial.Data.Mongod.Param
             {
                 ParamObject obj = null;
 
-                string sha1;
-                XElement root = LoadRootElement(out sha1);
+                XElement root = LoadRootElement();
 
                 if (string.IsNullOrWhiteSpace(currentPath))
                 {
@@ -330,8 +333,7 @@ namespace Radial.Data.Mongod.Param
             {
                 ParamObject obj = null;
 
-                string sha1;
-                XElement root = LoadRootElement(out sha1);
+                XElement root = LoadRootElement();
 
                 if (string.IsNullOrWhiteSpace(currentPath))
                 {
@@ -392,8 +394,7 @@ namespace Radial.Data.Mongod.Param
 
             lock (S_SyncRoot)
             {
-                string sha1;
-                XElement root = LoadRootElement(out sha1);
+                XElement root = LoadRootElement();
 
                 foreach (XElement e in root.Descendants(BuildXName("item")).Where(o => o.Attribute("name").Value.StartsWith(path, StringComparison.OrdinalIgnoreCase)).OrderBy(o => o.Attribute("name").Value))
                 {
@@ -427,8 +428,7 @@ namespace Radial.Data.Mongod.Param
 
             lock (S_SyncRoot)
             {
-                string sha1;
-                XElement root = LoadRootElement(out sha1);
+                XElement root = LoadRootElement();
 
                 objectTotal = root.Descendants(BuildXName("item")).Where(o => o.Attribute("name").Value.StartsWith(path, StringComparison.OrdinalIgnoreCase)).Count();
 
@@ -475,8 +475,8 @@ namespace Radial.Data.Mongod.Param
 
             lock (S_SyncRoot)
             {
-                string sha1;
-                XElement root = LoadRootElement(out sha1);
+                string originalSHA1;
+                XElement root = LoadRootElement(out originalSHA1);
 
                 Checker.Requires(GetElement(root, path) == null, "duplicated path: \"{0}\"", path);
 
@@ -497,7 +497,7 @@ namespace Radial.Data.Mongod.Param
                 else
                     root.Add(newElement);
 
-                SaveRootElement(root, sha1);
+                SaveRootElement(root, originalSHA1);
             }
 
             return obj;
@@ -518,8 +518,8 @@ namespace Radial.Data.Mongod.Param
 
             lock (S_SyncRoot)
             {
-                string sha1;
-                XElement root = LoadRootElement(out sha1);
+                string originalSHA1;
+                XElement root = LoadRootElement(out originalSHA1);
 
                 XElement e = GetElement(root, path);
 
@@ -547,7 +547,7 @@ namespace Radial.Data.Mongod.Param
                     e.Element(BuildXName("value")).Remove();
                 e.Add(new XElement(BuildXName("value"), new XCData(obj.Value)));
 
-                SaveRootElement(root,sha1);
+                SaveRootElement(root,originalSHA1);
 
                 return obj;
             }
@@ -563,8 +563,8 @@ namespace Radial.Data.Mongod.Param
 
             lock (S_SyncRoot)
             {
-                string sha1;
-                XElement root = LoadRootElement(out sha1);
+                string originalSHA1;
+                XElement root = LoadRootElement(out originalSHA1);
 
                 XElement e = GetElement(root, path);
 
@@ -590,7 +590,7 @@ namespace Radial.Data.Mongod.Param
                         }
                     }
 
-                    SaveRootElement(root, sha1);
+                    SaveRootElement(root, originalSHA1);
                 }
             }
         }

@@ -228,7 +228,7 @@ namespace Radial.DistLock
             Logger.Info("begin to acquire lock, key={0}", key);
 
             bool successfullyAcquired = false;
-            AcquireFailedEventArgs afea = new AcquireFailedEventArgs { LockKey = key, OutputLogger = Logger };
+            AcquireFailedEventArgs afea = new AcquireFailedEventArgs { LockKey = key };
 
             do
             {
@@ -248,10 +248,11 @@ namespace Radial.DistLock
                     afea.Exception = e;
                 }
 
-                afea.RetryTimes++;
+                afea.NextRetryTimes++;
 
                 if (AcquireFailed != null)
                     AcquireFailed(null, afea);
+
             }
             while (!afea.CancelRetry);
 

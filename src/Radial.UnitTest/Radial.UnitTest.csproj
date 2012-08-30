@@ -79,6 +79,7 @@
     <Compile Include="Nhs\PoolInitializer\PartitionFactoryPoolInitializer.cs" />
     <Compile Include="Nhs\Repository\UserRepository.cs" />
     <Compile Include="Nhs\BasicTest.cs" />
+    <Compile Include="SequentialKeyTest.cs" />
     <Compile Include="XmlParamTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomCodeTest.cs" />

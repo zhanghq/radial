@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Radial.Data.Nhs;
 using NHibernate;
 using Radial.Data.Nhs.Key;
+using Radial.Data;
 
 namespace Radial.UnitTest
 {
@@ -17,16 +18,21 @@ namespace Radial.UnitTest
         [Test]
         public void NextKey()
         {
-            using (ISession session = HibernateEngine.OpenSession())
+            HashSet<ulong> set = new HashSet<ulong>();
+            Parallel.For(0, 100, i =>
             {
-                ISequentialKeyBuilder builder = new DefaultSequentialKeyBuilder(new SqlServerSequentialKeyRepository(session));
-
-
-                Parallel.For(0, 20, i =>
+                using (IUnitOfWork uow = new NhUnitOfWork())
                 {
-                    Console.WriteLine("P{0}={1}", i, builder.Next<string>());
-                });
-            }
+                    ISequentialKeyBuilder builder = new DefaultSequentialKeyBuilder(new SqlServerSequentialKeyRepository(uow));
+
+                    ulong v=builder.Next<string>();
+
+                    Console.WriteLine("P{0}={1}", i, v);
+                    set.Add(v);
+                }
+            });
+
+            Assert.AreEqual(set.Count, 100);
         }
     }
 }

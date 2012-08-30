@@ -159,7 +159,7 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Commit changes(if Transaction property is null, will use TransactionScope automatically).
+        /// Commit changes (if Transaction property is null, will use TransactionScope automatically).
         /// </summary>
         public virtual void Commit()
         {
@@ -173,7 +173,7 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Commit changes(if Transaction property is null, will use TransactionScope automatically). 
+        /// Commit changes (if Transaction property is null, will use TransactionScope automatically). 
         /// </summary>
         /// <param name="option">The commit option.</param>
         public virtual void Commit(object option)
@@ -188,7 +188,7 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Commit changes(if Transaction property is null, will use TransactionScope automatically).
+        /// Commit changes (if Transaction property is null, will use TransactionScope automatically).
         /// </summary>
         /// <typeparam name="TOption">The type of commit option.</typeparam>
         /// <param name="option">The commit option.</param>

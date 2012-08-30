@@ -96,14 +96,9 @@ namespace Radial.Data.Nhs.Key
         public ulong Next(string discriminator, uint increaseStep)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(discriminator), "discriminator can not be empty or null");
-            ulong nextKey = 0;
 
-            lock (S_SyncRoot)
-            {
-                nextKey = _repository.Upsert(discriminator, increaseStep);
-            }
+            return _repository.Upsert(discriminator, increaseStep);
 
-            return nextKey;
         }
 
         #endregion

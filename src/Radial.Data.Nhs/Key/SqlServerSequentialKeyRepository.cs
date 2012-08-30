@@ -11,7 +11,8 @@ namespace Radial.Data.Nhs.Key
     /// </summary>
     public class SqlServerSequentialKeyRepository : BasicRepository<SequentialKeyEntity, string>, ISequentialKeyRepository
     {
-        const string SQLQUERY = "IF EXISTS(SELECT * FROM [SequentialKey] WHERE [Discriminator]=:Discriminator) "
+        const string SQLQUERY = "BEGIN TRANSACTION "
+                                + "IF EXISTS(SELECT * FROM [SequentialKey] WHERE [Discriminator]=:Discriminator) "
                                 + "BEGIN "
                                 + "UPDATE [SequentialKey] SET [Value]=[Value]+:IncreaseStep,[UpdateTime]=GETDATE() WHERE [Discriminator]=:Discriminator "
                                 + "SELECT [Value] FROM [SequentialKey] WHERE [Discriminator]=:Discriminator "
@@ -20,7 +21,8 @@ namespace Radial.Data.Nhs.Key
                                 + "BEGIN "
                                 + "INSERT INTO [SequentialKey] ([Discriminator],[Value],[UpdateTime]) VALUES (:Discriminator,:IncreaseStep,GETDATE()) "
                                 + "SELECT [Value] FROM [SequentialKey] WHERE [Discriminator]=:Discriminator "
-                                + "END";
+                                + "END "
+                                + "COMMIT TRANSACTION";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlServerSequentialKeyRepository"/> class.

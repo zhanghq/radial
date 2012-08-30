@@ -26,19 +26,14 @@ namespace Radial.DistLock
         }
 
         /// <summary>
-        /// Gets the output logger.
-        /// </summary>
-        public Logger OutputLogger { get; internal set; }
-
-        /// <summary>
         /// Gets the lock key.
         /// </summary>
         public string LockKey { get; internal set; }
 
         /// <summary>
-        /// Gets the retry times.
+        /// Gets the next retry times.
         /// </summary>
-        public int RetryTimes { get; internal set; }
+        public int NextRetryTimes { get; internal set; }
 
         /// <summary>
         /// Gets the exception.

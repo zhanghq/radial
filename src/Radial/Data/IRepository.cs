@@ -13,37 +13,6 @@ namespace Radial.Data
     /// <typeparam name="TKey">The type of the object key.</typeparam>
     public interface IRepository<TObject, TKey> where TObject : class
     {
-
-        /// <summary>
-        /// Adds an object to the repository.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        void Add(TObject obj);
-
-        /// <summary>
-        /// Adds objects to the repository.
-        /// </summary>
-        /// <param name="objs">The objects.</param>
-        void Add(IEnumerable<TObject> objs);
-
-        /// <summary>
-        /// Saves or updates the specified object.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        void Save(TObject obj);
-
-        /// <summary>
-        /// Removes an object with the specified key from the repository.
-        /// </summary>
-        /// <param name="key">The object key.</param>
-        void Remove(TKey key);
-
-        /// <summary>
-        /// Removes the specified object from the repository.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        void Remove(TObject obj);
-
         /// <summary>
         /// Determine whether the object is exists.
         /// </summary>
@@ -254,11 +223,5 @@ namespace Radial.Data
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
         IList<TObject> Gets(Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal);
-
-
-        /// <summary>
-        /// Clear all objects.
-        /// </summary>
-        void Clear();
     }
 }

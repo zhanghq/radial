@@ -16,13 +16,8 @@ namespace Radial.Data.Nhs.Param
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlServerParamRepository"/> class.
         /// </summary>
-        public SqlServerParamRepository() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SqlServerParamRepository"/> class.
-        /// </summary>
-        /// <param name="session">The NHibernate session object.</param>
-        public SqlServerParamRepository(ISession session) : base(session) { }
+        /// <param name="session">The IUnitOfWork instance.</param>
+        public SqlServerParamRepository(IUnitOfWork uow) : base(uow) { }
 
         /// <summary>
         /// Searches the specified path.

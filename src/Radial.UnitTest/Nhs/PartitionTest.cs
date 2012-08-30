@@ -29,55 +29,34 @@ namespace Radial.UnitTest.Nhs
         public void TearDown()
         {
             CleanUp();
-
-            ISession session = HibernateEngine.UnbindSession();
-            if (session != null)
-                session.Dispose();
         }
 
         public void CleanUp()
         {
             foreach (string alias in StorageRouter.GetStorageAliases<User>())
             {
-                AutoTransaction.Complete(() =>
+                using (IUnitOfWork uow = new NhUnitOfWork(alias))
                 {
-                    using (ISession session = SessionFactoryPool.OpenSession(alias))
-                    {
-                        UserRepository repository = new UserRepository(session);
+                    uow.RegisterClear<User>();
 
-                        repository.Clear();
-                    }
-                });
+                    uow.Commit();
+                }
             }
         }
 
         [Test]
         public void Save()
         {
-            using (ISession session = SessionFactoryPool.OpenSession("partition1"))
+            using (IUnitOfWork uow = new NhUnitOfWork("partition1"))
             {
-                UserRepository userRepository = new UserRepository(session);
-                AutoTransaction.Complete(() =>
-                {
-                    userRepository.Save(new User { Id = 1, Name = "测试" });
-                });
-                AutoTransaction.Complete(() =>
-                {
-                    userRepository.Remove(1);
-                });
+                uow.RegisterNew(new User { Id = 1, Name = "测试" });
+                uow.Commit();
             }
 
-            using (ISession session = SessionFactoryPool.OpenSession("partition2"))
+            using (IUnitOfWork uow = new NhUnitOfWork("partition2"))
             {
-                UserRepository userRepository = new UserRepository(session);
-                AutoTransaction.Complete(() =>
-                {
-                    userRepository.Save(new User { Id = 2, Name = "测试" });
-                });
-                AutoTransaction.Complete(() =>
-                {
-                    userRepository.Remove(2);
-                });
+                uow.RegisterNew(new User { Id = 2, Name = "测试" });
+                uow.Commit();
             }
         }
 
@@ -109,26 +88,23 @@ namespace Radial.UnitTest.Nhs
             //insert
             foreach (string alias in StorageRouter.GetStorageAliases<User>())
             {
-                AutoTransaction.Complete(() =>
+                using (IUnitOfWork uow = new NhUnitOfWork(alias))
                 {
-                    using (ISession session = SessionFactoryPool.OpenSession(alias))
-                    {
-                        UserRepository repository = new UserRepository(session);
+                    uow.RegisterNew<User>(ugroup[alias]);
 
-                        repository.Add(ugroup[alias]);
-                    }
-                });
+                    uow.Commit();
+                }
             }
 
 
 
             List<User> selectlist = new List<User>();
 
-            Parallel.ForEach<string>(SessionFactoryPool.GetFactoryAliases(), alias =>
+            Parallel.ForEach<string>(SessionFactoryPool.GetStorageAliases(), alias =>
             {
-                using (ISession session = SessionFactoryPool.OpenSession(alias))
+                using (IUnitOfWork uow = new NhUnitOfWork(alias))
                 {
-                    UserRepository userRepository = new UserRepository(session);
+                    UserRepository userRepository = new UserRepository(uow);
 
                     selectlist.AddRange(userRepository.Gets());
                 }

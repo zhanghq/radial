@@ -25,13 +25,8 @@ namespace Radial.Data.Nhs.Key
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlServerSequentialKeyRepository"/> class.
         /// </summary>
-        public SqlServerSequentialKeyRepository() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SqlServerSequentialKeyRepository"/> class.
-        /// </summary>
-        /// <param name="session">The NHibernate session object.</param>
-        public SqlServerSequentialKeyRepository(ISession session) : base(session) { }
+        /// <param name="uow">The IUnitOfWork instance.</param>
+        public SqlServerSequentialKeyRepository(IUnitOfWork uow) : base(uow) { }
 
         #region ISequentialKeyRepository Members
 

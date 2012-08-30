@@ -15,21 +15,16 @@ namespace Radial.Data.Nhs
     /// <typeparam name="TKey">The type of the object key.</typeparam>
     public abstract class BasicRepository<TObject, TKey> : IRepository<TObject, TKey> where TObject : class
     {
-        ISession _session;
+        IUnitOfWork _uow;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicRepository&lt;TObject, TKey&gt;"/> class.
         /// </summary>
-        public BasicRepository() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BasicRepository&lt;TObject, TKey&gt;"/> class.
-        /// </summary>
-        /// <param name="session">The NHibernate session object.</param>
-        public BasicRepository(ISession session)
+        /// <param name="uow">The IUnitOfWork instance.</param>
+        public BasicRepository(IUnitOfWork uow)
         {
-            Checker.Parameter(session != null, "the NHibernate session can not be null");
-            _session = session;
+            Checker.Parameter(uow != null, "the IUnitOfWork instance can not be null");
+            _uow = uow;
         }
 
         /// <summary>
@@ -39,44 +34,42 @@ namespace Radial.Data.Nhs
         {
             get
             {
-                if (_session == null)
-                    return HibernateEngine.CurrentSession;
-                return _session;
+                return (ISession)_uow.DataContext;
             }
         }
 
-        /// <summary>
-        /// Saves or updates the specified object.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        public virtual void Save(TObject obj)
-        {
-            if (obj != null)
-                Session.SaveOrUpdate(obj);
-        }
+        ///// <summary>
+        ///// Saves or updates the specified object.
+        ///// </summary>
+        ///// <param name="obj">The object.</param>
+        //public virtual void Save(TObject obj)
+        //{
+        //    if (obj != null)
+        //        Session.SaveOrUpdate(obj);
+        //}
 
-        /// <summary>
-        /// Removes an object with the specified key from the repository.
-        /// </summary>
-        /// <param name="key">The object key.</param>
-        public virtual void Remove(TKey key)
-        {
-            var metadata = Session.SessionFactory.GetClassMetadata(typeof(TObject));
+        ///// <summary>
+        ///// Removes an object with the specified key from the repository.
+        ///// </summary>
+        ///// <param name="key">The object key.</param>
+        //public virtual void Remove(TKey key)
+        //{
+        //    var metadata = Session.SessionFactory.GetClassMetadata(typeof(TObject));
 
-            Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
+        //    Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
 
-            Session.Delete(string.Format("from {0} o where o.{1}=?", typeof(TObject).Name, metadata.IdentifierPropertyName), key, metadata.IdentifierType);
-        }
+        //    Session.Delete(string.Format("from {0} o where o.{1}=?", typeof(TObject).Name, metadata.IdentifierPropertyName), key, metadata.IdentifierType);
+        //}
 
-        /// <summary>
-        /// Removes the specified object from the repository.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        public virtual void Remove(TObject obj)
-        {
-            if (obj != null)
-                Session.Delete(obj);
-        }
+        ///// <summary>
+        ///// Removes the specified object from the repository.
+        ///// </summary>
+        ///// <param name="obj">The object.</param>
+        //public virtual void Remove(TObject obj)
+        //{
+        //    if (obj != null)
+        //        Session.Delete(obj);
+        //}
 
         /// <summary>
         /// Determine whether the object is exists.
@@ -359,41 +352,41 @@ namespace Radial.Data.Nhs
             return ExecutePagingQuery(countQuery, dataQuery, pageSize, pageIndex, out objectTotal);
         }
 
-        /// <summary>
-        /// Clear all objects.
-        /// </summary>
-        public virtual void Clear()
-        {
-            Session.Delete(string.Format("from {0}", typeof(TObject).Name));
-        }
+        ///// <summary>
+        ///// Clear all objects.
+        ///// </summary>
+        //public virtual void Clear()
+        //{
+        //    Session.Delete(string.Format("from {0}", typeof(TObject).Name));
+        //}
 
 
-        /// <summary>
-        /// Adds objects to the repository.
-        /// </summary>
-        /// <param name="objs">The objects.</param>
-        public virtual void Add(IEnumerable<TObject> objs)
-        {
-            if (objs != null)
-            {
-                foreach (TObject obj in objs)
-                {
-                    if (obj != null)
-                        Session.Save(obj);
-                }
-            }
-        }
+        ///// <summary>
+        ///// Adds objects to the repository.
+        ///// </summary>
+        ///// <param name="objs">The objects.</param>
+        //public virtual void Add(IEnumerable<TObject> objs)
+        //{
+        //    if (objs != null)
+        //    {
+        //        foreach (TObject obj in objs)
+        //        {
+        //            if (obj != null)
+        //                Session.Save(obj);
+        //        }
+        //    }
+        //}
 
 
-        /// <summary>
-        /// Adds an object to the repository.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        public virtual void Add(TObject obj)
-        {
-            if (obj != null)
-                Add(new TObject[] { obj });
-        }
+        ///// <summary>
+        ///// Adds an object to the repository.
+        ///// </summary>
+        ///// <param name="obj">The object.</param>
+        //public virtual void Add(TObject obj)
+        //{
+        //    if (obj != null)
+        //        Add(new TObject[] { obj });
+        //}
 
 
         /// <summary>

@@ -8,51 +8,47 @@ using Radial.UnitTest.Nhs.Repository;
 using Radial.UnitTest.Nhs.Domain;
 using Radial.UnitTest.Nhs.PoolInitializer;
 using NHibernate;
+using Radial.Data;
 
 namespace Radial.UnitTest.Nhs
 {
     [TestFixture]
     public class MappingByCodeTest
     {
+        IUnitOfWork _uow;
+
         [TestFixtureSetUp]
         public void SetUp()
         {
-            ComponentContainer.RegisterPerThread<IFactoryPoolInitializer, MappingByCodeFactoryPoolInitializer>();
-            HibernateEngine.OpenAndBindSession();
-
+            _uow = new NhUnitOfWork();
             CleanUp();
         }
 
         [TestFixtureTearDown]
         public void TearDown()
         {
-
             CleanUp();
-
-            ISession session = HibernateEngine.UnbindSession();
-            if (session != null)
-                session.Dispose();
-
+            _uow.Dispose();
         }
 
         public void CleanUp()
         {
-            AutoTransaction.Complete(() =>
-            {
-                UserRepository repository = new UserRepository();
-                repository.Clear();
-
-            });
+            _uow.RegisterClear<User>();
+            _uow.Commit();
         }
 
         [Test]
         public void Save()
         {
-            UserRepository userRepository = new UserRepository();
-            AutoTransaction.Complete(() =>
-            {
-                userRepository.Save(new User { Id = 1, Name = "测试" });
-            });
+            UserRepository userRepository = new UserRepository(_uow);
+
+            _uow.RegisterNew<User>(new User { Id = 1, Name = "测试" });
+
+            _uow.Commit();
+
+            User u = userRepository.Get(1);
+
+            Console.WriteLine(u.Name);
 
         }
     }

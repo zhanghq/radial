@@ -73,27 +73,27 @@ namespace Radial.Data.Nhs
 
 
         /// <summary>
-        /// Gets the SessionFactoryWrapper object with the specified factory alias.
+        /// Gets the SessionFactoryWrapper object with the specified storage alias.
         /// </summary>
-        /// <param name="factoryAlias">The factory alias (case insensitive).</param>
+        /// <param name="storageAlias">The storage alias (case insensitive).</param>
         /// <returns>The SessionFactoryWrapper object.</returns>
-        public static SessionFactoryWrapper GeFactorytWrapper(string factoryAlias)
+        public static SessionFactoryWrapper GeFactorytWrapper(string storageAlias)
         {
-            return GetFactoryWrappers(factoryAlias)[0];
+            return GetFactoryWrappers(storageAlias)[0];
         }
 
         /// <summary>
-        /// Gets the SessionFactoryWrapper object with the specified factory aliases.
+        /// Gets the SessionFactoryWrapper object with the specified storage aliases.
         /// </summary>
-        /// <param name="factoryAliases">The factory alias array (case insensitive).</param>
+        /// <param name="storageAliases">The storage alias array (case insensitive).</param>
         /// <returns>The SessionFactoryWrapper object array.</returns>
-        public static SessionFactoryWrapper[] GetFactoryWrappers(params string[] factoryAliases)
+        public static SessionFactoryWrapper[] GetFactoryWrappers(params string[] storageAliases)
         {
             IList<SessionFactoryWrapper> list = new List<SessionFactoryWrapper>();
 
-            if (factoryAliases.Length > 0)
+            if (storageAliases.Length > 0)
             {
-                foreach (string alias in factoryAliases)
+                foreach (string alias in storageAliases)
                 {
 
                     string normalizedAlias = alias.ToLower().Trim();
@@ -113,9 +113,9 @@ namespace Radial.Data.Nhs
 
 
         /// <summary>
-        /// Gets the <see cref="NHibernate.ISessionFactory"/> instance with the specified factory alias.
+        /// Gets the <see cref="NHibernate.ISessionFactory"/> instance with the specified storage alias.
         /// </summary>
-        /// <param name="factoryAlias">The factory alias (case insensitive).</param>
+        /// <param name="factoryAlias">The storage alias (case insensitive).</param>
         /// <returns>The NHibernate.ISessionFactory instance</returns>
         public static ISessionFactory GetFactoryInstance(string factoryAlias)
         {
@@ -123,12 +123,12 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Gets all factory aliases.
+        /// Gets all storage aliases.
         /// </summary>
         /// <returns>
-        /// The factory aliases array.
+        /// The storage aliases array.
         /// </returns>
-        public static string[] GetFactoryAliases()
+        public static string[] GetStorageAliases()
         {
 
             IList<string> aliases = new List<string>(S_FactoryWrapperSet.Count);
@@ -141,13 +141,13 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Gets all factory aliases according to the factory group.
+        /// Gets all storage aliases according to the storage group.
         /// </summary>
-        /// <param name="group">The factory group, if equal to null means the factory not included in any group.</param>
+        /// <param name="group">The storage group, if equal to null means the storage not included in any group.</param>
         /// <returns>
-        /// The factory aliases array.
+        /// The storage aliases array.
         /// </returns>
-        public static string[] GetFactoryAliases(int? group)
+        public static string[] GetStorageAliases(int? group)
         {
             var q = S_FactoryWrapperSet.Where(o => o.Group == group);
 
@@ -160,9 +160,9 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Open a new session using the specified session factory.
+        /// Open a new session using the specified storage alias.
         /// </summary>
-        /// <param name="alias">The factory alias (case insensitive).</param>
+        /// <param name="alias">The storage alias (case insensitive).</param>
         /// <returns>A new ISession instance.</returns>
         public static ISession OpenSession(string alias)
         {

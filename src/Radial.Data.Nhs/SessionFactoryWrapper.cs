@@ -14,7 +14,7 @@ namespace Radial.Data.Nhs
         /// <summary>
         /// Initializes a new instance of the <see cref="SessionFactoryWrapper"/> class.
         /// </summary>
-        /// <param name="alias">The factory alias (case insensitive).</param>
+        /// <param name="alias">The storage alias (case insensitive).</param>
         /// <param name="factory">The factory instance.</param>
         public SessionFactoryWrapper(string alias, ISessionFactory factory)
             : this(alias, factory, null)
@@ -24,12 +24,12 @@ namespace Radial.Data.Nhs
         /// <summary>
         /// Initializes a new instance of the <see cref="SessionFactoryWrapper"/> class.
         /// </summary>
-        /// <param name="alias">The factory alias (case insensitive).</param>
+        /// <param name="alias">The storage alias (case insensitive).</param>
         /// <param name="factory">The factory instance.</param>
         /// <param name="group">The factory group, if equal to null means the factory not included in any group.</param>
         public SessionFactoryWrapper(string alias, ISessionFactory factory, int? group)
         {
-            Checker.Parameter(!string.IsNullOrWhiteSpace(alias), "factory alias can not be empty or null");
+            Checker.Parameter(!string.IsNullOrWhiteSpace(alias), "storage alias can not be empty or null");
             Checker.Parameter(factory != null, "factory instance can not be null");
 
             Alias = alias.ToLower().Trim();
@@ -38,7 +38,7 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Gets the factory alias.
+        /// Gets the storage alias.
         /// </summary>
         public string Alias
         {
@@ -56,7 +56,7 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Gets the factory group, if equal to null means the factory not included in any group.
+        /// Gets the storage group, if equal to null means the factory not included in any group.
         /// </summary>
         public int? Group
         {

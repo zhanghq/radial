@@ -18,21 +18,22 @@ namespace Radial.UnitTest
         [Test]
         public void NextKey()
         {
+            int thread = 100;
             HashSet<ulong> set = new HashSet<ulong>();
-            Parallel.For(0, 100, i =>
+            Parallel.For(0, thread, i =>
             {
                 using (IUnitOfWork uow = new NhUnitOfWork())
                 {
                     ISequentialKeyBuilder builder = new DefaultSequentialKeyBuilder(new SqlServerSequentialKeyRepository(uow));
 
-                    ulong v=builder.Next<string>();
+                    ulong v = builder.Next<string>();
 
                     Console.WriteLine("P{0}={1}", i, v);
                     set.Add(v);
                 }
             });
 
-            Assert.AreEqual(set.Count, 100);
+            Assert.AreEqual(thread, set.Count);
         }
     }
 }

@@ -19,7 +19,8 @@ namespace Radial.UnitTest.Nhs
         [TestFixtureSetUp]
         public void SetUp()
         {
-            ComponentContainer.RegisterPerThread<IFactoryPoolInitializer, PartitionFactoryPoolInitializer>();
+            if (!ComponentContainer.HasComponent<IFactoryPoolInitializer>())
+                ComponentContainer.RegisterPerThread<IFactoryPoolInitializer, PartitionFactoryPoolInitializer>();
 
             CleanUp();
 

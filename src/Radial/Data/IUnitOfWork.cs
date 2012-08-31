@@ -93,12 +93,6 @@ namespace Radial.Data
         /// <param name="option">The commit option.</param>
         void Commit(object option);
 
-        /// <summary>
-        /// Commit changes (if Transaction property is null, will use TransactionScope automatically).
-        /// </summary>
-        /// <typeparam name="TOption">The type of commit option.</typeparam>
-        /// <param name="option">The commit option.</param>
-        void Commit<TOption>(TOption option);
 
         /// <summary>
         /// Rollback current transaction instance.

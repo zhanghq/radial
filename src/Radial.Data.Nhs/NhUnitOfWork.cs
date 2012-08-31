@@ -188,22 +188,6 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Commit changes (if Transaction property is null, will use TransactionScope automatically).
-        /// </summary>
-        /// <typeparam name="TOption">The type of commit option.</typeparam>
-        /// <param name="option">The commit option.</param>
-        public virtual void Commit<TOption>(TOption option)
-        {
-            if (_transaction != null)
-            {
-                _transaction.Commit();
-                return;
-            }
-
-            AutoTransaction.Complete(() => _session.Flush());
-        }
-
-        /// <summary>
         /// Rollback current transaction instance.
         /// </summary>
         public void Rollback()

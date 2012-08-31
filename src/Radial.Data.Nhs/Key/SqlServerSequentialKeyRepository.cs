@@ -13,15 +13,10 @@ namespace Radial.Data.Nhs.Key
     {
         const string SQLQUERY = "BEGIN TRANSACTION "
                                 + "IF EXISTS(SELECT * FROM [SequentialKey] WHERE [Discriminator]=:Discriminator) "
-                                + "BEGIN "
                                 + "UPDATE [SequentialKey] SET [Value]=[Value]+:IncreaseStep,[UpdateTime]=GETDATE() WHERE [Discriminator]=:Discriminator "
-                                + "SELECT [Value] FROM [SequentialKey] WHERE [Discriminator]=:Discriminator "
-                                + "END "
                                 + "ELSE "
-                                + "BEGIN "
                                 + "INSERT INTO [SequentialKey] ([Discriminator],[Value],[UpdateTime]) VALUES (:Discriminator,:IncreaseStep,GETDATE()) "
                                 + "SELECT [Value] FROM [SequentialKey] WHERE [Discriminator]=:Discriminator "
-                                + "END "
                                 + "COMMIT TRANSACTION";
 
         /// <summary>

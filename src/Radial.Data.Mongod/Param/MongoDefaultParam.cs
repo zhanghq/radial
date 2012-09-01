@@ -56,7 +56,7 @@ namespace Radial.Data.Mongod.Param
 
             if (entity == null)
             {
-                entity = _repository.Get(ItemEntity.EntityId);
+                entity = _repository.Find(ItemEntity.EntityId);
                 if (entity == null || string.IsNullOrWhiteSpace(entity.Content))
                 {
                     originalSHA1 = string.Empty;

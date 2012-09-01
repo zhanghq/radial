@@ -107,7 +107,7 @@ namespace Radial.UnitTest.Nhs
                 {
                     UserRepository userRepository = new UserRepository(uow);
 
-                    selectlist.AddRange(userRepository.Gets());
+                    selectlist.AddRange(userRepository.FindAll());
                 }
             });
 

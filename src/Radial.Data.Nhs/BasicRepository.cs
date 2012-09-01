@@ -194,30 +194,30 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Get object with the specified key.
+        /// Find object with the specified key.
         /// </summary>
         /// <param name="key">The object key.</param>
         /// <returns>If data exists, return the object, otherwise return null.</returns>
-        public virtual TObject Get(TKey key)
+        public virtual TObject Find(TKey key)
         {
             return Session.Get<TObject>(key);
         }
 
         /// <summary>
-        /// Get object.
+        /// Find object.
         /// </summary>
         /// <param name="where">The where condition.</param>
         /// <returns>
         /// If data exists, return the object, otherwise return null.
         /// </returns>
-        public virtual TObject Get(System.Linq.Expressions.Expression<Func<TObject, bool>> where)
+        public virtual TObject Find(System.Linq.Expressions.Expression<Func<TObject, bool>> where)
         {
             Checker.Parameter(where != null, "where condition can not be null");
             return Session.QueryOver<TObject>().Where(where).SingleOrDefault();
         }
 
         /// <summary>
-        /// Get object.
+        /// Find object.
         /// </summary>
         /// <param name="where">The where condition.</param>
         /// <returns>
@@ -230,43 +230,43 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Gets the object with the specified key.
+        /// Find the object with the specified key.
         /// </summary>
         public TObject this[TKey key]
         {
-            get { return Get(key); }
+            get { return Find(key); }
         }
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> Gets()
+        public virtual IList<TObject> FindAll()
         {
-            return Gets(null, null);
+            return FindAll(null, null);
         }
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="orderBys">The order by snippets</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> Gets(OrderBySnippet<TObject>[] orderBys)
+        public virtual IList<TObject> FindAll(OrderBySnippet<TObject>[] orderBys)
         {
-            return Gets(null, orderBys);
+            return FindAll(null, orderBys);
         }
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="where">The where condition</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <returns>If data exists, return an objects list, otherwise return an empty list.</returns>
-        public virtual IList<TObject> Gets(System.Linq.Expressions.Expression<Func<TObject, bool>> where, params OrderBySnippet<TObject>[] orderBys)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> where, params OrderBySnippet<TObject>[] orderBys)
         {
             IQueryOver<TObject, TObject> query = Session.QueryOver<TObject>();
 
@@ -288,7 +288,7 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
@@ -296,13 +296,13 @@ namespace Radial.Data.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> Gets(int pageSize, int pageIndex, out int objectTotal)
+        public virtual IList<TObject> FindAll(int pageSize, int pageIndex, out int objectTotal)
         {
-            return Gets(null, pageSize, pageIndex, out objectTotal);
+            return FindAll(null, pageSize, pageIndex, out objectTotal);
         }
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="where">The where condition</param>
         /// <param name="pageSize">The list size per page.</param>
@@ -311,13 +311,13 @@ namespace Radial.Data.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> Gets(System.Linq.Expressions.Expression<Func<TObject, bool>> where, int pageSize, int pageIndex, out int objectTotal)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> where, int pageSize, int pageIndex, out int objectTotal)
         {
-            return Gets(where, null, pageSize, pageIndex, out objectTotal);
+            return FindAll(where, null, pageSize, pageIndex, out objectTotal);
         }
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="where">The where condition</param>
         /// <param name="orderBys">The order by snippets</param>
@@ -327,7 +327,7 @@ namespace Radial.Data.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> Gets(System.Linq.Expressions.Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal)
         {
             IQueryOver<TObject, TObject> countQuery = Session.QueryOver<TObject>();
             IQueryOver<TObject, TObject> dataQuery = Session.QueryOver<TObject>();
@@ -390,45 +390,45 @@ namespace Radial.Data.Nhs
 
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> Gets(int returnObjectCount)
+        public virtual IList<TObject> FindAll(int returnObjectCount)
         {
-            return Gets(null, null, returnObjectCount);
+            return FindAll(null, null, returnObjectCount);
         }
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="orderBys">The order by snippets.</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> Gets(OrderBySnippet<TObject>[] orderBys, int returnObjectCount)
+        public virtual IList<TObject> FindAll(OrderBySnippet<TObject>[] orderBys, int returnObjectCount)
         {
-            return Gets(null, orderBys, returnObjectCount);
+            return FindAll(null, orderBys, returnObjectCount);
         }
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="where">The where condition.</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> Gets(System.Linq.Expressions.Expression<Func<TObject, bool>> where, int returnObjectCount)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> where, int returnObjectCount)
         {
-            return Gets(where, null, returnObjectCount);
+            return FindAll(where, null, returnObjectCount);
         }
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="where">The where condition.</param>
         /// <param name="orderBys">The order by snippets.</param>
@@ -436,7 +436,7 @@ namespace Radial.Data.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> Gets(System.Linq.Expressions.Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int returnObjectCount)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int returnObjectCount)
         {
             IQueryOver<TObject, TObject> query = Session.QueryOver<TObject>();
 
@@ -459,20 +459,20 @@ namespace Radial.Data.Nhs
 
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> Gets(int pageSize, int pageIndex)
+        public virtual IList<TObject> FindAll(int pageSize, int pageIndex)
         {
-            return Gets(null, pageSize, pageIndex);
+            return FindAll(null, pageSize, pageIndex);
         }
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="where">The where condition</param>
         /// <param name="pageSize">The list size per page.</param>
@@ -480,13 +480,13 @@ namespace Radial.Data.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> Gets(System.Linq.Expressions.Expression<Func<TObject, bool>> where, int pageSize, int pageIndex)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> where, int pageSize, int pageIndex)
         {
-            return Gets(where, null, pageSize, pageIndex);
+            return FindAll(where, null, pageSize, pageIndex);
         }
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="where">The where condition</param>
         /// <param name="orderBys">The order by snippets</param>
@@ -495,7 +495,7 @@ namespace Radial.Data.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> Gets(System.Linq.Expressions.Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex)
         {
             IQueryOver<TObject, TObject> query = Session.QueryOver<TObject>();
 

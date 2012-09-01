@@ -83,7 +83,6 @@
     <Compile Include="Controllers\AsyncController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PagerController.cs" />
-    <Compile Include="Controllers\SequentialKeyController.cs" />
     <Compile Include="Controllers\SinaController.cs" />
     <Compile Include="Controllers\TencentController.cs" />
     <Compile Include="Global.asax.cs">

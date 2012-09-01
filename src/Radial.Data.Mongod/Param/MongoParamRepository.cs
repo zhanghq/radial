@@ -40,9 +40,9 @@ namespace Radial.Data.Mongod.Param
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        public override ItemEntity Get(string key)
+        public override ItemEntity Find(string key)
         {
-            return Get(o => o.Id == key.Trim());
+            return Find(o => o.Id == key.Trim());
         }
 
         /// <summary>

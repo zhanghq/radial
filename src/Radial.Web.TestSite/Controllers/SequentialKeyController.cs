@@ -9,10 +9,10 @@ namespace Radial.Web.TestSite.Controllers
 {
     public class SequentialKeyController : Controller
     {
-        ISequentialKeyBuilder _builder;
+        SequentialKeyBuilderBase _builder;
         //
         // GET: /SequentialKey/
-        public SequentialKeyController(ISequentialKeyBuilder builder)
+        public SequentialKeyController(SequentialKeyBuilderBase builder)
         {
             _builder = builder;
         }

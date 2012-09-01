@@ -77,7 +77,7 @@
     <Compile Include="Drawing\ImageKits.cs" />
     <Compile Include="EnumItemAttribute.cs" />
     <Compile Include="FileWatcher.cs" />
-    <Compile Include="ISequentialKeyBuilder.cs" />
+    <Compile Include="SequentialKeyBuilderBase.cs" />
     <Compile Include="KnownFaultException.cs" />
     <Compile Include="DistLock\EmptyLock.cs" />
     <Compile Include="DistLock\ILock.cs" />

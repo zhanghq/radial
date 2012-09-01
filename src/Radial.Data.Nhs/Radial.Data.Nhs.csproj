@@ -51,11 +51,6 @@
     <Compile Include="BasicRepository.cs" />
     <Compile Include="ContextBoundSession.cs" />
     <Compile Include="DefaultFactoryPoolInitializer.cs" />
-    <Compile Include="Key\DefaultSequentialKeyBuilder.cs" />
-    <Compile Include="Key\ISequentialKeyRepository.cs" />
-    <Compile Include="Key\SequentialKeyEntity.cs" />
-    <Compile Include="Key\SequentialKeyEntityMapper.cs" />
-    <Compile Include="Key\SqlServerSequentialKeyRepository.cs" />
     <Compile Include="NhUnitOfWork.cs" />
     <Compile Include="SessionFactoryPool.cs" />
     <Compile Include="NamingStrategy\SqliteNamingStrategy.cs" />
@@ -72,9 +67,6 @@
       <Project>{E9EC1CB9-79B6-47BC-AF82-E8B7B7AFFCEA}</Project>
       <Name>Radial</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Key\SequentialKeyEntity.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

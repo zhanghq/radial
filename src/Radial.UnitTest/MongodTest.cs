@@ -28,11 +28,11 @@ namespace Radial.UnitTest
             return GetTotal(o => o.Id == key.Trim()) > 0;
         }
 
-        public override MongoBook Get(string key)
+        public override MongoBook Find(string key)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(key), "object kay can not be empty or null");
 
-            return Get(o => o.Id == key.Trim());
+            return Find(o => o.Id == key.Trim());
         }
 
         public override void Remove(MongoBook obj)
@@ -84,7 +84,7 @@ namespace Radial.UnitTest
             repository.Add(bks);
 
             int objectTotal;
-            bks = repository.Gets(null, new OrderBySnippet<MongoBook>[] { new OrderBySnippet<MongoBook>(o => o.Title) }, 10, 1, out objectTotal);
+            bks = repository.FindAll(null, new OrderBySnippet<MongoBook>[] { new OrderBySnippet<MongoBook>(o => o.Title) }, 10, 1, out objectTotal);
 
             Assert.AreEqual(30, objectTotal);
 
@@ -108,7 +108,7 @@ namespace Radial.UnitTest
             repository.Add(bks);
 
             int objectTotal;
-            bks = repository.Gets(o => o.Date > DateTime.Now.Date.AddDays(2), 10, 1, out objectTotal);
+            bks = repository.FindAll(o => o.Date > DateTime.Now.Date.AddDays(2), 10, 1, out objectTotal);
 
             Assert.AreEqual(27, objectTotal);
 

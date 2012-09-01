@@ -24,7 +24,7 @@ namespace Radial.UnitTest
             {
                 using (IUnitOfWork uow = new NhUnitOfWork())
                 {
-                    ISequentialKeyBuilder builder = new DefaultSequentialKeyBuilder(new SqlServerSequentialKeyRepository(uow));
+                    SequentialKeyBuilderBase builder = new DefaultSequentialKeyBuilder(new SqlServerSequentialKeyRepository(uow));
 
                     ulong v = builder.Next<string>();
 

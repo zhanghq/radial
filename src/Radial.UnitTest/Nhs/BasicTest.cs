@@ -47,7 +47,7 @@ namespace Radial.UnitTest.Nhs
 
             _uow.Commit();
 
-            User u = userRepository.Get(1);
+            User u = userRepository.Find(1);
             Console.WriteLine(u.Name);
 
         }

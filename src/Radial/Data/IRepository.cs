@@ -67,84 +67,84 @@ namespace Radial.Data
         long GetTotalInt64(Expression<Func<TObject, bool>> where);
 
         /// <summary>
-        /// Get object with the specified key.
+        /// Find object with the specified key.
         /// </summary>
         /// <param name="key">The object key.</param>
         /// <returns>If data exists, return the object, otherwise return null.</returns>
-        TObject Get(TKey key);
+        TObject Find(TKey key);
 
         /// <summary>
-        /// Gets the object with the specified key.
+        /// Find the object with the specified key.
         /// </summary>
         TObject this[TKey key] { get; }
 
         /// <summary>
-        /// Get object.
+        /// Find object.
         /// </summary>
         /// <param name="where">The where condition.</param>
         /// <returns>
         /// If data exists, return the object, otherwise return null.
         /// </returns>
-        TObject Get(Expression<Func<TObject, bool>> where);
+        TObject Find(Expression<Func<TObject, bool>> where);
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> Gets();
+        IList<TObject> FindAll();
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="orderBys">The order by snippets</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> Gets(OrderBySnippet<TObject>[] orderBys);
+        IList<TObject> FindAll(OrderBySnippet<TObject>[] orderBys);
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="where">The where condition</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <returns>If data exists, return an objects list, otherwise return an empty list.</returns>
-        IList<TObject> Gets(Expression<Func<TObject, bool>> where, params OrderBySnippet<TObject>[] orderBys);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> where, params OrderBySnippet<TObject>[] orderBys);
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> Gets(int returnObjectCount);
+        IList<TObject> FindAll(int returnObjectCount);
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="orderBys">The order by snippets.</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> Gets(OrderBySnippet<TObject>[] orderBys, int returnObjectCount);
+        IList<TObject> FindAll(OrderBySnippet<TObject>[] orderBys, int returnObjectCount);
 
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="where">The where condition.</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> Gets(Expression<Func<TObject, bool>> where, int returnObjectCount);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> where, int returnObjectCount);
 
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="where">The where condition.</param>
         /// <param name="orderBys">The order by snippets.</param>
@@ -152,21 +152,21 @@ namespace Radial.Data
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> Gets(Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int returnObjectCount);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int returnObjectCount);
 
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> Gets(int pageSize, int pageIndex);
+        IList<TObject> FindAll(int pageSize, int pageIndex);
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="where">The where condition</param>
         /// <param name="pageSize">The list size per page.</param>
@@ -174,10 +174,10 @@ namespace Radial.Data
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> Gets(Expression<Func<TObject, bool>> where, int pageSize, int pageIndex);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> where, int pageSize, int pageIndex);
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="where">The where condition</param>
         /// <param name="orderBys">The order by snippets</param>
@@ -186,10 +186,10 @@ namespace Radial.Data
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> Gets(Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex);
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
@@ -197,10 +197,10 @@ namespace Radial.Data
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> Gets(int pageSize, int pageIndex, out int objectTotal);
+        IList<TObject> FindAll(int pageSize, int pageIndex, out int objectTotal);
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="where">The where condition</param>
         /// <param name="pageSize">The list size per page.</param>
@@ -209,10 +209,10 @@ namespace Radial.Data
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> Gets(Expression<Func<TObject, bool>> where, int pageSize, int pageIndex, out int objectTotal);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> where, int pageSize, int pageIndex, out int objectTotal);
 
         /// <summary>
-        /// Get all objects.
+        /// Find all objects.
         /// </summary>
         /// <param name="where">The where condition</param>
         /// <param name="orderBys">The order by snippets</param>
@@ -222,6 +222,6 @@ namespace Radial.Data
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> Gets(Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal);
     }
 }

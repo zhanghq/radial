@@ -10,23 +10,23 @@ using Radial.UnitTest.Nhs.Domain;
 using Radial.UnitTest.Nhs.Repository;
 using System.Threading.Tasks;
 using Radial.Data;
+using Autofac;
 
 namespace Radial.UnitTest.Nhs
 {
     [TestFixture]
     public class PartitionTest
     {
-        [TestFixtureSetUp]
+        [SetUp]
         public void SetUp()
         {
-            if (!ComponentContainer.HasComponent<IFactoryPoolInitializer>())
-                ComponentContainer.RegisterPerThread<IFactoryPoolInitializer, PartitionFactoryPoolInitializer>();
+            Components.AdditionalRegister = o => o.RegisterType<PartitionFactoryPoolInitializer>().As<IFactoryPoolInitializer>();
 
             CleanUp();
 
         }
 
-        [TestFixtureTearDown]
+        [TearDown]
         public void TearDown()
         {
             CleanUp();

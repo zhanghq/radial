@@ -42,7 +42,7 @@ namespace Radial.Web.TestSite
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
-            WindsorDependencyResolver.Register(Assembly.GetExecutingAssembly());
+            //WindsorDependencyResolver.Register(Assembly.GetExecutingAssembly());
         }
     }
 }

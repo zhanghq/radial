@@ -140,9 +140,9 @@ namespace Radial.DistLock
         {
             get
             {
-                if (!ComponentContainer.HasComponent(typeof(ILock)))
+                if (!Components.IsRegistered(typeof(ILock)))
                     return new EmptyLock();
-                return ComponentContainer.Resolve<ILock>();
+                return Components.Resolve<ILock>();
             }
         }
 

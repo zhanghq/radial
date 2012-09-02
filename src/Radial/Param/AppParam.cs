@@ -19,9 +19,9 @@ namespace Radial.Param
         {
             get
             {
-                if (!ComponentContainer.HasComponent(typeof(IParam)))
+                if (!Components.IsRegistered(typeof(IParam)))
                     return new ConfigurationParam();
-                return ComponentContainer.Resolve<IParam>();
+                return Components.Resolve<IParam>();
             }
         }
 

@@ -17,9 +17,9 @@ namespace Radial.Cache
         {
             get
             {
-                if (!ComponentContainer.HasComponent(typeof(ICache)))
+                if (!Components.IsRegistered(typeof(ICache)))
                     return new EmptyCache();
-                return ComponentContainer.Resolve<ICache>();
+                return Components.Resolve<ICache>();
             }
         }
 

@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using Radial.Param;
 using System.Xml.Linq;
+using Autofac;
 
 namespace Radial.UnitTest
 {
@@ -15,7 +16,7 @@ namespace Radial.UnitTest
         [TestFixtureSetUp]
         public void SetUp()
         {
-            Radial.ComponentContainer.RegisterSingleton<Radial.Param.IParam, Radial.Param.XmlParam>();
+            Components.AdditionalRegister = o => o.RegisterType<XmlParam>().As<IParam>().SingleInstance();
         }
 
         [Test]

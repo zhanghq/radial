@@ -31,7 +31,7 @@ namespace Radial.Web.Mvc
             if (controllerType == null)
                 return base.GetControllerInstance(requestContext, controllerType);
 
-            return ComponentContainer.Resolve(controllerType) as IController;
+            return Components.Resolve(controllerType) as IController;
         }
     }
 }

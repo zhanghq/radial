@@ -8,15 +8,15 @@ using System.Collections;
 namespace Radial.UnitTest
 {
     [TestFixture]
-    public class ComponentContainerTest
+    public class ComponentsTest
     {
         [Test]
         public void CCTestDemo()
         {
-            Dictionary<string,string> param=new Dictionary<string,string>();
+            IDictionary<string,object> param=new Dictionary<string,object>();
             param.Add("name","hello");
 
-            CCTestDemo o = ComponentContainer.Resolve<CCTestDemo>(param);
+            CCTestDemo o = Components.Resolve<CCTestDemo>(param);
             Console.WriteLine(o.Name);
         }
     }

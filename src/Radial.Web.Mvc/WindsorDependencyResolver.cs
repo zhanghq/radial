@@ -23,8 +23,8 @@ namespace Radial.Web.Mvc
         /// </returns>
         public object GetService(Type serviceType)
         {
-            if (ComponentContainer.HasComponent(serviceType))
-                return ComponentContainer.Resolve(serviceType);
+            if (Components.IsRegistered(serviceType))
+                return Components.Resolve(serviceType);
             return null;
         }
 
@@ -37,8 +37,8 @@ namespace Radial.Web.Mvc
         /// </returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            if (ComponentContainer.HasComponent(serviceType))
-                return ComponentContainer.ResolveAll(serviceType).Cast<object>();
+            if (Components.IsRegistered(serviceType))
+                return Components.ResolveAll(serviceType).Cast<object>();
 
             return new object[] { };
         }
@@ -129,7 +129,7 @@ namespace Radial.Web.Mvc
         {
             Checker.Parameter(controllerAssemblies != null && controllerAssemblies.Length > 0, "the array of controller assembly can not be null or empty");
 
-            ComponentContainer.RegisterSingleton<IControllerFactory, TFactory>();
+            Components.RegisterSingleton<IControllerFactory, TFactory>();
 
             foreach (Assembly assembly in controllerAssemblies)
             {
@@ -143,7 +143,7 @@ namespace Radial.Web.Mvc
                     {
                         //PerWebRequest lifestyle need httpModules configuration:
                         //<add name="PerRequestLifestyle" type="Castle.MicroKernel.Lifestyle.PerWebRequestLifestyleModule, Castle.Windsor" />
-                        ComponentContainer.RegisterPerWebRequest(type, type);
+                        Components.RegisterPerWebRequest(type, type);
                     }
 
                 }

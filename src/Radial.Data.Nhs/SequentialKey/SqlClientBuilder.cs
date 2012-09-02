@@ -6,12 +6,12 @@ using Radial.Data;
 using Radial;
 using NHibernate;
 
-namespace Radial.Data.Nhs.Key
+namespace Radial.Data.Nhs.SequentialKey
 {
     /// <summary>
     /// SqlClient sequential key builder.
     /// </summary>
-    public sealed class SqlClientKeyBuilder : SequentialKeyBuilder
+    public sealed class SqlClientBuilder : SequentialKeyBuilder
     {
         const string QUERY = "BEGIN TRANSACTION "
                         + "IF EXISTS(SELECT * FROM [SequentialKey] WHERE [Discriminator]=:Discriminator) "
@@ -24,10 +24,10 @@ namespace Radial.Data.Nhs.Key
         IUnitOfWork _uow;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SqlClientKeyBuilder"/> class.
+        /// Initializes a new instance of the <see cref="SqlClientBuilder"/> class.
         /// </summary>
         /// <param name="uow">IUnitOfWork instance.</param>
-        public SqlClientKeyBuilder(IUnitOfWork uow)
+        public SqlClientBuilder(IUnitOfWork uow)
         {
             _uow = uow;
         }

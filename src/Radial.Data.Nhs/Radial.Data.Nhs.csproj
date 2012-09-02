@@ -59,7 +59,7 @@
     <Compile Include="BasicRepository.cs" />
     <Compile Include="ContextBoundSession.cs" />
     <Compile Include="DefaultFactoryPoolInitializer.cs" />
-    <Compile Include="Key\SqlClientKeyBuilder.cs" />
+    <Compile Include="SequentialKey\SqlClientBuilder.cs" />
     <Compile Include="NhUnitOfWork.cs" />
     <Compile Include="SessionFactoryPool.cs" />
     <Compile Include="NamingStrategy\SqliteNamingStrategy.cs" />

@@ -192,7 +192,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1693</DevelopmentServerPort>
+          <DevelopmentServerPort>13654</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://demo.zhanghq.net</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

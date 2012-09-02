@@ -30,6 +30,16 @@ namespace Radial
         public static ContainerBuildOptions ContainerBuildOptions;
 
         /// <summary>
+        /// Configuration section name.
+        /// </summary>
+        public static string SectionName;
+
+        /// <summary>
+        /// Configuration file.
+        /// </summary>
+        public static string ConfigurationFile;
+
+        /// <summary>
         /// Gets components container.
         /// </summary>
         public static IContainer Container
@@ -41,7 +51,19 @@ namespace Radial
                     if (S_Container == null)
                     {
                         var builder = new ContainerBuilder();
-                        builder.RegisterModule(new ConfigurationSettingsReader());
+
+
+                        if (!string.IsNullOrWhiteSpace(SectionName) && !string.IsNullOrWhiteSpace(ConfigurationFile))
+                        {
+                            builder.RegisterModule(new ConfigurationSettingsReader(SectionName, ConfigurationFile));
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrWhiteSpace(SectionName) && string.IsNullOrWhiteSpace(ConfigurationFile))
+                                builder.RegisterModule(new ConfigurationSettingsReader(SectionName));
+                            else
+                                builder.RegisterModule(new ConfigurationSettingsReader());
+                        }
 
                         if (AdditionalRegister != null)
                             AdditionalRegister(builder);

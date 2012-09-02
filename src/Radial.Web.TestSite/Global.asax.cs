@@ -7,6 +7,7 @@ using System.Web.Routing;
 using Radial.Web.Mvc;
 using System.Reflection;
 using Radial.Web.Mvc.Filters;
+using Autofac.Integration.Mvc;
 
 namespace Radial.Web.TestSite
 {
@@ -42,7 +43,8 @@ namespace Radial.Web.TestSite
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
-            //WindsorDependencyResolver.Register(Assembly.GetExecutingAssembly());
+            Components.AdditionalRegister = o => o.RegisterControllers(typeof(MvcApplication).Assembly);
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(Components.Container));
         }
     }
 }

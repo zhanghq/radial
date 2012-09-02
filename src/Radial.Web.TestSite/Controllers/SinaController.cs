@@ -7,7 +7,6 @@ using Radial.Web.OpenApi;
 using Radial.Web.OpenApi.SDK;
 using Radial.Web.Mvc;
 using Radial.Net;
-using Radial.Data.Nhs.Mvc;
 using System.Collections.Specialized;
 using System.Threading;
 
@@ -17,7 +16,6 @@ namespace Radial.Web.TestSite.Controllers
     {
         //
         // GET: /Sina/
-        [HandleDataSession]
         public ActionResult Index()
         {
             SinaWeibo2 _client = new SinaWeibo2();
@@ -25,7 +23,6 @@ namespace Radial.Web.TestSite.Controllers
             return View();
         }
 
-        [HandleDataSession]
         public ActionResult Callback(string code)
         {
             NameValueCollection otherResponseData;

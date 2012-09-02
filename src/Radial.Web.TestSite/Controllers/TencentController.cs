@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Radial.Data.Nhs.Mvc;
 using Radial.Web.OpenApi.SDK;
 using Radial.Web.OpenApi;
 using Radial.Web.Mvc;
@@ -17,7 +16,6 @@ namespace Radial.Web.TestSite.Controllers
         //
         // GET: /Tencent/
 
-        [HandleDataSession]
         public ActionResult Index()
         {
             TencentWeibo _client = new TencentWeibo();
@@ -25,7 +23,6 @@ namespace Radial.Web.TestSite.Controllers
             return View();
         }
 
-        [HandleDataSession]
         public ActionResult Callback(string code, string openid, string openkey)
         {
             TencentWeibo _client = new TencentWeibo();

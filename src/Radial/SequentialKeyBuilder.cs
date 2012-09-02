@@ -6,9 +6,9 @@ using System.Text;
 namespace Radial
 {
     /// <summary>
-    /// Sequential key builder base class.
+    /// The base class of sequential key builder.
     /// </summary>
-    public abstract class SequentialKeyBuilderBase
+    public abstract class SequentialKeyBuilder
     {
         /// <summary>
         /// Gets the next sequential UInt64 key based on the specified type.

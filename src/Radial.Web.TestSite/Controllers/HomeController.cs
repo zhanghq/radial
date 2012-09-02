@@ -7,7 +7,6 @@ using Radial.Param;
 using Radial.Web.Mvc;
 using System.Data;
 using Radial.Web.Mvc.Filters;
-using Radial.Data.Nhs.Mvc;
 
 namespace Radial.Web.TestSite.Controllers
 {
@@ -21,7 +20,6 @@ namespace Radial.Web.TestSite.Controllers
             return View();
         }
 
-        [HandleDataSession]
         public ActionResult Param()
         {
             return Content(AppParam.GetValue("sinaweibo.appkey"));

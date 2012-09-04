@@ -13,6 +13,25 @@ namespace Radial
         /// <summary>
         /// Initializes a new instance of the <see cref="KnownFaultException"/> class.
         /// </summary>
+        /// <param name="message">The message that describes the error.</param>
+        public KnownFaultException(string message)
+            : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KnownFaultException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error.</param>
+        /// <param name="innerException">The inner exception.</param>
+        public KnownFaultException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KnownFaultException"/> class.
+        /// </summary>
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message that describes the error.</param>
         public KnownFaultException(int errorCode, string message)

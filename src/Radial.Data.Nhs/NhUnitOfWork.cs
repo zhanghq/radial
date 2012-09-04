@@ -67,7 +67,7 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Register new object.
+        /// Register object which will be inserted.
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>
         /// <param name="obj">The object instance.</param>
@@ -78,7 +78,7 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Register new object set.
+        /// Register object set which will be inserted.
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>
         /// <param name="objs">The object set.</param>
@@ -104,6 +104,21 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
+        /// Register object set which will be updated.
+        /// </summary>
+        /// <typeparam name="TObject">The type of object.</typeparam>
+        /// <param name="objs">The object set.</param>
+        public void RegisterUpdate<TObject>(IEnumerable<TObject> objs) where TObject : class
+        {
+            if (objs != null)
+            {
+                foreach (TObject obj in objs)
+                    if (obj != null)
+                        ((ISession)DataContext).SaveOrUpdate(obj);
+            }
+        }
+
+        /// <summary>
         /// Register object which will be deleted.
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>
@@ -112,6 +127,21 @@ namespace Radial.Data.Nhs
         {
             if (obj != null)
                 ((ISession)DataContext).Delete(obj);
+        }
+
+        /// <summary>
+        /// Register object which will be deleted.
+        /// </summary>
+        /// <typeparam name="TObject">The type of object.</typeparam>
+        /// <param name="objs">The object instance.</param>
+        public void RegisterDelete<TObject>(IEnumerable<TObject> objs) where TObject : class
+        {
+            if (objs != null)
+            {
+                foreach (TObject obj in objs)
+                    if (obj != null)
+                        ((ISession)DataContext).Delete(obj);
+            }
         }
 
         /// <summary>

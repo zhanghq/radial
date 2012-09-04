@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Radial.Web.Mvc.Filters;
+using Radial.Web.Mvc;
 
 namespace Radial.Web.TestSite.Controllers
 {

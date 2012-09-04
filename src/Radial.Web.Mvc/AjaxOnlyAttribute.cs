@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 
-namespace Radial.Web.Mvc.Filters
+namespace Radial.Web.Mvc
 {
     /// <summary>
     /// Represents an attribute that is used to identifies only allow Ajax request.

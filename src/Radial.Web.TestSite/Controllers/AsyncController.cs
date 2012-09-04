@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Radial.Web.Mvc.Filters;
 
 namespace Radial.Web.TestSite.Controllers
 {
@@ -17,6 +18,7 @@ namespace Radial.Web.TestSite.Controllers
         }
 
         [HttpPost]
+        [AjaxOnly]
         public ActionResult Index(string name)
         {
             return Content("Greetings," + name);

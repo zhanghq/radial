@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="AlertResult.cs" />
     <Compile Include="ControllerExtensions.cs" />
+    <Compile Include="Filters\AjaxOnlyAttribute.cs" />
     <Compile Include="HttpKnownFaultResult.cs" />
     <Compile Include="ExcelResult.cs" />
     <Compile Include="Filters\ExceptionOutputData.cs" />

@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 namespace Radial.Web
 {
     /// <summary>
-    /// Integrated methods for forms authentication.
+    /// Integrated common functions for forms authentication.
     /// </summary>
     public static class FormsAuth
     {
@@ -135,6 +135,83 @@ namespace Radial.Web
             FormsAuthentication.SignOut();
             if (redirect)
                 FormsAuthentication.RedirectToLoginPage();
+        }
+
+        /// <summary>
+        /// Gets the name of the cookie used to store the forms-authentication ticket.
+        /// </summary>
+        public static string FormsCookieName
+        {
+            get
+            {
+                return FormsAuthentication.FormsCookieName;
+            }
+        }
+
+        /// <summary>
+        /// Gets the path for the forms-authentication cookie.
+        /// </summary>
+        public static string FormsCookiePath
+        {
+            get
+            {
+                return FormsAuthentication.FormsCookiePath;
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the domain of the forms-authentication cookie.
+        /// </summary>
+        public static string CookieDomain
+        {
+            get
+            {
+                return FormsAuthentication.CookieDomain;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value that indicates whether the application is configured for cookieless forms authentication.
+        /// </summary>
+        public static HttpCookieMode CookieMode
+        {
+            get
+            {
+                return FormsAuthentication.CookieMode;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value that indicates whether the application is configured to support cookieless forms authentication.
+        /// </summary>
+        public static bool CookiesSupported 
+        {
+            get
+            {
+                return FormsAuthentication.CookiesSupported;
+            }
+        }
+
+        /// <summary>
+        /// Gets the timeout value specified in the configuration file (in minutes).
+        /// </summary>
+        public static TimeSpan Timeout
+        {
+            get
+            {
+                return FormsAuthentication.Timeout;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether sliding expiration is enabled.
+        /// </summary>
+        public static bool SlidingExpiration
+        {
+            get
+            {
+                return FormsAuthentication.SlidingExpiration;
+            }
         }
     }
 }

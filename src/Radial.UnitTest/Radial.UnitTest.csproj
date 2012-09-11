@@ -72,8 +72,6 @@
     <Compile Include="HttpKitsTest.cs" />
     <Compile Include="DistLockTest.cs" />
     <Compile Include="MemcachedTest.cs" />
-    <Compile Include="MongodTest.cs" />
-    <Compile Include="MongoParamTest.cs" />
     <Compile Include="Nhs\PartitionTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -99,10 +97,6 @@
     <ProjectReference Include="..\Radial.Cache.Memcached\Radial.Cache.Memcached.csproj">
       <Project>{CC555389-A855-4FB6-A2E5-DD52522F22B0}</Project>
       <Name>Radial.Cache.Memcached</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Radial.Data.Mongod\Radial.Data.Mongod.csproj">
-      <Project>{80C5F7DF-190A-4EA3-8AA0-318A596757B2}</Project>
-      <Name>Radial.Data.Mongod</Name>
     </ProjectReference>
     <ProjectReference Include="..\Radial.Data.Nhs\Radial.Data.Nhs.csproj">
       <Project>{3F92CFFD-F387-43BF-A548-C6E2683A318F}</Project>

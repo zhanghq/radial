@@ -38,39 +38,6 @@ namespace Radial.Data.Nhs
             }
         }
 
-        ///// <summary>
-        ///// Saves or updates the specified object.
-        ///// </summary>
-        ///// <param name="obj">The object.</param>
-        //public virtual void Save(TObject obj)
-        //{
-        //    if (obj != null)
-        //        Session.SaveOrUpdate(obj);
-        //}
-
-        ///// <summary>
-        ///// Removes an object with the specified key from the repository.
-        ///// </summary>
-        ///// <param name="key">The object key.</param>
-        //public virtual void Remove(TKey key)
-        //{
-        //    var metadata = Session.SessionFactory.GetClassMetadata(typeof(TObject));
-
-        //    Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
-
-        //    Session.Delete(string.Format("from {0} o where o.{1}=?", typeof(TObject).Name, metadata.IdentifierPropertyName), key, metadata.IdentifierType);
-        //}
-
-        ///// <summary>
-        ///// Removes the specified object from the repository.
-        ///// </summary>
-        ///// <param name="obj">The object.</param>
-        //public virtual void Remove(TObject obj)
-        //{
-        //    if (obj != null)
-        //        Session.Delete(obj);
-        //}
-
         /// <summary>
         /// Determine whether the object is exists.
         /// </summary>
@@ -78,7 +45,7 @@ namespace Radial.Data.Nhs
         /// <returns>
         ///   <c>true</c> if the object is exists; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool Exist(TKey key)
+        public virtual bool Exists(TKey key)
         {
             var metadata = Session.SessionFactory.GetClassMetadata(typeof(TObject));
 
@@ -97,7 +64,7 @@ namespace Radial.Data.Nhs
         /// <returns>
         ///   <c>true</c> if the object is exists; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool Exist(System.Linq.Expressions.Expression<Func<TObject, bool>> where)
+        public virtual bool Exists(System.Linq.Expressions.Expression<Func<TObject, bool>> where)
         {
             return GetTotal(where) > 0;
         }
@@ -109,14 +76,14 @@ namespace Radial.Data.Nhs
         /// <returns>
         ///   <c>true</c> if the object is exists; otherwise, <c>false</c>.
         /// </returns>
-        protected virtual bool Exist(ICriterion where)
+        protected virtual bool Exists(ICriterion where)
         {
             return GetTotal(where) > 0;
         }
 
 
         /// <summary>
-        /// Counts objects total.
+        /// Gets objects total.
         /// </summary>
         /// <returns>
         /// The objects total.

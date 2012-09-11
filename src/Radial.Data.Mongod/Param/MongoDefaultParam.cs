@@ -97,7 +97,7 @@ namespace Radial.Data.Mongod.Param
 
             ItemEntity entity = new ItemEntity { Content = xmlContent, SHA1 = newSHA1 };
 
-            if (_repository.Exist(ItemEntity.EntityId))
+            if (_repository.Exists(ItemEntity.EntityId))
             {
                 //modify and check conflicts
                 //In order to use SHA1 check use Modify instead of Save

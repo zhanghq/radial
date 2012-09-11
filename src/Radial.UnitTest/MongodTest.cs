@@ -21,7 +21,7 @@ namespace Radial.UnitTest
     public class MongoBookRepository : MongoRepository<MongoBook, string>
     {
 
-        public override bool Exist(string key)
+        public override bool Exists(string key)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(key), "object kay can not be empty or null");
 
@@ -60,7 +60,7 @@ namespace Radial.UnitTest
 
             repository.Save(new MongoBook { Id = id, Title = "Test Book 1", Date = DateTime.Now.Date });
 
-            Assert.IsTrue(repository.Exist(o => o.Title == "Test Book 1"));
+            Assert.IsTrue(repository.Exists(o => o.Title == "Test Book 1"));
 
             repository.Remove(id);
 

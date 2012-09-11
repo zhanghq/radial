@@ -20,7 +20,7 @@ namespace Radial.Data
         /// <returns>
         ///   <c>true</c> if the object is exists; otherwise, <c>false</c>.
         /// </returns>
-        bool Exist(TKey key);
+        bool Exists(TKey key);
 
         /// <summary>
         /// Determine whether the object is exists.
@@ -29,11 +29,11 @@ namespace Radial.Data
         /// <returns>
         ///   <c>true</c> if the object is exists; otherwise, <c>false</c>.
         /// </returns>
-        bool Exist(Expression<Func<TObject, bool>> where);
+        bool Exists(Expression<Func<TObject, bool>> where);
 
 
         /// <summary>
-        /// Counts objects total.
+        /// Gets objects total.
         /// </summary>
         /// <returns>
         /// The objects total.

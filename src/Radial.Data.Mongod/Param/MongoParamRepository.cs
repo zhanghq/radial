@@ -30,7 +30,7 @@ namespace Radial.Data.Mongod.Param
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        public override bool Exist(string key)
+        public override bool Exists(string key)
         {
             return GetTotal(o => o.Id == key.Trim()) > 0;
         }

@@ -128,14 +128,14 @@ namespace Radial.Data.Mongod
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        public abstract bool Exist(TKey key);
+        public abstract bool Exists(TKey key);
 
         /// <summary>
         /// Exists the specified where.
         /// </summary>
         /// <param name="where">The where.</param>
         /// <returns></returns>
-        public virtual bool Exist(System.Linq.Expressions.Expression<Func<TObject, bool>> where)
+        public virtual bool Exists(System.Linq.Expressions.Expression<Func<TObject, bool>> where)
         {
             return GetTotal(where) > 0;
         }

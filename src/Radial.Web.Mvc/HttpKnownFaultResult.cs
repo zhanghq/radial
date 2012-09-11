@@ -12,18 +12,18 @@ namespace Radial.Web.Mvc
     /// </summary>
     public class HttpKnownFaultResult : ActionResult
     {
-       int _errorCode;
-       string _message; 
-       Exception _innerException;
-       HttpStatusCode _httpStatusCode;
+        int _errorCode;
+        string _message;
+        Exception _innerException;
+        HttpStatusCode? _httpStatusCode;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpKnownFaultResult"/> class.
         /// </summary>
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message.</param>
-       /// <param name="httpStatusCode">The HTTP status code.</param>
-       public HttpKnownFaultResult(int errorCode, string message, HttpStatusCode? httpStatusCode)
+        /// <param name="httpStatusCode">The HTTP status code.</param>
+        public HttpKnownFaultResult(int errorCode, string message, HttpStatusCode? httpStatusCode)
             : this(errorCode, message, null, httpStatusCode)
         {
         }
@@ -34,13 +34,13 @@ namespace Radial.Web.Mvc
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message.</param>
         /// <param name="innerException">The inner exception.</param>
-       /// <param name="httpStatusCode">The HTTP status code.</param>
+        /// <param name="httpStatusCode">The HTTP status code.</param>
         public HttpKnownFaultResult(int errorCode, string message, Exception innerException, HttpStatusCode? httpStatusCode)
         {
-            _errorCode=errorCode;
+            _errorCode = errorCode;
             _message = message;
             _innerException = innerException;
-            _httpStatusCode = httpStatusCode.Value;
+            _httpStatusCode = httpStatusCode;
         }
 
 

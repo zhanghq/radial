@@ -159,9 +159,9 @@ namespace Radial.Web.Mvc
         /// <param name="c">The controller.</param>
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message.</param>
-        /// <param name="httpStatusCode">The HTTP status code(200 by default).</param>
+        /// <param name="httpStatusCode">The HTTP status code(500 by default).</param>
         /// <returns>ThrowKnownFaultResult instance.</returns>
-        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message, HttpStatusCode? httpStatusCode = HttpStatusCode.OK)
+        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message, HttpStatusCode? httpStatusCode = HttpStatusCode.InternalServerError)
         {
             return KnownFault(c, errorCode, message, null, httpStatusCode);
         }
@@ -173,9 +173,9 @@ namespace Radial.Web.Mvc
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message.</param>
         /// <param name="innerException">The inner exception.</param>
-        /// <param name="httpStatusCode">The HTTP status code(200 by default).</param>
+        /// <param name="httpStatusCode">The HTTP status code(500 by default).</param>
         /// <returns>ThrowKnownFaultResult instance.</returns>
-        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message, Exception innerException, HttpStatusCode? httpStatusCode = HttpStatusCode.OK)
+        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message, Exception innerException, HttpStatusCode? httpStatusCode = HttpStatusCode.InternalServerError)
         {
             return new HttpKnownFaultResult(errorCode, message, innerException, httpStatusCode);
         }

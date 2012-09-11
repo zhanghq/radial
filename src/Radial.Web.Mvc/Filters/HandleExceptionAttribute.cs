@@ -27,21 +27,12 @@ namespace Radial.Web.Mvc.Filters
         /// </summary>
         /// <param name="outputStyle">The exception output style.</param>
         /// <param name="defaultErrorCode">The default error code.</param>
-        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode)
-            : this(outputStyle, defaultErrorCode, HttpStatusCode.InternalServerError)
-        { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HandleExceptionAttribute"/> class.
-        /// </summary>
-        /// <param name="outputStyle">The exception output style.</param>
-        /// <param name="defaultErrorCode">The default error code.</param>
         /// <param name="defaultHttpStatusCode">The default http status code.</param>
-        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode, HttpStatusCode defaultHttpStatusCode)
+        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode, HttpStatusCode? defaultHttpStatusCode = HttpStatusCode.InternalServerError)
         {
             OutputStyle = outputStyle;
             DefaultErrorCode = defaultErrorCode;
-            DefaultHttpStatusCode = defaultHttpStatusCode;
+            DefaultHttpStatusCode = defaultHttpStatusCode.Value;
         }
 
         /// <summary>

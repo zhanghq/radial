@@ -18,7 +18,7 @@ namespace Radial.Web
         /// </summary>
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message that describes the error.</param>
-        /// <param name="statusCode">The HTTP status code(200 by default).</param>
+        /// <param name="statusCode">The HTTP status code.</param>
         public HttpKnownFaultException(int errorCode, string message, HttpStatusCode? statusCode)
             : this(errorCode, message, null, statusCode)
         {
@@ -30,7 +30,7 @@ namespace Radial.Web
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message that describes the error.</param>
         /// <param name="innerException">The inner exception.</param>
-        /// <param name="statusCode">The HTTP status code(200 by default).</param>
+        /// <param name="statusCode">The HTTP status code.</param>
         public HttpKnownFaultException(int errorCode, string message, Exception innerException, HttpStatusCode? statusCode)
             : base(errorCode, message, innerException)
         {

@@ -159,9 +159,21 @@ namespace Radial.Web.Mvc
         /// <param name="c">The controller.</param>
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message.</param>
-        /// <param name="httpStatusCode">The HTTP status code(500 by default).</param>
         /// <returns>ThrowKnownFaultResult instance.</returns>
-        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message, HttpStatusCode? httpStatusCode = HttpStatusCode.InternalServerError)
+        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message)
+        {
+            return KnownFault(c, errorCode, message, null, null);
+        }
+
+        /// <summary>
+        /// Throws a new KnownFaultException and let the system itself to decide how to deal with.
+        /// </summary>
+        /// <param name="c">The controller.</param>
+        /// <param name="errorCode">The error code.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="httpStatusCode">The HTTP status code.</param>
+        /// <returns>ThrowKnownFaultResult instance.</returns>
+        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message, HttpStatusCode? httpStatusCode)
         {
             return KnownFault(c, errorCode, message, null, httpStatusCode);
         }
@@ -173,9 +185,22 @@ namespace Radial.Web.Mvc
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message.</param>
         /// <param name="innerException">The inner exception.</param>
-        /// <param name="httpStatusCode">The HTTP status code(500 by default).</param>
         /// <returns>ThrowKnownFaultResult instance.</returns>
-        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message, Exception innerException, HttpStatusCode? httpStatusCode = HttpStatusCode.InternalServerError)
+        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message, Exception innerException)
+        {
+            return new HttpKnownFaultResult(errorCode, message, innerException, null);
+        }
+
+        /// <summary>
+        /// Throws a new KnownFaultException and let the system itself to decide how to deal with.
+        /// </summary>
+        /// <param name="c">The controller.</param>
+        /// <param name="errorCode">The error code.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="innerException">The inner exception.</param>
+        /// <param name="httpStatusCode">The HTTP status code.</param>
+        /// <returns>ThrowKnownFaultResult instance.</returns>
+        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message, Exception innerException, HttpStatusCode? httpStatusCode)
         {
             return new HttpKnownFaultResult(errorCode, message, innerException, httpStatusCode);
         }

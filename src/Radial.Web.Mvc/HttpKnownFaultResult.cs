@@ -22,8 +22,8 @@ namespace Radial.Web.Mvc
         /// </summary>
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message.</param>
-       /// <param name="httpStatusCode">The HTTP status code(500 by default).</param>
-       public HttpKnownFaultResult(int errorCode, string message, HttpStatusCode? httpStatusCode = HttpStatusCode.InternalServerError)
+       /// <param name="httpStatusCode">The HTTP status code.</param>
+       public HttpKnownFaultResult(int errorCode, string message, HttpStatusCode? httpStatusCode)
             : this(errorCode, message, null, httpStatusCode)
         {
         }
@@ -34,8 +34,8 @@ namespace Radial.Web.Mvc
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message.</param>
         /// <param name="innerException">The inner exception.</param>
-       /// <param name="httpStatusCode">The HTTP status code(500 by default).</param>
-        public HttpKnownFaultResult(int errorCode, string message, Exception innerException, HttpStatusCode? httpStatusCode = HttpStatusCode.InternalServerError)
+       /// <param name="httpStatusCode">The HTTP status code.</param>
+        public HttpKnownFaultResult(int errorCode, string message, Exception innerException, HttpStatusCode? httpStatusCode)
         {
             _errorCode=errorCode;
             _message = message;

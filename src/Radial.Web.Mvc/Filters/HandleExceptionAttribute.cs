@@ -28,9 +28,20 @@ namespace Radial.Web.Mvc.Filters
         /// <param name="outputStyle">The exception output style.</param>
         /// <param name="defaultErrorCode">The default error code.</param>
         public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode)
+            : this(outputStyle, defaultErrorCode, HttpStatusCode.InternalServerError)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HandleExceptionAttribute"/> class.
+        /// </summary>
+        /// <param name="outputStyle">The exception output style.</param>
+        /// <param name="defaultErrorCode">The default error code.</param>
+        /// <param name="defaultHttpStatusCode">The default http status code.</param>
+        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode, HttpStatusCode defaultHttpStatusCode)
         {
             OutputStyle = outputStyle;
             DefaultErrorCode = defaultErrorCode;
+            DefaultHttpStatusCode = defaultHttpStatusCode;
         }
 
         /// <summary>
@@ -47,6 +58,15 @@ namespace Radial.Web.Mvc.Filters
         /// Gets the default error code.
         /// </summary>
         public int DefaultErrorCode
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the default http status code.
+        /// </summary>
+        public HttpStatusCode DefaultHttpStatusCode
         {
             get;
             private set;
@@ -84,7 +104,7 @@ namespace Radial.Web.Mvc.Filters
             if (OutputStyle == ExceptionOutputStyle.Xml)
                 HttpKits.WriteXml(data.ToXml());
 
-            HttpStatusCode scode = HttpStatusCode.OK;
+            HttpStatusCode scode = DefaultHttpStatusCode;
 
             if (hkfe != null && hkfe.StatusCode.HasValue)
                 scode = hkfe.StatusCode.Value;

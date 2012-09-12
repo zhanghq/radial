@@ -72,14 +72,20 @@ namespace Radial.Serialization
         {
             bool success = false;
 
+            obj = default(T);
+
             if (string.IsNullOrWhiteSpace(json))
                 json = string.Empty;
+
             try
             {
                 obj = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
                 success = true;
             }
-            finally { }
+            catch(Exception e)
+            {
+                Logger.Default.Error(e, "can not deserialize text to json: {0}", json);
+            }
 
             return success;
         }
@@ -94,6 +100,8 @@ namespace Radial.Serialization
         {
             bool success = false;
 
+            obj = null;
+
             if (string.IsNullOrWhiteSpace(json))
                 json = string.Empty;
 
@@ -102,7 +110,10 @@ namespace Radial.Serialization
                 obj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
                 success = true;
             }
-            finally { }
+            catch (Exception e)
+            {
+                Logger.Default.Error(e, "can not deserialize text to json: {0}", json);
+            }
 
             return success;
         }

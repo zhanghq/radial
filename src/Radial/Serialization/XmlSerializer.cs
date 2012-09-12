@@ -118,7 +118,10 @@ namespace Radial.Serialization
                         success = true;
                     }
                 }
-                finally { }
+                catch (Exception e)
+                {
+                    Logger.Default.Error(e, "can not deserialize xml to object: {0}", xml);
+                }
             }
             return success;
         }
@@ -147,7 +150,10 @@ namespace Radial.Serialization
                         success = true;
                     }
                 }
-                finally { }
+                catch (Exception e)
+                {
+                    Logger.Default.Error(e, "can not deserialize xml to object: {0}", xml);
+                }
             }
             return success;
         }

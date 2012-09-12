@@ -121,7 +121,10 @@ namespace Radial.Serialization
                         success = true;
                     }
                 }
-                finally { }
+                catch (Exception e)
+                {
+                    Logger.Default.Error(e, "can not deserialize binary to object: {0} in base64 format", Toolkits.ToBase64String(binary));
+                }
             }
 
             return success;
@@ -150,7 +153,10 @@ namespace Radial.Serialization
                         success = true;
                     }
                 }
-                finally { }
+                catch (Exception e)
+                {
+                    Logger.Default.Error(e, "can not deserialize binary to object: {0} in base64 format",Toolkits.ToBase64String(binary));
+                }
             }
 
             return success;

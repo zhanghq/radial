@@ -60,5 +60,51 @@ namespace Radial.Serialization
                 json = string.Empty;
             return Newtonsoft.Json.JsonConvert.DeserializeObject(json);
         }
+
+        /// <summary>
+        /// Deserialize from json string.
+        /// </summary>
+        /// <typeparam name="T">The object type.</typeparam>
+        /// <param name="json">The json string.</param>
+        /// <param name="obj">Deserialized object instance.</param>
+        /// <returns>If successful deserialized return True, otherwise return False.</returns>
+        public static bool TryDeserialize<T>(string json, out T obj)
+        {
+            bool success = false;
+
+            if (string.IsNullOrWhiteSpace(json))
+                json = string.Empty;
+            try
+            {
+                obj = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
+                success = true;
+            }
+            finally { }
+
+            return success;
+        }
+
+        /// <summary>
+        /// Deserialize from json string.
+        /// </summary>
+        /// <param name="json">The json string.</param>
+        /// <param name="obj">Deserialized object instance.</param>
+        /// <returns>If successful deserialized return True, otherwise return False.</returns>
+        public static bool TryDeserialize(string json,out object obj)
+        {
+            bool success = false;
+
+            if (string.IsNullOrWhiteSpace(json))
+                json = string.Empty;
+
+            try
+            {
+                obj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+                success = true;
+            }
+            finally { }
+
+            return success;
+        }
     }
 }

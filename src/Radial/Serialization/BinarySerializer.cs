@@ -96,5 +96,64 @@ namespace Radial.Serialization
 
             return o;
         }
+
+        /// <summary>
+        /// Deserializes binary array to object.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="binary">The binary array.</param>
+        /// <param name="obj">Deserialized object instance.</param>
+        /// <returns>If successful deserialized return True, otherwise return False.</returns>
+        public static bool TryDeserialize<TObject>(byte[] binary, out TObject obj)
+        {
+            bool success = false;
+
+            obj = default(TObject);
+
+            if (binary != null)
+            {
+                try
+                {
+                    IFormatter formatter = new BinaryFormatter();
+                    using (Stream stream = new MemoryStream(binary))
+                    {
+                        obj = (TObject)formatter.Deserialize(stream);
+                        success = true;
+                    }
+                }
+                finally { }
+            }
+
+            return success;
+        }
+
+        /// <summary>
+        /// Deserializes binary array to object.
+        /// </summary>
+        /// <param name="binary">The binary array.</param>
+        /// <param name="obj">Deserialized object instance.</param>
+        /// <returns>If successful deserialized return True, otherwise return False.</returns>
+        public static bool TryDeserialize(byte[] binary, out object obj)
+        {
+            bool success = false;
+
+            obj = null;
+
+            if (binary != null)
+            {
+                try
+                {
+                    IFormatter formatter = new BinaryFormatter();
+                    using (Stream stream = new MemoryStream(binary))
+                    {
+                        obj = formatter.Deserialize(stream);
+                        success = true;
+                    }
+                }
+                finally { }
+            }
+
+            return success;
+        }
     }
 }

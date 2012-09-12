@@ -91,5 +91,65 @@ namespace Radial.Serialization
             }
             return obj;
         }
+
+        /// <summary>
+        /// Deserializes xml to object.
+        /// </summary>
+        /// <param name="xml">The xml.</param>
+        /// <param name="objType">The type of the object.</param>
+        /// <param name="obj">Deserialized object instance.</param>
+        /// <returns>If successful deserialized return True, otherwise return False.</returns>
+        public static bool TryDeserialize(string xml, Type objType,out object obj)
+        {
+            Checker.Parameter(objType != null, "object type can not be null");
+
+            bool success = false;
+
+            obj = null;
+
+            if (!string.IsNullOrWhiteSpace(xml))
+            {
+                try
+                {
+                    System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(objType);
+                    using (TextReader tr = new StringReader(xml))
+                    {
+                        obj = serializer.Deserialize(tr);
+                        success = true;
+                    }
+                }
+                finally { }
+            }
+            return success;
+        }
+
+        /// <summary>
+        /// Deserializes xml to object.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="xml">The xml.</param>
+        /// <param name="obj">Deserialized object instance.</param>
+        /// <returns>If successful deserialized return True, otherwise return False.</returns>
+        public static bool TryDeserialize<TObject>(string xml, out TObject obj)
+        {
+            bool success = false;
+
+            obj = default(TObject);
+
+            if (!string.IsNullOrWhiteSpace(xml))
+            {
+                try
+                {
+                    System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(TObject));
+                    using (TextReader tr = new StringReader(xml))
+                    {
+                        obj = (TObject)serializer.Deserialize(tr);
+                        success = true;
+                    }
+                }
+                finally { }
+            }
+            return success;
+        }
     }
 }

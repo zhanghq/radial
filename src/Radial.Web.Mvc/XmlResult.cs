@@ -42,7 +42,7 @@ namespace Radial.Web.Mvc
         /// <param name="context">The context in which the result is executed. The context information includes the controller, HTTP content, request context, and route data.</param>
         public override void ExecuteResult(ControllerContext context)
         {
-            context.HttpContext.Response.ContentType = HttpKits.XmlContentType;
+            context.HttpContext.Response.ContentType = ContentTypes.Xml;
             context.HttpContext.Response.ContentEncoding = _encoding;
             context.HttpContext.Response.Write(_xml);
         }

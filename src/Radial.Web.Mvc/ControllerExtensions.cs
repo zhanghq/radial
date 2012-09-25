@@ -120,13 +120,28 @@ namespace Radial.Web.Mvc
         /// </summary>
         /// <param name="c">The controller.</param>
         /// <param name="data">The data.</param>
+        /// <param name="contentType">The content type.</param>
+        /// <returns>NewJsonResult instance.</returns>
+        public static NewJsonResult NewJson(this Controller c, object data, string contentType)
+        {
+            return new NewJsonResult(data, contentType);
+        }
+
+
+
+        /// <summary>
+        /// Renders json to the response.
+        /// </summary>
+        /// <param name="c">The controller.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="contentType">The content type.</param>
         /// <param name="encoding">The encoding.</param>
         /// <returns>
         /// JsonResult instance.
         /// </returns>
-        public static NewJsonResult NewJson(this Controller c, object data, Encoding encoding)
+        public static NewJsonResult NewJson(this Controller c, object data, string contentType, Encoding encoding)
         {
-            return new NewJsonResult(data, encoding);
+            return new NewJsonResult(data, contentType, encoding);
         }
 
         /// <summary>

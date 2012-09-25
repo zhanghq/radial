@@ -14,25 +14,31 @@ namespace Radial.Web.Mvc.Filters
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     public class HandleExceptionAttribute : HandleErrorAttribute
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HandleExceptionAttribute"/> class.
-        /// </summary>
-        public HandleExceptionAttribute()
-            : this(ExceptionOutputStyle.System, 9999)
-        {
-        }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HandleExceptionAttribute"/> class.
+        /// Initializes a new instance of the <see cref="HandleExceptionAttribute" /> class.
         /// </summary>
         /// <param name="outputStyle">The exception output style.</param>
         /// <param name="defaultErrorCode">The default error code.</param>
         /// <param name="defaultHttpStatusCode">The default http status code.</param>
         public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode, HttpStatusCode? defaultHttpStatusCode = HttpStatusCode.OK)
+            : this(outputStyle, defaultErrorCode, string.Empty, defaultHttpStatusCode)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HandleExceptionAttribute" /> class.
+        /// </summary>
+        /// <param name="outputStyle">The exception output style.</param>
+        /// <param name="defaultErrorCode">The default error code.</param>
+        /// <param name="contentType">The content type.</param>
+        /// <param name="defaultHttpStatusCode">The default http status code.</param>
+        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode, string contentType, HttpStatusCode? defaultHttpStatusCode = HttpStatusCode.OK)
         {
             OutputStyle = outputStyle;
             DefaultErrorCode = defaultErrorCode;
             DefaultHttpStatusCode = defaultHttpStatusCode.Value;
+            ContentType = contentType;
         }
 
         /// <summary>
@@ -58,6 +64,15 @@ namespace Radial.Web.Mvc.Filters
         /// Gets the default http status code.
         /// </summary>
         public HttpStatusCode DefaultHttpStatusCode
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the content type.
+        /// </summary>
+        public string ContentType
         {
             get;
             private set;
@@ -91,9 +106,19 @@ namespace Radial.Web.Mvc.Filters
             };
 
             if (OutputStyle == ExceptionOutputStyle.Json)
-                HttpKits.WriteJson<ExceptionOutputData>(data);
+            {
+                if(!string.IsNullOrWhiteSpace(ContentType))
+                    HttpKits.WriteJson<ExceptionOutputData>(data, ContentType);
+                else
+                    HttpKits.WriteJson<ExceptionOutputData>(data);
+            }
             if (OutputStyle == ExceptionOutputStyle.Xml)
-                HttpKits.WriteXml(data.ToXml());
+            {
+                if (!string.IsNullOrWhiteSpace(ContentType))
+                    HttpKits.WriteXml(data.ToXml(), ContentType);
+                else
+                    HttpKits.WriteXml(data.ToXml());
+            }
 
             HttpStatusCode scode = DefaultHttpStatusCode;
 

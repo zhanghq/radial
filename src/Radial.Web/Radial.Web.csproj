@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentTypes.cs" />
     <Compile Include="FormsAuth.cs" />
     <Compile Include="HttpCache.cs" />
     <Compile Include="HttpKits.cs" />

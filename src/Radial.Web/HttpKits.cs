@@ -22,25 +22,6 @@ namespace Radial.Web
     public static class HttpKits
     {
         /// <summary>
-        /// Plain Text Content Type
-        /// </summary>
-        public const string PlainTextContentType = "text/plain";
-
-        /// <summary>
-        /// Xml Content Type
-        /// </summary>
-        public const string XmlContentType = "text/xml";
-        /// <summary>
-        /// Json Content Type
-        /// </summary>
-        public const string JsonContentType = "application/json";
-
-        /// <summary>
-        /// Default encoding name (UTF-8).
-        /// </summary>
-        public const string DefaultEncodingName = "UTF-8";
-
-        /// <summary>
         /// Gets the current HttpContext instance.
         /// </summary>
         public static HttpContext CurrentContext
@@ -276,12 +257,12 @@ namespace Radial.Web
         /// Write the plain text to response stream (use return statement to bypass other codes if necessary).
         /// </summary>
         /// <param name="text">The plain text</param>
-        /// <param name="contentType">the content type</param>
+        /// <param name="contentType">The content type</param>
         /// <param name="statusCode">The http response status code(200 by default).</param>
         public static void WritePlainText(string text, string contentType, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
             if (string.IsNullOrWhiteSpace(contentType))
-                CurrentContext.Response.ContentType = PlainTextContentType;
+                CurrentContext.Response.ContentType = ContentTypes.PlainText;
             else
                 CurrentContext.Response.ContentType = contentType.Trim();
 
@@ -299,7 +280,19 @@ namespace Radial.Web
         /// <param name="statusCode">The http response status code(200 by default).</param>
         public static void WriteJson<T>(T obj, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WritePlainText(JsonSerializer.Serialize<T>(obj), JsonContentType, statusCode);
+            WriteJson(obj, ContentTypes.Json, statusCode);
+        }
+
+        /// <summary>
+        /// Write the json text to response stream (use return statement to bypass other codes if necessary).
+        /// </summary>
+        /// <typeparam name="T">The object type.</typeparam>
+        /// <param name="obj">The object.</param>
+        /// <param name="contentType">The content type</param>
+        /// <param name="statusCode">The http response status code(200 by default).</param>
+        public static void WriteJson<T>(T obj, string contentType, HttpStatusCode? statusCode = HttpStatusCode.OK)
+        {
+            WritePlainText(JsonSerializer.Serialize<T>(obj), contentType, statusCode);
         }
 
         /// <summary>
@@ -309,7 +302,18 @@ namespace Radial.Web
         /// <param name="statusCode">The http response status code(200 by default).</param>
         public static void WriteJson(object obj, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WritePlainText(JsonSerializer.Serialize(obj), JsonContentType, statusCode);
+            WriteJson(obj, ContentTypes.Json, statusCode);
+        }
+
+        /// <summary>
+        /// Write the json text to response stream (use return statement to bypass other codes if necessary).
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="contentType">The content type</param>
+        /// <param name="statusCode">The http response status code(200 by default).</param>
+        public static void WriteJson(object obj, string contentType, HttpStatusCode? statusCode = HttpStatusCode.OK)
+        {
+            WritePlainText(JsonSerializer.Serialize(obj), contentType, statusCode);
         }
 
         /// <summary>
@@ -319,7 +323,18 @@ namespace Radial.Web
         /// <param name="statusCode">The http response status code(200 by default).</param>
         public static void WriteJson(string json, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WritePlainText(json, JsonContentType, statusCode);
+            WriteJson(json, ContentTypes.Json, statusCode);
+        }
+
+        /// <summary>
+        /// Write the json text to response stream (use return statement to bypass other codes if necessary).
+        /// </summary>
+        /// <param name="json">The json text</param>
+        /// <param name="contentType">The content type</param>
+        /// <param name="statusCode">The http response status code(200 by default).</param>
+        public static void WriteJson(string json, string contentType, HttpStatusCode? statusCode = HttpStatusCode.OK)
+        {
+            WritePlainText(json, contentType, statusCode);
         }
 
 
@@ -327,15 +342,21 @@ namespace Radial.Web
         /// Write the xml text to response stream (use return statement to bypass other codes if necessary).
         /// </summary>
         /// <param name="xml">The xml text</param>
+        /// <param name="contentType">The content type</param>
         /// <param name="statusCode">The http response status code(200 by default).</param>
-        public static void WriteXml(string xml, HttpStatusCode? statusCode = HttpStatusCode.OK)
+        public static void WriteXml(string xml, string contentType, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            Encoding encoding = Encoding.GetEncoding(DefaultEncodingName);
+
+            Encoding encoding = Encoding.GetEncoding("UTF-8");
 
             if (string.IsNullOrWhiteSpace(xml))
                 xml = string.Format("<?xml version=\"1.0\" encoding=\"{0}\"?>", encoding.BodyName);
 
-            CurrentContext.Response.ContentType = XmlContentType;
+            if (string.IsNullOrWhiteSpace(contentType))
+                CurrentContext.Response.ContentType = ContentTypes.Xml;
+            else
+                CurrentContext.Response.ContentType = contentType.Trim();
+
             CurrentContext.Response.Charset = encoding.BodyName;
             CurrentContext.Response.Write(xml);
             if (statusCode.HasValue)
@@ -350,7 +371,18 @@ namespace Radial.Web
         /// <param name="statusCode">The http response status code(200 by default).</param>
         public static void WriteXml(object obj, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WriteXml(Serialization.XmlSerializer.Serialize(obj), statusCode);
+            WriteXml(obj, string.Empty, statusCode);
+        }
+
+        /// <summary>
+        /// Write the xml text to response stream (use return statement to bypass other codes if necessary).
+        /// </summary>
+        /// <param name="obj">The obj.</param>
+        /// <param name="contentType">The content type</param>
+        /// <param name="statusCode">The http response status code(200 by default).</param>
+        public static void WriteXml(object obj, string contentType, HttpStatusCode? statusCode = HttpStatusCode.OK)
+        {
+            WriteXml(Serialization.XmlSerializer.Serialize(obj), contentType, statusCode);
         }
 
         /// <summary>
@@ -361,7 +393,19 @@ namespace Radial.Web
         /// <param name="statusCode">The http response status code(200 by default).</param>
         public static void WriteXml<T>(T obj, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WriteXml(Serialization.XmlSerializer.Serialize<T>(obj), statusCode);
+            WriteXml(obj, string.Empty, statusCode);
+        }
+
+        /// <summary>
+        /// Write the xml text to response stream (use return statement to bypass other codes if necessary).
+        /// </summary>
+        /// <typeparam name="T">The object type</typeparam>
+        /// <param name="obj">The obj.</param>
+        /// <param name="contentType">The content type</param>
+        /// <param name="statusCode">The http response status code(200 by default).</param>
+        public static void WriteXml<T>(T obj, string contentType, HttpStatusCode? statusCode = HttpStatusCode.OK)
+        {
+            WriteXml(Serialization.XmlSerializer.Serialize<T>(obj), contentType, statusCode);
         }
 
         /// <summary>
@@ -371,7 +415,7 @@ namespace Radial.Web
         /// <param name="fileName">The Excel file name(not contains extension)</param>
         public static void ExportToExcel(DataSet ds, string fileName)
         {
-            Encoding encoding = Encoding.GetEncoding(DefaultEncodingName);
+            Encoding encoding = Encoding.GetEncoding("UTF-8");
 
             Checker.Parameter(ds != null, "dataset object can not be null");
             Checker.Parameter(!string.IsNullOrWhiteSpace(fileName), "fileName can not be empty or null");
@@ -430,7 +474,7 @@ namespace Radial.Web
             CurrentContext.Response.Charset = encoding.BodyName;
             CurrentContext.Response.AppendHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(fileName, encoding) + ".xls");
             CurrentContext.Response.ContentEncoding = encoding;
-            CurrentContext.Response.ContentType = "application/vnd.ms-excel";
+            CurrentContext.Response.ContentType = ContentTypes.Excel;
             CurrentContext.Response.Write(strb);
             CurrentContext.Response.End();
 

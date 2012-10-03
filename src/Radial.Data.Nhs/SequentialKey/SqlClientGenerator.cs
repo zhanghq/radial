@@ -9,9 +9,9 @@ using NHibernate;
 namespace Radial.Data.Nhs.SequentialKey
 {
     /// <summary>
-    /// SqlClient sequential key builder.
+    /// SqlClient sequential key generator.
     /// </summary>
-    public sealed class SqlClientBuilder : SequentialKeyBuilder
+    public sealed class SqlClientGenerator : SequentialKeyGenerator
     {
         const string QUERY = "BEGIN TRANSACTION "
                         + "IF EXISTS(SELECT * FROM [SequentialKey] WHERE [Discriminator]=:Discriminator) "
@@ -24,10 +24,10 @@ namespace Radial.Data.Nhs.SequentialKey
         IUnitOfWork _uow;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SqlClientBuilder"/> class.
+        /// Initializes a new instance of the <see cref="SqlClientGenerator"/> class.
         /// </summary>
         /// <param name="uow">IUnitOfWork instance.</param>
-        public SqlClientBuilder(IUnitOfWork uow)
+        public SqlClientGenerator(IUnitOfWork uow)
         {
             _uow = uow;
         }

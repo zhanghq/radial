@@ -14,12 +14,23 @@ namespace Radial.Data.Nhs
     {
         ISession _session;
 
+        IList<object> _pendingInsert;
+        IList<object> _pendingUpdate;
+        IList<object> _pendingDelete;
+        IList<string> _pendingClearHql;
+    
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
         /// </summary>
         public NhUnitOfWork()
         {
             _session = HibernateEngine.OpenSession();
+
+            _pendingInsert = new List<object>();
+            _pendingUpdate = new List<object>();
+            _pendingDelete = new List<object>();
+            _pendingClearHql = new List<string>();
         }
 
         /// <summary>
@@ -29,6 +40,11 @@ namespace Radial.Data.Nhs
         public NhUnitOfWork(string alias)
         {
             _session = SessionFactoryPool.OpenSession(alias);
+
+            _pendingInsert = new List<object>();
+            _pendingUpdate = new List<object>();
+            _pendingDelete = new List<object>();
+            _pendingClearHql = new List<string>();
         }
 
         /// <summary>
@@ -50,7 +66,7 @@ namespace Radial.Data.Nhs
         public virtual void RegisterNew<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
-                _session.Save(obj);
+                _pendingInsert.Add(obj);
         }
 
         /// <summary>
@@ -65,7 +81,7 @@ namespace Radial.Data.Nhs
                 foreach (TObject obj in objs)
                 {
                     if (obj != null)
-                        _session.Save(obj);
+                        _pendingInsert.Add(obj);
                 }
             }
         }
@@ -78,7 +94,7 @@ namespace Radial.Data.Nhs
         public virtual void RegisterUpdate<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
-                _session.SaveOrUpdate(obj);
+                _pendingUpdate.Add(obj);
         }
 
         /// <summary>
@@ -93,7 +109,7 @@ namespace Radial.Data.Nhs
                 foreach (TObject obj in objs)
                 {
                     if (obj != null)
-                        _session.SaveOrUpdate(obj);
+                        _pendingUpdate.Add(obj);
                 }
             }
         }
@@ -106,7 +122,7 @@ namespace Radial.Data.Nhs
         public virtual void RegisterDelete<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
-                _session.Delete(obj);
+                _pendingDelete.Add(obj);
         }
 
         /// <summary>
@@ -121,24 +137,9 @@ namespace Radial.Data.Nhs
                 foreach (TObject obj in objs)
                 {
                     if (obj != null)
-                        _session.Delete(obj);
+                        _pendingDelete.Add(obj);
                 }
             }
-        }
-
-        /// <summary>
-        /// Register object which will be deleted.
-        /// </summary>
-        /// <typeparam name="TObject">The type of object.</typeparam>
-        /// <typeparam name="TKey">The type of object key.</typeparam>
-        /// <param name="key">The object key.</param>
-        public virtual void RegisterDelete<TObject, TKey>(TKey key) where TObject : class
-        {
-            var metadata = ((ISession)DataContext).SessionFactory.GetClassMetadata(typeof(TObject));
-
-            Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
-
-            _session.Delete(string.Format("from {0} o where o.{1}=?", typeof(TObject).Name, metadata.IdentifierPropertyName), key, metadata.IdentifierType);
         }
 
         /// <summary>
@@ -147,31 +148,21 @@ namespace Radial.Data.Nhs
         /// <typeparam name="TObject">The type of object.</typeparam>
         public virtual void RegisterClear<TObject>() where TObject : class
         {
-            _session.Delete(string.Format("from {0}", typeof(TObject).Name));
+            _pendingClearHql.Add(string.Format("from {0}", typeof(TObject).Name));
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_session != null)
-                _session.Dispose();
-        }
-
-
-        /// <summary>
-        /// Flush changes to data source.
+        /// Commit changes to data source.
         /// </summary>
         /// <param name="autoGenerateTransaction">If need to use automatic transaction set to <c>true</c>, default is <c>false</c>.</param>
-        public void Flush(bool autoGenerateTransaction = false)
+        public void Commit(bool autoGenerateTransaction = false)
         {
             if (autoGenerateTransaction)
             {
                 ITransaction tx = _session.BeginTransaction();
                 try
                 {
-                    _session.Flush();
+                    PrepareCommand();
                     tx.Commit();
                 }
                 catch
@@ -185,19 +176,19 @@ namespace Radial.Data.Nhs
                 }
             }
             else
-                _session.Flush();
+                PrepareCommand();
         }
 
         /// <summary>
-        /// Flush changes to data source with automatic transaction.
+        /// Commit changes to data source with automatic transaction.
         /// </summary>
         /// <param name="isolationLevel">Isolation level for the new transaction.</param>
-        public void Flush(IsolationLevel isolationLevel)
+        public void Commit(IsolationLevel isolationLevel)
         {
             ITransaction tx = _session.BeginTransaction(isolationLevel);
             try
             {
-                _session.Flush();
+                PrepareCommand();
                 tx.Commit();
             }
             catch
@@ -209,6 +200,31 @@ namespace Radial.Data.Nhs
             {
                 tx.Dispose();
             }
+        }
+
+        /// <summary>
+        /// Prepare session Command
+        /// </summary>
+        private void PrepareCommand()
+        {
+            _pendingInsert.ToList().ForEach(o => _session.Save(o));
+            _pendingInsert.Clear();
+            _pendingUpdate.ToList().ForEach(o => _session.Update(o));
+            _pendingUpdate.Clear();
+            _pendingDelete.ToList().ForEach(o => _session.Delete(o));
+            _pendingDelete.Clear();
+            _pendingClearHql.ToList().ForEach(o => _session.Delete(o));
+            _pendingClearHql.Clear();
+        }
+
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_session != null)
+                _session.Dispose();
         }
     }
 }

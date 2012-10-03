@@ -6,6 +6,12 @@ using NUnit.Framework;
 
 namespace Radial.UnitTest
 {
+    public struct B { public int K { get; set; } }
+    public class A
+    {
+        public B V { get; set; }
+    }
+
     [TestFixture]
     public class ToolkitsTest
     {

@@ -34,7 +34,7 @@ namespace Radial.UnitTest.Nhs
         public void CleanUp()
         {
             _uow.RegisterClear<User>();
-            _uow.Commit();
+            _uow.Flush(true);
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace Radial.UnitTest.Nhs
 
             _uow.RegisterNew<User>(new User { Id = 1, Name = "测试" });
 
-            _uow.Commit();
+            _uow.Flush(true);
 
             User u = userRepository.Find(1);
 

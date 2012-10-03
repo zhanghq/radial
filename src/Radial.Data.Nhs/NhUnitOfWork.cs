@@ -12,14 +12,15 @@ namespace Radial.Data.Nhs
     /// </summary>
     public class NhUnitOfWork : IUnitOfWork
     {
-        string _alias;
         ISession _session;
-        ITransaction _transaction;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
         /// </summary>
-        public NhUnitOfWork() { }
+        public NhUnitOfWork()
+        {
+            _session = HibernateEngine.OpenSession();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
@@ -27,7 +28,7 @@ namespace Radial.Data.Nhs
         /// <param name="alias">The storage alias (case insensitive).</param>
         public NhUnitOfWork(string alias)
         {
-            _alias = alias;
+            _session = SessionFactoryPool.OpenSession(alias);
         }
 
         /// <summary>
@@ -37,32 +38,7 @@ namespace Radial.Data.Nhs
         {
             get
             {
-                if (_session == null || !_session.IsOpen)
-                {
-                    if (string.IsNullOrWhiteSpace(_alias))
-                        _session = HibernateEngine.OpenSession();
-                    else
-                        _session = SessionFactoryPool.OpenSession(_alias);
-                }
-                else
-                {
-                    if (!_session.IsConnected)
-                        _session.Reconnect();
-                }
-
                 return _session;
-            }
-        }
-
-
-        /// <summary>
-        /// Gets the current transaction instance.
-        /// </summary>
-        public virtual object Transaction
-        {
-            get
-            {
-                return _transaction;
             }
         }
 
@@ -74,7 +50,7 @@ namespace Radial.Data.Nhs
         public virtual void RegisterNew<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
-                ((ISession)DataContext).Save(obj);
+                _session.Save(obj);
         }
 
         /// <summary>
@@ -87,8 +63,10 @@ namespace Radial.Data.Nhs
             if (objs != null)
             {
                 foreach (TObject obj in objs)
+                {
                     if (obj != null)
-                        ((ISession)DataContext).Save(obj);
+                        _session.Save(obj);
+                }
             }
         }
 
@@ -100,7 +78,7 @@ namespace Radial.Data.Nhs
         public virtual void RegisterUpdate<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
-                ((ISession)DataContext).SaveOrUpdate(obj);
+                _session.SaveOrUpdate(obj);
         }
 
         /// <summary>
@@ -113,8 +91,10 @@ namespace Radial.Data.Nhs
             if (objs != null)
             {
                 foreach (TObject obj in objs)
+                {
                     if (obj != null)
-                        ((ISession)DataContext).SaveOrUpdate(obj);
+                        _session.SaveOrUpdate(obj);
+                }
             }
         }
 
@@ -126,7 +106,7 @@ namespace Radial.Data.Nhs
         public virtual void RegisterDelete<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
-                ((ISession)DataContext).Delete(obj);
+                _session.Delete(obj);
         }
 
         /// <summary>
@@ -139,8 +119,10 @@ namespace Radial.Data.Nhs
             if (objs != null)
             {
                 foreach (TObject obj in objs)
+                {
                     if (obj != null)
-                        ((ISession)DataContext).Delete(obj);
+                        _session.Delete(obj);
+                }
             }
         }
 
@@ -165,66 +147,7 @@ namespace Radial.Data.Nhs
         /// <typeparam name="TObject">The type of object.</typeparam>
         public virtual void RegisterClear<TObject>() where TObject : class
         {
-            ((ISession)DataContext).Delete(string.Format("from {0}", typeof(TObject).Name));
-        }
-
-        /// <summary>
-        /// Begin a new transaction object.
-        /// </summary>
-        /// <returns>A transaction instance.</returns>
-        public virtual void BeginTransaction()
-        {
-            _transaction = ((ISession)DataContext).BeginTransaction();
-        }
-
-
-        /// <summary>
-        /// Begin a transaction with the specified <c>isolationLevel</c>
-        /// </summary>
-        /// <param name="isolationLevel">Isolation level for the new transaction.</param>
-        /// <returns>
-        /// A transaction instance having the specified isolation level.
-        /// </returns>
-        public virtual void BeginTransaction(IsolationLevel isolationLevel)
-        {
-            _transaction = ((ISession)DataContext).BeginTransaction(isolationLevel);
-        }
-
-        /// <summary>
-        /// Commit changes (if Transaction property is null, will use TransactionScope automatically).
-        /// </summary>
-        public virtual void Commit()
-        {
-            if (_transaction != null)
-            {
-                _transaction.Commit();
-                return;
-            }
-
-            AutoTransaction.Complete(() => ((ISession)DataContext).Flush());
-        }
-
-        /// <summary>
-        /// Commit changes (if Transaction property is null, will use TransactionScope automatically). 
-        /// </summary>
-        /// <param name="option">The commit option.</param>
-        public virtual void Commit(object option)
-        {
-            if (_transaction != null)
-            {
-                _transaction.Commit();
-                return;
-            }
-            AutoTransaction.Complete(() => ((ISession)DataContext).Flush());
-        }
-
-        /// <summary>
-        /// Rollback current transaction instance.
-        /// </summary>
-        public void Rollback()
-        {
-            if (_transaction != null)
-                _transaction.Rollback();
+            _session.Delete(string.Format("from {0}", typeof(TObject).Name));
         }
 
         /// <summary>
@@ -232,11 +155,60 @@ namespace Radial.Data.Nhs
         /// </summary>
         public void Dispose()
         {
-            if (_transaction != null)
-                _transaction.Dispose();
-
             if (_session != null)
-                ((ISession)DataContext).Dispose();
+                _session.Dispose();
+        }
+
+
+        /// <summary>
+        /// Flush changes to data source.
+        /// </summary>
+        /// <param name="autoGenerateTransaction">If need to use automatic transaction set to <c>true</c>, default is <c>false</c>.</param>
+        public void Flush(bool autoGenerateTransaction = false)
+        {
+            if (autoGenerateTransaction)
+            {
+                ITransaction tx = _session.BeginTransaction();
+                try
+                {
+                    _session.Flush();
+                    tx.Commit();
+                }
+                catch
+                {
+                    tx.Rollback();
+                    throw;
+                }
+                finally
+                {
+                    tx.Dispose();
+                }
+            }
+            else
+                _session.Flush();
+        }
+
+        /// <summary>
+        /// Flush changes to data source with automatic transaction.
+        /// </summary>
+        /// <param name="isolationLevel">Isolation level for the new transaction.</param>
+        public void Flush(IsolationLevel isolationLevel)
+        {
+            ITransaction tx = _session.BeginTransaction(isolationLevel);
+            try
+            {
+                _session.Flush();
+                tx.Commit();
+            }
+            catch
+            {
+                tx.Rollback();
+                throw;
+            }
+            finally
+            {
+                tx.Dispose();
+            }
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Radial.UnitTest.Nhs
                 {
                     uow.RegisterClear<User>();
 
-                    uow.Commit();
+                    uow.Flush(true);
                 }
             }
         }
@@ -51,13 +51,13 @@ namespace Radial.UnitTest.Nhs
             using (IUnitOfWork uow = new NhUnitOfWork("partition1"))
             {
                 uow.RegisterNew(new User { Id = 1, Name = "测试" });
-                uow.Commit();
+                uow.Flush(true);
             }
 
             using (IUnitOfWork uow = new NhUnitOfWork("partition2"))
             {
                 uow.RegisterNew(new User { Id = 2, Name = "测试" });
-                uow.Commit();
+                uow.Flush(true);
             }
         }
 
@@ -93,7 +93,7 @@ namespace Radial.UnitTest.Nhs
                 {
                     uow.RegisterNew<User>(ugroup[alias]);
 
-                    uow.Commit();
+                    uow.Flush(true);
                 }
             }
 

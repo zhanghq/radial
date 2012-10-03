@@ -17,11 +17,6 @@ namespace Radial.Data
         object DataContext { get; }
 
         /// <summary>
-        /// Gets the current transaction instance.
-        /// </summary>
-        object Transaction { get; }
-
-        /// <summary>
         /// Register object which will be inserted.
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>
@@ -80,37 +75,16 @@ namespace Radial.Data
 
 
         /// <summary>
-        /// Begin a new transaction object.
+        /// Flush changes to data source.
         /// </summary>
-        /// <returns>A transaction instance.</returns>
-        void BeginTransaction();
-
+        /// <param name="autoGenerateTransaction">If need to use automatic transaction set to <c>true</c>, default is <c>false</c>.</param>
+        void Flush(bool autoGenerateTransaction = false);
 
         /// <summary>
-        /// Begin a transaction with the specified <c>isolationLevel</c>
+        /// Flush changes to data source with automatic transaction.
         /// </summary>
         /// <param name="isolationLevel">Isolation level for the new transaction.</param>
-        /// <returns>
-        /// A transaction instance having the specified isolation level.
-        /// </returns>
-        void BeginTransaction(IsolationLevel isolationLevel);
+        void Flush(IsolationLevel isolationLevel);
 
-
-        /// <summary>
-        /// Commit changes (if Transaction property is null, will use TransactionScope automatically).
-        /// </summary>
-        void Commit();
-
-        /// <summary>
-        /// Commit changes (if Transaction property is null, will use TransactionScope automatically). 
-        /// </summary>
-        /// <param name="option">The commit option.</param>
-        void Commit(object option);
-
-
-        /// <summary>
-        /// Rollback current transaction instance.
-        /// </summary>
-        void Rollback();
     }
 }

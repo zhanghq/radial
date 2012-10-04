@@ -17,6 +17,7 @@ namespace Radial.Data.Nhs
         IList<object> _pendingInsert;
         IList<object> _pendingUpdate;
         IList<object> _pendingDelete;
+        IList<dynamic> _pendingDeleteByKey;
         IList<string> _pendingClearHql;
     
 
@@ -30,6 +31,7 @@ namespace Radial.Data.Nhs
             _pendingInsert = new List<object>();
             _pendingUpdate = new List<object>();
             _pendingDelete = new List<object>();
+            _pendingDeleteByKey = new List<dynamic>();
             _pendingClearHql = new List<string>();
         }
 
@@ -44,6 +46,7 @@ namespace Radial.Data.Nhs
             _pendingInsert = new List<object>();
             _pendingUpdate = new List<object>();
             _pendingDelete = new List<object>();
+            _pendingDeleteByKey = new List<dynamic>();
             _pendingClearHql = new List<string>();
         }
 
@@ -143,6 +146,25 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
+        /// Register object which will be deleted.
+        /// </summary>
+        /// <typeparam name="TObject">The type of object.</typeparam>
+        /// <typeparam name="TKey">The type of object key.</typeparam>
+        /// <param name="key">The object key.</param>
+        public virtual void RegisterDelete<TObject, TKey>(TKey key) where TObject : class
+        {
+            var metadata = ((ISession)DataContext).SessionFactory.GetClassMetadata(typeof(TObject));
+
+            Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
+
+            _pendingDeleteByKey.Add(new { 
+                query=string.Format("from {0} o where o.{1}=?", typeof(TObject).Name, metadata.IdentifierPropertyName),
+                value=key,
+                type=metadata.IdentifierType
+            });
+        }
+
+        /// <summary>
         /// Register delete all objects.
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>
@@ -212,6 +234,8 @@ namespace Radial.Data.Nhs
             _pendingUpdate.ToList().ForEach(o => _session.Update(o));
             _pendingUpdate.Clear();
             _pendingDelete.ToList().ForEach(o => _session.Delete(o));
+            _pendingDelete.Clear();
+            _pendingDeleteByKey.ToList().ForEach(o => _session.Delete((string)o.query,(object)o.value,(NHibernate.Type.IType)o.type));
             _pendingDelete.Clear();
             _pendingClearHql.ToList().ForEach(o => _session.Delete(o));
             _pendingClearHql.Clear();

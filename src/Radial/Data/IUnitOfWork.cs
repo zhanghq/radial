@@ -58,6 +58,13 @@ namespace Radial.Data
         /// <param name="objs">The object set.</param>
         void RegisterDelete<TObject>(IEnumerable<TObject> objs) where TObject : class;
 
+        /// <summary>
+        /// Register object which will be deleted.
+        /// </summary>
+        /// <typeparam name="TObject">The type of object.</typeparam>
+        /// <typeparam name="TKey">The type of object key.</typeparam>
+        /// <param name="key">The object key.</param>
+        void RegisterDelete<TObject, TKey>(TKey key) where TObject : class;
 
         /// <summary>
         /// Register delete all objects.

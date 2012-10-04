@@ -15,12 +15,10 @@ namespace Radial.UnitTest.Nhs
     [TestFixture]
     public class MappingByCodeTest
     {
-        IUnitOfWork _uow;
-
         [TestFixtureSetUp]
         public void SetUp()
         {
-            _uow = new NhUnitOfWork();
+
             CleanUp();
         }
 
@@ -28,28 +26,35 @@ namespace Radial.UnitTest.Nhs
         public void TearDown()
         {
             CleanUp();
-            _uow.Dispose();
         }
 
         public void CleanUp()
         {
-            _uow.RegisterClear<User>();
-            _uow.Commit(true);
+            using (IUnitOfWork uow = new NhUnitOfWork())
+            {
+                uow.RegisterClear<User>();
+                uow.Commit(true);
+            }
         }
+
 
         [Test]
         public void Save()
         {
-            UserRepository userRepository = new UserRepository(_uow);
+            using (IUnitOfWork uow = new NhUnitOfWork())
+            {
+                UserRepository userRepository = new UserRepository(uow);
 
-            _uow.RegisterNew<User>(new User { Id = 1, Name = "测试" });
+                uow.RegisterNew<User>(new User { Id = 1, Name = "测试" });
 
-            _uow.Commit(true);
+                //uow.RegisterDelete<User, int>(1);
 
-            User u = userRepository.Find(1);
+                uow.Commit(true);
 
-            Console.WriteLine(u.Name);
+                User u = userRepository.Find(1);
 
+                Console.WriteLine(u.Name);
+            }
         }
     }
 }

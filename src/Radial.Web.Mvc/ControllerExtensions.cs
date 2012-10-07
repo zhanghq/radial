@@ -148,20 +148,8 @@ namespace Radial.Web.Mvc
         /// Renders Excel file to the response.
         /// </summary>
         /// <param name="c">The controller.</param>
-        /// <param name="ds">The DataSet.</param>
-        /// <param name="fileName">The file name(not contains extension).</param>
-        /// <returns>ExcelResult instance.</returns>
-        public static ExcelResult Excel(this Controller c, DataSet ds, string fileName)
-        {
-            return new ExcelResult(ds, fileName);
-        }
-
-        /// <summary>
-        /// Renders Excel file to the response.
-        /// </summary>
-        /// <param name="c">The controller.</param>
         /// <param name="dt">The DataTable.</param>
-        /// <param name="fileName">The file name(not contains extension).</param>
+        /// <param name="fileName">The file name(without extension).</param>
         /// <returns>ExcelResult instance.</returns>
         public static ExcelResult Excel(this Controller c, DataTable dt, string fileName)
         {

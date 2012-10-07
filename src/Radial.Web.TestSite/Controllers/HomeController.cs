@@ -65,5 +65,15 @@ namespace Radial.Web.TestSite.Controllers
                 return this.KnownFault(100, "io error!");
             }
         }
+
+        public ActionResult ExportExcel()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add(new DataColumn("第一列"));
+            dt.Columns.Add(new DataColumn("第二列"));
+            dt.Rows.Add(new object[] { "测试1", "测试2" });
+
+            return this.Excel(dt, "测试输出");
+        }
     }
 }

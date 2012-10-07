@@ -13,6 +13,8 @@ using Radial.Serialization;
 using System.Text.RegularExpressions;
 using System.Net;
 using Radial.Net;
+using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
 
 namespace Radial.Web
 {
@@ -411,63 +413,33 @@ namespace Radial.Web
         /// <summary>
         /// Export dataset to Excel file (use return statement to bypass other codes if necessary).
         /// </summary>
-        /// <param name="ds">The dataset object</param>
-        /// <param name="fileName">The Excel file name(not contains extension)</param>
-        public static void ExportToExcel(DataSet ds, string fileName)
+        /// <param name="dt">The dataset object</param>
+        /// <param name="fileName">The Excel file name(without extension)</param>
+        public static void ExportToExcel(DataTable dt, string fileName)
         {
             Encoding encoding = Encoding.GetEncoding("UTF-8");
 
-            Checker.Parameter(ds != null, "dataset object can not be null");
+            Checker.Parameter(dt != null, "DataTable object can not be null");
             Checker.Parameter(!string.IsNullOrWhiteSpace(fileName), "fileName can not be empty or null");
 
-            StringBuilder strb = new StringBuilder();
+            IWorkbook hssfworkbook = new HSSFWorkbook();
+            ISheet sheet = hssfworkbook.CreateSheet("Sheet1");
 
-            strb.Append("<html xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:x=\"urn:schemas-microsoft-com:office:excel\" xmlns=\"http://www.w3.org/TR/REC-html40\"/>");
-            strb.Append("<head><meta http-equiv=\"Content-Type\" content=\"text/html\" charset=\"" + encoding.BodyName + "\"/>");
-            strb.Append("<xml>");
-            strb.Append("<x:ExcelWorkbook>");
-            strb.Append("<x:ExcelWorksheets>");
-            strb.Append("<x:ExcelWorksheet>");
-            strb.Append("<x:Name>Sheet1</x:Name>");
-            strb.Append("<x:WorksheetOptions>");
-            strb.Append("<x:DefaultRowHeight>285</x:DefaultRowHeight>");
-            strb.Append("<x:Selected/>");
-            strb.Append("<x:Panes>");
-            strb.Append("<x:Pane>");
-            strb.Append("<x:Number>3</x:Number>");
-            strb.Append("<x:ActiveCol>1</x:ActiveCol>");
-            strb.Append("</x:Pane>");
-            strb.Append("</x:Panes>");
-            strb.Append("/x:WorksheetOptions>");
-            strb.Append("</x:ExcelWorksheet>");
-            strb.Append("</x:ExcelWorksheets>");
-            strb.Append("</x:ExcelWorkbook>");
-            strb.Append("</xml>");
-            strb.Append("</head><body><table align=\"center\" style='border-collapse:collapse;table-layout:fixed'><tr>");
-
-            if (ds.Tables.Count > 0)
+            //caption
+            IRow captionRow = sheet.CreateRow(0);
+            for (int columi = 0; columi < dt.Columns.Count; columi++)
             {
-                //title
-                int columncount = ds.Tables[0].Columns.Count;
-                for (int columi = 0; columi < columncount; columi++)
-                {
-                    strb.Append("<td>" + ds.Tables[0].Columns[columi] + "</td>");
-                }
-                strb.Append("</tr>");
-
-                //data    
-                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                {
-                    strb.Append("<tr>");
-                    for (int j = 0; j < ds.Tables[0].Columns.Count; j++)
-                    {
-                        strb.Append("<td>" + ds.Tables[0].Rows[i][j].ToString() + "</td>");
-                    }
-                    strb.Append("</tr>");
-                }
+                captionRow.CreateCell(columi).SetCellValue(dt.Columns[columi].ColumnName);
             }
 
-            strb.Append("</body></html>");
+            //data    
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                IRow dataRow = sheet.CreateRow(i + 1);
+
+                for (int j = 0; j < dt.Columns.Count; j++)
+                    dataRow.CreateCell(i).SetCellValue(dt.Rows[i][j].ToString());
+            }
 
             CurrentContext.Response.Clear();
             CurrentContext.Response.Buffer = true;
@@ -475,7 +447,7 @@ namespace Radial.Web
             CurrentContext.Response.AppendHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(fileName, encoding) + ".xls");
             CurrentContext.Response.ContentEncoding = encoding;
             CurrentContext.Response.ContentType = ContentTypes.Excel;
-            CurrentContext.Response.Write(strb);
+            hssfworkbook.Write(CurrentContext.Response.OutputStream);
             CurrentContext.Response.End();
 
         }

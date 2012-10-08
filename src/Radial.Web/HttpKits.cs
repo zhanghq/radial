@@ -438,7 +438,7 @@ namespace Radial.Web
                 IRow dataRow = sheet.CreateRow(i + 1);
 
                 for (int j = 0; j < dt.Columns.Count; j++)
-                    dataRow.CreateCell(i).SetCellValue(dt.Rows[i][j].ToString());
+                    dataRow.CreateCell(j).SetCellValue(dt.Rows[i][j].ToString());
             }
 
             CurrentContext.Response.Clear();

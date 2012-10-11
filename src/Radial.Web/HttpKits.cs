@@ -538,13 +538,7 @@ namespace Radial.Web
                 url += ":" + CurrentContext.Request.Url.Port;
             }
 
-            //like '/' or '/app'
-            string appPath = CurrentContext.Request.ApplicationPath.Trim('/');
-
-            string path = (appPath + '/' + relativeUrl).Trim('/');
-
-            if (!string.IsNullOrWhiteSpace(appPath) && relativeUrl.StartsWith(appPath, StringComparison.OrdinalIgnoreCase))
-                path = (appPath + '/' + relativeUrl.Replace(appPath + "/", "").Trim('/')).Trim('/');
+            string path = (CurrentContext.Request.ApplicationPath.Trim('/') + "/" + relativeUrl).Trim('/');
 
             if (string.IsNullOrWhiteSpace(path))
                 return url;

@@ -45,7 +45,7 @@ namespace Radial.Web.Mvc
             sb.AppendLine("alert(\"" + _message + "\");");
 
             if (!string.IsNullOrWhiteSpace(_redirect))
-                sb.AppendLine("window.location=\"" + HttpKits.MakeAbsoluteUrl(_redirect) + "\";");
+                sb.AppendLine("window.location=\"" + _redirect + "\";");
 
             sb.AppendLine("</script>");
 

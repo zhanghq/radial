@@ -16,7 +16,7 @@ namespace Radial.Data.Nhs.Param
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlServerParamRepository"/> class.
         /// </summary>
-        /// <param name="session">The IUnitOfWork instance.</param>
+        /// <param name="uow">The IUnitOfWork instance.</param>
         public SqlServerParamRepository(IUnitOfWork uow) : base(uow) { }
 
         /// <summary>

@@ -15,15 +15,19 @@ namespace Radial.Data.Nhs.Param
     {
         static object SyncRoot = new object();
         IParamRepository _repository;
+        IUnitOfWork _uow;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultParam"/> class.
         /// </summary>
-        /// <param name="repository">The IParamRepository instance.</param>
-        public DefaultParam(IParamRepository repository)
+        /// <param name="uow">The IUnitOfWork instance.</param>
+        public DefaultParam(IUnitOfWork uow)
         {
-            Checker.Parameter(repository != null, "IParamRepository instance can not be null");
-            _repository = repository;
+            Checker.Parameter(uow != null, "the IUnitOfWork instance can not be null");
+            _uow=uow;
+            IDictionary<string, object> dict = new Dictionary<string, object>();
+            dict.Add("uow", _uow);
+            _repository=Components.Resolve<IParamRepository>(dict);
         }
 
         /// <summary>
@@ -33,11 +37,11 @@ namespace Radial.Data.Nhs.Param
         /// <returns>
         ///   <c>true</c> if the specified path is exists; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool Exist(string path)
+        public virtual bool Exists(string path)
         {
             path = ParamObject.NormalizePath(path);
 
-            return _repository.Exist(path);
+            return _repository.Exists(path);
         }
 
         /// <summary>
@@ -55,7 +59,7 @@ namespace Radial.Data.Nhs.Param
 
             if (o == null)
             {
-                o = _repository.Get(path).ToObject();
+                o = _repository.Find(path).ToObject();
 
                 if (o != null)
                     CacheStatic.Set<ParamObject>(o.Path, o);
@@ -90,7 +94,7 @@ namespace Radial.Data.Nhs.Param
         public virtual IList<ParamObject> Next(string currentPath)
         {
             currentPath = ParamObject.NormalizePath(currentPath);
-            return _repository.Gets(o => o.Parent.Path == currentPath, new OrderBySnippet<ParamEntity>(o => o.Name)).ToObjects();
+            return _repository.FindAll(o => o.Parent.Path == currentPath, new OrderBySnippet<ParamEntity>(o => o.Name)).ToObjects();
         }
 
         /// <summary>
@@ -106,7 +110,7 @@ namespace Radial.Data.Nhs.Param
         public virtual IList<ParamObject> Next(string currentPath, int pageSize, int pageIndex, out int objectTotal)
         {
             currentPath = ParamObject.NormalizePath(currentPath);
-            return _repository.Gets(o => o.Parent.Path == currentPath, new OrderBySnippet<ParamEntity>[] { new OrderBySnippet<ParamEntity>(o => o.Name) }, pageSize, pageIndex, out objectTotal).ToObjects();
+            return _repository.FindAll(o => o.Parent.Path == currentPath, new OrderBySnippet<ParamEntity>[] { new OrderBySnippet<ParamEntity>(o => o.Name) }, pageSize, pageIndex, out objectTotal).ToObjects();
         }
 
         /// <summary>
@@ -162,29 +166,23 @@ namespace Radial.Data.Nhs.Param
 
             lock (SyncRoot)
             {
-                using (LockEntry.Acquire<ParamEntity>(e.Path))
+                Checker.Requires(!Exists(e.Path), "duplicated path: \"{0}\"", path);
+
+                string parentPath = ParamObject.GetParentPath(path);
+
+                if (!string.IsNullOrWhiteSpace(parentPath))
                 {
-                    Checker.Requires(!Exist(e.Path), "duplicated path: \"{0}\"", path);
-
-                    string parentPath = ParamObject.GetParentPath(path);
-
-                    if (!string.IsNullOrWhiteSpace(parentPath))
-                    {
-                        ParamEntity p = _repository.Get(parentPath);
-                        Checker.Requires(p != null, "parent path \"{0}\" does not exist", parentPath);
-                        e.Parent = p;
-                        p.Children.Add(e);
-                    }
-
-                    AutoTransaction.Complete(() =>
-                    {
-                        _repository.Add(e);
-                    });
-
-                    o = e.ToObject();
-
-                    CacheStatic.Set<ParamObject>(o.Path, o);
+                    ParamEntity p = _repository.Find(parentPath);
+                    Checker.Requires(p != null, "parent path \"{0}\" does not exist", parentPath);
+                    e.Parent = p;
+                    p.Children.Add(e);
                 }
+
+                _uow.RegisterNew<ParamEntity>(e);
+                _uow.Commit(true);
+
+                o = e.ToObject();
+                CacheStatic.Set<ParamObject>(o.Path, o);
             }
 
             return o;
@@ -203,41 +201,32 @@ namespace Radial.Data.Nhs.Param
         {
             path = ParamObject.NormalizePath(path);
 
+
             ParamObject o = null;
-
-            ParamEntity e = _repository.Get(path);
-
-            Checker.Requires(e != null, "can not find path: \"{0}\"", path);
-
-            if (!string.IsNullOrWhiteSpace(description))
-            {
-                e.Description = description.Trim();
-            }
-            else
-                e.Description = string.Empty;
-
-            if (!string.IsNullOrWhiteSpace(value))
-            {
-                e.Value = value.Trim();
-            }
-            else
-                e.Value = string.Empty;
-
             lock (SyncRoot)
             {
-                using (LockEntry.Acquire<ParamEntity>(e.Path))
-                {
-                    AutoTransaction.Complete(() =>
-                    {
-                        _repository.Save(e);
-                    });
+                ParamEntity e = _repository.Find(path);
 
-                    o = e.ToObject();
+                Checker.Requires(e != null, "can not find path: \"{0}\"", path);
 
-                    CacheStatic.Set<ParamObject>(o.Path, o);
-                }
+                if (!string.IsNullOrWhiteSpace(description))
+                    e.Description = description.Trim();
+                else
+                    e.Description = string.Empty;
+
+                if (!string.IsNullOrWhiteSpace(value))
+                    e.Value = value.Trim();
+                else
+                    e.Value = string.Empty;
+
+
+                _uow.RegisterUpdate<ParamEntity>(e);
+
+                _uow.Commit(true);
+                o = e.ToObject();
+
+                CacheStatic.Set<ParamObject>(o.Path, o);
             }
-
             return o;
         }
 
@@ -249,22 +238,20 @@ namespace Radial.Data.Nhs.Param
         {
             path = ParamObject.NormalizePath(path);
 
-            ParamEntity e = _repository.Get(path);
-
-            Checker.Requires(e.Children.Count == 0, "can not delete \"{0}\" because it contains some next level objects", path);
-
-            if (e != null)
+            lock (SyncRoot)
             {
-                lock (SyncRoot)
+                ParamEntity e = _repository.Find(path);
+
+                Checker.Requires(e.Children.Count == 0, "can not delete \"{0}\" because it contains some next level objects", path);
+
+                if (e != null)
                 {
-                    using (LockEntry.Acquire<ParamEntity>(e.Path))
+                    if (e.Parent != null)
                     {
-                        AutoTransaction.Complete(() =>
-                        {
-                            if (e.Parent != null)
-                                e.Parent.Children.Remove(e);
-                            _repository.Remove(e);
-                        });
+                        e.Parent.Children.Remove(e);
+
+                        _uow.RegisterDelete<ParamEntity>(e);
+                        _uow.Commit(true);
 
                         CacheStatic.Remove(e.Path);
                     }

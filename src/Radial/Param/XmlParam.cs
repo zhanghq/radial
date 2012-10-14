@@ -171,7 +171,7 @@ namespace Radial.Param
         /// <returns>
         ///   <c>true</c> if the specified path is exists; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool Exist(string path)
+        public virtual bool Exists(string path)
         {
             lock (SyncRoot)
             {
@@ -435,7 +435,7 @@ namespace Radial.Param
 
             lock (SyncRoot)
             {
-                Checker.Requires(!Exist(path), "duplicated path: \"{0}\"", path);
+                Checker.Requires(!Exists(path), "duplicated path: \"{0}\"", path);
 
                 string parentPath = ParamObject.GetParentPath(path);
 

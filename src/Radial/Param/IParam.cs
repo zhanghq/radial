@@ -20,7 +20,7 @@ namespace Radial.Param
         ///   <c>true</c> if the specified path is exists; otherwise, <c>false</c>.
         /// </returns>
         [OperationContract]
-        bool Exist(string path);
+        bool Exists(string path);
 
         /// <summary>
         /// Get param object.

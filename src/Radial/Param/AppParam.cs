@@ -34,7 +34,7 @@ namespace Radial.Param
         /// </returns>
         public static bool Exist(string path)
         {
-            return Instance.Exist(path);
+            return Instance.Exists(path);
         }
 
         /// <summary>

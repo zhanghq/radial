@@ -37,7 +37,7 @@ namespace Radial.Param
         /// <returns>
         ///   <c>true</c> if the specified path is exists; otherwise, <c>false</c>.
         /// </returns>
-        public bool Exist(string path)
+        public bool Exists(string path)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(path), "path can not be empty or null");
 

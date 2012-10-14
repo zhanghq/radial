@@ -12,10 +12,9 @@ namespace Radial.UnitTest
         [Test]
         public void Base62()
         {
-            Base62Encoder encoder = new Base62Encoder();
 
-            string str1 = encoder.ToBase62String(1231717);
-            Assert.AreEqual(1231717, encoder.FromBase62String(str1));
+            string str1 = Base62Encoder.ToBase62String(1231717);
+            Assert.AreEqual(1231717, Base62Encoder.FromBase62String(str1));
         }
     }
 }

@@ -113,11 +113,10 @@ namespace Radial.Web.OpenApi.SDK
 
             midStr = midStr.PadLeft(midStr.Length + (7 - midStr.Length % 7), '0');
 
-            Base62Encoder encoder = new Base62Encoder();
             string midBase62 = string.Empty;
             for (int i = 0; i * 7 < midStr.Length; i++)
             {
-                midBase62 += encoder.ToBase62String(ulong.Parse(midStr.Substring(i * 7, 7)));
+                midBase62 += Base62Encoder.ToBase62String(ulong.Parse(midStr.Substring(i * 7, 7)));
             }
             return midBase62;
         }
@@ -133,12 +132,11 @@ namespace Radial.Web.OpenApi.SDK
 
             base62Mid = base62Mid.PadLeft(base62Mid.Length + (4 - base62Mid.Length % 4), '*');
 
-            Base62Encoder encoder = new Base62Encoder();
             string longString = string.Empty;
 
             for (int i = 0; i * 4 < base62Mid.Length; i++)
             {
-                longString += encoder.FromBase62String(base62Mid.Substring(i * 4, 4).TrimStart('*')).ToString();
+                longString += Base62Encoder.FromBase62String(base62Mid.Substring(i * 4, 4).TrimStart('*')).ToString();
             }
 
             return long.Parse(longString);

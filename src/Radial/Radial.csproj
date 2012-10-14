@@ -112,6 +112,7 @@
     <Compile Include="Net\PlainTextFormData.cs" />
     <Compile Include="Net\HttpResponseObj.cs" />
     <Compile Include="Net\HttpWebHost.cs" />
+    <Compile Include="Base36Encoder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

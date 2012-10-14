@@ -45,7 +45,7 @@ namespace Radial.UnitTest.Nhs
             {
                 UserRepository userRepository = new UserRepository(uow);
 
-                uow.RegisterNew<User>(new User { Id = 1, Name = "测试" });
+                uow.RegisterSave<User>(new User { Id = 1, Name = "测试" });
 
                 //uow.RegisterDelete<User, int>(1);
 

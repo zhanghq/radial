@@ -17,32 +17,18 @@ namespace Radial.Data
         object DataContext { get; }
 
         /// <summary>
-        /// Register object which will be inserted.
+        /// Register object which will be saved.
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>
         /// <param name="obj">The object instance.</param>
-        void RegisterNew<TObject>(TObject obj) where TObject : class;
+        void RegisterSave<TObject>(TObject obj) where TObject : class;
 
         /// <summary>
-        /// Register object set which will be inserted.
+        /// Register object set which will be saved.
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>
         /// <param name="objs">The object set.</param>
-        void RegisterNew<TObject>(IEnumerable<TObject> objs) where TObject : class;
-
-        /// <summary>
-        /// Register object which will be updated.
-        /// </summary>
-        /// <typeparam name="TObject">The type of object.</typeparam>
-        /// <param name="obj">The object instance.</param>
-        void RegisterUpdate<TObject>(TObject obj) where TObject : class;
-
-        /// <summary>
-        /// Register object set which will be updated.
-        /// </summary>
-        /// <typeparam name="TObject">The type of object.</typeparam>
-        /// <param name="objs">The object set.</param>
-        void RegisterUpdate<TObject>(IEnumerable<TObject> objs) where TObject : class;
+        void RegisterSave<TObject>(IEnumerable<TObject> objs) where TObject : class;
 
         /// <summary>
         /// Register object which will be deleted.

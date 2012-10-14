@@ -14,8 +14,7 @@ namespace Radial.Data.Nhs
     {
         ISession _session;
 
-        IList<object> _pendingInsert;
-        IList<object> _pendingUpdate;
+        IList<object> _pendingSave;
         IList<object> _pendingDelete;
         IList<dynamic> _pendingDeleteByKey;
         IList<string> _pendingClearHql;
@@ -28,8 +27,7 @@ namespace Radial.Data.Nhs
         {
             _session = HibernateEngine.OpenSession();
 
-            _pendingInsert = new List<object>();
-            _pendingUpdate = new List<object>();
+            _pendingSave = new List<object>();
             _pendingDelete = new List<object>();
             _pendingDeleteByKey = new List<dynamic>();
             _pendingClearHql = new List<string>();
@@ -43,8 +41,7 @@ namespace Radial.Data.Nhs
         {
             _session = SessionFactoryPool.OpenSession(alias);
 
-            _pendingInsert = new List<object>();
-            _pendingUpdate = new List<object>();
+            _pendingSave = new List<object>();
             _pendingDelete = new List<object>();
             _pendingDeleteByKey = new List<dynamic>();
             _pendingClearHql = new List<string>();
@@ -62,57 +59,29 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Register object which will be inserted.
+        /// Register object which will be saved.
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>
         /// <param name="obj">The object instance.</param>
-        public virtual void RegisterNew<TObject>(TObject obj) where TObject : class
+        public virtual void RegisterSave<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
-                _pendingInsert.Add(obj);
+                _pendingSave.Add(obj);
         }
 
         /// <summary>
-        /// Register object set which will be inserted.
+        /// Register object set which will be saved.
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>
         /// <param name="objs">The object set.</param>
-        public virtual void RegisterNew<TObject>(IEnumerable<TObject> objs) where TObject : class
+        public virtual void RegisterSave<TObject>(IEnumerable<TObject> objs) where TObject : class
         {
             if (objs != null)
             {
                 foreach (TObject obj in objs)
                 {
                     if (obj != null)
-                        _pendingInsert.Add(obj);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Register object which will be updated.
-        /// </summary>
-        /// <typeparam name="TObject">The type of object.</typeparam>
-        /// <param name="obj">The object instance.</param>
-        public virtual void RegisterUpdate<TObject>(TObject obj) where TObject : class
-        {
-            if (obj != null)
-                _pendingUpdate.Add(obj);
-        }
-
-        /// <summary>
-        /// Register object set which will be updated.
-        /// </summary>
-        /// <typeparam name="TObject">The type of object.</typeparam>
-        /// <param name="objs">The object set.</param>
-        public void RegisterUpdate<TObject>(IEnumerable<TObject> objs) where TObject : class
-        {
-            if (objs != null)
-            {
-                foreach (TObject obj in objs)
-                {
-                    if (obj != null)
-                        _pendingUpdate.Add(obj);
+                        _pendingSave.Add(obj);
                 }
             }
         }
@@ -229,10 +198,8 @@ namespace Radial.Data.Nhs
         /// </summary>
         private void PrepareCommand()
         {
-            _pendingInsert.ToList().ForEach(o => _session.Save(o));
-            _pendingInsert.Clear();
-            _pendingUpdate.ToList().ForEach(o => _session.Update(o));
-            _pendingUpdate.Clear();
+            _pendingSave.ToList().ForEach(o => _session.SaveOrUpdate(o));
+            _pendingSave.Clear();
             _pendingDelete.ToList().ForEach(o => _session.Delete(o));
             _pendingDelete.Clear();
             _pendingDeleteByKey.ToList().ForEach(o => _session.Delete((string)o.query,(object)o.value,(NHibernate.Type.IType)o.type));

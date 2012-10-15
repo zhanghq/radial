@@ -22,7 +22,7 @@ namespace Radial.Web.Mvc
         /// </summary>
         /// <param name="data">The data.</param>
         public NewJsonResult(object data)
-            : this(data, ContentTypes.Json, Encoding.UTF8)
+            : this(data, ContentTypes.Html, Encoding.UTF8)
         { }
 
         /// <summary>

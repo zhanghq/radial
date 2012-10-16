@@ -8,6 +8,7 @@ using Autofac;
 using Autofac.Configuration;
 using Autofac.Core;
 using Autofac.Builder;
+using System.Configuration;
 
 namespace Radial
 {
@@ -29,15 +30,6 @@ namespace Radial
         /// </summary>
         public static ContainerBuildOptions ContainerBuildOptions;
 
-        /// <summary>
-        /// Configuration section name.
-        /// </summary>
-        public static string SectionName;
-
-        /// <summary>
-        /// Configuration file.
-        /// </summary>
-        public static string ConfigurationFile;
 
         /// <summary>
         /// Gets components container.
@@ -52,23 +44,15 @@ namespace Radial
                     {
                         var builder = new ContainerBuilder();
 
+                        object section = ConfigurationManager.GetSection(ConfigurationSettingsReader.DefaultSectionName);
 
-                        if (!string.IsNullOrWhiteSpace(SectionName) && !string.IsNullOrWhiteSpace(ConfigurationFile))
-                        {
-                            builder.RegisterModule(new ConfigurationSettingsReader(SectionName, ConfigurationFile));
-                        }
-                        else
-                        {
-                            if (!string.IsNullOrWhiteSpace(SectionName) && string.IsNullOrWhiteSpace(ConfigurationFile))
-                                builder.RegisterModule(new ConfigurationSettingsReader(SectionName));
-                            else
-                                builder.RegisterModule(new ConfigurationSettingsReader());
-                        }
+                        if (section != null)
+                            builder.RegisterModule(new ConfigurationSettingsReader());
 
                         if (AdditionalRegister != null)
                             AdditionalRegister(builder);
 
-                        if(ContainerBuildOptions!= Autofac.Builder.ContainerBuildOptions.Default)
+                        if (ContainerBuildOptions != Autofac.Builder.ContainerBuildOptions.Default)
                             S_Container = builder.Build(ContainerBuildOptions);
                         else
                             S_Container = builder.Build();

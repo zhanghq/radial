@@ -14,6 +14,13 @@ namespace Radial.Web.Mvc.Filters
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     public class HandleExceptionAttribute : HandleErrorAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HandleExceptionAttribute" /> class with ExceptionOutputStyle.System.
+        /// </summary>
+        public HandleExceptionAttribute()
+            : this(ExceptionOutputStyle.System, 0)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HandleExceptionAttribute" /> class.

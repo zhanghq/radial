@@ -76,26 +76,42 @@ namespace Radial.Param
         [OperationContract(Name = "PagedSearch")]
         IList<ParamObject> Search(string path, int pageSize, int pageIndex, out int objectTotal);
 
+        ///// <summary>
+        ///// Create new param object.
+        ///// </summary>
+        ///// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        ///// <param name="description">The description.</param>
+        ///// <param name="value">The value.</param>
+        //[OperationContract]
+        //void Create(string path, string description, string value);
+
+
+        ///// <summary>
+        ///// Update param object.
+        ///// </summary>
+        ///// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        ///// <param name="description">The new description.</param>
+        ///// <param name="value">The new value.</param>
+        //[OperationContract]
+        //void Update(string path, string description, string value);
+
+
         /// <summary>
-        /// Create new param object.
+        /// Save param object.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="value">The value.</param>
+        [OperationContract]
+        void Save(string path, string value);
+
+        /// <summary>
+        /// Save param object.
         /// </summary>
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
         /// <param name="description">The description.</param>
         /// <param name="value">The value.</param>
-        /// <returns>If successful created, return param object.</returns>
         [OperationContract]
-        ParamObject Create(string path, string description, string value);
-
-
-        /// <summary>
-        /// Update param object.
-        /// </summary>
-        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
-        /// <param name="description">The new description.</param>
-        /// <param name="value">The new value.</param>
-        /// <returns>If successful created, return param object.</returns>
-        [OperationContract]
-        ParamObject Update(string path, string description, string value);
+        void Save(string path, string description, string value);
 
         /// <summary>
         /// Delete param object.

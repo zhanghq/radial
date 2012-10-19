@@ -2,63 +2,72 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Radial.Param;
+using System.Xml.Linq;
+using Radial.Serialization;
 
 namespace Radial.Data.Nhs.Param
 {
     /// <summary>
-    /// Entity class of param object.
+    /// Param item entity class.
     /// </summary>
     public class ParamEntity
     {
-        string _path;
-        string _name;
-        IList<ParamEntity> _children;
+        /// <summary>
+        /// Entity id.
+        /// </summary>
+        public const string EntityId = "ParamItem";
+
+        string _id;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParamEntity"/> class.
+        /// Initializes a new instance of the <see cref="ParamEntity" /> class.
         /// </summary>
-        public ParamEntity() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ParamEntity"/> class.
-        /// </summary>
-        /// <param name="path">The path.</param>
-        public ParamEntity(string path)
+        public ParamEntity()
         {
-            _path = ParamObject.NormalizePath(path);
-            _name = ParamObject.GetParamName(_path);
-            _children = new List<ParamEntity>();
+            _id = EntityId;
         }
 
         /// <summary>
-        /// Gets the path.
+        /// Gets the id.
         /// </summary>
-        public virtual string Path { get { return _path; } }
+        public string Id { get { return _id; } }
 
         /// <summary>
-        /// Gets the name.
+        /// Gets or sets the xml based content.
         /// </summary>
-        public virtual string Name { get { return _name; } }
+        /// <value>
+        /// The xml based content.
+        /// </value>
+        public string XmlContent { get; set; }
+
 
         /// <summary>
-        /// Gets or sets the description.
+        /// Gets or sets the Sha1 code of content.
         /// </summary>
-        public virtual string Description { get; set; }
+        public string Sha1 { get; set; }
 
         /// <summary>
-        /// Gets or sets the value.
+        /// To string which will saved in cached
         /// </summary>
-        public virtual string Value { get; set; }
+        /// <returns></returns>
+        public string ToCacheString()
+        {
+            return JsonSerializer.Serialize(new { xml = Toolkits.Compress(this.XmlContent), sha1 = this.Sha1 });
+        }
 
         /// <summary>
-        /// Gets or sets the parent.
+        /// Froms the cache string.
         /// </summary>
-        public virtual ParamEntity Parent { get; set; }
+        /// <param name="cacheString">The cache string.</param>
+        /// <returns></returns>
+        public static ParamEntity FromCacheString(string cacheString)
+        {
+            if (string.IsNullOrWhiteSpace(cacheString))
+                return null;
 
-        /// <summary>
-        /// Gets the children.
-        /// </summary>
-        public virtual IList<ParamEntity> Children { get { return _children; } }
+            dynamic o = JsonSerializer.Deserialize(cacheString);
+
+            return new ParamEntity { XmlContent = Toolkits.Decompress((string)o.xml), Sha1 = (string)o.sha1 };
+        }
     }
 }

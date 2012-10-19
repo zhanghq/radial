@@ -1,16 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Radial.Data.Nhs" namespace="Radial.Data.Nhs.Param">
-  <class name="ParamEntity" table="Param">
-    <id name="Path" access="nosetter.camelcase-underscore">
+  <class name="ParamEntity" table="Param" lazy="false">
+    <id name="Id" access="nosetter.camelcase-underscore">
       <generator class="assigned"/>
     </id>
-    <property name="Name" not-null="true" access="nosetter.camelcase-underscore" update="false"/>
-    <property name="Description"/>
-    <property name="Value" type="StringClob"/>
-    <many-to-one name="Parent" class="ParamEntity" column="ParentPath" update="false"/>
-    <bag name="Children" access="nosetter.camelcase-underscore" cascade ="all-delete-orphan" inverse ="true" order-by="Name ASC">
-      <key column="ParentPath"/>
-      <one-to-many class="ParamEntity"/>
-    </bag>
+    <property name="XmlContent" type="StringClob" not-null="true"/>
+    <property name="Sha1" not-null="true"/>
   </class>
 </hibernate-mapping>

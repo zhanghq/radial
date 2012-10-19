@@ -22,7 +22,7 @@ namespace Radial.UnitTest
         [Test]
         public void Exist()
         {
-            Assert.True(AppParam.Exist("test1.level1"));
+            Assert.True(AppParam.Exists("test1.level1"));
             Console.WriteLine(AppParam.Get("test1.level1").Description);
         }
 
@@ -60,9 +60,9 @@ namespace Radial.UnitTest
         {
             string path = "testcreate";
 
-            ParamObject po= AppParam.Create(path, "斯蒂芬", "");
-            po=AppParam.Create(path + ".level1", "阿萨德", "");
-            AppParam.Create(path + ".level2", "阿萨德", "");
+            AppParam.Save(path, "斯蒂芬", "");
+            AppParam.Save(path + ".level1", "阿萨德", "");
+            AppParam.Save(path + ".level2", "阿萨德", "");
             AppParam.Delete(path + ".level2");
             AppParam.Delete(path + ".level1");
             AppParam.Delete(path);
@@ -74,9 +74,9 @@ namespace Radial.UnitTest
         {
             string path = "testupdate";
 
-            AppParam.Create(path, "234", "d");
-            AppParam.Create(path + ".level1", "阿萨德", "");
-            AppParam.Update(path + ".level1", "", "");
+            AppParam.Save(path, "234", "d");
+            AppParam.Save(path + ".level1", "阿萨德", "");
+            AppParam.Save(path + ".level1", "", "");
             AppParam.Delete(path + ".level1");
             AppParam.Delete(path);
         }

@@ -11,47 +11,27 @@ namespace Radial.Data.Nhs.Param
     /// <summary>
     /// ParamEntityMapper
     /// </summary>
-    public class SequentialKeyEntityMapper : ClassMapping<ParamEntity>
+    public class ParamEntityMapper : ClassMapping<ParamEntity>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SequentialKeyEntityMapper"/> class.
+        /// Initializes a new instance of the <see cref="ParamEntityMapper"/> class.
         /// </summary>
-        public SequentialKeyEntityMapper()
+        public ParamEntityMapper()
         {
             Table("Param");
-            Id<string>(o => o.Path, m =>
+            Lazy(false);
+            Id<string>(o => o.Id, m =>
             {
                 m.Generator(new NHibernate.Mapping.ByCode.AssignedGeneratorDef());
                 m.Access(Accessor.NoSetter);
             });
-            Property<string>(o => o.Name, m =>
-            {
-                m.NotNullable(true);
-                m.Access(Accessor.NoSetter);
-                m.Update(false);
-            });
-
-            Property<string>(o => o.Description);
-
-            Property<string>(o => o.Value, m =>
+            Property<string>(o => o.XmlContent, m =>
             {
                 m.Type(NHibernateUtil.StringClob);
+                m.NotNullable(true);
             });
 
-            ManyToOne(o => o.Parent, m =>
-            {
-                m.Column("ParentPath");
-                m.Update(false);
-            });
-            Bag(o => o.Children, m =>
-            {
-                m.Access(Accessor.NoSetter);
-                m.Cascade(NHibernate.Mapping.ByCode.Cascade.All | NHibernate.Mapping.ByCode.Cascade.DeleteOrphans);
-                m.Inverse(true);
-                m.OrderBy("Name ASC");
-                m.Key(k => k.Column("ParentPath"));
-            }, a => a.OneToMany());
-
+            Property<string>(o => o.Sha1, m => m.NotNullable(true));
         }
     }
 }

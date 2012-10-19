@@ -32,7 +32,7 @@ namespace Radial.Param
         /// <returns>
         ///   <c>true</c> if the specified path is exists; otherwise, <c>false</c>.
         /// </returns>
-        public static bool Exist(string path)
+        public static bool Exists(string path)
         {
             return Instance.Exists(path);
         }
@@ -108,27 +108,24 @@ namespace Radial.Param
         }
 
         /// <summary>
-        /// Create new param object.
+        /// Save param object.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="value">The value.</param>
+        public static void Save(string path, string value)
+        {
+            Instance.Save(path, value);
+        }
+
+        /// <summary>
+        /// Save param object.
         /// </summary>
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
         /// <param name="description">The description.</param>
         /// <param name="value">The value.</param>
-        /// <returns>If successful created, return param object.</returns>
-        public static ParamObject Create(string path, string description, string value)
+        public static void Save(string path, string description, string value)
         {
-            return Instance.Create(path, description, value);
-        }
-
-        /// <summary>
-        /// Update param object.
-        /// </summary>
-        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
-        /// <param name="description">The new description.</param>
-        /// <param name="value">The new value.</param>
-        /// <returns>If successful created, return param object.</returns>
-        public static ParamObject Update(string path, string description, string value)
-        {
-            return Instance.Update(path, description, value);
+            Instance.Save(path, description, value);
         }
 
         /// <summary>

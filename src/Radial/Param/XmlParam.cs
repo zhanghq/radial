@@ -162,6 +162,137 @@ namespace Radial.Param
 
         }
 
+        /// <summary>
+        /// Recursives the create parent.
+        /// </summary>
+        /// <param name="childPath">The child path.</param>
+        /// <returns></returns>
+        private XElement RecursiveCreateParent(string childPath)
+        {
+            childPath = ParamObject.NormalizePath(childPath);
+
+            string parentPath = ParamObject.GetParentPath(childPath);
+
+            //no parent element,top level
+            if (string.IsNullOrWhiteSpace(parentPath))
+                return null;
+
+            XElement pElement = GetElement(parentPath);
+
+            if (pElement == null)
+            {
+                pElement = new XElement(BuildXName("item"), new XAttribute("name", ParamObject.GetParamName(parentPath)));
+
+                XElement ppElement = RecursiveCreateParent(parentPath);
+
+                if (ppElement != null)
+                {
+                    XElement ppNext = ppElement.Element(BuildXName("next"));
+                    if (ppNext != null)
+                        ppNext.Add(pElement);
+                    else
+                        ppElement.Add(new XElement(BuildXName("next"), pElement));
+                }
+                else
+                    S_Root.Add(pElement);
+            }
+
+            return pElement;
+        }
+
+
+        /// <summary>
+        /// Create new param object.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="value">The value.</param>
+        private void Create(string path, string description, string value)
+        {
+            path = ParamObject.NormalizePath(path);
+
+            ParamObject obj = new ParamObject { Path = path };
+
+            XElement newElement = new XElement(BuildXName("item"), new XAttribute("name", ParamObject.GetParamName(path)));
+
+            if (!string.IsNullOrWhiteSpace(description))
+            {
+                obj.Description = description.Trim();
+                newElement.Add(new XAttribute("description", obj.Description));
+
+            }
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                obj.Value = value.Trim();
+                newElement.Add(new XElement(BuildXName("value"), new XCData(obj.Value)));
+
+            }
+
+            lock (SyncRoot)
+            {
+                Checker.Requires(!Exists(path), "duplicated path: \"{0}\"", path);
+
+                XElement pElement = RecursiveCreateParent(path);
+
+                if (pElement != null)
+                {
+                    XElement pNext = pElement.Element(BuildXName("next"));
+                    if (pNext != null)
+                        pNext.Add(newElement);
+                    else
+                        pElement.Add(new XElement(BuildXName("next"), newElement));
+                }
+                else
+                    S_Root.Add(newElement);
+
+                S_Root.Save(ConfigurationPath);
+            }
+        }
+
+        /// <summary>
+        /// Update param object.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="description">The new description.</param>
+        /// <param name="value">The new value.</param>
+        private void Update(string path, string description, string value)
+        {
+            path = ParamObject.NormalizePath(path);
+
+            lock (SyncRoot)
+            {
+                XElement e = GetElement(path);
+
+                Checker.Requires(e != null, "can not find path: \"{0}\"", path);
+
+                ParamObject obj = new ParamObject { Path = path };
+
+                if (!string.IsNullOrWhiteSpace(description))
+                {
+                    obj.Description = description.Trim();
+                }
+                else
+                    obj.Description = string.Empty;
+
+                e.SetAttributeValue("description", obj.Description);
+
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    obj.Value = value.Trim();
+                }
+                else
+                    obj.Value = string.Empty;
+
+                if (e.Element(BuildXName("value")) != null)
+                    e.Element(BuildXName("value")).Remove();
+                e.Add(new XElement(BuildXName("value"), new XCData(obj.Value)));
+
+                S_Root.Save(ConfigurationPath);
+
+            }
+
+        }
+
         #region IParam Members
 
         /// <summary>
@@ -171,7 +302,7 @@ namespace Radial.Param
         /// <returns>
         ///   <c>true</c> if the specified path is exists; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool Exists(string path)
+        public bool Exists(string path)
         {
             lock (SyncRoot)
             {
@@ -187,7 +318,7 @@ namespace Radial.Param
         /// <returns>
         /// If path exists, return the object, otherwise return null.
         /// </returns>
-        public virtual ParamObject Get(string path)
+        public ParamObject Get(string path)
         {
             path = ParamObject.NormalizePath(path);
 
@@ -213,7 +344,7 @@ namespace Radial.Param
         /// <returns>
         /// If path exists, return its value, otherwise return string.Empty.
         /// </returns>
-        public virtual string GetValue(string path)
+        public string GetValue(string path)
         {
             ParamObject o = Get(path);
 
@@ -230,7 +361,7 @@ namespace Radial.Param
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<ParamObject> Next(string currentPath)
+        public IList<ParamObject> Next(string currentPath)
         {
             IList<ParamObject> list = new List<ParamObject>();
 
@@ -286,7 +417,7 @@ namespace Radial.Param
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<ParamObject> Next(string currentPath, int pageSize, int pageIndex, out int objectTotal)
+        public IList<ParamObject> Next(string currentPath, int pageSize, int pageIndex, out int objectTotal)
         {
             Checker.Parameter(pageSize >= 0, "pageSize must be greater than or equal to 0");
             Checker.Parameter(pageIndex >= 1, "pageIndex must be greater than or equal to 1");
@@ -346,7 +477,7 @@ namespace Radial.Param
         /// <returns>
         /// If path matches, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<ParamObject> Search(string path)
+        public IList<ParamObject> Search(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
                 return Next(path);
@@ -379,7 +510,7 @@ namespace Radial.Param
         /// <returns>
         /// If path matches, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<ParamObject> Search(string path, int pageSize, int pageIndex, out int objectTotal)
+        public IList<ParamObject> Search(string path, int pageSize, int pageIndex, out int objectTotal)
         {
             if (string.IsNullOrWhiteSpace(path))
                 return Next(path, pageSize, pageIndex, out objectTotal);
@@ -404,115 +535,34 @@ namespace Radial.Param
         }
 
         /// <summary>
-        /// Create new param object.
+        /// Save param object.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="value">The value.</param>
+        public void Save(string path, string value)
+        {
+            Save(path, string.Empty, value);
+        }
+
+        /// <summary>
+        /// Save param object.
         /// </summary>
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
         /// <param name="description">The description.</param>
         /// <param name="value">The value.</param>
-        /// <returns>
-        /// If successful created, return param object.
-        /// </returns>
-        public virtual ParamObject Create(string path, string description, string value)
+        public void Save(string path, string description, string value)
         {
-            path = ParamObject.NormalizePath(path);
-
-            ParamObject obj = new ParamObject { Path = path };
-
-            XElement newElement = new XElement(BuildXName("item"), new XAttribute("name", ParamObject.GetParamName(path)));
-
-            if (!string.IsNullOrWhiteSpace(description))
-            {
-                obj.Description = description.Trim();
-                newElement.Add(new XAttribute("description", obj.Description));
-                
-            }
-            if (!string.IsNullOrWhiteSpace(value))
-            {
-                obj.Value = value.Trim();
-                newElement.Add(new XElement(BuildXName("value"), new XCData(obj.Value)));
-                
-            }
-
-            lock (SyncRoot)
-            {
-                Checker.Requires(!Exists(path), "duplicated path: \"{0}\"", path);
-
-                string parentPath = ParamObject.GetParentPath(path);
-
-                if (!string.IsNullOrWhiteSpace(parentPath))
-                {
-                    XElement pElement = GetElement(parentPath);
-
-                    Checker.Requires(pElement != null, "parent path \"{0}\" does not exist", parentPath);
-
-                    XElement pNext = pElement.Element(BuildXName("next"));
-                    if (pNext != null)
-                        pNext.Add(newElement);
-                    else
-                        pElement.Add(new XElement(BuildXName("next"), newElement));
-                }
-                else
-                    S_Root.Add(newElement);
-
-                S_Root.Save(ConfigurationPath);
-            }
-
-            return obj;
-        }
-
-        /// <summary>
-        /// Update param object.
-        /// </summary>
-        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
-        /// <param name="description">The new description.</param>
-        /// <param name="value">The new value.</param>
-        /// <returns>
-        /// If successful created, return param object.
-        /// </returns>
-        public virtual ParamObject Update(string path, string description, string value)
-        {
-            path = ParamObject.NormalizePath(path);
-
-            lock (SyncRoot)
-            {
-                XElement e = GetElement(path);
-
-                Checker.Requires(e != null, "can not find path: \"{0}\"", path);
-
-                ParamObject obj = new ParamObject { Path = path };
-
-                if (!string.IsNullOrWhiteSpace(description))
-                {
-                    obj.Description = description.Trim();
-                }
-                else
-                    obj.Description = string.Empty;
-
-                e.SetAttributeValue("description", obj.Description);
-
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    obj.Value = value.Trim();
-                }
-                else
-                    obj.Value = string.Empty;
-
-                if (e.Element(BuildXName("value")) != null)
-                    e.Element(BuildXName("value")).Remove();
-                e.Add(new XElement(BuildXName("value"), new XCData(obj.Value)));
-
-                S_Root.Save(ConfigurationPath);
-
-                return obj;
-            }
-
+            if (!Exists(path))
+                Create(path, description, value);
+            else
+                Update(path, description, value);
         }
 
         /// <summary>
         /// Delete param object.
         /// </summary>
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
-        public virtual void Delete(string path)
+        public void Delete(string path)
         {
             path = ParamObject.NormalizePath(path);
 
@@ -548,6 +598,11 @@ namespace Radial.Param
             }
         }
 
+
+
         #endregion
+
+
+
     }
 }

@@ -95,10 +95,7 @@ namespace Radial.Param
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
         /// <param name="description">The description.</param>
         /// <param name="value">The value.</param>
-        /// <returns>
-        /// If successful created, return param object.
-        /// </returns>
-        public ParamObject Create(string path, string description, string value)
+        private void Create(string path, string description, string value)
         {
             throw new NotSupportedException();
         }
@@ -109,10 +106,7 @@ namespace Radial.Param
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
         /// <param name="description">The new description.</param>
         /// <param name="value">The new value.</param>
-        /// <returns>
-        /// If successful created, return param object.
-        /// </returns>
-        public ParamObject Update(string path, string description, string value)
+        private void Update(string path, string description, string value)
         {
             throw new NotSupportedException();
         }
@@ -179,6 +173,27 @@ namespace Radial.Param
         public IList<ParamObject> Search(string path, int pageSize, int pageIndex, out int objectTotal)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Save param object.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="value">The value.</param>
+        public void Save(string path, string value)
+        {
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Save param object.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="value">The value.</param>
+        public void Save(string path, string description, string value)
+        {
+            throw new NotSupportedException();
         }
     }
 }

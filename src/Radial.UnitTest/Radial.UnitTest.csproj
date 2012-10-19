@@ -72,6 +72,10 @@
     <Compile Include="HttpKitsTest.cs" />
     <Compile Include="DistLockTest.cs" />
     <Compile Include="MemcachedTest.cs" />
+    <Compile Include="Nhs\Param\NhParamTest.cs" />
+    <Compile Include="Nhs\Param\NewFactoryPoolInitializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Nhs\PartitionTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -116,7 +120,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Config\log4net.config" />
     <None Include="Config\Mongod.config">
       <SubType>Designer</SubType>

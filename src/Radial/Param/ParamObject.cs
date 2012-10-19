@@ -38,7 +38,7 @@ namespace Radial.Param
         /// </returns>
         public static bool IsPathValid(string path)
         {
-            if (path == null)
+            if (string.IsNullOrWhiteSpace(path))
                 return false;
 
             path = path.Trim();

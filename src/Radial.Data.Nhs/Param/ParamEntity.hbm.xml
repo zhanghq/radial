@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Radial.Data.Nhs" namespace="Radial.Data.Nhs.Param">
   <class name="ParamEntity" table="Param" lazy="false">
+    <cache usage="read-write" region="NhParam"/>
     <id name="Id" access="nosetter.camelcase-underscore">
       <generator class="assigned"/>
     </id>

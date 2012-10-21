@@ -20,6 +20,12 @@ namespace Radial.Data.Nhs.Param
         {
             Table("Param");
             Lazy(false);
+            Cache(o =>
+            {
+                o.Region("NhParam");
+                o.Usage(CacheUsage.ReadWrite);
+            });
+
             Id<string>(o => o.Id, m =>
             {
                 m.Generator(new NHibernate.Mapping.ByCode.AssignedGeneratorDef());

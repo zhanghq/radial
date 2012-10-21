@@ -52,14 +52,29 @@ namespace Radial.Data.Nhs.Param
                         entity = paramRepo.Find(ParamEntity.EntityId);
                         if (entity == null || string.IsNullOrWhiteSpace(entity.XmlContent))
                         {
-                            originalSHA1 = string.Empty;
                             doc.Add(new XElement(BuildXName("params")));
+
+                            string xmlContent = string.Empty;
+                            using (MemoryStream ms = new MemoryStream())
+                            using (StreamReader sr = new StreamReader(ms))
+                            {
+                                doc.Root.Save(ms);
+                                ms.Position = 0;
+                                xmlContent = sr.ReadToEnd().Trim();
+                            }
+
+                            originalSHA1 = Radial.Security.CryptoProvider.SHA1Encrypt(xmlContent);
+
+                            entity = new ParamEntity { XmlContent = xmlContent, Sha1 = originalSHA1 };
                         }
                         else
                         {
                             originalSHA1 = entity.Sha1;
                             doc = XDocument.Parse(entity.XmlContent);
                         }
+
+                        //set entity cache
+                        CacheStatic.Set<string>(CacheKey, entity.ToCacheString());
                     }
                 }
                 else
@@ -67,9 +82,6 @@ namespace Radial.Data.Nhs.Param
                     originalSHA1 = entity.Sha1;
                     doc = XDocument.Parse(entity.XmlContent);
                 }
-
-                if (entity != null)
-                    CacheStatic.Set<string>(CacheKey, entity.ToCacheString());
 
                 return doc.Root;
             }

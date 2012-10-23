@@ -61,17 +61,27 @@ namespace Radial.Web
         }
 
         /// <summary>
-        /// Set the cookie
+        /// Add cookie
         /// </summary>
         /// <param name="cookie">The cookie instance</param>
-        public static void SetCookie(HttpCookie cookie)
+        public static void AddCookie(HttpCookie cookie)
         {
             Checker.Parameter(cookie != null, "cookie instance can not be null");
             CurrentContext.Response.Cookies.Add(cookie);
         }
 
         /// <summary>
-        /// Remove the cookie
+        /// Set cookie
+        /// </summary>
+        /// <param name="cookie">The cookie instance</param>
+        public static void SetCookie(HttpCookie cookie)
+        {
+            Checker.Parameter(cookie != null, "cookie instance can not be null");
+            CurrentContext.Response.Cookies.Set(cookie);
+        }
+
+        /// <summary>
+        /// Remove cookie
         /// </summary>
         /// <param name="name">The cookie name</param>
         public static void RemoveCookie(string name)

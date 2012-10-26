@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base62Test.cs" />
+    <Compile Include="CacheStaticTest.cs" />
     <Compile Include="ComponentsTest.cs" />
     <Compile Include="CryptoProviderTest.cs" />
     <Compile Include="HttpKitsTest.cs" />

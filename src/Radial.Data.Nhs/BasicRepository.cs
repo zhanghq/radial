@@ -606,14 +606,30 @@ namespace Radial.Data.Nhs
         #endregion
 
         /// <summary>
-        /// Validates the paging parameter.
+        /// Normalizes the page index parameter.
         /// </summary>
-        /// <param name="pageSize">The page size.</param>
-        /// <param name="pageIndex">The page index.</param>
-        public virtual void ValidatePagingParameter(int pageSize, int pageIndex)
+        /// <param name="pageIndex">The page index parameter.</param>
+        /// <returns>The normalized page index parameter.</returns>
+        public int NormalizePageIndex(int pageIndex)
         {
-            Checker.Parameter(pageSize >= 0, "pageSize must be greater than or equal to 0");
-            Checker.Parameter(pageIndex >= 1, "pageIndex must be greater than or equal to 1");
+            if (pageIndex < 1)
+                return 1;
+
+            return pageIndex;
+        }
+
+
+        /// <summary>
+        /// Normalizes the page size parameter.
+        /// </summary>
+        /// <param name="pageSize">The page size parameter.</param>
+        /// <returns>The normalized page size parameter.</returns>
+        public int NormalizePageSize(int pageSize)
+        {
+            if (pageSize < 0)
+                return 0;
+
+            return pageSize;
         }
 
         #region Execute Paging Query
@@ -631,7 +647,8 @@ namespace Radial.Data.Nhs
         {
             Checker.Parameter(countQuery != null, "countQuery can not be null");
             Checker.Parameter(dataQuery != null, "dataQuery can not be null");
-            ValidatePagingParameter(pageSize, pageIndex);
+            pageSize = NormalizePageSize(pageSize);
+            pageIndex = NormalizePageIndex(pageIndex);
 
             IMultiQuery query = Session.CreateMultiQuery();
             query.Add<int>(countQuery);
@@ -657,7 +674,8 @@ namespace Radial.Data.Nhs
         {
             Checker.Parameter(countCriteria != null, "countCriteria can not be null");
             Checker.Parameter(dataCriteria != null, "dataCriteria can not be null");
-            ValidatePagingParameter(pageSize, pageIndex);
+            pageSize = NormalizePageSize(pageSize);
+            pageIndex = NormalizePageIndex(pageIndex);
 
             IMultiCriteria criteria = Session.CreateMultiCriteria();
             criteria.Add<int>(countCriteria.SetProjection(Projections.RowCount()));
@@ -683,7 +701,8 @@ namespace Radial.Data.Nhs
         {
             Checker.Parameter(countQuery != null, "countQuery can not be null");
             Checker.Parameter(dataQuery != null, "dataQuery can not be null");
-            ValidatePagingParameter(pageSize, pageIndex);
+            pageSize = NormalizePageSize(pageSize);
+            pageIndex = NormalizePageIndex(pageIndex);
 
             IMultiCriteria criteria = Session.CreateMultiCriteria();
             criteria.Add<int>(countQuery.ToRowCountQuery());
@@ -706,7 +725,8 @@ namespace Radial.Data.Nhs
         protected virtual IList<TObject> ExecutePagingQuery(IQuery dataQuery, int pageSize, int pageIndex)
         {
             Checker.Parameter(dataQuery != null, "dataQuery can not be null");
-            ValidatePagingParameter(pageSize, pageIndex);
+            pageSize = NormalizePageSize(pageSize);
+            pageIndex = NormalizePageIndex(pageIndex);
 
             return dataQuery.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize).List<TObject>();
         }
@@ -721,7 +741,8 @@ namespace Radial.Data.Nhs
         protected virtual IList<TObject> ExecutePagingQuery(ICriteria dataCriteria, int pageSize, int pageIndex)
         {
             Checker.Parameter(dataCriteria != null, "dataCriteria can not be null");
-            ValidatePagingParameter(pageSize, pageIndex);
+            pageSize = NormalizePageSize(pageSize);
+            pageIndex = NormalizePageIndex(pageIndex);
 
             return dataCriteria.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize).List<TObject>();
         }
@@ -736,7 +757,8 @@ namespace Radial.Data.Nhs
         protected virtual IList<TObject> ExecutePagingQuery(IQueryOver<TObject> dataQuery, int pageSize, int pageIndex)
         {
             Checker.Parameter(dataQuery != null, "dataQuery can not be null");
-            ValidatePagingParameter(pageSize, pageIndex);
+            pageSize = NormalizePageSize(pageSize);
+            pageIndex = NormalizePageIndex(pageIndex);
 
 
             return dataQuery.Skip(pageSize * (pageIndex - 1)).Take(pageSize).List();

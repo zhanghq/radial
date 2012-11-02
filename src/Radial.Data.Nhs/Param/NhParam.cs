@@ -484,8 +484,10 @@ namespace Radial.Data.Nhs.Param
         /// <exception cref="System.NotImplementedException"></exception>
         public IList<ParamObject> Next(string currentPath, int pageSize, int pageIndex, out int objectTotal)
         {
-            Checker.Parameter(pageSize >= 0, "pageSize must be greater than or equal to 0");
-            Checker.Parameter(pageIndex >= 1, "pageIndex must be greater than or equal to 1");
+            if (pageSize < 0)
+                pageSize = 0;
+            if (pageIndex < 1)
+                pageIndex = 1;
 
             objectTotal = 0;
 
@@ -586,8 +588,10 @@ namespace Radial.Data.Nhs.Param
             if (string.IsNullOrWhiteSpace(path))
                 return Next(path, pageSize, pageIndex, out objectTotal);
 
-            Checker.Parameter(pageSize >= 0, "pageSize must be greater than or equal to 0");
-            Checker.Parameter(pageIndex >= 1, "pageIndex must be greater than or equal to 1");
+            if (pageSize < 0)
+                pageSize = 0;
+            if (pageIndex < 1)
+                pageIndex = 1;
 
             path = ParamObject.NormalizePath(path);
 

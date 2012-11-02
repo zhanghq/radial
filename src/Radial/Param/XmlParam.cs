@@ -419,8 +419,10 @@ namespace Radial.Param
         /// </returns>
         public IList<ParamObject> Next(string currentPath, int pageSize, int pageIndex, out int objectTotal)
         {
-            Checker.Parameter(pageSize >= 0, "pageSize must be greater than or equal to 0");
-            Checker.Parameter(pageIndex >= 1, "pageIndex must be greater than or equal to 1");
+            if (pageSize < 0)
+                pageSize = 0;
+            if (pageIndex < 1)
+                pageIndex = 1;
 
             objectTotal = 0;
 
@@ -514,6 +516,11 @@ namespace Radial.Param
         {
             if (string.IsNullOrWhiteSpace(path))
                 return Next(path, pageSize, pageIndex, out objectTotal);
+
+            if (pageSize < 0)
+                pageSize = 0;
+            if (pageIndex < 1)
+                pageIndex = 1;
 
             path = ParamObject.NormalizePath(path);
 

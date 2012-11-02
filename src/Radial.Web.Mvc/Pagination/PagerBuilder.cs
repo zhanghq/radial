@@ -99,6 +99,9 @@ namespace Radial.Web.Mvc.Pagination
             //else
             //    _totalPageCount = pagerOptions.MaxPageIndex;
             _totalPageCount = totalPageCount;
+            //如果总页数小于1，且不是自动隐藏，则总页数设置为1
+            if (_totalPageCount < 1 && !pagerOptions.AutoHide)
+                _totalPageCount = 1;
 
             _pageIndex = pageIndex;
             _pagerOptions = pagerOptions;
@@ -132,8 +135,6 @@ namespace Radial.Web.Mvc.Pagination
             if (_startPageIndex < 1)
                 _startPageIndex = 1;
 
-
-           
             //修正最后页索引BUG
             //// end page index
             //_endPageIndex = _startPageIndex + _pagerOptions.NumericPagerItemCount - 1;
@@ -353,6 +354,11 @@ namespace Radial.Web.Mvc.Pagination
         /// <returns></returns>
         internal MvcHtmlString RenderPager()
         {
+            //总页数小于1，则不显示，如果非自动隐藏，总页数始终不小于1
+            if (_totalPageCount < 1)
+                return new MvcHtmlString(string.Empty);
+
+
             //Display error message if pageIndex out of range
             if ((_pageIndex > _totalPageCount && _totalPageCount > 0) || _pageIndex < 1)
             {
@@ -360,7 +366,6 @@ namespace Radial.Web.Mvc.Pagination
                     MvcHtmlString.Create(string.Format("<div style=\"color:red;font-weight:bold\">{1}</div>",
                                           _pagerOptions.PageIndexOutOfRangeErrorMessage));
             }
-
 
             var pagerItems = new List<PagerItem>();
             //First page

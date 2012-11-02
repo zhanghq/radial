@@ -13,7 +13,7 @@ namespace Radial.Web.Mvc.Pagination
         /// </summary>
         public PagerOptions()
         {
-            AutoHide = true;
+            AutoHide = false;
             PageIndexParameterName = "pageIndex";
             NumericPagerItemCount = 10;
             AlwaysShowFirstLastPageNumber = false;

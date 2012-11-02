@@ -1,4 +1,6 @@
-﻿
+﻿/*
+ ASP.NET MvcPager 分页组件 Thanks To Webdiyer
+ */
 namespace Radial.Web.Mvc.Pagination
 {
     /// <summary>
@@ -7,7 +9,7 @@ namespace Radial.Web.Mvc.Pagination
     internal class PagerItem
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PagerItem"/> class.
+        /// Initializes a new instance of the <see cref="PagerItem" /> class.
         /// </summary>
         /// <param name="text">The text.</param>
         /// <param name="pageIndex">Index of the page.</param>
@@ -36,7 +38,7 @@ namespace Radial.Web.Mvc.Pagination
         /// </value>
         internal int PageIndex { get; set; }
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="PagerItem"/> is disabled.
+        /// Gets or sets a value indicating whether this <see cref="PagerItem" /> is disabled.
         /// </summary>
         /// <value>
         ///   <c>true</c> if disabled; otherwise, <c>false</c>.

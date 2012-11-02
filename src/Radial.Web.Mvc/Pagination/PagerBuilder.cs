@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*
+ ASP.NET MvcPager 分页组件 Thanks To Webdiyer
+ */
+using System;
 using System.Globalization;
 using System.Web;
 using System.Web.Mvc.Ajax;
@@ -9,13 +12,11 @@ using System.Collections.Generic;
 
 namespace Radial.Web.Mvc.Pagination
 {
-
     /// <summary>
     /// PagerBuilder
     /// </summary>
     internal class PagerBuilder
     {
-
         private readonly HtmlHelper _html;
         private readonly AjaxHelper _ajax;
         private readonly string _actionName;
@@ -30,13 +31,12 @@ namespace Radial.Web.Mvc.Pagination
         private readonly bool _msAjaxPaging;
         private readonly AjaxOptions _ajaxOptions;
         private IDictionary<string, object> _htmlAttributes;
-        private const string CopyrightText = "";
         private const string ScriptPageIndexName = "*_MvcPager_PageIndex_*";
         private const string GoToPageScript = "function _MvcPager_GoToPage(_pib,_mp){var pageIndex;if(_pib.tagName==\"SELECT\"){pageIndex=_pib.options[_pib.selectedIndex].value;}else{pageIndex=_pib.value;var r=new RegExp(\"^\\\\s*(\\\\d+)\\\\s*$\");if(!r.test(pageIndex)){alert(\"%InvalidPageIndexErrorMessage%\");return;}else if(RegExp.$1<1||RegExp.$1>_mp){alert(\"%PageIndexOutOfRangeErrorMessage%\");return;}}var _hl=document.getElementById(_pib.id+'link').childNodes[0];var _lh=_hl.href;_hl.href=_lh.replace('" + ScriptPageIndexName + "',pageIndex);if(_hl.click){_hl.click();}else{var evt=document.createEvent('MouseEvents');evt.initEvent('click',true,true);_hl.dispatchEvent(evt);}_hl.href=_lh;}";
         private const string KeyDownScript = "function _MvcPager_Keydown(e){var _kc,_pib;if(window.event){_kc=e.keyCode;_pib=e.srcElement;}else if(e.which){_kc=e.which;_pib=e.target;}var validKey=(_kc==8||_kc==46||_kc==37||_kc==39||(_kc>=48&&_kc<=57)||(_kc>=96&&_kc<=105));if(!validKey){if(_kc==13){ _MvcPager_GoToPage(_pib,%TotalPageCount%);}if(e.preventDefault){e.preventDefault();}else{event.returnValue=false;}}}";
 
         /// <summary>
-        /// 适用于PagedList为null时
+        /// Initializes a new instance of the <see cref="PagerBuilder" /> class.(适用于PagedList为null时)
         /// </summary>
         /// <param name="html">The HTML.</param>
         /// <param name="ajax">The ajax.</param>
@@ -53,7 +53,7 @@ namespace Radial.Web.Mvc.Pagination
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PagerBuilder"/> class.
+        /// Initializes a new instance of the <see cref="PagerBuilder" /> class.
         /// </summary>
         /// <param name="html">The HTML.</param>
         /// <param name="ajax">The ajax.</param>
@@ -92,10 +92,14 @@ namespace Radial.Web.Mvc.Pagination
             _ajax = ajax;
             _actionName = actionName;
             _controllerName = controllerName;
-            if (pagerOptions.MaxPageIndex == 0 || pagerOptions.MaxPageIndex > totalPageCount)
-                _totalPageCount = totalPageCount;
-            else
-                _totalPageCount = pagerOptions.MaxPageIndex;
+            
+            //修正总页数BUG
+            //if (pagerOptions.MaxPageIndex == 0 || pagerOptions.MaxPageIndex > totalPageCount)
+            //    _totalPageCount = totalPageCount;
+            //else
+            //    _totalPageCount = pagerOptions.MaxPageIndex;
+            _totalPageCount = totalPageCount;
+
             _pageIndex = pageIndex;
             _pagerOptions = pagerOptions;
             _routeName = routeName;
@@ -103,21 +107,56 @@ namespace Radial.Web.Mvc.Pagination
             _ajaxOptions = ajaxOptions;
             _htmlAttributes = htmlAttributes;
 
-            // start page index
-            _startPageIndex = pageIndex - (pagerOptions.NumericPagerItemCount / 2);
-            if (_startPageIndex + pagerOptions.NumericPagerItemCount > _totalPageCount)
-                _startPageIndex = _totalPageCount + 1 - pagerOptions.NumericPagerItemCount;
+            //修正起始页BUG
+            //// start page index
+            //_startPageIndex = pageIndex - (pagerOptions.NumericPagerItemCount / 2);
+            //if (_startPageIndex + pagerOptions.NumericPagerItemCount > _totalPageCount)
+            //    _startPageIndex = _totalPageCount + 1 - pagerOptions.NumericPagerItemCount;
+            //if (_startPageIndex < 1)
+            //    _startPageIndex = 1;
+
+            //未设置MaxPageIndex
+            if (pagerOptions.MaxPageIndex <= 0)
+            {
+                _startPageIndex = pageIndex - (pagerOptions.NumericPagerItemCount / 2);
+                if (_startPageIndex + pagerOptions.NumericPagerItemCount > _totalPageCount)
+                    _startPageIndex = _totalPageCount + 1 - pagerOptions.NumericPagerItemCount;
+            }
+            else
+            {
+                _startPageIndex = pageIndex - (pagerOptions.MaxPageIndex / 2);
+                if (_startPageIndex + pagerOptions.MaxPageIndex > _totalPageCount)
+                    _startPageIndex = _totalPageCount + 1 - pagerOptions.MaxPageIndex;
+            }
+
             if (_startPageIndex < 1)
                 _startPageIndex = 1;
 
-            // end page index
-            _endPageIndex = _startPageIndex + _pagerOptions.NumericPagerItemCount - 1;
+
+           
+            //修正最后页索引BUG
+            //// end page index
+            //_endPageIndex = _startPageIndex + _pagerOptions.NumericPagerItemCount - 1;
+            //if (_endPageIndex > _totalPageCount)
+            //    _endPageIndex = _totalPageCount;
+
+            //未设置MaxPageIndex
+            if (pagerOptions.MaxPageIndex <= 0)
+            {
+                _endPageIndex = _startPageIndex + _pagerOptions.NumericPagerItemCount - 1;
+            }
+            else
+            {
+                //已设置MaxPageIndex
+                _endPageIndex = _startPageIndex + _pagerOptions.MaxPageIndex - 1;
+            }
+
             if (_endPageIndex > _totalPageCount)
                 _endPageIndex = _totalPageCount;
         }
         //non Ajax pager builder
         /// <summary>
-        /// Initializes a new instance of the <see cref="PagerBuilder"/> class.
+        /// Initializes a new instance of the <see cref="PagerBuilder" /> class.
         /// </summary>
         /// <param name="helper">The helper.</param>
         /// <param name="actionName">Name of the action.</param>
@@ -135,7 +174,7 @@ namespace Radial.Web.Mvc.Pagination
                 totalPageCount, pageIndex, pagerOptions, routeName, routeValues, null, htmlAttributes) { }
         //Microsoft Ajax pager builder
         /// <summary>
-        /// Initializes a new instance of the <see cref="PagerBuilder"/> class.
+        /// Initializes a new instance of the <see cref="PagerBuilder" /> class.
         /// </summary>
         /// <param name="helper">The helper.</param>
         /// <param name="actionName">Name of the action.</param>
@@ -154,7 +193,7 @@ namespace Radial.Web.Mvc.Pagination
                 controllerName, totalPageCount, pageIndex, pagerOptions, routeName, routeValues, ajaxOptions, htmlAttributes) { }
         //jQuery Ajax pager builder
         /// <summary>
-        /// Initializes a new instance of the <see cref="PagerBuilder"/> class.
+        /// Initializes a new instance of the <see cref="PagerBuilder" /> class.
         /// </summary>
         /// <param name="helper">The helper.</param>
         /// <param name="actionName">Name of the action.</param>
@@ -234,10 +273,26 @@ namespace Radial.Web.Mvc.Pagination
         /// <param name="results">The results.</param>
         private void AddMoreAfter(ICollection<PagerItem> results)
         {
-            if (_endPageIndex < _totalPageCount)
+            //修正AddMoreAfter BUG
+            //if (_endPageIndex < _totalPageCount)
+            //{
+            //    var index = _startPageIndex + _pagerOptions.NumericPagerItemCount;
+            //    if (index > _totalPageCount) { index = _totalPageCount; }
+            //    var item = new PagerItem(_pagerOptions.MorePageText, index, false, PagerItemType.MorePage);
+            //    results.Add(item);
+            //}
+
+            var index = _startPageIndex + _pagerOptions.NumericPagerItemCount;
+
+            if (_pagerOptions.MaxPageIndex > 0)
             {
-                var index = _startPageIndex + _pagerOptions.NumericPagerItemCount;
-                if (index > _totalPageCount) { index = _totalPageCount; }
+                //已设置MaxPageIndex
+                index = _startPageIndex + _pagerOptions.MaxPageIndex;
+            }
+
+
+            if (index <= _totalPageCount)
+            {
                 var item = new PagerItem(_pagerOptions.MorePageText, index, false, PagerItemType.MorePage);
                 results.Add(item);
             }
@@ -298,15 +353,12 @@ namespace Radial.Web.Mvc.Pagination
         /// <returns></returns>
         internal MvcHtmlString RenderPager()
         {
-            //return null if total page count less than or equal to 1
-            if (_totalPageCount <= 1 && _pagerOptions.AutoHide)
-                return MvcHtmlString.Create(CopyrightText);
             //Display error message if pageIndex out of range
             if ((_pageIndex > _totalPageCount && _totalPageCount > 0) || _pageIndex < 1)
             {
                 return
-                    MvcHtmlString.Create(string.Format("{0}<div style=\"color:red;font-weight:bold\">{1}</div>{0}",
-                                         CopyrightText, _pagerOptions.PageIndexOutOfRangeErrorMessage));
+                    MvcHtmlString.Create(string.Format("<div style=\"color:red;font-weight:bold\">{1}</div>",
+                                          _pagerOptions.PageIndexOutOfRangeErrorMessage));
             }
 
 
@@ -397,7 +449,7 @@ namespace Radial.Web.Mvc.Pagination
             tb.InnerHtml = sb.ToString();
             if (!string.IsNullOrEmpty(pagerScript))
                 pagerScript = "<script type=\"text/javascript\">//<![CDATA[\r\n" + pagerScript + "\r\n//]]>\r\n</script>";
-            return MvcHtmlString.Create(CopyrightText + pagerScript + tb.ToString(TagRenderMode.Normal) + CopyrightText);
+            return MvcHtmlString.Create(pagerScript + tb.ToString(TagRenderMode.Normal));
         }
 
         /// <summary>
@@ -572,6 +624,11 @@ namespace Radial.Web.Mvc.Pagination
                                                  : String.Format("<a href='{0}'>{1}</a>", url, item.Text));
         }
 
+        /// <summary>
+        /// Generates the jq ajax pager element.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <returns></returns>
         private MvcHtmlString GenerateJqAjaxPagerElement(PagerItem item)
         {
             if (item.Disabled)

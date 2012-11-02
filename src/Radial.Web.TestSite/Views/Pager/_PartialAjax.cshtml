@@ -9,5 +9,5 @@
             @o.Id
         </p>
     }
-    @Html.AjaxPager(Model, new PagerOptions { PageIndexParameterName = "pid" }, new AjaxOptions { UpdateTargetId = "list_div" })
+    @Html.AjaxPager(Model, new PagerOptions { PageIndexParameterName = "pid", MaxPageIndex = 5, ShowPageIndexBox = true, PageIndexBoxType = Radial.Web.Mvc.Pagination.PageIndexBoxType.DropDownList, ShowGoButton = true }, new AjaxOptions { UpdateTargetId = "list_div" })
 </div>

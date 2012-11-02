@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*
+ ASP.NET MvcPager 分页组件 Thanks To Webdiyer
+ */
+using System;
 using System.Collections.Generic;
 
 namespace Radial.Web.Mvc.Pagination
@@ -10,7 +13,7 @@ namespace Radial.Web.Mvc.Pagination
     public class PagedList<T> : List<T>,IPagedList
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PagedList&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="PagedList{T}" /> class.
         /// </summary>
         /// <param name="items">The items.</param>
         /// <param name="pageIndex">Index of the page.</param>
@@ -48,6 +51,9 @@ namespace Radial.Web.Mvc.Pagination
         /// <summary>
         /// Gets the total page count.
         /// </summary>
+        /// <value>
+        /// The total page count.
+        /// </value>
         public int TotalPageCount { get { return (int)Math.Ceiling(TotalItemCount / (double)PageSize); } }
         /// <summary>
         /// Gets the start index of the record.

@@ -16,7 +16,7 @@ namespace Radial.Web.TestSite.Controllers
         public ActionResult Index(int? pid = 1)
         {
             IList<PagedItem> olist = new List<PagedItem>();
-            for (int i = 1; i <= 100; i++)
+            for (int i = 1; i <= 1000; i++)
             {
                 olist.Add(new PagedItem { Id = i });
             }
@@ -30,7 +30,7 @@ namespace Radial.Web.TestSite.Controllers
         public ActionResult Ajax(int? pid = 1)
         {
             IList<PagedItem> olist = new List<PagedItem>();
-            for (int i = 1; i <= 100; i++)
+            for (int i = 1; i <= 1000; i++)
             {
                 olist.Add(new PagedItem { Id = i });
             }

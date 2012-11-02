@@ -71,6 +71,7 @@
     <Compile Include="NewJsonResult.cs" />
     <Compile Include="Pagination\IPagedList.cs" />
     <Compile Include="Pagination\PagedList.cs" />
+    <Compile Include="Pagination\PageLinqExtensions.cs" />
     <Compile Include="Pagination\PagerBuilder.cs" />
     <Compile Include="Pagination\PagerHelper.cs" />
     <Compile Include="Pagination\PagerItem.cs" />

@@ -1,4 +1,6 @@
-﻿
+﻿/*
+ ASP.NET MvcPager 分页组件 Thanks To Webdiyer
+ */
 namespace Radial.Web.Mvc.Pagination
 {
     /// <summary>

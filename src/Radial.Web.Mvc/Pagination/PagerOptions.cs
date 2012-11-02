@@ -1,4 +1,7 @@
-﻿namespace Radial.Web.Mvc.Pagination
+﻿/*
+ ASP.NET MvcPager 分页组件 Thanks To Webdiyer
+ */
+namespace Radial.Web.Mvc.Pagination
 {
     /// <summary>
     /// PagerOptions
@@ -6,7 +9,7 @@
     public class PagerOptions
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PagerOptions"/> class.
+        /// Initializes a new instance of the <see cref="PagerOptions" /> class.
         /// </summary>
         public PagerOptions()
         {

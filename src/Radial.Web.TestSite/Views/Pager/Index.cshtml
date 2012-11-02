@@ -9,4 +9,4 @@
         @o.Id
     </p>
 }
-@Html.Pager(Model, new PagerOptions { PageIndexParameterName = "pid" })
+@Html.Pager(Model, new PagerOptions { PageIndexParameterName = "pid", MaxPageIndex=5, ShowPageIndexBox=true, PageIndexBoxType= Radial.Web.Mvc.Pagination.PageIndexBoxType.DropDownList, ShowGoButton=true })

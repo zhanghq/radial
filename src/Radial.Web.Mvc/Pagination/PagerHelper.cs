@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*
+ ASP.NET MvcPager 分页组件 Thanks To Webdiyer
+ */
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;

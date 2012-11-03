@@ -18,7 +18,7 @@ namespace Radial.Web.TestSite
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleExceptionAttribute(ExceptionOutputStyle.Json, 999, ContentTypes.PlainText));
+            filters.Add(new HandleExceptionAttribute(ExceptionOutputStyle.Json, 999));
         }
 
         public static void RegisterRoutes(RouteCollection routes)

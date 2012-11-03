@@ -108,7 +108,7 @@ namespace Radial.Web.Mvc.Filters
             ExceptionOutputData data = new ExceptionOutputData
             {
                 ErrorCode = hkfe != null ? hkfe.ErrorCode : DefaultErrorCode,
-                RequestUrl = HttpKits.MakeRelativeUrl(filterContext.HttpContext.Request.Url.ToString()).Replace("~", string.Empty),
+                RequestUrl = HttpKits.MakeRelativeUrl(filterContext.HttpContext.Request.RawUrl).Replace("~", string.Empty),
                 ErrorMessage = filterContext.Exception.Message
             };
 

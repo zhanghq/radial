@@ -577,7 +577,7 @@ namespace Radial.Web
             url += "/" + CurrentContext.Request.ApplicationPath.Trim('/');
             url = url.Trim('/');
 
-            string temp = absoluteUrl.Replace(url, "");
+            string temp = absoluteUrl.Replace(url, "").Trim('/');
 
             if (!temp.StartsWith("/"))
                 return "~/" + temp;

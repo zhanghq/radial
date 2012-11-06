@@ -34,7 +34,7 @@ namespace Radial.Data.Nhs
         {
             get
             {
-                return (ISession)_uow.DataContext;
+                return (ISession)_uow.UnderlyingContext;
             }
         }
 
@@ -45,7 +45,7 @@ namespace Radial.Data.Nhs
         /// <returns>
         ///   <c>true</c> if the object is exists; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool Exists(TKey key)
+        public virtual bool Exist(TKey key)
         {
             var metadata = Session.SessionFactory.GetClassMetadata(typeof(TObject));
 
@@ -58,25 +58,25 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Determine whether the object is exists.
+        /// Determine whether contains objects that match the where condition.
         /// </summary>
         /// <param name="where">The where condition.</param>
         /// <returns>
-        ///   <c>true</c> if the object is exists; otherwise, <c>false</c>.
+        ///   <c>true</c> if objects that match the where condition is exists; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool Exists(System.Linq.Expressions.Expression<Func<TObject, bool>> where)
+        public virtual bool Exist(System.Linq.Expressions.Expression<Func<TObject, bool>> where)
         {
             return GetTotal(where) > 0;
         }
 
         /// <summary>
-        /// Determine whether the object is exists.
+        /// Determine whether contains objects that match the where condition.
         /// </summary>
         /// <param name="where">The where condition.</param>
         /// <returns>
-        ///   <c>true</c> if the object is exists; otherwise, <c>false</c>.
+        ///   <c>true</c> if objects that match the where condition is exists; otherwise, <c>false</c>.
         /// </returns>
-        protected virtual bool Exists(ICriterion where)
+        protected virtual bool Exist(ICriterion where)
         {
             return GetTotal(where) > 0;
         }
@@ -319,43 +319,6 @@ namespace Radial.Data.Nhs
             return ExecutePagingQuery(countQuery, dataQuery, pageSize, pageIndex, out objectTotal);
         }
 
-        ///// <summary>
-        ///// Clear all objects.
-        ///// </summary>
-        //public virtual void Clear()
-        //{
-        //    Session.Delete(string.Format("from {0}", typeof(TObject).Name));
-        //}
-
-
-        ///// <summary>
-        ///// Adds objects to the repository.
-        ///// </summary>
-        ///// <param name="objs">The objects.</param>
-        //public virtual void Add(IEnumerable<TObject> objs)
-        //{
-        //    if (objs != null)
-        //    {
-        //        foreach (TObject obj in objs)
-        //        {
-        //            if (obj != null)
-        //                Session.Save(obj);
-        //        }
-        //    }
-        //}
-
-
-        ///// <summary>
-        ///// Adds an object to the repository.
-        ///// </summary>
-        ///// <param name="obj">The object.</param>
-        //public virtual void Add(TObject obj)
-        //{
-        //    if (obj != null)
-        //        Add(new TObject[] { obj });
-        //}
-
-
         /// <summary>
         /// Find all objects.
         /// </summary>
@@ -484,11 +447,64 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
+        /// Adds an object to the repository (or delegate to IUnitOfWork.RegisterNew method if using IUnitOfWork).
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        public virtual void Add(TObject obj)
+        {
+            _uow.RegisterNew<TObject>(obj);
+        }
+
+        /// <summary>
+        /// Adds objects to the repository (or delegate to IUnitOfWork.RegisterNew method if using IUnitOfWork).
+        /// </summary>
+        /// <param name="objs">The objects.</param>
+        public virtual void Add(IEnumerable<TObject> objs)
+        {
+            _uow.RegisterNew<TObject>(objs);
+        }
+
+        /// <summary>
+        /// Saves or updates the specified object (or delegate to IUnitOfWork.RegisterSave method if using IUnitOfWork).
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        public virtual void Save(TObject obj)
+        {
+            _uow.RegisterSave<TObject>(obj);
+        }
+
+        /// <summary>
+        /// Removes an object with the specified key from the repository (or delegate to IUnitOfWork.RegisterDelete method if using IUnitOfWork).
+        /// </summary>
+        /// <param name="key">The object key.</param>
+        public virtual void Remove(TKey key)
+        {
+            _uow.RegisterDelete<TObject, TKey>(key);
+        }
+
+        /// <summary>
+        /// Removes the specified object from the repository (or delegate to IUnitOfWork.RegisterDelete method if using IUnitOfWork).
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        public virtual void Remove(TObject obj)
+        {
+            _uow.RegisterDelete<TObject>(obj);
+        }
+
+        /// <summary>
+        /// Clear all objects (or delegate to IUnitOfWork.RegisterClear method if using IUnitOfWork).
+        /// </summary>
+        public virtual void Clear()
+        {
+            _uow.RegisterClear<TObject>();
+        }
+
+        /// <summary>
         /// To unique item list.
         /// </summary>
         /// <param name="collection">The collection.</param>
         /// <returns>The list does not contains duplicate elements</returns>
-        public virtual IList<TObject> ToUniqueList(IEnumerable<TObject> collection)
+        protected virtual IList<TObject> ToUniqueList(IEnumerable<TObject> collection)
         {
             ISet<TObject> set = new HashSet<TObject>(collection);
 
@@ -610,7 +626,7 @@ namespace Radial.Data.Nhs
         /// </summary>
         /// <param name="pageIndex">The page index parameter.</param>
         /// <returns>The normalized page index parameter.</returns>
-        public int NormalizePageIndex(int pageIndex)
+        protected int NormalizePageIndex(int pageIndex)
         {
             if (pageIndex < 1)
                 return 1;
@@ -624,7 +640,7 @@ namespace Radial.Data.Nhs
         /// </summary>
         /// <param name="pageSize">The page size parameter.</param>
         /// <returns>The normalized page size parameter.</returns>
-        public int NormalizePageSize(int pageSize)
+        protected int NormalizePageSize(int pageSize)
         {
             if (pageSize < 0)
                 return 0;

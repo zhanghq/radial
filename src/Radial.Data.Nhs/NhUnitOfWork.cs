@@ -48,14 +48,34 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Gets the data context object.
+        /// Gets the underlying data context object.
         /// </summary>
-        public virtual object DataContext
+        public virtual object UnderlyingContext
         {
             get
             {
                 return _session;
             }
+        }
+
+        /// <summary>
+        /// Register object which will be inserted.
+        /// </summary>
+        /// <typeparam name="TObject">The type of object.</typeparam>
+        /// <param name="obj">The object instance.</param>
+        public virtual void RegisterNew<TObject>(TObject obj) where TObject : class
+        {
+            RegisterSave<TObject>(obj);
+        }
+
+        /// <summary>
+        /// Register object set which will be inserted.
+        /// </summary>
+        /// <typeparam name="TObject">The type of object.</typeparam>
+        /// <param name="objs">The object set.</param>
+        public virtual void RegisterNew<TObject>(IEnumerable<TObject> objs) where TObject : class
+        {
+            RegisterSave<TObject>(objs);
         }
 
         /// <summary>
@@ -122,7 +142,7 @@ namespace Radial.Data.Nhs
         /// <param name="key">The object key.</param>
         public virtual void RegisterDelete<TObject, TKey>(TKey key) where TObject : class
         {
-            var metadata = ((ISession)DataContext).SessionFactory.GetClassMetadata(typeof(TObject));
+            var metadata = _session.SessionFactory.GetClassMetadata(typeof(TObject));
 
             Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
 

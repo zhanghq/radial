@@ -12,9 +12,23 @@ namespace Radial.Data
     public interface IUnitOfWork : IDisposable
     {
         /// <summary>
-        /// Gets the data context object.
+        /// Gets the underlying data context object.
         /// </summary>
-        object DataContext { get; }
+        object UnderlyingContext { get; }
+
+        /// <summary>
+        /// Register object which will be inserted.
+        /// </summary>
+        /// <typeparam name="TObject">The type of object.</typeparam>
+        /// <param name="obj">The object instance.</param>
+        void RegisterNew<TObject>(TObject obj) where TObject : class;
+
+        /// <summary>
+        /// Register object set which will be inserted.
+        /// </summary>
+        /// <typeparam name="TObject">The type of object.</typeparam>
+        /// <param name="objs">The object set.</param>
+        void RegisterNew<TObject>(IEnumerable<TObject> objs) where TObject : class;
 
         /// <summary>
         /// Register object which will be saved.

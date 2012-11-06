@@ -44,7 +44,7 @@ namespace Radial.Data.Nhs.SequentialKey
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(discriminator), "discriminator can not be empty or null");
 
-            ISQLQuery query = ((ISession)_uow.DataContext).CreateSQLQuery(QUERY);
+            ISQLQuery query = ((ISession)_uow.UnderlyingContext).CreateSQLQuery(QUERY);
             query.SetString("Discriminator", discriminator);
             query.SetParameter<int>("IncreaseStep", (int)increaseStep);
 

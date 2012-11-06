@@ -20,16 +20,16 @@ namespace Radial.Data
         /// <returns>
         ///   <c>true</c> if the object is exists; otherwise, <c>false</c>.
         /// </returns>
-        bool Exists(TKey key);
+        bool Exist(TKey key);
 
         /// <summary>
-        /// Determine whether the object is exists.
+        /// Determine whether contains objects that match the where condition.
         /// </summary>
         /// <param name="where">The where condition.</param>
         /// <returns>
-        ///   <c>true</c> if the object is exists; otherwise, <c>false</c>.
+        ///   <c>true</c> if objects that match the where condition is exists; otherwise, <c>false</c>.
         /// </returns>
-        bool Exists(Expression<Func<TObject, bool>> where);
+        bool Exist(Expression<Func<TObject, bool>> where);
 
 
         /// <summary>
@@ -223,5 +223,40 @@ namespace Radial.Data
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
         IList<TObject> FindAll(Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal);
+
+        /// <summary>
+        /// Adds an object to the repository (or delegate to IUnitOfWork.RegisterNew method if using IUnitOfWork).
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        void Add(TObject obj);
+
+        /// <summary>
+        /// Adds objects to the repository (or delegate to IUnitOfWork.RegisterNew method if using IUnitOfWork).
+        /// </summary>
+        /// <param name="objs">The objects.</param>
+        void Add(IEnumerable<TObject> objs);
+
+        /// <summary>
+        /// Saves or updates the specified object (or delegate to IUnitOfWork.RegisterSave method if using IUnitOfWork).
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        void Save(TObject obj);
+
+        /// <summary>
+        /// Removes an object with the specified key from the repository (or delegate to IUnitOfWork.RegisterDelete method if using IUnitOfWork).
+        /// </summary>
+        /// <param name="key">The object key.</param>
+        void Remove(TKey key);
+
+        /// <summary>
+        /// Removes the specified object from the repository (or delegate to IUnitOfWork.RegisterDelete method if using IUnitOfWork).
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        void Remove(TObject obj);
+
+        /// <summary>
+        /// Clear all objects (or delegate to IUnitOfWork.RegisterClear method if using IUnitOfWork).
+        /// </summary>
+        void Clear();
     }
 }

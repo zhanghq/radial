@@ -38,8 +38,6 @@ namespace Radial.Web.TestSite
         {
             AreaRegistration.RegisterAllAreas();
 
-            Logger.Start();
-
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 

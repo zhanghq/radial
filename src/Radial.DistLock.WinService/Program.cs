@@ -16,7 +16,7 @@ namespace Radial.DistLock.WinService
         /// </summary>
         static void Main(string [] args)
         {
-            Logger.Start();
+            //Logger.Start();
 
             //only one argument
             string arg = args == null || args.Length == 0 ? string.Empty : args[0];

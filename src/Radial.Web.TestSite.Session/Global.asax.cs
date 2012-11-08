@@ -12,7 +12,6 @@ namespace Radial.Web.TestSite.Session
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            Logger.Start();
         }
 
         protected void Session_Start(object sender, EventArgs e)

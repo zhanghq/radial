@@ -15,6 +15,10 @@ namespace Radial
     public sealed class Logger
     {
         ILog _log;
+        /// <summary>
+        /// whether logger is started
+        /// </summary>
+        static bool S_IsStart = false;
         static object S_SyncRoot = new object();
 
 
@@ -23,17 +27,21 @@ namespace Radial
         /// </summary>
         private Logger()
         {
+            if(!S_IsStart)
+                XmlConfigurator.ConfigureAndWatch(new FileInfo(ConfigurationPath));
+
             _log = LogManager.GetLogger(typeof(Logger));
+
         }
 
 
         /// <summary>
         /// Prevents a default instance of the <see cref="Logger"/> class from being created.
         /// </summary>
-        /// <param name="logName">Name of the log.</param>
+        /// <param name="logName">Name of the logger.</param>
         private Logger(string logName)
         {
-            Checker.Parameter(!string.IsNullOrWhiteSpace(logName), "log name can not be empty or null.");
+            Checker.Parameter(!string.IsNullOrWhiteSpace(logName), "logger name can not be empty or null.");
             _log = LogManager.GetLogger(logName);
         }
 
@@ -45,17 +53,6 @@ namespace Radial
             get
             {
                 return SystemVariables.GetConfigurationPath("log4net.config");
-            }
-        }
-
-        /// <summary>
-        /// Starts the log component.
-        /// </summary>
-        public static void Start()
-        {
-            lock (S_SyncRoot)
-            {
-                XmlConfigurator.ConfigureAndWatch(new FileInfo(ConfigurationPath));
             }
         }
 

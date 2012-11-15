@@ -21,9 +21,12 @@ namespace Radial
         /// <typeparam name="TEnum">The type of the enumeration.</typeparam>
         /// <param name="enumValue">The enumeration value.</param>
         /// <returns>The enumeration item, if not match throw a NotSupportedException.</returns>
-        public static TEnum GetEnumItem<TEnum>(int enumValue)
+        public static TEnum GetEnumItem<TEnum>(int? enumValue) where TEnum : struct
         {
             Checker.Parameter(typeof(TEnum).IsEnum, "TEnum must be an enumeration");
+
+            if (enumValue == null)
+                return default(TEnum);
 
             FieldInfo[] infos = typeof(TEnum).GetFields(BindingFlags.Static | BindingFlags.Public);
 
@@ -48,10 +51,12 @@ namespace Radial
         /// <returns>
         /// The item description, if not find EnumItemAttribute return String.Empty.
         /// </returns>
-        public static string GetEnumItemDescription<TEnum>(TEnum enumValue)
+        public static string GetEnumItemDescription<TEnum>(TEnum? enumValue) where TEnum : struct
         {
             Checker.Parameter(typeof(TEnum).IsEnum, "TEnum must be an enumeration");
-            Checker.Parameter(enumValue != null, "enumValue can not be null");
+
+            if (enumValue == null)
+                return string.Empty;
 
             FieldInfo[] infos = typeof(TEnum).GetFields(BindingFlags.Static | BindingFlags.Public);
 

@@ -27,8 +27,7 @@ namespace Radial
         /// </summary>
         private Logger()
         {
-            if(!S_IsStart)
-                XmlConfigurator.ConfigureAndWatch(new FileInfo(ConfigurationPath));
+            Start();
 
             _log = LogManager.GetLogger(typeof(Logger));
 
@@ -42,6 +41,9 @@ namespace Radial
         private Logger(string logName)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(logName), "logger name can not be empty or null.");
+
+            Start();
+
             _log = LogManager.GetLogger(logName);
         }
 
@@ -53,6 +55,18 @@ namespace Radial
             get
             {
                 return SystemVariables.GetConfigurationPath("log4net.config");
+            }
+        }
+
+        /// <summary>
+        /// Starts the log component.
+        /// </summary>
+        public static void Start()
+        {
+            lock (S_SyncRoot)
+            {
+                if (!S_IsStart)
+                    XmlConfigurator.ConfigureAndWatch(new FileInfo(ConfigurationPath));
             }
         }
 

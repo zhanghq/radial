@@ -7,7 +7,6 @@ using System.Xml.Linq;
 using Radial.Cache;
 using System.IO;
 using System.Configuration;
-using NHibernate;
 
 namespace Radial.Data.Nhs.Param
 {
@@ -23,10 +22,6 @@ namespace Radial.Data.Nhs.Param
         /// The cache key.
         /// </summary>
         private readonly string CacheKey = "nhparamcache";
-        /// <summary>
-        /// Static XDocument object.
-        /// </summary>
-        private static XDocument XDoc;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NhParam" /> class.
@@ -45,37 +40,32 @@ namespace Radial.Data.Nhs.Param
         {
             lock (S_SyncRoot)
             {
-                if (XDoc == null)
+                XDocument doc = new XDocument();
+
+                ParamEntity entity = ParamEntity.FromCacheString(CacheStatic.Get<string>(CacheKey));
+
+                if (entity == null)
                 {
-                    ParamEntity entity = ParamEntity.FromCacheString(CacheStatic.Get<string>(CacheKey));
-
-                    if (entity == null)
+                    using (IUnitOfWork uow = new NhUnitOfWork())
                     {
-                        using (IUnitOfWork uow = new NhUnitOfWork())
+                        ParamRepository paramRepo = new ParamRepository(uow);
+                        entity = paramRepo.Find(ParamEntity.EntityId);
+                        if (entity != null && !string.IsNullOrWhiteSpace(entity.XmlContent))
                         {
-                            ParamRepository paramRepo = new ParamRepository(uow);
-                            entity = paramRepo.Find(ParamEntity.EntityId);
-                            if (entity != null && !string.IsNullOrWhiteSpace(entity.XmlContent))
-                            {
+                            doc = XDocument.Parse(entity.XmlContent);
 
-                                XDoc = XDocument.Parse(entity.XmlContent);
-
-                                //set entity cache
-                                CacheStatic.Set<string>(CacheKey, entity.ToCacheString());
-
-                            }
-                            else
-                            {
-                                XDoc = new XDocument();
-                                XDoc.Add(new XElement(BuildXName("params")));
-                            }
+                            //set entity cache
+                            CacheStatic.Set<string>(CacheKey, entity.ToCacheString());
                         }
+                        else
+                            doc.Add(new XElement(BuildXName("params")));
                     }
-                    else
-                        XDoc = XDocument.Parse(entity.XmlContent);
                 }
+                else
+                    doc = XDocument.Parse(entity.XmlContent);
 
-                return XDoc.Root;
+
+                return doc.Root;
             }
         }
 
@@ -98,30 +88,20 @@ namespace Radial.Data.Nhs.Param
 
                 ParamEntity entity;
 
-                try
+                using (IUnitOfWork uow = new NhUnitOfWork())
                 {
-                    using (IUnitOfWork uow = new NhUnitOfWork())
-                    {
-                        ParamRepository paramRepo = new ParamRepository(uow);
+                    ParamRepository paramRepo = new ParamRepository(uow);
 
-                        entity = paramRepo.Find(ParamEntity.EntityId);
+                    entity = paramRepo.Find(ParamEntity.EntityId);
 
-                        if (entity != null)
-                            entity.XmlContent = xmlContent;
-                        else
-                            entity = new ParamEntity { XmlContent = xmlContent };
+                    if (entity != null)
+                        entity.XmlContent = xmlContent;
+                    else
+                        entity = new ParamEntity { XmlContent = xmlContent };
 
+                    uow.RegisterSave<ParamEntity>(entity);
 
-                        uow.RegisterSave<ParamEntity>(entity);
-
-                        uow.Commit(true);
-                    }
-                }
-                catch (StaleObjectStateException)
-                {
-                    //StaleObjectStateException release XDoct=null
-                    XDoc = null;
-                    throw;
+                    uow.Commit(true);
                 }
 
                 CacheStatic.Set<string>(CacheKey, entity.ToCacheString());

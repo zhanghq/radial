@@ -18,6 +18,8 @@ namespace Radial.Data.Nhs.Param
         public const string EntityId = "ParamItem";
 
         string _id;
+        string _xmlContent;
+        string _sha1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParamEntity" /> class.
@@ -38,13 +40,35 @@ namespace Radial.Data.Nhs.Param
         /// <value>
         /// The xml based content.
         /// </value>
-        public string XmlContent { get; set; }
+        public string XmlContent
+        {
+            get
+            {
+                return _xmlContent;
+            }
+            set
+            {
+                _xmlContent = value;
+
+                if (_xmlContent == null)
+                    _xmlContent = string.Empty;
+
+                _xmlContent = _xmlContent.Trim();
+
+                _sha1 = Radial.Security.CryptoProvider.SHA1Encrypt(_xmlContent);
+
+            }
+        }
 
 
         /// <summary>
-        /// Gets or sets the Sha1 code of content.
+        /// Gets the Sha1 code of content.
         /// </summary>
-        public string Sha1 { get; set; }
+        public string Sha1
+        {
+            get { return _sha1; }
+        }
+
 
         /// <summary>
         /// To string which will saved in cached
@@ -52,7 +76,7 @@ namespace Radial.Data.Nhs.Param
         /// <returns></returns>
         public string ToCacheString()
         {
-            return JsonSerializer.Serialize(new { xml = this.XmlContent, sha1 = this.Sha1 });
+            return XmlContent;
         }
 
         /// <summary>
@@ -65,9 +89,7 @@ namespace Radial.Data.Nhs.Param
             if (string.IsNullOrWhiteSpace(cacheString))
                 return null;
 
-            dynamic o = JsonSerializer.Deserialize(cacheString);
-
-            return new ParamEntity { XmlContent =o.xml, Sha1 = o.sha1 };
+            return new ParamEntity { XmlContent = cacheString };
         }
     }
 }

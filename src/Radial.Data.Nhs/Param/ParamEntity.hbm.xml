@@ -6,6 +6,6 @@
       <generator class="assigned"/>
     </id>
     <property name="XmlContent" type="StringClob" not-null="true" optimistic-lock="false"/>
-    <property name="Sha1" not-null="true" optimistic-lock="true"/>
+    <property name="Sha1" not-null="true" access="nosetter.camelcase-underscore" optimistic-lock="true"/>
   </class>
 </hibernate-mapping>

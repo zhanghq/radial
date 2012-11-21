@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Radial.Data.Nhs" namespace="Radial.Data.Nhs.Param">
-  <class name="ParamEntity" table="Param" lazy="false">
+  <class name="ParamEntity" table="Param" lazy="false" dynamic-update ="true" optimistic-lock="dirty">
     <cache usage="read-write" region="NhParam"/>
     <id name="Id" access="nosetter.camelcase-underscore">
       <generator class="assigned"/>
     </id>
-    <version name="Version" type="Int32" unsaved-value="0"/>
-    <property name="XmlContent" type="StringClob" not-null="true"/>
+    <property name="XmlContent" type="StringClob" not-null="true" optimistic-lock="false"/>
+    <property name="Sha1" not-null="true" optimistic-lock="true"/>
   </class>
 </hibernate-mapping>

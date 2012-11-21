@@ -42,9 +42,9 @@ namespace Radial.Data.Nhs.Param
 
 
         /// <summary>
-        /// Gets or sets the version.
+        /// Gets or sets the Sha1 code of content.
         /// </summary>
-        public int Version { get; set; }
+        public string Sha1 { get; set; }
 
         /// <summary>
         /// To string which will saved in cached
@@ -52,7 +52,7 @@ namespace Radial.Data.Nhs.Param
         /// <returns></returns>
         public string ToCacheString()
         {
-            return JsonSerializer.Serialize(new { xml = Toolkits.Compress(this.XmlContent), version = this.Version });
+            return JsonSerializer.Serialize(new { xml = this.XmlContent, sha1 = this.Sha1 });
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Radial.Data.Nhs.Param
 
             dynamic o = JsonSerializer.Deserialize(cacheString);
 
-            return new ParamEntity { XmlContent = Toolkits.Decompress((string)o.xml), Version = o.version };
+            return new ParamEntity { XmlContent =o.xml, Sha1 = o.sha1 };
         }
     }
 }

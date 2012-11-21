@@ -19,6 +19,9 @@ namespace Radial.Data.Nhs.Param
         public ParamEntityMapper()
         {
             Table("Param");
+            DynamicUpdate(true);
+            //class not support optimistic-lock??
+
             Lazy(false);
             Cache(o =>
             {
@@ -31,15 +34,17 @@ namespace Radial.Data.Nhs.Param
                 m.Generator(new NHibernate.Mapping.ByCode.AssignedGeneratorDef());
                 m.Access(Accessor.NoSetter);
             });
-            Version<int>(o => o.Version, m =>
-            {
-                m.Type((NHibernate.Type.IVersionType)NHibernateUtil.Int32);
-                m.UnsavedValue(0);
-            });
             Property<string>(o => o.XmlContent, m =>
             {
                 m.Type(NHibernateUtil.StringClob);
                 m.NotNullable(true);
+                m.OptimisticLock(false);
+            });
+
+            Property<string>(o => o.Sha1, m =>
+            {
+                m.NotNullable(true);
+                m.OptimisticLock(true);
             });
         }
     }

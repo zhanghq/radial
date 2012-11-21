@@ -61,7 +61,6 @@
     <Compile Include="DefaultFactoryPoolInitializer.cs" />
     <Compile Include="Param\NhParam.cs" />
     <Compile Include="Param\ParamEntity.cs" />
-    <Compile Include="Param\ParamEntityMapper.cs" />
     <Compile Include="Param\ParamRepository.cs" />
     <Compile Include="SequentialKey\SqlClientGenerator.cs" />
     <Compile Include="NhUnitOfWork.cs" />

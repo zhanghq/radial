@@ -8,7 +8,7 @@ namespace Radial.Data.Nhs.Param
     /// <summary>
     /// Param Repository
     /// </summary>
-    public class ParamRepository : BasicRepository<ParamEntity, string>
+    class ParamRepository : BasicRepository<ParamEntity, string>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ParamRepository" /> class.

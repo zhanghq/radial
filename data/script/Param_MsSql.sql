@@ -9,7 +9,7 @@ SET ANSI_PADDING ON
 GO
 
 CREATE TABLE [dbo].[Param](
-	[Id] [varchar](10) NOT NULL,
+	[Id] [varchar](30) NOT NULL,
 	[XmlContent] [ntext] NOT NULL,
 	[Sha1] [varchar](50) NOT NULL,
  CONSTRAINT [PK_Param] PRIMARY KEY CLUSTERED 

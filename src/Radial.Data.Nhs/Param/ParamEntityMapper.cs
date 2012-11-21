@@ -31,13 +31,16 @@ namespace Radial.Data.Nhs.Param
                 m.Generator(new NHibernate.Mapping.ByCode.AssignedGeneratorDef());
                 m.Access(Accessor.NoSetter);
             });
+            Version<int>(o => o.Version, m =>
+            {
+                m.Type((NHibernate.Type.IVersionType)NHibernateUtil.Int32);
+                m.UnsavedValue(0);
+            });
             Property<string>(o => o.XmlContent, m =>
             {
                 m.Type(NHibernateUtil.StringClob);
                 m.NotNullable(true);
             });
-
-            Property<string>(o => o.Sha1, m => m.NotNullable(true));
         }
     }
 }

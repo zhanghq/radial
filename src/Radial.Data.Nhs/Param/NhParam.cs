@@ -25,18 +25,8 @@ namespace Radial.Data.Nhs.Param
         /// <summary>
         /// Loads the root element.
         /// </summary>
-        private XElement LoadRootElement()
-        {
-            string sha1;
-            return LoadRootElement(out sha1);
-        }
-
-        /// <summary>
-        /// Loads the root element.
-        /// </summary>
-        /// <param name="originalSHA1">the original sha1.</param>
         /// <returns></returns>
-        private XElement LoadRootElement(out string originalSHA1)
+        private XElement LoadRootElement()
         {
             lock (S_SyncRoot)
             {
@@ -50,6 +40,7 @@ namespace Radial.Data.Nhs.Param
                     {
                         ParamRepository paramRepo = new ParamRepository(uow);
                         entity = paramRepo.Find(ParamEntity.EntityId);
+
                         if (entity == null || string.IsNullOrWhiteSpace(entity.XmlContent))
                         {
                             doc.Add(new XElement(BuildXName("params")));
@@ -63,13 +54,10 @@ namespace Radial.Data.Nhs.Param
                                 xmlContent = sr.ReadToEnd().Trim();
                             }
 
-                            originalSHA1 = Radial.Security.CryptoProvider.SHA1Encrypt(xmlContent);
-
-                            entity = new ParamEntity { XmlContent = xmlContent, Sha1 = originalSHA1 };
+                            entity = new ParamEntity { XmlContent = xmlContent };
                         }
                         else
                         {
-                            originalSHA1 = entity.Sha1;
                             doc = XDocument.Parse(entity.XmlContent);
                         }
 
@@ -78,10 +66,7 @@ namespace Radial.Data.Nhs.Param
                     }
                 }
                 else
-                {
-                    originalSHA1 = entity.Sha1;
                     doc = XDocument.Parse(entity.XmlContent);
-                }
 
                 return doc.Root;
             }
@@ -91,8 +76,7 @@ namespace Radial.Data.Nhs.Param
         /// Saves the root element.
         /// </summary>
         /// <param name="root">The root.</param>
-        /// <param name="originalSHA1">The original sha1.</param>
-        private void SaveRootElement(XElement root, string originalSHA1)
+        private void SaveRootElement(XElement root)
         {
             lock (S_SyncRoot)
             {
@@ -105,8 +89,6 @@ namespace Radial.Data.Nhs.Param
                     xmlContent = sr.ReadToEnd().Trim();
                 }
 
-                string newSHA1 = Radial.Security.CryptoProvider.SHA1Encrypt(xmlContent);
-
                 ParamEntity entity;
 
                 using (IUnitOfWork uow = new NhUnitOfWork())
@@ -116,14 +98,9 @@ namespace Radial.Data.Nhs.Param
                     entity = paramRepo.Find(ParamEntity.EntityId);
 
                     if (entity != null)
-                    {
-                        Checker.Requires(string.Compare(entity.Sha1, originalSHA1, true) == 0, "parameter entity conflict, probably has been modified in another program");
-
                         entity.XmlContent = xmlContent;
-                        entity.Sha1 = newSHA1;
-                    }
                     else
-                        entity = new ParamEntity { XmlContent = xmlContent, Sha1 = newSHA1 };
+                        entity = new ParamEntity { XmlContent = xmlContent};
 
 
                     uow.RegisterSave<ParamEntity>(entity);
@@ -288,8 +265,7 @@ namespace Radial.Data.Nhs.Param
 
             lock (S_SyncRoot)
             {
-                string originalSHA1;
-                XElement root = LoadRootElement(out originalSHA1);
+                XElement root = LoadRootElement();
 
                 Checker.Requires(GetElement(root, path) == null, "duplicated path: \"{0}\"", path);
 
@@ -306,7 +282,7 @@ namespace Radial.Data.Nhs.Param
                 else
                     root.Add(newElement);
 
-                SaveRootElement(root, originalSHA1);
+                SaveRootElement(root);
             }
         }
 
@@ -322,8 +298,7 @@ namespace Radial.Data.Nhs.Param
 
             lock (S_SyncRoot)
             {
-                string originalSHA1;
-                XElement root = LoadRootElement(out originalSHA1);
+                XElement root = LoadRootElement();
 
                 XElement e = GetElement(root, path);
 
@@ -347,7 +322,7 @@ namespace Radial.Data.Nhs.Param
                     e.Element(BuildXName("value")).Remove();
                 e.Add(new XElement(BuildXName("value"), new XCData(obj.Value)));
 
-                SaveRootElement(root, originalSHA1);
+                SaveRootElement(root);
             }
         }
 
@@ -649,8 +624,7 @@ namespace Radial.Data.Nhs.Param
 
             lock (S_SyncRoot)
             {
-                string originalSHA1;
-                XElement root = LoadRootElement(out originalSHA1);
+                XElement root = LoadRootElement();
 
                 XElement e = GetElement(root, path);
 
@@ -676,7 +650,7 @@ namespace Radial.Data.Nhs.Param
                         }
                     }
 
-                    SaveRootElement(root, originalSHA1);
+                    SaveRootElement(root);
                 }
             }
         }

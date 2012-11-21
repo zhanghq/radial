@@ -29,7 +29,7 @@ namespace Radial.UnitTest.Nhs.PoolInitializer
 
             configuration.DataBaseIntegration(c =>
             {
-                c.Dialect<MsSql2008Dialect>();
+                c.Dialect<MsSql2012Dialect>();
                 c.Driver<Sql2008ClientDriver>();
                 c.ConnectionString = @"Data Source=.;Initial Catalog=rdut;Integrated Security=True;";
                 c.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;

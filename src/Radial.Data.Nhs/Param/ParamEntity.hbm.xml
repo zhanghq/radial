@@ -5,7 +5,7 @@
     <id name="Id" access="nosetter.camelcase-underscore">
       <generator class="assigned"/>
     </id>
+    <version name="Version" type="Int32" unsaved-value="0"/>
     <property name="XmlContent" type="StringClob" not-null="true"/>
-    <property name="Sha1" not-null="true"/>
   </class>
 </hibernate-mapping>

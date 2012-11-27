@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 
 namespace Radial.DataLite.Query
 {
     /// <summary>
-    /// Sql Server查询
+    /// MySql查询
     /// </summary>
-    class SqlServerQuery : SqlQuery
+    class MySqlQuery : SqlQuery
     {
         /// <summary>
         /// 创建参数名称
@@ -25,9 +25,10 @@ namespace Radial.DataLite.Query
         /// <summary>
         /// 获取提供程序
         /// </summary>
+        /// <value></value>
         public override System.Data.Common.DbProviderFactory DbProvider
         {
-            get { return SqlClientFactory.Instance; }
+            get { return MySqlClientFactory.Instance; }
         }
     }
 }

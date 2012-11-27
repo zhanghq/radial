@@ -4,6 +4,7 @@ using System.Text;
 using System.Data.Common;
 using System.Data;
 using System.Text.RegularExpressions;
+using log4net;
 
 namespace Radial.DataLite
 {
@@ -19,16 +20,9 @@ namespace Radial.DataLite
         DbTransaction _transaction;
         SqlQuery _sqlQuery;
 
+        ILog _log = LogManager.GetLogger(typeof(DbSession));
+
         int _commandTimeout=30;//default 30 seconds
-
-        #endregion
-
-        #region Event
-
-        /// <summary>
-        /// SQL日志事件，在执行语句前触发
-        /// </summary>
-        public event LogEventHandler Log;
 
         #endregion
 
@@ -367,7 +361,8 @@ namespace Radial.DataLite
             }
 
             string paramText = string.Join(",", paramTextList.ToArray());
-            string logText = string.Format("{0} ", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+
+            string logText = string.Empty;
 
             if (command.CommandType == CommandType.Text)
                 logText += string.Format("{0}{1}", cmdText, Environment.NewLine);
@@ -383,21 +378,7 @@ namespace Radial.DataLite
 
             logText += Environment.NewLine;
 
-            OnLog(new LogEventArgs(logText));
-        }
-
-        /// <summary>
-        /// 触发日志输出事件
-        /// </summary>
-        /// <param name="e">日志事件参数</param>
-        private void OnLog(LogEventArgs e)
-        {
-            if (Log == null)
-                return;
-            if (e == null)
-                throw new ArgumentException("日志事件参数不能为空");
-
-            Log(this, e);
+            _log.Info(logText);
         }
 
         #endregion

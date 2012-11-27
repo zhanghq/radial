@@ -10,24 +10,20 @@ namespace Radial.DataLite
     public enum DataSourceType
     {
         /// <summary>
-        /// Sql Server 2005 or above
+        /// Sql Server Series
         /// </summary>
-        SqlServer9 = 0,
-        /// <summary>
-        /// Sql Server 2000
-        /// </summary>
-        SqlServer = 1,
+        SqlServer = 0,
         /// <summary>
         /// Ms Access
         /// </summary>
-        MsAccess = 2,
+        MsAccess = 1,
         /// <summary>
         /// Sqlite
         /// </summary>
-        Sqlite = 3,
+        Sqlite = 2,
         /// <summary>
         /// MySql
         /// </summary>
-        MySql = 4
+        MySql = 3
     }
 }

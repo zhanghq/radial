@@ -19,10 +19,11 @@ namespace Radial.DataLite
         {
             switch (dsType)
             {
-                case DataSourceType.SqlServer:
-                case DataSourceType.SqlServer9: return new SqlServerQuery();
+                case DataSourceType.SqlServer: return new SqlServerQuery();
                 case DataSourceType.MsAccess: return new MsAccessQuery();
-                default: throw new NotSupportedException("不支持" + dsType.ToString() + "数据源类型");
+                case DataSourceType.MySql: return new MySqlQuery();
+                case DataSourceType.Sqlite: return new SqliteQuery();
+                default: throw new NotSupportedException("暂不支持" + dsType.ToString() + "数据源类型");
             }
         }
     }

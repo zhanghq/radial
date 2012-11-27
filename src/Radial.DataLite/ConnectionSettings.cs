@@ -30,19 +30,19 @@ namespace Radial.DataLite
         /// <summary>
         /// 获取或设置连接字符串
         /// </summary>
-        [ConfigurationProperty("connStr", Options = ConfigurationPropertyOptions.IsRequired)]
+        [ConfigurationProperty("connectionString", Options = ConfigurationPropertyOptions.IsRequired)]
         public string ConnectionString
         {
             get
-            { return (string)this["connStr"]; }
+            { return (string)this["connectionString"]; }
             set
-            { this["connStr"] = value.Trim(); }
+            { this["connectionString"] = value.Trim(); }
         }
 
         /// <summary>
         /// 获取或设置数据源类型
         /// </summary>
-        [ConfigurationProperty("type", DefaultValue = "SqlServer9")]
+        [ConfigurationProperty("type", DefaultValue = "SqlServer")]
         public DataSourceType DataSourceType
         {
             get

@@ -12,13 +12,6 @@ namespace Radial.DataLite
     public delegate string PlaceholderSubstitution(string originalString);
 
     /// <summary>
-    /// 日志事件处理方法
-    /// </summary>
-    /// <param name="sender">引发事件的对象</param>
-    /// <param name="args">日志参数</param>
-    public delegate void LogEventHandler(object sender,LogEventArgs args);
-
-    /// <summary>
     /// 参数名称构建方法
     /// </summary>
     /// <param name="parameterIndex">参数索引</param>

@@ -5,6 +5,7 @@ using System.Text;
 using NHibernate.Mapping.ByCode.Conformist;
 using NHibernate.Mapping.ByCode;
 using NHibernate;
+using NHibernate.Type;
 
 namespace Radial.Data.Nhs.Param
 {
@@ -19,8 +20,6 @@ namespace Radial.Data.Nhs.Param
         public ParamEntityMapper()
         {
             Table("Param");
-            DynamicUpdate(true);
-            //class not support optimistic-lock??
 
             Lazy(false);
             Cache(o =>
@@ -31,20 +30,20 @@ namespace Radial.Data.Nhs.Param
 
             Id<string>(o => o.Id, m =>
             {
+                m.Length(10);
                 m.Generator(new NHibernate.Mapping.ByCode.AssignedGeneratorDef());
                 m.Access(Accessor.NoSetter);
+            });
+            Version<int>(o => o.Version, m =>
+            {
+                m.Type((IVersionType)NHibernateUtil.Int32);
+                m.Access(Accessor.NoSetter);
+                m.UnsavedValue(0);
             });
             Property<string>(o => o.XmlContent, m =>
             {
                 m.Type(NHibernateUtil.StringClob);
                 m.NotNullable(true);
-                m.OptimisticLock(false);
-            });
-
-            Property<string>(o => o.Sha1, m =>
-            {
-                m.NotNullable(true);
-                m.OptimisticLock(true);
             });
         }
     }

@@ -1,4 +1,4 @@
-/****** Object:  Table [dbo].[Param]    Script Date: 2012/10/19 15:17:27 ******/
+/****** Object:  Table [dbo].[Param]    Script Date: 2012/11/29 23:18:30 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -9,9 +9,9 @@ SET ANSI_PADDING ON
 GO
 
 CREATE TABLE [dbo].[Param](
-	[Id] [varchar](30) NOT NULL,
+	[Id] [varchar](10) NOT NULL,
 	[XmlContent] [ntext] NOT NULL,
-	[Sha1] [varchar](50) NOT NULL,
+	[Version] [int] NOT NULL,
  CONSTRAINT [PK_Param] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

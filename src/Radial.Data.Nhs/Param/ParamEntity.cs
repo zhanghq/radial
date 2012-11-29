@@ -18,8 +18,7 @@ namespace Radial.Data.Nhs.Param
         public const string EntityId = "ParamItem";
 
         string _id;
-        string _xmlContent;
-        string _sha1;
+        int _version = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParamEntity" /> class.
@@ -37,36 +36,19 @@ namespace Radial.Data.Nhs.Param
         /// <summary>
         /// Gets or sets the xml based content.
         /// </summary>
-        /// <value>
-        /// The xml based content.
-        /// </value>
         public string XmlContent
         {
-            get
-            {
-                return _xmlContent;
-            }
-            set
-            {
-                _xmlContent = value;
-
-                if (_xmlContent == null)
-                    _xmlContent = string.Empty;
-
-                _xmlContent = _xmlContent.Trim();
-
-                _sha1 = Radial.Security.CryptoProvider.SHA1Encrypt(_xmlContent);
-
-            }
+            get;
+            set;
         }
 
 
         /// <summary>
-        /// Gets the Sha1 code of content.
+        /// Gets the version.
         /// </summary>
-        public string Sha1
+        public int Version
         {
-            get { return _sha1; }
+            get { return _version; }
         }
 
 

@@ -41,12 +41,12 @@ namespace Radial.UnitTest.Nhs.Param
                 });
 
 
-            //ModelMapper mapper = new ModelMapper();
-            //mapper.AddMapping<ParamEntityMapper>();
+            ModelMapper mapper = new ModelMapper();
+            mapper.AddMapping<ParamEntityMapper>();
 
-            //configuration.AddDeserializedMapping(mapper.CompileMappingForAllExplicitlyAddedEntities(), null);
+            configuration.AddDeserializedMapping(mapper.CompileMappingForAllExplicitlyAddedEntities(), null);
 
-            configuration.AddAssembly("Radial.Data.Nhs");
+            //configuration.AddAssembly("Radial.Data.Nhs");
 
             wrapperSet.Add(new SessionFactoryWrapper("default", configuration.BuildSessionFactory()));
 

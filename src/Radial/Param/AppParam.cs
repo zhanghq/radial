@@ -112,9 +112,9 @@ namespace Radial.Param
         /// </summary>
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
         /// <param name="value">The value.</param>
-        public static void Save(string path, string value)
+        public static void Save(string path, object value)
         {
-            Instance.Save(path, value);
+            Instance.Save(path, GetObjectString(value));
         }
 
         /// <summary>
@@ -123,9 +123,9 @@ namespace Radial.Param
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
         /// <param name="description">The description.</param>
         /// <param name="value">The value.</param>
-        public static void Save(string path, string description, string value)
+        public static void Save(string path, string description, object value)
         {
-            Instance.Save(path, description, value);
+            Instance.Save(path, description, GetObjectString(value));
         }
 
         /// <summary>
@@ -419,5 +419,27 @@ namespace Radial.Param
         }
 
         #endregion
+
+
+        /// <summary>
+        /// Gets the object string.
+        /// </summary>
+        /// <param name="obj">The obj.</param>
+        /// <returns>If object is null return string.Empty, otherwise return the string value of object.</returns>
+        private static string GetObjectString(object obj)
+        {
+            if (obj == null)
+                return string.Empty;
+
+            Type objType = obj.GetType();
+
+            if (objType.IsEnum)
+                return ((int)obj).ToString();
+
+            if (objType == typeof(string) || objType.IsPrimitive)
+                return obj.ToString().Trim();
+
+            throw new NotSupportedException(string.Format("Object type {0} was not supported in AppParam", objType.FullName));
+        }
     }
 }

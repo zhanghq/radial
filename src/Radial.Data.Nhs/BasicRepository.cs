@@ -15,15 +15,15 @@ namespace Radial.Data.Nhs
     /// <typeparam name="TKey">The type of the object key.</typeparam>
     public abstract class BasicRepository<TObject, TKey> : IRepository<TObject, TKey> where TObject : class
     {
-        IUnitOfWork _uow;
+        IUnitOfWorkEssential _uow;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicRepository&lt;TObject, TKey&gt;"/> class.
         /// </summary>
-        /// <param name="uow">The IUnitOfWork instance.</param>
-        public BasicRepository(IUnitOfWork uow)
+        /// <param name="uow">The IUnitOfWorkEssential instance.</param>
+        public BasicRepository(IUnitOfWorkEssential uow)
         {
-            Checker.Parameter(uow != null, "the IUnitOfWork instance can not be null");
+            Checker.Parameter(uow != null, "the IUnitOfWorkEssential instance can not be null");
             _uow = uow;
         }
 

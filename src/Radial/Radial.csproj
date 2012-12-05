@@ -67,6 +67,7 @@
     <Compile Include="Cache\ICache.cs" />
     <Compile Include="Data\IStoragePolicy.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />
+    <Compile Include="Data\IUnitOfWorkEssential.cs" />
     <Compile Include="Data\StorageRouter.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Data\IRepository.cs" />

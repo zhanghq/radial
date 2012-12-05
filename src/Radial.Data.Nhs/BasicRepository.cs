@@ -447,7 +447,7 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Adds an object to the repository (or delegate to IUnitOfWork.RegisterNew method if using IUnitOfWork).
+        /// Adds an object to the repository (or delegate to RegisterNew method if using unit of work).
         /// </summary>
         /// <param name="obj">The object.</param>
         public virtual void Add(TObject obj)
@@ -456,7 +456,7 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Adds objects to the repository (or delegate to IUnitOfWork.RegisterNew method if using IUnitOfWork).
+        /// Adds objects to the repository (or delegate to RegisterNew method if using unit of work).
         /// </summary>
         /// <param name="objs">The objects.</param>
         public virtual void Add(IEnumerable<TObject> objs)
@@ -465,7 +465,7 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Saves or updates the specified object (or delegate to IUnitOfWork.RegisterSave method if using IUnitOfWork).
+        /// Saves or updates the specified object (or delegate to RegisterSave method if using unit of work).
         /// </summary>
         /// <param name="obj">The object.</param>
         public virtual void Save(TObject obj)
@@ -474,7 +474,7 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Removes an object with the specified key from the repository (or delegate to IUnitOfWork.RegisterDelete method if using IUnitOfWork).
+        /// Removes an object with the specified key from the repository (or delegate to RegisterDelete method if using unit of work).
         /// </summary>
         /// <param name="key">The object key.</param>
         public virtual void Remove(TKey key)
@@ -483,7 +483,7 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Removes the specified object from the repository (or delegate to IUnitOfWork.RegisterDelete method if using IUnitOfWork).
+        /// Removes the specified object from the repository (or delegate to RegisterDelete method if using unit of work).
         /// </summary>
         /// <param name="obj">The object.</param>
         public virtual void Remove(TObject obj)
@@ -492,7 +492,7 @@ namespace Radial.Data.Nhs
         }
 
         /// <summary>
-        /// Clear all objects (or delegate to IUnitOfWork.RegisterClear method if using IUnitOfWork).
+        /// Clear all objects (or delegate to RegisterClear method if using unit of work).
         /// </summary>
         public virtual void Clear()
         {

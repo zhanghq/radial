@@ -225,37 +225,37 @@ namespace Radial.Data
         IList<TObject> FindAll(Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal);
 
         /// <summary>
-        /// Adds an object to the repository (or delegate to IUnitOfWork.RegisterNew method if using IUnitOfWork).
+        /// Adds an object to the repository (or delegate to RegisterNew method if using unit of work).
         /// </summary>
         /// <param name="obj">The object.</param>
         void Add(TObject obj);
 
         /// <summary>
-        /// Adds objects to the repository (or delegate to IUnitOfWork.RegisterNew method if using IUnitOfWork).
+        /// Adds objects to the repository (or delegate to RegisterNew method if using unit of work).
         /// </summary>
         /// <param name="objs">The objects.</param>
         void Add(IEnumerable<TObject> objs);
 
         /// <summary>
-        /// Saves or updates the specified object (or delegate to IUnitOfWork.RegisterSave method if using IUnitOfWork).
+        /// Saves or updates the specified object (or delegate to RegisterSave method if using unit of work).
         /// </summary>
         /// <param name="obj">The object.</param>
         void Save(TObject obj);
 
         /// <summary>
-        /// Removes an object with the specified key from the repository (or delegate to IUnitOfWork.RegisterDelete method if using IUnitOfWork).
+        /// Removes an object with the specified key from the repository (or delegate to RegisterDelete method if using unit of work).
         /// </summary>
         /// <param name="key">The object key.</param>
         void Remove(TKey key);
 
         /// <summary>
-        /// Removes the specified object from the repository (or delegate to IUnitOfWork.RegisterDelete method if using IUnitOfWork).
+        /// Removes the specified object from the repository (or delegate to RegisterDelete method if using unit of work).
         /// </summary>
         /// <param name="obj">The object.</param>
         void Remove(TObject obj);
 
         /// <summary>
-        /// Clear all objects (or delegate to IUnitOfWork.RegisterClear method if using IUnitOfWork).
+        /// Clear all objects (or delegate to RegisterClear method if using unit of work).
         /// </summary>
         void Clear();
     }

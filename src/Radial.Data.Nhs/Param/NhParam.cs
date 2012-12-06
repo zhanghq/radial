@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using Radial.Cache;
 using System.IO;
 using System.Configuration;
+using System.Threading;
 
 namespace Radial.Data.Nhs.Param
 {
@@ -15,8 +16,12 @@ namespace Radial.Data.Nhs.Param
     /// </summary>
     public class NhParam : IParam
     {
-        static object S_SyncRoot = new object();
+        static object S_SyncReadRoot = new object();
+        static object S_SyncWriteRoot = new object();
         const string Xmlns = "urn:radial-xmlparam";
+
+        [ThreadStatic]
+        static XDocument Document;
 
         /// <summary>
         /// The cache key.
@@ -38,35 +43,37 @@ namespace Radial.Data.Nhs.Param
         /// <returns></returns>
         private XElement LoadRootElement()
         {
-            lock (S_SyncRoot)
+            lock (S_SyncReadRoot)
             {
-                XDocument doc = new XDocument();
-
-                ParamEntity entity = ParamEntity.FromCacheString(CacheStatic.Get<string>(CacheKey));
-
-                if (entity == null)
+                if (Document == null)
                 {
-                    using (IUnitOfWork uow = new NhUnitOfWork())
+                    ParamEntity entity = ParamEntity.FromCacheString(CacheStatic.Get<string>(CacheKey));
+
+                    if (entity == null)
                     {
-                        ParamRepository paramRepo = new ParamRepository(uow);
-                        entity = paramRepo.Find(ParamEntity.EntityId);
-                        if (entity != null && !string.IsNullOrWhiteSpace(entity.XmlContent))
+                        using (IUnitOfWork uow = new NhUnitOfWork())
                         {
-                            doc = XDocument.Parse(entity.XmlContent);
+                            ParamRepository paramRepo = new ParamRepository(uow);
+                            entity = paramRepo.Find(ParamEntity.EntityId);
+                            if (entity != null && !string.IsNullOrWhiteSpace(entity.XmlContent))
+                            {
+                                Document = XDocument.Parse(entity.XmlContent);
 
-                            //set entity cache
-                            CacheStatic.Set<string>(CacheKey, entity.ToCacheString());
+                                //set entity cache
+                                CacheStatic.Set<string>(CacheKey, entity.ToCacheString());
+
+                            }
+                            else
+                                Document.Add(new XElement(BuildXName("params")));
                         }
-                        else
-                            doc.Add(new XElement(BuildXName("params")));
                     }
+                    else
+                        Document = XDocument.Parse(entity.XmlContent);
+
                 }
-                else
-                    doc = XDocument.Parse(entity.XmlContent);
-
-
-                return doc.Root;
             }
+
+            return Document.Root;
         }
 
         /// <summary>
@@ -75,7 +82,7 @@ namespace Radial.Data.Nhs.Param
         /// <param name="root">The root.</param>
         private void SaveRootElement(XElement root)
         {
-            lock (S_SyncRoot)
+            lock (S_SyncWriteRoot)
             {
                 string xmlContent = string.Empty;
                 using (MemoryStream ms = new MemoryStream())
@@ -104,6 +111,7 @@ namespace Radial.Data.Nhs.Param
                     uow.Commit(true);
                 }
 
+                //set entity cache
                 CacheStatic.Set<string>(CacheKey, entity.ToCacheString());
             }
         }
@@ -170,22 +178,20 @@ namespace Radial.Data.Nhs.Param
         {
             path = ParamObject.NormalizePath(path);
 
-            lock (S_SyncRoot)
+            string[] pathSplits = path.Split(new string[] { ParamObject.PathSeparator }, StringSplitOptions.RemoveEmptyEntries);
+
+            XElement e = root;
+            for (int i = 0; i < pathSplits.Length; i++)
             {
-                string[] pathSplits = path.Split(new string[] { ParamObject.PathSeparator }, StringSplitOptions.RemoveEmptyEntries);
-
-                XElement e = root;
-                for (int i = 0; i < pathSplits.Length; i++)
-                {
-                    e = e.Descendants(BuildXName("item"))
-                        .Where(o => string.Compare(o.Attribute("name").Value, pathSplits[i].Trim(), true) == 0)
-                        .SingleOrDefault();
-                    if (e == null)
-                        break;
-                }
-
-                return e;
+                e = e.Descendants(BuildXName("item"))
+                    .Where(o => string.Compare(o.Attribute("name").Value, pathSplits[i].Trim(), true) == 0)
+                    .SingleOrDefault();
+                if (e == null)
+                    break;
             }
+
+            return e;
+
         }
 
 
@@ -259,27 +265,26 @@ namespace Radial.Data.Nhs.Param
                 newElement.Add(new XElement(BuildXName("value"), new XCData(obj.Value)));
             }
 
-            lock (S_SyncRoot)
+
+            XElement root = LoadRootElement();
+
+            Checker.Requires(GetElement(root, path) == null, "duplicated path: \"{0}\"", path);
+
+            XElement pElement = RecursiveCreateParent(root, path);
+
+            if (pElement != null)
             {
-                XElement root = LoadRootElement();
-
-                Checker.Requires(GetElement(root, path) == null, "duplicated path: \"{0}\"", path);
-
-                XElement pElement = RecursiveCreateParent(root, path);
-
-                if (pElement != null)
-                {
-                    XElement pNext = pElement.Element(BuildXName("next"));
-                    if (pNext != null)
-                        pNext.Add(newElement);
-                    else
-                        pElement.Add(new XElement(BuildXName("next"), newElement));
-                }
+                XElement pNext = pElement.Element(BuildXName("next"));
+                if (pNext != null)
+                    pNext.Add(newElement);
                 else
-                    root.Add(newElement);
-
-                SaveRootElement(root);
+                    pElement.Add(new XElement(BuildXName("next"), newElement));
             }
+            else
+                root.Add(newElement);
+
+            SaveRootElement(root);
+
         }
 
         /// <summary>
@@ -292,34 +297,32 @@ namespace Radial.Data.Nhs.Param
         {
             path = ParamObject.NormalizePath(path);
 
-            lock (S_SyncRoot)
-            {
-                XElement root = LoadRootElement();
+            XElement root = LoadRootElement();
 
-                XElement e = GetElement(root, path);
+            XElement e = GetElement(root, path);
 
-                Checker.Requires(e != null, "can not find path: \"{0}\"", path);
+            Checker.Requires(e != null, "can not find path: \"{0}\"", path);
 
-                ParamObject obj = new ParamObject { Path = path };
+            ParamObject obj = new ParamObject { Path = path };
 
-                if (!string.IsNullOrWhiteSpace(description))
-                    obj.Description = description.Trim();
-                else
-                    obj.Description = string.Empty;
+            if (!string.IsNullOrWhiteSpace(description))
+                obj.Description = description.Trim();
+            else
+                obj.Description = string.Empty;
 
-                e.SetAttributeValue("description", obj.Description);
+            e.SetAttributeValue("description", obj.Description);
 
-                if (!string.IsNullOrWhiteSpace(value))
-                    obj.Value = value.Trim();
-                else
-                    obj.Value = string.Empty;
+            if (!string.IsNullOrWhiteSpace(value))
+                obj.Value = value.Trim();
+            else
+                obj.Value = string.Empty;
 
-                if (e.Element(BuildXName("value")) != null)
-                    e.Element(BuildXName("value")).Remove();
-                e.Add(new XElement(BuildXName("value"), new XCData(obj.Value)));
+            if (e.Element(BuildXName("value")) != null)
+                e.Element(BuildXName("value")).Remove();
+            e.Add(new XElement(BuildXName("value"), new XCData(obj.Value)));
 
-                SaveRootElement(root);
-            }
+            SaveRootElement(root);
+
         }
 
         #region IParam Members
@@ -336,11 +339,8 @@ namespace Radial.Data.Nhs.Param
         {
             path = ParamObject.NormalizePath(path);
 
-            lock (S_SyncRoot)
-            {
-                XElement root = LoadRootElement();
-                return GetElement(root, path) != null;
-            }
+            XElement root = LoadRootElement();
+            return GetElement(root, path) != null;
         }
 
         /// <summary>
@@ -355,20 +355,18 @@ namespace Radial.Data.Nhs.Param
         {
             path = ParamObject.NormalizePath(path);
 
-            lock (S_SyncRoot)
+            XElement root = LoadRootElement();
+            XElement e = GetElement(root, path);
+
+            if (e != null)
             {
-                XElement root = LoadRootElement();
-                XElement e = GetElement(root, path);
-
-                if (e != null)
-                {
-                    ParamObject obj = LoadObject(e);
-                    return obj;
-                }
-
-                return null;
-
+                ParamObject obj = LoadObject(e);
+                return obj;
             }
+
+            return null;
+
+
         }
 
         /// <summary>
@@ -401,39 +399,36 @@ namespace Radial.Data.Nhs.Param
         {
             IList<ParamObject> list = new List<ParamObject>();
 
-            lock (S_SyncRoot)
+            ParamObject obj = null;
+
+            XElement root = LoadRootElement();
+
+            if (string.IsNullOrWhiteSpace(currentPath))
             {
-                ParamObject obj = null;
-
-                XElement root = LoadRootElement();
-
-                if (string.IsNullOrWhiteSpace(currentPath))
+                foreach (XElement e in root.Elements(BuildXName("item")).OrderBy(o => o.Attribute("name").Value))
                 {
-                    foreach (XElement e in root.Elements(BuildXName("item")).OrderBy(o => o.Attribute("name").Value))
-                    {
-                        obj = LoadObject(e);
+                    obj = LoadObject(e);
 
-                        list.Add(obj);
-                    }
+                    list.Add(obj);
                 }
-                else
+            }
+            else
+            {
+                currentPath = ParamObject.NormalizePath(currentPath);
+
+                XElement e = GetElement(root, currentPath);
+
+                if (e != null)
                 {
-                    currentPath = ParamObject.NormalizePath(currentPath);
+                    XElement next = e.Element(BuildXName("next"));
 
-                    XElement e = GetElement(root, currentPath);
-
-                    if (e != null)
+                    if (next != null)
                     {
-                        XElement next = e.Element(BuildXName("next"));
-
-                        if (next != null)
+                        foreach (XElement c in next.Elements(BuildXName("item")).OrderBy(o => o.Attribute("name").Value))
                         {
-                            foreach (XElement c in next.Elements(BuildXName("item")).OrderBy(o => o.Attribute("name").Value))
-                            {
-                                obj = LoadObject(c);
+                            obj = LoadObject(c);
 
-                                list.Add(obj);
-                            }
+                            list.Add(obj);
                         }
                     }
                 }
@@ -464,45 +459,42 @@ namespace Radial.Data.Nhs.Param
 
             IList<ParamObject> list = new List<ParamObject>();
 
-            lock (S_SyncRoot)
+            ParamObject obj = null;
+
+            XElement root = LoadRootElement();
+
+            if (string.IsNullOrWhiteSpace(currentPath))
             {
-                ParamObject obj = null;
 
-                XElement root = LoadRootElement();
+                objectTotal = root.Elements(BuildXName("item")).Count();
 
-                if (string.IsNullOrWhiteSpace(currentPath))
+                foreach (XElement e in root.Elements(BuildXName("item")).OrderBy(o => o.Attribute("name").Value).Take(pageSize).Skip(pageSize * (pageIndex - 1)))
                 {
+                    obj = LoadObject(e);
 
-                    objectTotal = root.Elements(BuildXName("item")).Count();
-
-                    foreach (XElement e in root.Elements(BuildXName("item")).OrderBy(o => o.Attribute("name").Value).Take(pageSize).Skip(pageSize * (pageIndex - 1)))
-                    {
-                        obj = LoadObject(e);
-
-                        list.Add(obj);
-                    }
+                    list.Add(obj);
                 }
-                else
+            }
+            else
+            {
+                currentPath = ParamObject.NormalizePath(currentPath);
+
+
+                XElement e = GetElement(root, currentPath);
+
+                if (e != null)
                 {
-                    currentPath = ParamObject.NormalizePath(currentPath);
+                    XElement next = e.Element(BuildXName("next"));
 
-
-                    XElement e = GetElement(root, currentPath);
-
-                    if (e != null)
+                    if (next != null)
                     {
-                        XElement next = e.Element(BuildXName("next"));
+                        objectTotal = next.Elements(BuildXName("item")).Count();
 
-                        if (next != null)
+                        foreach (XElement c in next.Elements(BuildXName("item")).OrderBy(o => o.Attribute("name").Value).Take(pageSize).Skip(pageSize * (pageIndex - 1)))
                         {
-                            objectTotal = next.Elements(BuildXName("item")).Count();
+                            obj = LoadObject(c);
 
-                            foreach (XElement c in next.Elements(BuildXName("item")).OrderBy(o => o.Attribute("name").Value).Take(pageSize).Skip(pageSize * (pageIndex - 1)))
-                            {
-                                obj = LoadObject(c);
-
-                                list.Add(obj);
-                            }
+                            list.Add(obj);
                         }
                     }
                 }
@@ -528,16 +520,13 @@ namespace Radial.Data.Nhs.Param
 
             IList<ParamObject> list = new List<ParamObject>();
 
-            lock (S_SyncRoot)
+            XElement root = LoadRootElement();
+
+            foreach (XElement e in root.Descendants(BuildXName("item")).Where(o => o.Attribute("name").Value.StartsWith(path, StringComparison.OrdinalIgnoreCase)).OrderBy(o => o.Attribute("name").Value))
             {
-                XElement root = LoadRootElement();
+                ParamObject obj = LoadObject(e);
 
-                foreach (XElement e in root.Descendants(BuildXName("item")).Where(o => o.Attribute("name").Value.StartsWith(path, StringComparison.OrdinalIgnoreCase)).OrderBy(o => o.Attribute("name").Value))
-                {
-                    ParamObject obj = LoadObject(e);
-
-                    list.Add(obj);
-                }
+                list.Add(obj);
             }
 
             return list;
@@ -568,18 +557,15 @@ namespace Radial.Data.Nhs.Param
 
             IList<ParamObject> list = new List<ParamObject>();
 
-            lock (S_SyncRoot)
+            XElement root = LoadRootElement();
+
+            objectTotal = root.Descendants(BuildXName("item")).Where(o => o.Attribute("name").Value.StartsWith(path, StringComparison.OrdinalIgnoreCase)).Count();
+
+            foreach (XElement e in root.Descendants(BuildXName("item")).Where(o => o.Attribute("name").Value.StartsWith(path)).OrderBy(o => o.Attribute("name").Value).Take(pageSize).Skip(pageSize * (pageIndex - 1)))
             {
-                XElement root = LoadRootElement();
+                ParamObject obj = LoadObject(e);
 
-                objectTotal = root.Descendants(BuildXName("item")).Where(o => o.Attribute("name").Value.StartsWith(path, StringComparison.OrdinalIgnoreCase)).Count();
-
-                foreach (XElement e in root.Descendants(BuildXName("item")).Where(o => o.Attribute("name").Value.StartsWith(path)).OrderBy(o => o.Attribute("name").Value).Take(pageSize).Skip(pageSize * (pageIndex - 1)))
-                {
-                    ParamObject obj = LoadObject(e);
-
-                    list.Add(obj);
-                }
+                list.Add(obj);
             }
 
             return list;
@@ -618,36 +604,33 @@ namespace Radial.Data.Nhs.Param
         {
             path = ParamObject.NormalizePath(path);
 
-            lock (S_SyncRoot)
+            XElement root = LoadRootElement();
+
+            XElement e = GetElement(root, path);
+
+            if (e != null)
             {
-                XElement root = LoadRootElement();
+                XElement next = e.Element(BuildXName("next"));
+                Checker.Requires(next == null || next.Elements(BuildXName("item")).Count() == 0, "can not delete \"{0}\" because it contains some next level objects", path);
 
-                XElement e = GetElement(root, path);
+                e.Remove();
 
-                if (e != null)
+                string parentPath = ParamObject.GetParentPath(path);
+
+                if (!string.IsNullOrWhiteSpace(parentPath))
                 {
-                    XElement next = e.Element(BuildXName("next"));
-                    Checker.Requires(next == null || next.Elements(BuildXName("item")).Count() == 0, "can not delete \"{0}\" because it contains some next level objects", path);
+                    XElement pElement = GetElement(root, parentPath);
 
-                    e.Remove();
-
-                    string parentPath = ParamObject.GetParentPath(path);
-
-                    if (!string.IsNullOrWhiteSpace(parentPath))
+                    if (pElement != null)
                     {
-                        XElement pElement = GetElement(root, parentPath);
+                        next = pElement.Element(BuildXName("next"));
 
-                        if (pElement != null)
-                        {
-                            next = pElement.Element(BuildXName("next"));
-
-                            if (next != null && next.Elements(BuildXName("item")).Count() == 0)
-                                next.Remove();
-                        }
+                        if (next != null && next.Elements(BuildXName("item")).Count() == 0)
+                            next.Remove();
                     }
-
-                    SaveRootElement(root);
                 }
+
+                SaveRootElement(root);
             }
         }
 

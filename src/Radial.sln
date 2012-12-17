@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Web.TestSite", "Radi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernate.Caches.EnyimMemcached", "NHibernate.Caches.EnyimMemcached\NHibernate.Caches.EnyimMemcached.csproj", "{72A79BFF-BD1B-4A03-BE95-EF7951804BEC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Radial.Tools", "Radial.Tools", "{A9E865A0-4992-4F82-BC54-F7BEC1AF5130}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Tools.Hosts", "Radial.Tools.Hosts\Radial.Tools.Hosts.csproj", "{A3C53606-FDEA-47CC-A5A8-986F5711024C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -181,6 +185,16 @@ Global
 		{72A79BFF-BD1B-4A03-BE95-EF7951804BEC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{72A79BFF-BD1B-4A03-BE95-EF7951804BEC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{72A79BFF-BD1B-4A03-BE95-EF7951804BEC}.Release|x86.ActiveCfg = Release|Any CPU
+		{A3C53606-FDEA-47CC-A5A8-986F5711024C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{A3C53606-FDEA-47CC-A5A8-986F5711024C}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{A3C53606-FDEA-47CC-A5A8-986F5711024C}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{A3C53606-FDEA-47CC-A5A8-986F5711024C}.Debug|x86.ActiveCfg = Debug|x86
+		{A3C53606-FDEA-47CC-A5A8-986F5711024C}.Debug|x86.Build.0 = Debug|x86
+		{A3C53606-FDEA-47CC-A5A8-986F5711024C}.Release|Any CPU.ActiveCfg = Release|x86
+		{A3C53606-FDEA-47CC-A5A8-986F5711024C}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{A3C53606-FDEA-47CC-A5A8-986F5711024C}.Release|Mixed Platforms.Build.0 = Release|x86
+		{A3C53606-FDEA-47CC-A5A8-986F5711024C}.Release|x86.ActiveCfg = Release|x86
+		{A3C53606-FDEA-47CC-A5A8-986F5711024C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -188,6 +202,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C2421E5C-5685-403B-9CD9-24B3EFB7DE24} = {B378FC39-4977-49FE-BDBE-CE60D3F1769A}
 		{3B4657D5-4E7D-48B0-B327-3AC0A515DEFB} = {B378FC39-4977-49FE-BDBE-CE60D3F1769A}
+		{A3C53606-FDEA-47CC-A5A8-986F5711024C} = {A9E865A0-4992-4F82-BC54-F7BEC1AF5130}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35

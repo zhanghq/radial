@@ -362,7 +362,7 @@ namespace Radial.Web
             Encoding encoding = Encoding.GetEncoding("UTF-8");
 
             if (string.IsNullOrWhiteSpace(xml))
-                xml = string.Format("<?xml version=\"1.0\" encoding=\"{0}\"?>", encoding.BodyName);
+                xml = string.Format("<?xml version=\"1.0\" encoding=\"{0}\"?>", encoding.BodyName.ToLower());
 
             if (string.IsNullOrWhiteSpace(contentType))
                 CurrentContext.Response.ContentType = ContentTypes.Xml;

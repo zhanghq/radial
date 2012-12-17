@@ -9,6 +9,7 @@ using Radial.UnitTest.Nhs.Domain;
 using Radial.UnitTest.Nhs.PoolInitializer;
 using NHibernate;
 using Radial.Data;
+using Autofac;
 
 namespace Radial.UnitTest.Nhs
 {
@@ -18,7 +19,7 @@ namespace Radial.UnitTest.Nhs
         [TestFixtureSetUp]
         public void SetUp()
         {
-
+            Components.AdditionalRegister = o => o.RegisterType<MappingByCodeFactoryPoolInitializer>().As<IFactoryPoolInitializer>();
             CleanUp();
         }
 
@@ -33,7 +34,7 @@ namespace Radial.UnitTest.Nhs
             using (IUnitOfWork uow = new NhUnitOfWork())
             {
                 uow.RegisterClear<User>();
-                uow.Commit(true);
+                uow.Commit();
             }
         }
 
@@ -49,7 +50,7 @@ namespace Radial.UnitTest.Nhs
 
                 //uow.RegisterDelete<User, int>(1);
 
-                uow.Commit(true);
+                uow.Commit();
 
                 User u = userRepository.Find(1);
 

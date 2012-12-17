@@ -47,6 +47,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -58,6 +59,7 @@
     <Compile Include="AppStartModule.cs" />
     <Compile Include="BasicRepository.cs" />
     <Compile Include="ContextBoundSession.cs" />
+    <Compile Include="ContextualUnitOfWork.cs" />
     <Compile Include="DefaultFactoryPoolInitializer.cs" />
     <Compile Include="Param\NhParam.cs" />
     <Compile Include="Param\ParamEntity.cs" />

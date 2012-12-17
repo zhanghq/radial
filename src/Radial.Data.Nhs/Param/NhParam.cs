@@ -108,7 +108,7 @@ namespace Radial.Data.Nhs.Param
 
                     uow.RegisterSave<ParamEntity>(entity);
 
-                    uow.Commit(true);
+                    uow.Commit();
                 }
 
                 //set entity cache

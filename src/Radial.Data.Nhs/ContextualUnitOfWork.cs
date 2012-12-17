@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using NHibernate;
-using System.Data;
 
 namespace Radial.Data.Nhs
 {
     /// <summary>
-    /// NHibernate unit of work class.
+    /// NHibernate unit of work class using context bound session.
     /// </summary>
-    public class NhUnitOfWork : IUnitOfWork
+    public class ContextualUnitOfWork : IUnitOfWork
     {
         ISession _session;
 
@@ -22,26 +22,11 @@ namespace Radial.Data.Nhs
     
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
+        /// Initializes a new instance of the <see cref="ContextualUnitOfWork"/> class.
         /// </summary>
-        public NhUnitOfWork()
+        public ContextualUnitOfWork()
         {
-            _session = HibernateEngine.OpenSession();
-
-            _pendingInsert = new List<object>();
-            _pendingSave = new List<object>();
-            _pendingDelete = new List<object>();
-            _pendingDeleteByKey = new List<dynamic>();
-            _pendingClearHql = new List<string>();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
-        /// </summary>
-        /// <param name="alias">The storage alias (case insensitive).</param>
-        public NhUnitOfWork(string alias)
-        {
-            _session = SessionFactoryPool.OpenSession(alias);
+            _session = HibernateEngine.CurrentSession;
 
             _pendingInsert = new List<object>();
             _pendingSave = new List<object>();
@@ -249,8 +234,6 @@ namespace Radial.Data.Nhs
         /// </summary>
         public void Dispose()
         {
-            if (_session != null)
-                _session.Dispose();
         }
     }
 }

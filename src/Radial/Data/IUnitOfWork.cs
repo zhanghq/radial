@@ -15,12 +15,13 @@ namespace Radial.Data
         /// <summary>
         /// Commit changes to data source.
         /// </summary>
-        /// <param name="autoGenerateTransaction">If need to use automatic transaction set to <c>true</c>, default is <c>false</c>.</param>
-        void Commit(bool autoGenerateTransaction = false);
+        /// <remarks>use underlying transaction automatically when the ambient transaction is null.</remarks>
+        void Commit();
 
         /// <summary>
-        /// Commit changes to data source with automatic transaction.
+        /// Commit changes to data source.
         /// </summary>
+        /// <remarks>use underlying transaction automatically.</remarks>
         /// <param name="isolationLevel">Isolation level for the new transaction.</param>
         void Commit(IsolationLevel isolationLevel);
 

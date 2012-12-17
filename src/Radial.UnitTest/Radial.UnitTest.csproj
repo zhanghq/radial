@@ -59,6 +59,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -88,6 +89,7 @@
     <Compile Include="Nhs\PoolInitializer\PartitionFactoryPoolInitializer.cs" />
     <Compile Include="Nhs\Repository\UserRepository.cs" />
     <Compile Include="Nhs\BasicTest.cs" />
+    <Compile Include="Nhs\ContextualMappingByCodeTest.cs" />
     <Compile Include="XmlParamTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomCodeTest.cs" />

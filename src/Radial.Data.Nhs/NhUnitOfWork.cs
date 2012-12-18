@@ -24,16 +24,7 @@ namespace Radial.Data.Nhs
         /// <summary>
         /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
         /// </summary>
-        public NhUnitOfWork()
-        {
-            _session = HibernateEngine.OpenSession();
-
-            _pendingInsert = new List<object>();
-            _pendingSave = new List<object>();
-            _pendingDelete = new List<object>();
-            _pendingDeleteByKey = new List<dynamic>();
-            _pendingClearHql = new List<string>();
-        }
+        public NhUnitOfWork() : this(string.Empty) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
@@ -41,7 +32,10 @@ namespace Radial.Data.Nhs
         /// <param name="alias">The storage alias (case insensitive).</param>
         public NhUnitOfWork(string alias)
         {
-            _session = SessionFactoryPool.OpenSession(alias);
+            if (string.IsNullOrWhiteSpace(alias))
+                _session = HibernateEngine.OpenSession();
+            else
+                _session = SessionFactoryPool.OpenSession(alias);
 
             _pendingInsert = new List<object>();
             _pendingSave = new List<object>();

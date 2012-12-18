@@ -29,12 +29,19 @@ namespace Radial.Data.Nhs.Param
         private readonly string CacheKey = "nhparamcache";
 
         /// <summary>
+        /// Storage alias.
+        /// </summary>
+        private readonly string StorageAlias;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NhParam" /> class.
         /// </summary>
         public NhParam()
         {
             if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["NhParamCacheKey"]))
                 CacheKey = ConfigurationManager.AppSettings["NhParamCacheKey"].Trim().ToLower();
+            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["NhParamStorageAlias"]))
+                StorageAlias = ConfigurationManager.AppSettings["NhParamStorageAlias"].Trim().ToLower();
         }
         
         /// <summary>
@@ -51,7 +58,8 @@ namespace Radial.Data.Nhs.Param
 
                     if (entity == null)
                     {
-                        using (IUnitOfWork uow = new NhUnitOfWork())
+                        //using independent unit of work instead of shared
+                        using (IUnitOfWork uow = new NhUnitOfWork(StorageAlias))
                         {
                             ParamRepository paramRepo = new ParamRepository(uow);
                             entity = paramRepo.Find(ParamEntity.EntityId);

@@ -56,9 +56,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppStartModule.cs" />
+    <Compile Include="AppStartModule.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="BasicRepository.cs" />
-    <Compile Include="ContextBoundSession.cs" />
     <Compile Include="ContextualUnitOfWork.cs" />
     <Compile Include="DefaultFactoryPoolInitializer.cs" />
     <Compile Include="Param\NhParam.cs" />

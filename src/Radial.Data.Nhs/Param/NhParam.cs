@@ -72,12 +72,14 @@ namespace Radial.Data.Nhs.Param
 
                             }
                             else
+                            {
+                                Document = new XDocument();
                                 Document.Add(new XElement(BuildXName("params")));
+                            }
                         }
                     }
                     else
                         Document = XDocument.Parse(entity.XmlContent);
-
                 }
             }
 

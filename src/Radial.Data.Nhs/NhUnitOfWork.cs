@@ -24,12 +24,12 @@ namespace Radial.Data.Nhs
         /// <summary>
         /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
         /// </summary>
-        public NhUnitOfWork() : this(string.Empty) { }
+        public NhUnitOfWork() : this(null) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
         /// </summary>
-        /// <param name="alias">The storage alias (case insensitive).</param>
+        /// <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
         public NhUnitOfWork(string alias)
         {
             if (string.IsNullOrWhiteSpace(alias))

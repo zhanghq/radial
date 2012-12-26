@@ -16,20 +16,11 @@ namespace Radial.Data
         bool _isAscending;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OrderBySnippet&lt;TObject&gt;"/> class(ascending=false).
-        /// </summary>
-        /// <param name="property">The sort property.</param>
-        public OrderBySnippet(Expression<Func<TObject,object>> property)
-            : this(property, false)
-        {
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="OrderBySnippet&lt;TObject&gt;"/> class.
         /// </summary>
         /// <param name="property">The sort property.</param>
         /// <param name="isAscending">if set to <c>true</c> [the property will sort in ascending].</param>
-        public OrderBySnippet(Expression<Func<TObject, object>> property, bool isAscending)
+        public OrderBySnippet(Expression<Func<TObject, object>> property, bool isAscending = true)
         {
             Checker.Parameter(property != null, "the sort property can not be null");
             _property = property;
@@ -50,6 +41,5 @@ namespace Radial.Data
         /// 	<c>true</c> if the property will sort in ascending; otherwise, <c>false</c>.
         /// </value>
         public bool IsAscending { get { return _isAscending; } }
-
     }
 }

@@ -16,7 +16,6 @@ namespace Radial.Data.Nhs.Param
     /// </summary>
     public class NhParam : IParam
     {
-        static object S_SyncReadRoot = new object();
         static object S_SyncWriteRoot = new object();
         const string Xmlns = "urn:radial-xmlparam";
 
@@ -50,7 +49,7 @@ namespace Radial.Data.Nhs.Param
         /// <returns></returns>
         private XElement LoadRootElement()
         {
-            lock (S_SyncReadRoot)
+            lock (S_SyncWriteRoot)
             {
                 if (Document == null)
                 {

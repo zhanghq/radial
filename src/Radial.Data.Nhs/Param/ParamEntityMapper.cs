@@ -22,11 +22,6 @@ namespace Radial.Data.Nhs.Param
             Table("Param");
 
             Lazy(false);
-            Cache(o =>
-            {
-                o.Region("NhParam");
-                o.Usage(CacheUsage.ReadWrite);
-            });
 
             Id<string>(o => o.Id, m =>
             {
@@ -37,7 +32,6 @@ namespace Radial.Data.Nhs.Param
             Version<int>(o => o.Version, m =>
             {
                 m.Type((IVersionType)NHibernateUtil.Int32);
-                m.Access(Accessor.NoSetter);
                 m.UnsavedValue(0);
             });
             Property<string>(o => o.XmlContent, m =>

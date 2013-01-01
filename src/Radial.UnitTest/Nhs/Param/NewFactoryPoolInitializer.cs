@@ -42,7 +42,7 @@ namespace Radial.UnitTest.Nhs.Param
 
 
             ModelMapper mapper = new ModelMapper();
-            mapper.AddMapping<ParamEntityMapper>();
+            //mapper.AddMapping<ParamEntityMapper>();
 
             configuration.AddDeserializedMapping(mapper.CompileMappingForAllExplicitlyAddedEntities(), null);
 

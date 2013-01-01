@@ -63,10 +63,8 @@
     <Compile Include="ContextualUnitOfWork.cs" />
     <Compile Include="DefaultFactoryPoolInitializer.cs" />
     <Compile Include="Param\NhParam.cs" />
-    <Compile Include="Param\ParamEntity.cs" />
-    <Compile Include="Param\ParamEntityMapper.cs" />
-    <Compile Include="Param\ParamRepository.cs" />
     <Compile Include="NhUnitOfWork.cs" />
+    <Compile Include="Param\ParamItem.cs" />
     <Compile Include="SessionFactoryPool.cs" />
     <Compile Include="NamingStrategy\SqliteNamingStrategy.cs" />
     <Compile Include="SessionFactoryWrapper.cs" />
@@ -82,9 +80,6 @@
       <Project>{E9EC1CB9-79B6-47BC-AF82-E8B7B7AFFCEA}</Project>
       <Name>Radial</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Param\ParamEntity.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

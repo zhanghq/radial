@@ -8,6 +8,8 @@ using Radial.Cache;
 using System.IO;
 using System.Configuration;
 using System.Threading;
+using NHibernate;
+using System.Collections;
 
 namespace Radial.Data.Nhs.Param
 {
@@ -16,11 +18,10 @@ namespace Radial.Data.Nhs.Param
     /// </summary>
     public class NhParam : IParam
     {
-        static object S_SyncWriteRoot = new object();
+        static object S_SyncRoot = new object();
         const string Xmlns = "urn:radial-xmlparam";
 
-        [ThreadStatic]
-        static XDocument Document;
+        ParamItem _itemObject;
 
         /// <summary>
         /// The cache key.
@@ -42,47 +43,120 @@ namespace Radial.Data.Nhs.Param
             if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["NhParamStorageAlias"]))
                 StorageAlias = ConfigurationManager.AppSettings["NhParamStorageAlias"].Trim().ToLower();
         }
-        
+
+        #region Database Helper
+
+        /// <summary>
+        /// Reads from database.
+        /// </summary>
+        /// <returns></returns>
+        private ParamItem ReadFromDatabase()
+        {
+            ParamItem item = null;
+
+            using (IUnitOfWork uow = new NhUnitOfWork(StorageAlias))
+            {
+                ISession session = uow.UnderlyingContext as ISession;
+
+                ISQLQuery query = session.CreateSQLQuery("SELECT XmlContent, Version FROM Param WHERE Id=:Id");
+                query.SetString("Id", ParamItem.ItemId);
+
+                IList list = query.List();
+
+                if (list != null && list.Count == 1)
+                {
+                    IList olist = (IList)list[0];
+                    item = new ParamItem { XmlContent = (string)olist[0], Version = (int)olist[1] };
+                }
+            }
+
+            return item;
+        }
+
+        /// <summary>
+        /// Writes to database.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        private void WriteToDatabase(ParamItem item)
+        {
+            using (IUnitOfWork uow = new NhUnitOfWork(StorageAlias))
+            {
+                ISession session = uow.UnderlyingContext as ISession;
+                ISQLQuery query = session.CreateSQLQuery("SELECT COUNT(*) FROM Param WHERE Id=:Id");
+                query.SetString("Id", ParamItem.ItemId);
+
+                bool exist = query.UniqueResult<int>() > 0 ? true : false;
+
+                if (!exist)
+                {
+                    ISQLQuery insertQuery = session.CreateSQLQuery("INSERT INTO Param (Id, XmlContent, Version) VALUES (:Id, :XmlContent, :Version)");
+
+                    insertQuery.SetString("Id", ParamItem.ItemId);
+                    insertQuery.SetParameter("XmlContent", _itemObject.XmlContent, NHibernateUtil.StringClob);
+                    insertQuery.SetInt32("Version", _itemObject.Version);
+
+                    insertQuery.ExecuteUpdate();
+                }
+                else
+                {
+                    ISQLQuery updateQuery = session.CreateSQLQuery("UPDATE Param SET XmlContent=:XmlContent, Version=:VersionNew WHERE Id=:Id AND Version=:Version");
+
+                    updateQuery.SetString("Id", ParamItem.ItemId);
+                    updateQuery.SetParameter("XmlContent", _itemObject.XmlContent, NHibernateUtil.StringClob);
+                    updateQuery.SetInt32("VersionNew", _itemObject.Version + 1);
+                    updateQuery.SetInt32("Version", _itemObject.Version);
+
+                    int affect = updateQuery.ExecuteUpdate();
+
+                    Checker.Requires(affect == 1, "Row was updated or deleted by another transaction");
+
+                    _itemObject.Version += 1;
+                }
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Loads the root element.
         /// </summary>
         /// <returns></returns>
         private XElement LoadRootElement()
         {
-            lock (S_SyncWriteRoot)
+            lock (S_SyncRoot)
             {
-                if (Document == null)
+                if (_itemObject == null)
                 {
-                    ParamEntity entity = ParamEntity.FromCacheString(CacheStatic.Get<string>(CacheKey));
+                    _itemObject = ParamItem.FromCacheString(CacheStatic.Get<string>(CacheKey));
 
-                    if (entity == null)
+                    //cache empty
+                    if (_itemObject == null)
                     {
-                        //using independent unit of work instead of shared
-                        using (IUnitOfWork uow = new NhUnitOfWork(StorageAlias))
+                        _itemObject = ReadFromDatabase();
+
+                        if (_itemObject != null)
+                            CacheStatic.Set<string>(CacheKey, _itemObject.ToCacheString());
+                    }
+
+                    //database empty
+                    if (_itemObject == null)
+                    {
+                        _itemObject = new ParamItem();
+                        
+                        XDocument doc = new XDocument();
+                        doc.Add(new XElement(BuildXName("params")));
+                        using (MemoryStream ms = new MemoryStream())
+                        using (StreamReader sr = new StreamReader(ms))
                         {
-                            ParamRepository paramRepo = new ParamRepository(uow);
-                            entity = paramRepo.Find(ParamEntity.EntityId);
-                            if (entity != null && !string.IsNullOrWhiteSpace(entity.XmlContent))
-                            {
-                                Document = XDocument.Parse(entity.XmlContent);
-
-                                //set entity cache
-                                CacheStatic.Set<string>(CacheKey, entity.ToCacheString());
-
-                            }
-                            else
-                            {
-                                Document = new XDocument();
-                                Document.Add(new XElement(BuildXName("params")));
-                            }
+                            doc.Save(ms);
+                            ms.Position = 0;
+                            _itemObject.XmlContent = sr.ReadToEnd().Trim();
                         }
                     }
-                    else
-                        Document = XDocument.Parse(entity.XmlContent);
                 }
-            }
 
-            return Document.Root;
+                return XDocument.Parse(_itemObject.XmlContent).Root;
+            }
         }
 
         /// <summary>
@@ -91,37 +165,20 @@ namespace Radial.Data.Nhs.Param
         /// <param name="root">The root.</param>
         private void SaveRootElement(XElement root)
         {
-            lock (S_SyncWriteRoot)
+            lock (S_SyncRoot)
             {
-                string xmlContent = string.Empty;
                 using (MemoryStream ms = new MemoryStream())
                 using (StreamReader sr = new StreamReader(ms))
                 {
                     root.Save(ms);
                     ms.Position = 0;
-                    xmlContent = sr.ReadToEnd().Trim();
+                    _itemObject.XmlContent = sr.ReadToEnd().Trim();
                 }
 
-                ParamEntity entity;
-
-                using (IUnitOfWork uow = new NhUnitOfWork())
-                {
-                    ParamRepository paramRepo = new ParamRepository(uow);
-
-                    entity = paramRepo.Find(ParamEntity.EntityId);
-
-                    if (entity != null)
-                        entity.XmlContent = xmlContent;
-                    else
-                        entity = new ParamEntity { XmlContent = xmlContent };
-
-                    uow.RegisterSave<ParamEntity>(entity);
-
-                    uow.Commit();
-                }
+                WriteToDatabase(_itemObject);
 
                 //set entity cache
-                CacheStatic.Set<string>(CacheKey, entity.ToCacheString());
+                CacheStatic.Set<string>(CacheKey, _itemObject.ToCacheString());
             }
         }
 

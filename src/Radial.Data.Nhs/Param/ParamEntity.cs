@@ -18,7 +18,6 @@ namespace Radial.Data.Nhs.Param
         public const string EntityId = "ParamItem";
 
         string _id;
-        int _version = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParamEntity" /> class.
@@ -44,11 +43,12 @@ namespace Radial.Data.Nhs.Param
 
 
         /// <summary>
-        /// Gets the version.
+        /// Gets or sets the version.
         /// </summary>
         public int Version
         {
-            get { return _version; }
+            get;
+            set;
         }
 
 
@@ -58,7 +58,7 @@ namespace Radial.Data.Nhs.Param
         /// <returns></returns>
         public string ToCacheString()
         {
-            return XmlContent;
+            return Toolkits.ToBase64String(XmlContent) + "|" + Version;
         }
 
         /// <summary>
@@ -71,7 +71,12 @@ namespace Radial.Data.Nhs.Param
             if (string.IsNullOrWhiteSpace(cacheString))
                 return null;
 
-            return new ParamEntity { XmlContent = cacheString };
+            string[] sp = cacheString.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (sp.Length == 2)
+                return new ParamEntity { XmlContent = Toolkits.FromBase64String(sp[0]), Version = int.Parse(sp[1]) };
+
+            return null;
         }
     }
 }

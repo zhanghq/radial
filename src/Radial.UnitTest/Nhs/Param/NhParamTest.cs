@@ -7,6 +7,7 @@ using Radial.Param;
 using Autofac;
 using Radial.Data.Nhs.Param;
 using Radial.Data.Nhs;
+using System.Threading;
 
 namespace Radial.UnitTest.Nhs.Param
 {
@@ -28,7 +29,7 @@ namespace Radial.UnitTest.Nhs.Param
         {
             string path = "testcreate";
 
-            AppParam.Save(ParamObject.BuildPath(path), "斯蒂芬", "0");
+            AppParam.Save(ParamObject.BuildPath(path), "斯蒂芬", "");
             AppParam.Save(ParamObject.BuildPath(path, "level1"), "阿萨德", "1");
             //Assert.True(AppParam.Next(path)[0].Path == po2.Path);
             AppParam.Save(ParamObject.BuildPath(path, "level2"), "阿萨德", "2");

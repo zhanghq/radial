@@ -26,9 +26,9 @@ namespace Radial.Data.Nhs
                 Logger.Debug("begin initialize session factory pool");
 
                 IFactoryPoolInitializer initializer = null;
-                if (Components.IsRegistered<IFactoryPoolInitializer>())
+                if (ComponentContainer.HasComponent<IFactoryPoolInitializer>())
                 {
-                    initializer = Components.Resolve<IFactoryPoolInitializer>();
+                    initializer = ComponentContainer.Resolve<IFactoryPoolInitializer>();
                 }
                 else
                 {

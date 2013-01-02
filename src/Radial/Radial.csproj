@@ -33,11 +33,11 @@
     <DocumentationFile>..\..\out\Release\Radial.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac">
-      <HintPath>..\..\lib\Autofac.dll</HintPath>
+    <Reference Include="Castle.Core">
+      <HintPath>..\..\lib\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Autofac.Configuration">
-      <HintPath>..\..\lib\Autofac.Configuration.dll</HintPath>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\..\lib\Castle.Windsor.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\lib\log4net.dll</HintPath>
@@ -65,6 +65,7 @@
     <Compile Include="Cache\CacheStatic.cs" />
     <Compile Include="Cache\EmptyCache.cs" />
     <Compile Include="Cache\ICache.cs" />
+    <Compile Include="ComponentContainer.cs" />
     <Compile Include="Data\IStoragePolicy.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />
     <Compile Include="Data\IUnitOfWorkEssential.cs" />
@@ -74,7 +75,6 @@
     <Compile Include="Data\OrderBySnippet.cs" />
     <Compile Include="Drawing\Captcha.cs" />
     <Compile Include="Checker.cs" />
-    <Compile Include="Components.cs" />
     <Compile Include="Drawing\ImageKits.cs" />
     <Compile Include="EnumItemAttribute.cs" />
     <Compile Include="FileWatcher.cs" />

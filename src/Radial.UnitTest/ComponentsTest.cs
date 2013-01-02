@@ -13,10 +13,12 @@ namespace Radial.UnitTest
         [Test]
         public void CCTestDemo()
         {
-            IDictionary<string,object> param=new Dictionary<string,object>();
-            param.Add("name","hello");
+            ComponentContainer.RegisterTransient<CCTestDemo>();
 
-            CCTestDemo o = Components.Resolve<CCTestDemo>(param);
+            IDictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("name", "hello");
+
+            CCTestDemo o = ComponentContainer.Resolve<CCTestDemo>(param);
             Console.WriteLine(o.Name);
         }
     }

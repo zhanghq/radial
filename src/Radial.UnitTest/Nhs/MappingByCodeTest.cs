@@ -19,7 +19,7 @@ namespace Radial.UnitTest.Nhs
         [TestFixtureSetUp]
         public void SetUp()
         {
-            Components.AdditionalRegister = o => o.RegisterType<MappingByCodeFactoryPoolInitializer>().As<IFactoryPoolInitializer>();
+            ComponentContainer.RegisterPerThread<IFactoryPoolInitializer, MappingByCodeFactoryPoolInitializer>();
             CleanUp();
         }
 

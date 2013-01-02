@@ -78,6 +78,8 @@
     <Compile Include="Pagination\PagerOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UrlHelperExtensions.cs" />
+    <Compile Include="WindsorDefaultControllerFactory.cs" />
+    <Compile Include="WindsorDependencyResolver.cs" />
     <Compile Include="XmlResult.cs" />
   </ItemGroup>
   <ItemGroup>

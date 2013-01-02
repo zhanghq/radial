@@ -50,8 +50,6 @@ namespace Radial
             Checker.Requires(!string.IsNullOrWhiteSpace(filePath), "file path can not be empty or null.");
             Checker.Requires(reloadProcess != null, "reload handler can not be null.");
 
-            if (!File.Exists(filePath))
-                return;
 
             lock (S_SyncRoot)
             {

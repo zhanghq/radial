@@ -17,11 +17,7 @@ namespace Radial.UnitTest.Nhs.Param
         [TestFixtureSetUp]
         public void SetUp()
         {
-            Components.AdditionalRegister = o =>
-            {
-                //o.RegisterType<NewFactoryPoolInitializer>().As<IFactoryPoolInitializer>();
-                o.RegisterType<NhParam>().As<IParam>();
-            };
+            ComponentContainer.RegisterPerThread<IParam, NhParam>();
         }
 
         [Test]

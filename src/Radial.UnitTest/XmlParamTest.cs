@@ -16,7 +16,7 @@ namespace Radial.UnitTest
         [TestFixtureSetUp]
         public void SetUp()
         {
-            Components.AdditionalRegister = o => o.RegisterType<XmlParam>().As<IParam>().SingleInstance();
+            ComponentContainer.RegisterPerThread<IParam, XmlParam>();
         }
 
         [Test]

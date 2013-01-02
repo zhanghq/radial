@@ -20,7 +20,7 @@ namespace Radial.UnitTest.Nhs
         [SetUp]
         public void SetUp()
         {
-            Components.AdditionalRegister = o => o.RegisterType<PartitionFactoryPoolInitializer>().As<IFactoryPoolInitializer>();
+            ComponentContainer.RegisterPerThread<IFactoryPoolInitializer, PartitionFactoryPoolInitializer>();
 
             CleanUp();
 

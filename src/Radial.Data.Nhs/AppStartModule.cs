@@ -13,6 +13,8 @@ namespace Radial.Data.Nhs
     /// </summary>
     public class AppStartModule : IHttpModule
     {
+        static string[] NotNeedNhSessionFileExtensions = new string[] { "jpg", "jpeg", "gif", "png", "bmp", "rar", "zip", "doc", "docx", "dot", "dotx", "xls", "xlsx", "xlt", "xltx", "ppt", "pptx", "pot", "potx", "pdf", "xps", "iso", "txt", "tiff", "htm", "html", "asp", "php", "jsp", "jspa", "cgi", "do", "js", "css", "swf", "flv", "ico" };
+
         #region IHttpModule 成员
 
         /// <summary>
@@ -32,6 +34,24 @@ namespace Radial.Data.Nhs
             context.BeginRequest += new EventHandler(context_BeginRequest);
             context.EndRequest += new EventHandler(context_EndRequest);
             context.Error += new EventHandler(context_Error);
+
+            string notneedExts = ConfigurationManager.AppSettings["NoNhFileExt"];
+
+            if (!string.IsNullOrWhiteSpace(notneedExts))
+            {
+                List<string> tempList = new List<string>(NotNeedNhSessionFileExtensions);
+
+                string[] splits = notneedExts.Split(',');
+                foreach (string t in splits)
+                {
+                    string ext = t.Trim().ToLower();
+
+                    if (!tempList.Contains(ext))
+                        tempList.Add(ext);
+                }
+
+                NotNeedNhSessionFileExtensions = tempList.ToArray();
+            }
         }
 
         /// <summary>
@@ -41,7 +61,8 @@ namespace Radial.Data.Nhs
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void context_BeginRequest(object sender, EventArgs e)
         {
-            HibernateEngine.OpenAndBindSession();
+            if (NeedSession(sender as HttpApplication))
+                HibernateEngine.OpenAndBindSession();
         }
 
         /// <summary>
@@ -51,7 +72,8 @@ namespace Radial.Data.Nhs
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void context_EndRequest(object sender, EventArgs e)
         {
-            HibernateEngine.UnbindAndDisposeSession();
+            if (NeedSession(sender as HttpApplication))
+                HibernateEngine.UnbindAndDisposeSession();
         }
 
         /// <summary>
@@ -61,8 +83,27 @@ namespace Radial.Data.Nhs
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void context_Error(object sender, EventArgs e)
         {
-            HibernateEngine.UnbindAndDisposeSession();
+            if (NeedSession(sender as HttpApplication))
+                HibernateEngine.UnbindAndDisposeSession();
         }
+
+
+        /// <summary>
+        /// Needs the session.
+        /// </summary>
+        /// <param name="app">The app.</param>
+        /// <returns></returns>
+        bool NeedSession(HttpApplication app)
+        {
+            Checker.Parameter(app != null, "HttpApplication instance can not be null");
+
+            string path = app.Request.Path;
+            string fileExt = path.Substring(path.LastIndexOf(".") + 1).Trim().ToLower();
+
+            return !NotNeedNhSessionFileExtensions.Contains(fileExt);
+
+        }
+
 
         #endregion
     }

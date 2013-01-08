@@ -10,7 +10,6 @@ using Radial.UnitTest.Nhs.Domain;
 using Radial.UnitTest.Nhs.Repository;
 using System.Threading.Tasks;
 using Radial.Data;
-using Autofac;
 
 namespace Radial.UnitTest.Nhs
 {

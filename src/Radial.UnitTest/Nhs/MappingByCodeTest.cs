@@ -9,7 +9,6 @@ using Radial.UnitTest.Nhs.Domain;
 using Radial.UnitTest.Nhs.PoolInitializer;
 using NHibernate;
 using Radial.Data;
-using Autofac;
 
 namespace Radial.UnitTest.Nhs
 {

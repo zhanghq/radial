@@ -5,7 +5,6 @@ using System.Text;
 using NUnit.Framework;
 using Radial.Param;
 using System.Xml.Linq;
-using Autofac;
 
 namespace Radial.UnitTest
 {

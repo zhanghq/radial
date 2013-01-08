@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using Radial.Param;
-using Autofac;
 using Radial.Data.Nhs.Param;
 using Radial.Data.Nhs;
 using System.Threading;

@@ -19,16 +19,18 @@ namespace Radial.UnitTest
         [Test]
         public void Memcached_IList()
         {
-            IList<TObj> list = new List<TObj>();
-            list.Add(new TObj { name = "a", value = "c" });
-            list.Add(new TObj { name = "a", value = "c" });
-            list.Add(new TObj { name = "a", value = "c" });
 
-            CacheStatic.Set<IList<TObj>>("a", list, 100);
+            ComponentContainer.RegisterPerThread<ICache, Radial.Cache.Memcached.EnyimCache>();
+            //IList<TObj> list = new List<TObj>();
+            //list.Add(new TObj { name = "a", value = "c" });
+            //list.Add(new TObj { name = "a", value = "c" });
+            //list.Add(new TObj { name = "a", value = "c" });
 
-            IList<TObj> list2 = CacheStatic.Get<IList<TObj>>("a");
-            //CacheStatic.Set<string>("abc", "<xml></xml>");
-            //string s= CacheStatic.Get<string>("abc");
+            //CacheStatic.Set<IList<TObj>>("a", list, 100);
+
+            //IList<TObj> list2 = CacheStatic.Get<IList<TObj>>("a");
+            CacheStatic.Set<string>("abc", "<xml></xml>");
+            string s = CacheStatic.Get<string>("abc");
         }
     }
 }

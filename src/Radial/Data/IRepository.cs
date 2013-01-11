@@ -25,46 +25,124 @@ namespace Radial.Data
         /// <summary>
         /// Determine whether contains objects that match the where condition.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <returns>
         ///   <c>true</c> if objects that match the where condition is exists; otherwise, <c>false</c>.
         /// </returns>
-        bool Exist(Expression<Func<TObject, bool>> where);
+        bool Exist(Expression<Func<TObject, bool>> condition);
 
 
         /// <summary>
-        /// Gets objects total.
+        /// Gets objects count.
         /// </summary>
         /// <returns>
-        /// The objects total.
+        /// The objects count.
         /// </returns>
-        int GetTotal();
+        int GetCount();
 
         /// <summary>
-        /// Gets objects total using the specified condition.
+        /// Gets objects count using the specified condition.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <returns>
-        /// The objects total.
+        /// The objects count.
         /// </returns>
-        int GetTotal(Expression<Func<TObject, bool>> where);
+        int GetCount(Expression<Func<TObject, bool>> condition);
 
         /// <summary>
-        /// Counts objects total.
+        /// Counts objects count.
         /// </summary>
         /// <returns>
-        /// The objects total.
+        /// The objects count.
         /// </returns>
-        long GetTotalInt64();
+        long GetCountInt64();
 
         /// <summary>
-        /// Gets objects total using the specified condition.
+        /// Gets objects count using the specified condition.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <returns>
-        /// The objects total.
+        /// The objects count.
         /// </returns>
-        long GetTotalInt64(Expression<Func<TObject, bool>> where);
+        long GetCountInt64(Expression<Func<TObject, bool>> condition);
+
+        /// <summary>
+        /// Gets the min value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <returns>
+        /// The min value.
+        /// </returns>
+        TResult GetMin<TResult>(Expression<Func<TObject, object>> selector) where TResult : struct;
+
+        /// <summary>
+        /// Gets the min value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <param name="condition">The where condition.</param>
+        /// <returns>
+        /// The min value.
+        /// </returns>
+        TResult GetMin<TResult>(Expression<Func<TObject, object>> selector, Expression<Func<TObject, bool>> condition) where TResult : struct;
+
+        /// <summary>
+        /// Gets the max value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The max value.</returns>
+        TResult GetMax<TResult>(Expression<Func<TObject, object>> selector) where TResult : struct;
+
+        /// <summary>
+        /// Gets the max value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <param name="condition">The where condition.</param>
+        /// <returns>
+        /// The max value.
+        /// </returns>
+        TResult GetMax<TResult>(Expression<Func<TObject, object>> selector, Expression<Func<TObject, bool>> condition) where TResult : struct;
+
+        /// <summary>
+        /// Gets the sum value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The sum value.</returns>
+        TResult GetSum<TResult>(Expression<Func<TObject, object>> selector) where TResult : struct;
+
+        /// <summary>
+        /// Gets the sum value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <param name="condition">The where condition.</param>
+        /// <returns>
+        /// The sum value.
+        /// </returns>
+        TResult GetSum<TResult>(Expression<Func<TObject, object>> selector, Expression<Func<TObject, bool>> condition) where TResult : struct;
+
+        /// <summary>
+        /// Gets the average value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The average value.</returns>
+        TResult GetAverage<TResult>(Expression<Func<TObject, object>> selector) where TResult : struct;
+
+        /// <summary>
+        /// Gets the average value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <param name="condition">The where condition.</param>
+        /// <returns>
+        /// The average value.
+        /// </returns>
+        TResult GetAverage<TResult>(Expression<Func<TObject, object>> selector, Expression<Func<TObject, bool>> condition) where TResult : struct;
 
         /// <summary>
         /// Find object with the specified key.
@@ -81,11 +159,11 @@ namespace Radial.Data
         /// <summary>
         /// Find object.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <returns>
         /// If data exists, return the object, otherwise return null.
         /// </returns>
-        TObject Find(Expression<Func<TObject, bool>> where);
+        TObject Find(Expression<Func<TObject, bool>> condition);
 
         /// <summary>
         /// Find all objects.
@@ -107,10 +185,10 @@ namespace Radial.Data
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="where">The where condition</param>
+        /// <param name="condition">The where condition</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <returns>If data exists, return an objects list, otherwise return an empty list.</returns>
-        IList<TObject> FindAll(Expression<Func<TObject, bool>> where, params OrderBySnippet<TObject>[] orderBys);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys);
 
         /// <summary>
         /// Find all objects.
@@ -135,24 +213,24 @@ namespace Radial.Data
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> FindAll(Expression<Func<TObject, bool>> where, int returnObjectCount);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, int returnObjectCount);
 
 
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <param name="orderBys">The order by snippets.</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> FindAll(Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int returnObjectCount);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, OrderBySnippet<TObject>[] orderBys, int returnObjectCount);
 
 
         /// <summary>
@@ -168,25 +246,25 @@ namespace Radial.Data
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="where">The where condition</param>
+        /// <param name="condition">The where condition</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> FindAll(Expression<Func<TObject, bool>> where, int pageSize, int pageIndex);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, int pageSize, int pageIndex);
 
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="where">The where condition</param>
+        /// <param name="condition">The where condition</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> FindAll(Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex);
 
         /// <summary>
         /// Find all objects.
@@ -202,19 +280,19 @@ namespace Radial.Data
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="where">The where condition</param>
+        /// <param name="condition">The where condition</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
         /// <param name="objectTotal">The number of total objects.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> FindAll(Expression<Func<TObject, bool>> where, int pageSize, int pageIndex, out int objectTotal);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, int pageSize, int pageIndex, out int objectTotal);
 
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="where">The where condition</param>
+        /// <param name="condition">The where condition</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
@@ -222,7 +300,7 @@ namespace Radial.Data
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> FindAll(Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal);
 
         /// <summary>
         /// Adds an object to the repository (or delegate to RegisterNew method if using unit of work).

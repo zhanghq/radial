@@ -17,6 +17,8 @@ namespace Radial.Data.Nhs
     {
         IUnitOfWorkEssential _uow;
 
+        static string[] SupportedAggregationResultTypeNames = new string[] { typeof(int).FullName, typeof(long).FullName, typeof(decimal).FullName, typeof(float).FullName, typeof(double).FullName };
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicRepository&lt;TObject, TKey&gt;"/> class.
         /// </summary>
@@ -51,7 +53,7 @@ namespace Radial.Data.Nhs
 
             Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
 
-            IQuery query = Session.CreateQuery(string.Format("select count(*) from {0} o where o.{1}=:key", typeof(TObject).Name, metadata.IdentifierPropertyName));
+            IQuery query = Session.CreateQuery(string.Format("select count(*) from {0} o condition o.{1}=:key", typeof(TObject).Name, metadata.IdentifierPropertyName));
             query.SetParameter("key", key);
 
             return Convert.ToInt32(query.UniqueResult()) > 0;
@@ -60,25 +62,25 @@ namespace Radial.Data.Nhs
         /// <summary>
         /// Determine whether contains objects that match the where condition.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <returns>
         ///   <c>true</c> if objects that match the where condition is exists; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool Exist(System.Linq.Expressions.Expression<Func<TObject, bool>> where)
+        public virtual bool Exist(System.Linq.Expressions.Expression<Func<TObject, bool>> condition)
         {
-            return GetTotal(where) > 0;
+            return GetCount(condition) > 0;
         }
 
         /// <summary>
         /// Determine whether contains objects that match the where condition.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <returns>
         ///   <c>true</c> if objects that match the where condition is exists; otherwise, <c>false</c>.
         /// </returns>
-        protected virtual bool Exist(ICriterion where)
+        protected virtual bool Exist(ICriterion condition)
         {
-            return GetTotal(where) > 0;
+            return GetCount(condition) > 0;
         }
 
 
@@ -88,7 +90,7 @@ namespace Radial.Data.Nhs
         /// <returns>
         /// The objects total.
         /// </returns>
-        public virtual int GetTotal()
+        public virtual int GetCount()
         {
             return Session.QueryOver<TObject>().RowCount();
         }
@@ -96,28 +98,28 @@ namespace Radial.Data.Nhs
         /// <summary>
         /// Gets objects total using the specified condition.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <returns>
         /// The objects total.
         /// </returns>
-        public virtual int GetTotal(System.Linq.Expressions.Expression<Func<TObject, bool>> where)
+        public virtual int GetCount(System.Linq.Expressions.Expression<Func<TObject, bool>> condition)
         {
-            if (where != null)
-                return Session.QueryOver<TObject>().Where(where).RowCount();
+            if (condition != null)
+                return Session.QueryOver<TObject>().Where(condition).RowCount();
             return Session.QueryOver<TObject>().RowCount();
         }
 
         /// <summary>
         /// Gets objects total using the specified condition.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <returns>
         /// The objects total.
         /// </returns>
-        protected virtual int GetTotal(ICriterion where)
+        protected virtual int GetCount(ICriterion condition)
         {
-            if (where != null)
-                return Session.QueryOver<TObject>().Where(where).RowCount();
+            if (condition != null)
+                return Session.QueryOver<TObject>().Where(condition).RowCount();
             return Session.QueryOver<TObject>().RowCount();
         }
 
@@ -127,7 +129,7 @@ namespace Radial.Data.Nhs
         /// <returns>
         /// The objects total.
         /// </returns>
-        public virtual long GetTotalInt64()
+        public virtual long GetCountInt64()
         {
             return Session.QueryOver<TObject>().RowCountInt64();
         }
@@ -135,28 +137,28 @@ namespace Radial.Data.Nhs
         /// <summary>
         /// Gets objects total using the specified condition.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <returns>
         /// The objects total.
         /// </returns>
-        public virtual long GetTotalInt64(System.Linq.Expressions.Expression<Func<TObject, bool>> where)
+        public virtual long GetCountInt64(System.Linq.Expressions.Expression<Func<TObject, bool>> condition)
         {
-            if (where != null)
-                return Session.QueryOver<TObject>().Where(where).RowCountInt64();
+            if (condition != null)
+                return Session.QueryOver<TObject>().Where(condition).RowCountInt64();
             return Session.QueryOver<TObject>().RowCountInt64();
         }
 
         /// <summary>
         /// Gets objects total using the specified condition.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <returns>
         /// The objects total.
         /// </returns>
-        protected virtual long GetTotalInt64(ICriterion where)
+        protected virtual long GetCountInt64(ICriterion condition)
         {
-            if (where != null)
-                return Session.QueryOver<TObject>().Where(where).RowCountInt64();
+            if (condition != null)
+                return Session.QueryOver<TObject>().Where(condition).RowCountInt64();
             return Session.QueryOver<TObject>().RowCountInt64();
         }
 
@@ -173,27 +175,27 @@ namespace Radial.Data.Nhs
         /// <summary>
         /// Find object.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <returns>
         /// If data exists, return the object, otherwise return null.
         /// </returns>
-        public virtual TObject Find(System.Linq.Expressions.Expression<Func<TObject, bool>> where)
+        public virtual TObject Find(System.Linq.Expressions.Expression<Func<TObject, bool>> condition)
         {
-            Checker.Parameter(where != null, "where condition can not be null");
-            return Session.QueryOver<TObject>().Where(where).SingleOrDefault();
+            Checker.Parameter(condition != null, "where condition can not be null");
+            return Session.QueryOver<TObject>().Where(condition).SingleOrDefault();
         }
 
         /// <summary>
         /// Find object.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <returns>
         /// If data exists, return the object, otherwise return null.
         /// </returns>
-        protected virtual TObject Get(ICriterion where)
+        protected virtual TObject Get(ICriterion condition)
         {
-            Checker.Parameter(where != null, "where condition can not be null");
-            return Session.QueryOver<TObject>().Where(where).SingleOrDefault();
+            Checker.Parameter(condition != null, "where condition can not be null");
+            return Session.QueryOver<TObject>().Where(condition).SingleOrDefault();
         }
 
         /// <summary>
@@ -230,15 +232,15 @@ namespace Radial.Data.Nhs
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="where">The where condition</param>
+        /// <param name="condition">The where condition</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <returns>If data exists, return an objects list, otherwise return an empty list.</returns>
-        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> where, params OrderBySnippet<TObject>[] orderBys)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
         {
             IQueryOver<TObject, TObject> query = Session.QueryOver<TObject>();
 
-            if (where != null)
-                query = query.Where(where);
+            if (condition != null)
+                query = query.Where(condition);
 
             if (orderBys != null)
             {
@@ -271,22 +273,22 @@ namespace Radial.Data.Nhs
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="where">The where condition</param>
+        /// <param name="condition">The where condition</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
         /// <param name="objectTotal">The number of total objects.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> where, int pageSize, int pageIndex, out int objectTotal)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, int pageSize, int pageIndex, out int objectTotal)
         {
-            return FindAll(where, null, pageSize, pageIndex, out objectTotal);
+            return FindAll(condition, null, pageSize, pageIndex, out objectTotal);
         }
 
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="where">The where condition</param>
+        /// <param name="condition">The where condition</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
@@ -294,15 +296,15 @@ namespace Radial.Data.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal)
         {
             IQueryOver<TObject, TObject> countQuery = Session.QueryOver<TObject>();
             IQueryOver<TObject, TObject> dataQuery = Session.QueryOver<TObject>();
 
-            if (where != null)
+            if (condition != null)
             {
-                countQuery = countQuery.Where(where);
-                dataQuery = dataQuery.Where(where);
+                countQuery = countQuery.Where(condition);
+                dataQuery = dataQuery.Where(condition);
             }
 
             if (orderBys != null)
@@ -347,31 +349,31 @@ namespace Radial.Data.Nhs
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> where, int returnObjectCount)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, int returnObjectCount)
         {
-            return FindAll(where, null, returnObjectCount);
+            return FindAll(condition, null, returnObjectCount);
         }
 
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="where">The where condition.</param>
+        /// <param name="condition">The where condition.</param>
         /// <param name="orderBys">The order by snippets.</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int returnObjectCount)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, OrderBySnippet<TObject>[] orderBys, int returnObjectCount)
         {
             IQueryOver<TObject, TObject> query = Session.QueryOver<TObject>();
 
-            if (where != null)
-                query = query.Where(where);
+            if (condition != null)
+                query = query.Where(condition);
 
             if (orderBys != null)
             {
@@ -404,33 +406,33 @@ namespace Radial.Data.Nhs
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="where">The where condition</param>
+        /// <param name="condition">The where condition</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> where, int pageSize, int pageIndex)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, int pageSize, int pageIndex)
         {
-            return FindAll(where, null, pageSize, pageIndex);
+            return FindAll(condition, null, pageSize, pageIndex);
         }
 
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="where">The where condition</param>
+        /// <param name="condition">The where condition</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> where, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex)
         {
             IQueryOver<TObject, TObject> query = Session.QueryOver<TObject>();
 
-            if (where != null)
-                query = query.Where(where);
+            if (condition != null)
+                query = query.Where(condition);
 
             if (orderBys != null)
             {
@@ -781,5 +783,130 @@ namespace Radial.Data.Nhs
         }
 
         #endregion
+
+
+        /// <summary>
+        /// Gets the min value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The min value.</returns>
+        public TResult GetMin<TResult>(System.Linq.Expressions.Expression<Func<TObject, object>> selector) where TResult : struct
+        {
+            return GetMin<TResult>(selector, null);
+        }
+
+        /// <summary>
+        /// Gets the min value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <param name="condition">The where condition.</param>
+        /// <returns>
+        /// The min value.
+        /// </returns>
+        public virtual TResult GetMin<TResult>(System.Linq.Expressions.Expression<Func<TObject, object>> selector, System.Linq.Expressions.Expression<Func<TObject, bool>> condition) where TResult : struct
+        {
+            Checker.Requires(SupportedAggregationResultTypeNames.Contains(typeof(TResult).FullName), "not support the aggregation return type: {0}", typeof(TResult).FullName);
+            Checker.Parameter(selector != null, "the selector can not be null");
+
+            if (condition == null)
+                return Session.QueryOver<TObject>().Select(Projections.Min(selector)).SingleOrDefault<TResult>();
+            else
+                return Session.QueryOver<TObject>().Select(Projections.Min(selector)).Where(condition).SingleOrDefault<TResult>();
+        }
+
+        /// <summary>
+        /// Gets the max value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The max value.</returns>
+        public TResult GetMax<TResult>(System.Linq.Expressions.Expression<Func<TObject, object>> selector) where TResult : struct
+        {
+            return GetMax<TResult>(selector, null);
+        }
+
+        /// <summary>
+        /// Gets the max value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <param name="condition">The where condition.</param>
+        /// <returns>
+        /// The max value.
+        /// </returns>
+        public virtual  TResult GetMax<TResult>(System.Linq.Expressions.Expression<Func<TObject, object>> selector, System.Linq.Expressions.Expression<Func<TObject, bool>> condition) where TResult : struct
+        {
+            Checker.Requires(SupportedAggregationResultTypeNames.Contains(typeof(TResult).FullName), "not support the aggregation return type: {0}", typeof(TResult).FullName);
+            Checker.Parameter(selector != null, "the selector can not be null");
+
+            if (condition == null)
+                return Session.QueryOver<TObject>().Select(Projections.Max(selector)).SingleOrDefault<TResult>();
+            else
+                return Session.QueryOver<TObject>().Select(Projections.Max(selector)).Where(condition).SingleOrDefault<TResult>();
+        }
+
+        /// <summary>
+        /// Gets the sum value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The sum value.</returns>
+        public TResult GetSum<TResult>(System.Linq.Expressions.Expression<Func<TObject, object>> selector) where TResult : struct
+        {
+            return GetSum<TResult>(selector, null);
+        }
+
+        /// <summary>
+        /// Gets the sum value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <param name="condition">The where condition.</param>
+        /// <returns>
+        /// The sum value.
+        /// </returns>
+        public virtual TResult GetSum<TResult>(System.Linq.Expressions.Expression<Func<TObject, object>> selector, System.Linq.Expressions.Expression<Func<TObject, bool>> condition) where TResult : struct
+        {
+            Checker.Requires(SupportedAggregationResultTypeNames.Contains(typeof(TResult).FullName), "not support the aggregation return type: {0}", typeof(TResult).FullName);
+            Checker.Parameter(selector != null, "the selector can not be null");
+
+            if (condition == null)
+                return Session.QueryOver<TObject>().Select(Projections.Sum(selector)).SingleOrDefault<TResult>();
+            else
+                return Session.QueryOver<TObject>().Select(Projections.Sum(selector)).Where(condition).SingleOrDefault<TResult>();
+        }
+
+        /// <summary>
+        /// Gets the average value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The average value.</returns>
+        public TResult GetAverage<TResult>(System.Linq.Expressions.Expression<Func<TObject, object>> selector) where TResult : struct
+        {
+            return GetAverage<TResult>(selector, null);
+        }
+
+        /// <summary>
+        /// Gets the average value.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="selector">The selector.</param>
+        /// <param name="condition">The where condition.</param>
+        /// <returns>
+        /// The average value.
+        /// </returns>
+        public virtual TResult GetAverage<TResult>(System.Linq.Expressions.Expression<Func<TObject, object>> selector, System.Linq.Expressions.Expression<Func<TObject, bool>> condition) where TResult : struct
+        {
+            Checker.Requires(SupportedAggregationResultTypeNames.Contains(typeof(TResult).FullName), "not support the aggregation return type: {0}", typeof(TResult).FullName);
+            Checker.Parameter(selector != null, "the selector can not be null");
+
+            if (condition == null)
+                return Session.QueryOver<TObject>().Select(Projections.Avg(selector)).SingleOrDefault<TResult>();
+            else
+                return Session.QueryOver<TObject>().Select(Projections.Avg(selector)).Where(condition).SingleOrDefault<TResult>();
+        }
     }
 }

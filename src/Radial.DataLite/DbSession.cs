@@ -4,7 +4,6 @@ using System.Text;
 using System.Data.Common;
 using System.Data;
 using System.Text.RegularExpressions;
-using log4net;
 
 namespace Radial.DataLite
 {
@@ -19,8 +18,6 @@ namespace Radial.DataLite
         DbConnection _connection;
         DbTransaction _transaction;
         SqlQuery _sqlQuery;
-
-        ILog _log = LogManager.GetLogger(typeof(DbSession));
 
         int _commandTimeout=30;//default 30 seconds
 
@@ -340,49 +337,6 @@ namespace Radial.DataLite
 
         #endregion
 
-        #region Log Block
-
-        /// <summary>
-        /// 输出日志
-        /// </summary>
-        /// <param name="command">DbCommand对象</param>
-        private void RenderLog(DbCommand command)
-        {
-            if (command == null || string.IsNullOrEmpty(command.CommandText))
-                return;
-
-            string cmdText = command.CommandText;
-
-            List<string> paramTextList = new List<string>();
-
-            foreach (DbParameter p in command.Parameters)
-            {
-                paramTextList.Add(string.Format("{0}={1}", p.ParameterName, p.Value.ToString()));
-            }
-
-            string paramText = string.Join(",", paramTextList.ToArray());
-
-            string logText = string.Empty;
-
-            if (command.CommandType == CommandType.Text)
-                logText += string.Format("{0}{1}", cmdText, Environment.NewLine);
-            if (command.CommandType == CommandType.StoredProcedure)
-                logText += string.Format("Stored Procedure Name:{0}{1}", cmdText, Environment.NewLine);
-            if (command.CommandType == CommandType.TableDirect)
-                logText += string.Format("Table Name:{0}{1}", cmdText, Environment.NewLine);
-
-            if (!string.IsNullOrEmpty(paramText))
-                logText += paramText;
-            if (Connection != null && Connection.State == ConnectionState.Open)
-                logText += string.Format("{0}--DataSource:{1} Version:{2}", string.IsNullOrEmpty(paramText) ? string.Empty : " ", DataSourceType, Connection.ServerVersion);
-
-            logText += Environment.NewLine;
-
-            _log.Info(logText);
-        }
-
-        #endregion
-
         #region Create DbParameter
 
         /// <summary>
@@ -425,8 +379,6 @@ namespace Radial.DataLite
 
             OpenConnection();
 
-            RenderLog(command);
-
             adapter.Fill(ds);
 
             return ds;
@@ -458,8 +410,6 @@ namespace Radial.DataLite
 
             OpenConnection();
 
-            RenderLog(command);
-
             adapter.Fill(dt);
             return dt;
         }
@@ -485,7 +435,6 @@ namespace Radial.DataLite
 
             OpenConnection();
 
-            RenderLog(command);
             return command.ExecuteReader(CommandBehavior.CloseConnection);
         }
 
@@ -510,7 +459,6 @@ namespace Radial.DataLite
 
             OpenConnection();
 
-            RenderLog(command);
             int count = command.ExecuteNonQuery();
             return count;
         }
@@ -536,7 +484,6 @@ namespace Radial.DataLite
 
             OpenConnection();
 
-            RenderLog(command);
             object obj = command.ExecuteScalar();
             return obj;
         }
@@ -610,6 +557,46 @@ namespace Radial.DataLite
         }
 
         /// <summary>
+        /// ExecuteRows方法
+        /// </summary>
+        /// <param name="cmdText">命令文本</param>
+        /// <param name="paramValues">参数数组</param>
+        /// <returns>IList&lt;IList&lt;object&gt;&gt;对象</returns>
+        public IList<IList<object>> ExecuteRows(string cmdText, params object[] paramValues)
+        {
+            IList<IList<object>> list = new List<IList<object>>();
+
+            using (DbDataReader reader = ExecuteDataReader(cmdText, paramValues))
+            {
+                while (reader.Read())
+                {
+                    List<object> alist = new List<object>(reader.FieldCount);
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        alist.Add(reader[i]);
+                    list.Add(alist);
+                }
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// ExecuteFirstRow方法
+        /// </summary>
+        /// <param name="cmdText">命令文本</param>
+        /// <param name="paramValues">参数数组</param>
+        /// <returns>IList&lt;object&gt;对象</returns>
+        public IList<object> ExecuteFirstRow(string cmdText, params object[] paramValues)
+        {
+            IList<IList<object>> list = ExecuteRows(cmdText, paramValues);
+
+            if (list.Count == 0)
+                return new List<object>();
+
+            return list[0];
+        }
+
+        /// <summary>
         /// ExecuteScalar方法
         /// </summary>
         /// <param name="cmdText">命令文本</param>
@@ -668,6 +655,45 @@ namespace Radial.DataLite
             DbCommand cmd = cmdData.CreateCommand(SqlQuery.DbProvider, SqlQuery.CreateParameterName);
 
             return ExecuteDataReader(cmd);
+        }
+
+        /// <summary>
+        /// ExecuteRows方法
+        /// </summary>
+        /// <param name="cmdData">文本命令对象</param>
+        /// <returns>IList&lt;IList&lt;object&gt;&gt;对象</returns>
+        public IList<IList<object>> ExecuteRows(TextCommandData cmdData)
+        {
+            IList<IList<object>> list = new List<IList<object>>();
+
+            using (DbDataReader reader = ExecuteDataReader(cmdData))
+            {
+                while (reader.Read())
+                {
+                    List<object> alist = new List<object>(reader.FieldCount);
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        alist.Add(reader[i]);
+                    list.Add(alist);
+                }
+            }
+
+            return list;
+        }
+
+
+        /// <summary>
+        /// ExecuteFirstRow方法
+        /// </summary>
+        /// <param name="cmdData">文本命令对象</param>
+        /// <returns>IList&lt;object&gt;对象</returns>
+        public IList<object> ExecuteFirstRow(TextCommandData cmdData)
+        {
+            IList<IList<object>> list = ExecuteRows(cmdData);
+
+            if (list.Count == 0)
+                return new List<object>();
+
+            return list[0];
         }
 
         /// <summary>
@@ -812,6 +838,45 @@ namespace Radial.DataLite
             return ExecuteDataReader(cmd);
         }
 
+        /// <summary>
+        /// Stored Procedure ExecuteRows
+        /// </summary>
+        /// <param name="spName">存储过程名</param>
+        /// <param name="parameters">存储过程参数</param>
+        /// <returns>IList&lt;IList&lt;object&gt;&gt;对象</returns>
+        public IList<IList<object>> ExecuteSpRows(string spName, params DbParameter[] parameters)
+        {
+            IList<IList<object>> list = new List<IList<object>>();
+
+            using (DbDataReader reader = ExecuteSpDataReader(spName, parameters))
+            {
+                while (reader.Read())
+                {
+                    List<object> alist = new List<object>(reader.FieldCount);
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        alist.Add(reader[i]);
+                    list.Add(alist);
+                }
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// Stored Procedure ExecuteFirstRow
+        /// </summary>
+        /// <param name="spName">存储过程名</param>
+        /// <param name="parameters">存储过程参数</param>
+        /// <returns>IList&lt;object&gt;对象</returns>
+        public IList<object> ExecuteSpFirstRow(string spName, params DbParameter[] parameters)
+        {
+            IList<IList<object>> list = ExecuteSpRows(spName, parameters);
+
+            if (list.Count == 0)
+                return new List<object>();
+
+            return list[0];
+        }
 
         /// <summary>
         /// Stored Procedure ExecuteNonQuery

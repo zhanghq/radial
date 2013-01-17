@@ -1,8 +1,0 @@
-CREATE TABLE [SequentialKey] (
-  [Discriminator] nvarchar(128) NOT NULL
-, [Value] bigint NOT NULL
-, [UpdateTime] datetime NOT NULL
-);
-GO
-ALTER TABLE [SequentialKey] ADD CONSTRAINT [PK_SequentialKey] PRIMARY KEY ([Discriminator]);
-GO

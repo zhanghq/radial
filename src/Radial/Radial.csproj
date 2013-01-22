@@ -78,7 +78,6 @@
     <Compile Include="Net\ContentTypes.cs" />
     <Compile Include="PerWebRequestLifetimeManager.cs" />
     <Compile Include="RangeValue.cs" />
-    <Compile Include="SequentialKeyGenerator.cs" />
     <Compile Include="KnownFaultException.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Param\AppParam.cs" />

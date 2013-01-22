@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net.Mime;
 
-namespace Radial
+namespace Radial.Net
 {
     /// <summary>
     /// Content types.

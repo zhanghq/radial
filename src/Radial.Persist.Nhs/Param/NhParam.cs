@@ -19,7 +19,7 @@ namespace Radial.Persist.Nhs.Param
     public class NhParam : IParam
     {
         static object S_SyncRoot = new object();
-        const string Xmlns = "urn:radial-infra-param";
+        const string Xmlns = "urn:radial-xmlparam";
 
         ParamItem _itemObject;
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <configSections>
+    <section name="connectionGroup" type="Radial.Persist.Lite.ConnectionGroupSection, Radial.Persist.Lite"/>
+  </configSections>
+  <connectionGroup>
+    <connections>
+      <add  name="Default" connStr="Data Source=.;Initial Catalog=dfx;Integrated Security=True"/>
+      <add  name="phSub1" connStr="Data Source=[Folder]TestDb.db3;Version=3;" type="Sqlite"/>
+      <add name="mysql" connStr="..." type="MySql"/>
+    </connections>
+  </connectionGroup>
+</configuration>

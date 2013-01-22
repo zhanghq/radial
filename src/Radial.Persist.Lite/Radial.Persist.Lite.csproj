@@ -1,15 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3C6D4547-3AEB-4166-A8EC-AA3217D72838}</ProjectGuid>
+    <ProjectGuid>{9C681E77-EE18-4273-90D0-F8A0C302D0EB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Radial.Web</RootNamespace>
-    <AssemblyName>Radial.Web</AssemblyName>
+    <RootNamespace>Radial.Persist.Lite</RootNamespace>
+    <AssemblyName>Radial.Persist.Lite</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -17,34 +16,31 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\out\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\out\Debug\Radial.Web.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Radial.Persist.Lite.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\out\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\out\Release\Radial.Web.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Radial.Persist.Lite.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI, Version=1.2.5.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NPOI.dll</HintPath>
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\packages\2.0\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\..\packages\2.0\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,19 +48,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormsAuth.cs" />
-    <Compile Include="HttpCache.cs" />
-    <Compile Include="HttpKits.cs" />
-    <Compile Include="HttpPostedFileExtension.cs" />
-    <Compile Include="HttpKnownFaultException.cs" />
+    <Compile Include="ConnectionGroupSection.cs" />
+    <Compile Include="ConnectionSettings.cs" />
+    <Compile Include="ConnectionSettingsCollection.cs" />
+    <Compile Include="DataSourceType.cs" />
+    <Compile Include="DbSession.cs" />
+    <Compile Include="Delegates.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserIdentity.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Radial\Radial.csproj">
-      <Project>{E9EC1CB9-79B6-47BC-AF82-E8B7B7AFFCEA}</Project>
-      <Name>Radial</Name>
-    </ProjectReference>
+    <Compile Include="QueryFactory.cs" />
+    <Compile Include="Query\MsAccessQuery.cs" />
+    <Compile Include="Query\MySqlQuery.cs" />
+    <Compile Include="Query\SqliteQuery.cs" />
+    <Compile Include="Query\SqlServerQuery.cs" />
+    <Compile Include="SqlQuery.cs" />
+    <Compile Include="TextCommandData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

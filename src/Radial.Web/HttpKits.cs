@@ -13,7 +13,7 @@ using Radial.Serialization;
 using System.Text.RegularExpressions;
 using System.Net;
 using Radial.Net;
-using NPOI.HSSF.UserModel;
+using Radial.Extensions;
 using NPOI.SS.UserModel;
 
 namespace Radial.Web
@@ -432,24 +432,7 @@ namespace Radial.Web
             Checker.Parameter(dt != null, "DataTable object can not be null");
             Checker.Parameter(!string.IsNullOrWhiteSpace(fileName), "fileName can not be empty or null");
 
-            IWorkbook hssfworkbook = new HSSFWorkbook();
-            ISheet sheet = hssfworkbook.CreateSheet("Sheet1");
-
-            //caption
-            IRow captionRow = sheet.CreateRow(0);
-            for (int columi = 0; columi < dt.Columns.Count; columi++)
-            {
-                captionRow.CreateCell(columi).SetCellValue(dt.Columns[columi].ColumnName);
-            }
-
-            //data    
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                IRow dataRow = sheet.CreateRow(i + 1);
-
-                for (int j = 0; j < dt.Columns.Count; j++)
-                    dataRow.CreateCell(j).SetCellValue(dt.Rows[i][j].ToString());
-            }
+            IWorkbook hssfworkbook = dt.ToExcelBook();
 
             CurrentContext.Response.Clear();
             CurrentContext.Response.Buffer = true;
@@ -728,7 +711,7 @@ namespace Radial.Web
 
             string serverUrl = string.Format("http://opendata.baidu.com/api.php?query={0}&resource_id=6006&format=json", ipAddress.Trim());
 
-            HttpResponseObj resp = HttpWebHost.Get(serverUrl);
+            HttpResponseObj resp = HttpWebClient.Get(serverUrl);
 
             if (resp.Code == System.Net.HttpStatusCode.OK)
             {

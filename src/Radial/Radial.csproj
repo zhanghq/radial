@@ -33,17 +33,20 @@
     <DocumentationFile>..\..\out\Release\Radial.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\..\lib\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Windsor">
-      <HintPath>..\..\lib\Castle.Windsor.dll</HintPath>
-    </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\lib\log4net.dll</HintPath>
+      <HintPath>..\..\packages\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\..\packages\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\..\packages\Microsoft.Practices.Unity.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>..\..\packages\NPOI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -52,7 +55,7 @@
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -64,27 +67,19 @@
     <Compile Include="Cache\CacheStatic.cs" />
     <Compile Include="Cache\EmptyCache.cs" />
     <Compile Include="Cache\ICache.cs" />
-    <Compile Include="ComponentContainer.cs" />
-    <Compile Include="Data\IStoragePolicy.cs" />
-    <Compile Include="Data\IUnitOfWork.cs" />
-    <Compile Include="Data\IUnitOfWorkEssential.cs" />
-    <Compile Include="Data\StorageRouter.cs" />
-    <Compile Include="Data\IRepository.cs" />
-    <Compile Include="Data\OrderBySnippet.cs" />
+    <Compile Include="Components.cs" />
     <Compile Include="Drawing\Captcha.cs" />
     <Compile Include="Checker.cs" />
     <Compile Include="Drawing\ImageKits.cs" />
     <Compile Include="EnumItemAttribute.cs" />
+    <Compile Include="Extensions\DataTableExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="FileWatcher.cs" />
+    <Compile Include="Net\ContentTypes.cs" />
+    <Compile Include="PerWebRequestLifetimeManager.cs" />
     <Compile Include="RangeValue.cs" />
     <Compile Include="SequentialKeyGenerator.cs" />
     <Compile Include="KnownFaultException.cs" />
-    <Compile Include="DistLock\EmptyLock.cs" />
-    <Compile Include="DistLock\ILock.cs" />
-    <Compile Include="DistLock\LockEntry.cs" />
-    <Compile Include="DistLock\LockObject.cs" />
-    <Compile Include="DistLock\AcquireFailedEvent.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Param\AppParam.cs" />
     <Compile Include="Param\ConfigurationParam.cs" />
@@ -112,7 +107,7 @@
     <Compile Include="Net\IMultipartFormData.cs" />
     <Compile Include="Net\PlainTextFormData.cs" />
     <Compile Include="Net\HttpResponseObj.cs" />
-    <Compile Include="Net\HttpWebHost.cs" />
+    <Compile Include="Net\HttpWebClient.cs" />
     <Compile Include="Base36Encoder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

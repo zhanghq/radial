@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Practices.Unity;
 
 namespace Radial.Cache
 {
@@ -17,9 +18,9 @@ namespace Radial.Cache
         {
             get
             {
-                if (!ComponentContainer.HasComponent<ICache>())
+                if (!Components.Container.IsRegistered<ICache>())
                     return new EmptyCache();
-                return ComponentContainer.Resolve<ICache>();
+                return Components.Container.Resolve<ICache>();
             }
         }
 

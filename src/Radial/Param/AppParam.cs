@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Practices.Unity;
 
 namespace Radial.Param
 {
@@ -19,9 +20,9 @@ namespace Radial.Param
         {
             get
             {
-                if (!ComponentContainer.HasComponent<IParam>())
+                if (!Components.Container.IsRegistered<IParam>())
                     return new ConfigurationParam();
-                return ComponentContainer.Resolve<IParam>();
+                return Components.Container.Resolve<IParam>();
             }
         }
 

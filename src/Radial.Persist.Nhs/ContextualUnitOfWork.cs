@@ -14,25 +14,12 @@ namespace Radial.Persist.Nhs
     {
         ISession _session;
 
-        IList<object> _pendingInsert;
-        IList<object> _pendingSave;
-        IList<object> _pendingDelete;
-        IList<dynamic> _pendingDeleteByKey;
-        IList<string> _pendingClearHql;
-    
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextualUnitOfWork"/> class.
         /// </summary>
         public ContextualUnitOfWork()
         {
             _session = HibernateEngine.CurrentSession;
-
-            _pendingInsert = new List<object>();
-            _pendingSave = new List<object>();
-            _pendingDelete = new List<object>();
-            _pendingDeleteByKey = new List<dynamic>();
-            _pendingClearHql = new List<string>();
         }
 
         /// <summary>
@@ -54,7 +41,7 @@ namespace Radial.Persist.Nhs
         public virtual void RegisterNew<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
-                _pendingInsert.Add(obj);
+                _session.Save(obj);
         }
 
         /// <summary>
@@ -69,7 +56,7 @@ namespace Radial.Persist.Nhs
                 foreach (TObject obj in objs)
                 {
                     if (obj != null)
-                        _pendingInsert.Add(obj);
+                        _session.Save(obj);
                 }
             }
         }
@@ -82,7 +69,7 @@ namespace Radial.Persist.Nhs
         public virtual void RegisterSave<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
-                _pendingSave.Add(obj);
+                _session.SaveOrUpdate(obj);
         }
 
         /// <summary>
@@ -97,7 +84,7 @@ namespace Radial.Persist.Nhs
                 foreach (TObject obj in objs)
                 {
                     if (obj != null)
-                        _pendingSave.Add(obj);
+                        _session.SaveOrUpdate(obj);
                 }
             }
         }
@@ -110,7 +97,7 @@ namespace Radial.Persist.Nhs
         public virtual void RegisterDelete<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
-                _pendingDelete.Add(obj);
+                _session.Delete(obj);
         }
 
         /// <summary>
@@ -125,7 +112,7 @@ namespace Radial.Persist.Nhs
                 foreach (TObject obj in objs)
                 {
                     if (obj != null)
-                        _pendingDelete.Add(obj);
+                        _session.Delete(obj);
                 }
             }
         }
@@ -142,11 +129,9 @@ namespace Radial.Persist.Nhs
 
             Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
 
-            _pendingDeleteByKey.Add(new { 
-                query=string.Format("from {0} o where o.{1}=?", typeof(TObject).Name, metadata.IdentifierPropertyName),
-                value=key,
-                type=metadata.IdentifierType
-            });
+            string query = string.Format("from {0} o where o.{1}=?", typeof(TObject).Name, metadata.IdentifierPropertyName);
+
+            _session.Delete(query, key, metadata.IdentifierType);
         }
 
         /// <summary>
@@ -155,7 +140,7 @@ namespace Radial.Persist.Nhs
         /// <typeparam name="TObject">The type of object.</typeparam>
         public virtual void RegisterClear<TObject>() where TObject : class
         {
-            _pendingClearHql.Add(string.Format("from {0}", typeof(TObject).Name));
+            _session.Delete(string.Format("from {0}", typeof(TObject).Name));
         }
 
         /// <summary>
@@ -170,7 +155,6 @@ namespace Radial.Persist.Nhs
                 ITransaction tx = _session.BeginTransaction();
                 try
                 {
-                    PrepareCommand();
                     tx.Commit();
                 }
                 catch
@@ -183,8 +167,6 @@ namespace Radial.Persist.Nhs
                     tx.Dispose();
                 }
             }
-            else
-                PrepareCommand();
         }
 
         /// <summary>
@@ -197,7 +179,6 @@ namespace Radial.Persist.Nhs
             ITransaction tx = _session.BeginTransaction(isolationLevel);
             try
             {
-                PrepareCommand();
                 tx.Commit();
             }
             catch
@@ -209,23 +190,6 @@ namespace Radial.Persist.Nhs
             {
                 tx.Dispose();
             }
-        }
-
-        /// <summary>
-        /// Prepare session Command
-        /// </summary>
-        private void PrepareCommand()
-        {
-            _pendingInsert.ToList().ForEach(o => _session.Save(o));
-            _pendingInsert.Clear();
-            _pendingSave.ToList().ForEach(o => _session.SaveOrUpdate(o));
-            _pendingSave.Clear();
-            _pendingDelete.ToList().ForEach(o => _session.Delete(o));
-            _pendingDelete.Clear();
-            _pendingDeleteByKey.ToList().ForEach(o => _session.Delete((string)o.query,(object)o.value,(NHibernate.Type.IType)o.type));
-            _pendingDelete.Clear();
-            _pendingClearHql.ToList().ForEach(o => _session.Delete(o));
-            _pendingClearHql.Clear();
         }
 
 

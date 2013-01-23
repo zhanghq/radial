@@ -449,7 +449,7 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Call RegisterNew method to add an object to the unit of work.
+        /// Add an object.
         /// </summary>
         /// <param name="obj">The object.</param>
         public virtual void Add(TObject obj)
@@ -458,7 +458,7 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Call RegisterNew method to add objects to the unit of work.
+        /// Add objects.
         /// </summary>
         /// <param name="objs">The objects.</param>
         public virtual void Add(IEnumerable<TObject> objs)
@@ -467,7 +467,7 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Call RegisterSave method to save the object to the unit of work.
+        /// Save an object.
         /// </summary>
         /// <param name="obj">The object.</param>
         public virtual void Save(TObject obj)
@@ -476,7 +476,7 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Call RegisterDelete method to remove the object with the specified key.
+        /// Remove an object with the specified key.
         /// </summary>
         /// <param name="key">The object key.</param>
         public virtual void Remove(TKey key)
@@ -485,7 +485,7 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Call RegisterDelete method to remove the object.
+        /// Remove an object.
         /// </summary>
         /// <param name="obj">The object.</param>
         public virtual void Remove(TObject obj)
@@ -494,7 +494,7 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Call RegisterClear method to clear all objects.
+        /// Clear all objects.
         /// </summary>
         public virtual void Clear()
         {
@@ -907,6 +907,27 @@ namespace Radial.Persist.Nhs
                 return Session.QueryOver<TObject>().Select(Projections.Avg(selector)).SingleOrDefault<TResult>();
             else
                 return Session.QueryOver<TObject>().Select(Projections.Avg(selector)).Where(condition).SingleOrDefault<TResult>();
+        }
+
+        /// <summary>
+        /// Find the first object.
+        /// </summary>
+        /// <param name="orderBys">The order by snippets</param>
+        /// <returns>If data exists, return the first object, otherwise return null.</returns>
+        public TObject FindFirst(params OrderBySnippet<TObject>[] orderBys)
+        {
+            return FindAll(orderBys, 1).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Find the first object.
+        /// </summary>
+        /// <param name="condition">The where condition</param>
+        /// <param name="orderBys">The order by snippets</param>
+        /// <returns>If data exists, return the first object, otherwise return null.</returns>
+        public TObject FindFirst(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
+        {
+            return FindAll(condition, orderBys, 1).FirstOrDefault();
         }
     }
 }

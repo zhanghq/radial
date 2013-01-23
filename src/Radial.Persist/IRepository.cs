@@ -166,6 +166,21 @@ namespace Radial.Persist
         TObject Find(Expression<Func<TObject, bool>> condition);
 
         /// <summary>
+        /// Find the first object.
+        /// </summary>
+        /// <param name="orderBys">The order by snippets</param>
+        /// <returns>If data exists, return the first object, otherwise return null.</returns>
+        TObject FindFirst(params OrderBySnippet<TObject>[] orderBys);
+
+        /// <summary>
+        /// Find the first object.
+        /// </summary>
+        /// <param name="condition">The where condition</param>
+        /// <param name="orderBys">The order by snippets</param>
+        /// <returns>If data exists, return the first object, otherwise return null.</returns>
+        TObject FindFirst(Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys);
+
+        /// <summary>
         /// Find all objects.
         /// </summary>
         /// <returns>
@@ -303,37 +318,37 @@ namespace Radial.Persist
         IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal);
 
         /// <summary>
-        /// Call RegisterNew method to add an object to the unit of work.
+        /// Add an object.
         /// </summary>
         /// <param name="obj">The object.</param>
         void Add(TObject obj);
 
         /// <summary>
-        /// Call RegisterNew method to add objects to the unit of work.
+        /// Add objects.
         /// </summary>
         /// <param name="objs">The objects.</param>
         void Add(IEnumerable<TObject> objs);
 
         /// <summary>
-        /// Call RegisterSave method to save the object to the unit of work.
+        /// Save an object.
         /// </summary>
         /// <param name="obj">The object.</param>
         void Save(TObject obj);
 
         /// <summary>
-        /// Call RegisterDelete method to remove the object with the specified key.
+        /// Remove an object with the specified key.
         /// </summary>
         /// <param name="key">The object key.</param>
         void Remove(TKey key);
 
         /// <summary>
-        /// Call RegisterDelete method to remove the object.
+        /// Remove an object.
         /// </summary>
         /// <param name="obj">The object.</param>
         void Remove(TObject obj);
 
         /// <summary>
-        /// Call RegisterClear method to clear all objects.
+        /// Clear all objects.
         /// </summary>
         void Clear();
     }

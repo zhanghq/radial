@@ -64,6 +64,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base62Encoder.cs" />
+    <Compile Include="Boot\Bootstrapper.cs" />
+    <Compile Include="Boot\Cfg\BootTaskCfg.cs" />
+    <Compile Include="Boot\Cfg\BootTaskElement.cs" />
+    <Compile Include="Boot\Cfg\BootTaskElementCollection.cs" />
+    <Compile Include="Boot\Cfg\BootTaskSection.cs" />
     <Compile Include="Cache\CacheStatic.cs" />
     <Compile Include="Cache\EmptyCache.cs" />
     <Compile Include="Cache\ICache.cs" />
@@ -75,6 +80,7 @@
     <Compile Include="Extensions\DataTableExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="FileWatcher.cs" />
+    <Compile Include="Boot\IBootTask.cs" />
     <Compile Include="Net\ContentTypes.cs" />
     <Compile Include="PerWebRequestLifetimeManager.cs" />
     <Compile Include="RangeValue.cs" />

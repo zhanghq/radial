@@ -104,43 +104,37 @@ namespace Radial.Persist
             lock (S_SyncRoot)
             {
                 Logger.Debug("load storage policy configuration");
-
-
                 S_Router = new StorageRouter();
 
-                if (File.Exists(configFilePath))
+                if (!File.Exists(configFilePath))
+                    return;
+
+                XDocument doc = XDocument.Load(configFilePath);
+                XElement root = doc.Element(BuildXName("policies"));
+
+                if (root == null)
+                    return;
+
+                var classElements = from e in root.Descendants(BuildXName("class")) select e;
+
+                foreach (XElement ce in classElements)
                 {
-                    XDocument doc = XDocument.Load(configFilePath);
-                    XElement root = doc.Element(BuildXName("policies"));
+                    StoragePolicyConfigItem classObj = new StoragePolicyConfigItem();
+                    string type = ce.Attribute("type") == null ? string.Empty : ce.Attribute("type").Value.Trim();
+                    Checker.Requires(!string.IsNullOrWhiteSpace(type), "class type can not be empty or null");
+                    string policy = ce.Attribute("policy") == null ? string.Empty : ce.Attribute("policy").Value.Trim();
+                    Checker.Requires(!string.IsNullOrWhiteSpace(policy), "storage policy class type can not be empty or null");
 
-                    if (root != null)
-                    {
-                        var classElements = from e in root.Descendants(BuildXName("class")) select e;
+                    classObj.EntityType = Type.GetType(type);
+                    classObj.StoragePolicy = Activator.CreateInstance(Type.GetType(policy)) as IStoragePolicy;
 
-                        foreach (XElement ce in classElements)
-                        {
-                            StoragePolicyConfigItem classObj = new StoragePolicyConfigItem();
-                            string type = ce.Attribute("type") == null ? string.Empty : ce.Attribute("type").Value.Trim();
-                            Checker.Requires(!string.IsNullOrWhiteSpace(type), "class type can not be empty or null");
-                            string policy = ce.Attribute("policy") == null ? string.Empty : ce.Attribute("policy").Value.Trim();
-                            Checker.Requires(!string.IsNullOrWhiteSpace(policy), "storage policy class type can not be empty or null");
+                    Checker.Requires(classObj.StoragePolicy != null, "storage policy class must implement IStoragePolicy");
 
-                            classObj.EntityType = Type.GetType(type);
-                            classObj.StoragePolicy = Activator.CreateInstance(Type.GetType(policy)) as IStoragePolicy;
+                    Checker.Requires(S_Router.StoragePolicyConfigItemSet.SingleOrDefault(o => o.EntityType == classObj.EntityType) == null, "same storage policy class:{0}", classObj.EntityType.FullName);
 
-                            Checker.Requires(classObj.StoragePolicy != null, "storage policy class must implement IStoragePolicy");
-
-                            Checker.Requires(S_Router.StoragePolicyConfigItemSet.SingleOrDefault(o => o.EntityType == classObj.EntityType) == null, "same storage policy class:{0}", classObj.EntityType.FullName);
-
-                            S_Router.StoragePolicyConfigItemSet.Add(classObj);
-
-                        }
-                    }
+                    S_Router.StoragePolicyConfigItemSet.Add(classObj);
 
                 }
-                else
-                    Logger.Warn("can not find storage policy configuration file at {0}", configFilePath);
-
             }
         }
 

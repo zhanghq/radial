@@ -1,0 +1,9 @@
+  <configSections>
+    <section name="boot" type="Radial.Boot.Cfg.BootTaskSection, Radial"/>
+  </configSections>
+  
+  <boot>
+    <tasks>
+      <add type="Radial.Test.Mvc3.Startup, Radial.Test.Mvc3" priority="99"/>
+    </tasks>
+  </boot>

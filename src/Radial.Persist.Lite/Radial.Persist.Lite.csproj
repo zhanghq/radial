@@ -48,9 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectionGroupSection.cs" />
-    <Compile Include="ConnectionSettings.cs" />
-    <Compile Include="ConnectionSettingsCollection.cs" />
+    <Compile Include="Cfg\ConnectionCfg.cs" />
+    <Compile Include="Cfg\ConnectionSection.cs" />
+    <Compile Include="Cfg\ConnectionElement.cs" />
+    <Compile Include="Cfg\ConnectionElementCollection.cs" />
     <Compile Include="DataSourceType.cs" />
     <Compile Include="DbSession.cs" />
     <Compile Include="Delegates.cs" />

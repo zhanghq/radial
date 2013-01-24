@@ -4,6 +4,7 @@ using System.Text;
 using System.Data.Common;
 using System.Data;
 using System.Text.RegularExpressions;
+using Radial.Persist.Lite.Cfg;
 
 namespace Radial.Persist.Lite
 {
@@ -58,8 +59,8 @@ namespace Radial.Persist.Lite
         /// <param name="substitution">占位符替换方法</param>
         public DbSession(int settingsIndex, PlaceholderSubstitution substitution)
         {
-            ConnectionGroupSection section = ConnectionGroupSection.Read();
-            ConnectionSettings settings = section.Connections[settingsIndex];
+            ConnectionSection section = ConnectionCfg.Read();
+            ConnectionElement settings = section.Connections[settingsIndex];
             if (settings == null)
                 throw new ArgumentException("无法找到索引为\"" + settingsIndex + "\"的数据库设置");
 
@@ -87,8 +88,8 @@ namespace Radial.Persist.Lite
         /// <param name="substitution">占位符替换方法</param>
         public DbSession(string settingsName, PlaceholderSubstitution substitution)
         {
-            ConnectionGroupSection section = ConnectionGroupSection.Read();
-            ConnectionSettings settings = section.Connections[settingsName];
+            ConnectionSection section = ConnectionCfg.Read();
+            ConnectionElement settings = section.Connections[settingsName];
             if (settings == null)
                 throw new ArgumentException("无法找到名称为\"" + settingsName + "\"的数据库设置");
             

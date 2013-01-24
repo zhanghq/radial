@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 
-namespace Radial.Persist.Lite
+namespace Radial.Persist.Lite.Cfg
 {
     /// <summary>
-    /// 数据库设置
+    /// 数据库配置元素
     /// </summary>
-    public sealed class ConnectionSettings : ConfigurationElement
+    public sealed class ConnectionElement : ConfigurationElement
     {
         /// <summary>
-        /// 获取或设置设置名称
+        /// 获取或设置名称
         /// </summary>
         [ConfigurationProperty("name", Options = ConfigurationPropertyOptions.IsKey | ConfigurationPropertyOptions.IsRequired)]
         public string Name
@@ -22,7 +22,7 @@ namespace Radial.Persist.Lite
             }
             set
             {
-                this["name"] = value.Trim().ToLower();
+                this["name"] = value;
             }
         }
 
@@ -30,19 +30,19 @@ namespace Radial.Persist.Lite
         /// <summary>
         /// 获取或设置连接字符串
         /// </summary>
-        [ConfigurationProperty("connectionString", Options = ConfigurationPropertyOptions.IsRequired)]
+        [ConfigurationProperty("conn", Options = ConfigurationPropertyOptions.IsRequired)]
         public string ConnectionString
         {
             get
-            { return (string)this["connectionString"]; }
+            { return (string)this["conn"]; }
             set
-            { this["connectionString"] = value.Trim(); }
+            { this["conn"] = value.Trim(); }
         }
 
         /// <summary>
         /// 获取或设置数据源类型
         /// </summary>
-        [ConfigurationProperty("type", DefaultValue = "SqlServer")]
+        [ConfigurationProperty("type", DefaultValue = DataSourceType.SqlServer)]
         public DataSourceType DataSourceType
         {
             get

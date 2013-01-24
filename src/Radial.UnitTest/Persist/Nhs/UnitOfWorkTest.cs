@@ -14,6 +14,18 @@ namespace Radial.UnitTest.Persist.Nhs
     [TestFixture]
     public class UnitOfWorkTest
     {
+        [TestFixtureSetUp]
+        public void SetUp()
+        {
+            using (IUnitOfWork uow = new NhUnitOfWork())
+            {
+                for (int i = 0; i < 100; i++)
+                    uow.RegisterNew<User>(new User { Id = RandomCode.NewInstance.Next(1, int.MaxValue), Name = "测试" });
+
+                uow.Commit();
+            }
+        }
+
         [Test]
         public void Test1()
         {
@@ -46,6 +58,24 @@ namespace Radial.UnitTest.Persist.Nhs
                 u2.Name = RandomCode.Create(10);
 
                 userRepository.Save(u2);
+
+                //测试此方法是否会在提交前执行
+                uow.RegisterDelete<User, int>(2323);
+
+                uow.Commit();
+            }
+        }
+
+        [Test]
+        public void Test2()
+        {
+            //测试Remove(System.Linq.Expressions.Expression<Func<TObject, bool>> condition)
+
+            using (IUnitOfWork uow = new NhUnitOfWork())
+            {
+                UserRepository userRepository = new UserRepository(uow);
+
+                userRepository.Remove(o => o.Id > RandomCode.NewInstance.Next(10000, int.MaxValue));
 
                 uow.Commit();
             }

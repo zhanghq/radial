@@ -23,11 +23,11 @@ namespace Radial.Persist
         bool Exist(TKey key);
 
         /// <summary>
-        /// Determine whether contains objects that match the where condition.
+        /// Determine whether contains objects that match The condition..
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
-        ///   <c>true</c> if objects that match the where condition is exists; otherwise, <c>false</c>.
+        ///   <c>true</c> if objects that match The condition. is exists; otherwise, <c>false</c>.
         /// </returns>
         bool Exist(Expression<Func<TObject, bool>> condition);
 
@@ -43,7 +43,7 @@ namespace Radial.Persist
         /// <summary>
         /// Gets objects count using the specified condition.
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// The objects count.
         /// </returns>
@@ -60,7 +60,7 @@ namespace Radial.Persist
         /// <summary>
         /// Gets objects count using the specified condition.
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// The objects count.
         /// </returns>
@@ -81,7 +81,7 @@ namespace Radial.Persist
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// The min value.
         /// </returns>
@@ -100,7 +100,7 @@ namespace Radial.Persist
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// The max value.
         /// </returns>
@@ -119,7 +119,7 @@ namespace Radial.Persist
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// The sum value.
         /// </returns>
@@ -138,7 +138,7 @@ namespace Radial.Persist
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// The average value.
         /// </returns>
@@ -159,7 +159,7 @@ namespace Radial.Persist
         /// <summary>
         /// Find object.
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// If data exists, return the object, otherwise return null.
         /// </returns>
@@ -175,7 +175,7 @@ namespace Radial.Persist
         /// <summary>
         /// Find the first object.
         /// </summary>
-        /// <param name="condition">The where condition</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <returns>If data exists, return the first object, otherwise return null.</returns>
         TObject FindFirst(Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys);
@@ -200,7 +200,7 @@ namespace Radial.Persist
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The where condition</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <returns>If data exists, return an objects list, otherwise return an empty list.</returns>
         IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys);
@@ -228,7 +228,7 @@ namespace Radial.Persist
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
@@ -239,7 +239,7 @@ namespace Radial.Persist
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <param name="orderBys">The order by snippets.</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
@@ -261,7 +261,7 @@ namespace Radial.Persist
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The where condition</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
         /// <returns>
@@ -272,7 +272,7 @@ namespace Radial.Persist
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The where condition</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
@@ -295,7 +295,7 @@ namespace Radial.Persist
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The where condition</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
         /// <param name="objectTotal">The number of total objects.</param>
@@ -307,7 +307,7 @@ namespace Radial.Persist
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The where condition</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
@@ -346,6 +346,12 @@ namespace Radial.Persist
         /// </summary>
         /// <param name="obj">The object.</param>
         void Remove(TObject obj);
+
+        /// <summary>
+        /// Remove object with the specified condition.
+        /// </summary>
+        /// <param name="condition">The condition.</param>
+        void Remove(Expression<Func<TObject, bool>> condition);
 
         /// <summary>
         /// Clear all objects.

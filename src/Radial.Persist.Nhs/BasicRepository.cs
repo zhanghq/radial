@@ -60,11 +60,11 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Determine whether contains objects that match the where condition.
+        /// Determine whether contains objects that match The condition..
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
-        ///   <c>true</c> if objects that match the where condition is exists; otherwise, <c>false</c>.
+        ///   <c>true</c> if objects that match The condition. is exists; otherwise, <c>false</c>.
         /// </returns>
         public virtual bool Exist(System.Linq.Expressions.Expression<Func<TObject, bool>> condition)
         {
@@ -72,11 +72,11 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Determine whether contains objects that match the where condition.
+        /// Determine whether contains objects that match The condition..
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
-        ///   <c>true</c> if objects that match the where condition is exists; otherwise, <c>false</c>.
+        ///   <c>true</c> if objects that match The condition. is exists; otherwise, <c>false</c>.
         /// </returns>
         protected virtual bool Exist(ICriterion condition)
         {
@@ -98,7 +98,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Gets objects total using the specified condition.
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// The objects total.
         /// </returns>
@@ -112,7 +112,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Gets objects total using the specified condition.
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// The objects total.
         /// </returns>
@@ -137,7 +137,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Gets objects total using the specified condition.
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// The objects total.
         /// </returns>
@@ -151,7 +151,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Gets objects total using the specified condition.
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// The objects total.
         /// </returns>
@@ -175,7 +175,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Find object.
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// If data exists, return the object, otherwise return null.
         /// </returns>
@@ -188,7 +188,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Find object.
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// If data exists, return the object, otherwise return null.
         /// </returns>
@@ -232,7 +232,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The where condition</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <returns>If data exists, return an objects list, otherwise return an empty list.</returns>
         public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
@@ -273,7 +273,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The where condition</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
         /// <param name="objectTotal">The number of total objects.</param>
@@ -288,7 +288,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The where condition</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
@@ -349,7 +349,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
@@ -362,7 +362,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <param name="orderBys">The order by snippets.</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
@@ -406,7 +406,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The where condition</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
         /// <returns>
@@ -420,7 +420,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The where condition</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
@@ -801,7 +801,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// The min value.
         /// </returns>
@@ -832,7 +832,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// The max value.
         /// </returns>
@@ -863,7 +863,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// The sum value.
         /// </returns>
@@ -894,7 +894,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The where condition.</param>
+        /// <param name="condition">The condition..</param>
         /// <returns>
         /// The average value.
         /// </returns>
@@ -922,12 +922,23 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Find the first object.
         /// </summary>
-        /// <param name="condition">The where condition</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <returns>If data exists, return the first object, otherwise return null.</returns>
         public TObject FindFirst(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
         {
             return FindAll(condition, orderBys, 1).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// Remove object with the specified condition.
+        /// </summary>
+        /// <param name="condition">The condition.</param>
+        public void Remove(System.Linq.Expressions.Expression<Func<TObject, bool>> condition)
+        {
+            foreach (TObject o in FindAll(condition))
+                Remove(o);
         }
     }
 }

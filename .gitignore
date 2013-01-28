@@ -1,8 +1,8 @@
 # git ignore file
 bin
 obj
-out
+out/Debug
+out/Release
 log
 *.suo
 *.user
-/src/Radial.Web.TestSite.Azure/csx

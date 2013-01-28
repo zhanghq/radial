@@ -65,7 +65,6 @@
   <ItemGroup>
     <Compile Include="Base62Encoder.cs" />
     <Compile Include="Boot\Bootstrapper.cs" />
-    <Compile Include="Boot\Cfg\BootTaskCfg.cs" />
     <Compile Include="Boot\Cfg\BootTaskElement.cs" />
     <Compile Include="Boot\Cfg\BootTaskElementCollection.cs" />
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />

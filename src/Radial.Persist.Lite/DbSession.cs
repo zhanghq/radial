@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Data;
 using System.Text.RegularExpressions;
 using Radial.Persist.Lite.Cfg;
+using System.Configuration;
 
 namespace Radial.Persist.Lite
 {
@@ -59,7 +60,7 @@ namespace Radial.Persist.Lite
         /// <param name="substitution">占位符替换方法</param>
         public DbSession(int settingsIndex, PlaceholderSubstitution substitution)
         {
-            ConnectionSection section = ConnectionCfg.Read();
+            ConnectionSection section = ReadCfgSection();
             ConnectionElement settings = section.Connections[settingsIndex];
             if (settings == null)
                 throw new ArgumentException("无法找到索引为\"" + settingsIndex + "\"的数据库设置");
@@ -88,7 +89,7 @@ namespace Radial.Persist.Lite
         /// <param name="substitution">占位符替换方法</param>
         public DbSession(string settingsName, PlaceholderSubstitution substitution)
         {
-            ConnectionSection section = ConnectionCfg.Read();
+            ConnectionSection section = ReadCfgSection();
             ConnectionElement settings = section.Connections[settingsName];
             if (settings == null)
                 throw new ArgumentException("无法找到名称为\"" + settingsName + "\"的数据库设置");
@@ -125,6 +126,20 @@ namespace Radial.Persist.Lite
             DataSourceType = dsType;
             Connection = SqlQuery.DbProvider.CreateConnection();
             Connection.ConnectionString = connectionString;
+        }
+
+        /// <summary>
+        /// 读取配置节点
+        /// </summary>
+        /// <returns>数据库设置组节点对象</returns>
+        private ConnectionSection ReadCfgSection()
+        {
+            ConnectionSection section = ConfigurationManager.GetSection("connGroup") as ConnectionSection;
+
+            if (section == null)
+                throw new ArgumentException("无法获取数据库连接设置节点");
+
+            return section;
         }
 
         #endregion

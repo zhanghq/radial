@@ -46,7 +46,13 @@ namespace Radial.Boot
                 if (Initialized)
                     return;
 
-                foreach (BootTaskElement e in BootTaskCfg.LoadTasks())
+
+                BootTaskSection section = ConfigurationManager.GetSection("boot") as BootTaskSection;
+
+                if (section == null)
+                    return;
+
+                foreach (BootTaskElement e in section.Tasks)
                 {
                     IBootTask task = Activator.CreateInstance(Type.GetType(e.Type)) as IBootTask;
 

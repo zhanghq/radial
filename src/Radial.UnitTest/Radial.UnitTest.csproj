@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Persist\Nhs\Domain\User.cs" />
+    <Compile Include="Persist\Nhs\ParamTest.cs" />
     <Compile Include="Persist\Nhs\Repository\UserRepository.cs" />
     <Compile Include="Persist\Nhs\UnitOfWorkTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

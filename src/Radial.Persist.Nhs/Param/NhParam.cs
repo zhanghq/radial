@@ -99,18 +99,20 @@ namespace Radial.Persist.Nhs.Param
                 }
                 else
                 {
-                    ISQLQuery updateQuery = session.CreateSQLQuery("UPDATE Param SET XmlContent=:XmlContent, Version=:VersionNew WHERE Id=:Id AND Version=:Version");
+                    ISQLQuery updateQuery = session.CreateSQLQuery("UPDATE Param SET XmlContent=:XmlContent, Version=:Version WHERE Id=:Id AND Version=:OldVersion");
+
+                    int oldVersion = _itemObject.Version;
+                    _itemObject.Version++;
 
                     updateQuery.SetString("Id", ParamItem.ItemId);
                     updateQuery.SetParameter("XmlContent", _itemObject.XmlContent, NHibernateUtil.StringClob);
-                    updateQuery.SetInt32("VersionNew", _itemObject.Version + 1);
                     updateQuery.SetInt32("Version", _itemObject.Version);
+                    updateQuery.SetInt32("OldVersion", oldVersion);
 
                     int affect = updateQuery.ExecuteUpdate();
 
                     Checker.Requires(affect == 1, "Row was updated or deleted by another transaction");
 
-                    _itemObject.Version += 1;
                 }
             }
         }

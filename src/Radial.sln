@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Cache.Memcached", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Persist.Nhs.Memcached", "Radial.Persist.Nhs.Memcached\Radial.Persist.Nhs.Memcached.csproj", "{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DDD", "DDD", "{348DE062-1CB1-4A1C-81E4-205AAF16604F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

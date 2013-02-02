@@ -82,10 +82,7 @@ namespace Radial.Serialization
                 obj = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
                 success = true;
             }
-            catch(Exception e)
-            {
-                Logger.Default.Error(e, "can not deserialize text to json: {0}", json);
-            }
+            catch { }
 
             return success;
         }
@@ -110,10 +107,7 @@ namespace Radial.Serialization
                 obj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
                 success = true;
             }
-            catch (Exception e)
-            {
-                Logger.Default.Error(e, "can not deserialize text to json: {0}", json);
-            }
+            catch { }
 
             return success;
         }

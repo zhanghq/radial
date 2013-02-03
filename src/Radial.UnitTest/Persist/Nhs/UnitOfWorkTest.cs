@@ -17,13 +17,13 @@ namespace Radial.UnitTest.Persist.Nhs
         [TestFixtureSetUp]
         public void SetUp()
         {
-            using (IUnitOfWork uow = new NhUnitOfWork())
-            {
-                for (int i = 0; i < 100; i++)
-                    uow.RegisterNew<User>(new User { Id = RandomCode.NewInstance.Next(1, int.MaxValue), Name = "测试" });
+            //using (IUnitOfWork uow = new NhUnitOfWork())
+            //{
+            //    for (int i = 0; i < 100; i++)
+            //        uow.RegisterNew<User>(new User { Id = RandomCode.NewInstance.Next(1, int.MaxValue), Name = "测试" });
 
-                uow.Commit();
-            }
+            //    uow.Commit();
+            //}
         }
 
         [Test]
@@ -46,18 +46,18 @@ namespace Radial.UnitTest.Persist.Nhs
                 Console.WriteLine(ut.Name);
 
 
-                //测试是否会更新
-                User u = userRepository.FindFirst(new OrderBySnippet<User>(o => o.Id));
+                ////测试是否会更新
+                //User u = userRepository.FindFirst(new OrderBySnippet<User>(o => o.Id));
 
-                u.Name = RandomCode.Create(10);
+                //u.Name = RandomCode.Create(10);
 
-                userRepository.Save(u);
+                //userRepository.Save(u);
 
-                User u2 = userRepository.FindFirst(new OrderBySnippet<User>(o => o.Id, false));
+                //User u2 = userRepository.FindFirst(new OrderBySnippet<User>(o => o.Id, false));
 
-                u2.Name = RandomCode.Create(10);
+                //u2.Name = RandomCode.Create(10);
 
-                userRepository.Save(u2);
+                //userRepository.Save(u2);
 
                 //测试此方法是否会在提交前执行
                 uow.RegisterDelete<User, int>(2323);
@@ -76,6 +76,21 @@ namespace Radial.UnitTest.Persist.Nhs
                 UserRepository userRepository = new UserRepository(uow);
 
                 userRepository.Remove(o => o.Id > RandomCode.NewInstance.Next(10000, int.MaxValue));
+
+                uow.Commit();
+            }
+        }
+        [Test]
+        public void Test3()
+        {
+            //测试事物回滚
+
+            using (IUnitOfWork uow = new NhUnitOfWork())
+            {
+
+                uow.RegisterNew<User>(new User { Id = RandomCode.NewInstance.Next(1, int.MaxValue), Name = "测试" });
+                //order 保存出错
+                uow.RegisterNew<Order>(new Order { Id = RandomCode.NewInstance.Next(1, int.MaxValue), Amount = 100, Time = DateTime.Now });
 
                 uow.Commit();
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
@@ -12,6 +13,15 @@ namespace Radial.Serialization.Converters
     public sealed class DateTimeJsonConverter : JsonConverter
     {
         string _format="yyyy/MM/dd HH:mm:ss";
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DateTimeJsonConverter" /> class.
+        /// </summary>
+        public DateTimeJsonConverter()
+        {
+            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["DateTimeJsonFormat"]))
+                _format = ConfigurationManager.AppSettings["DateTimeJsonFormat"].Trim();
+        }
 
         /// <summary>
         /// Determines whether this instance can convert the specified object type.

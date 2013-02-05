@@ -15,11 +15,6 @@ namespace Radial.Param
     {
         static object SyncRoot = new object();
 
-        /// <summary>
-        /// xml ns
-        /// </summary>
-        const string Xmlns = "urn:radial-xmlparam";
-
         static XElement S_Root;
 
 
@@ -92,7 +87,7 @@ namespace Radial.Param
         private static XName BuildXName(string name)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(name), "name can not be empty or null");
-            XNamespace ns = Xmlns;
+            XNamespace ns = ParamObject.XmlNs;
             return ns + name;
         }
 

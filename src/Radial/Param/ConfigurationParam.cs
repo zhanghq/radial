@@ -97,7 +97,6 @@ namespace Radial.Param
         /// <param name="value">The value.</param>
         private void Create(string path, string description, string value)
         {
-            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -108,7 +107,6 @@ namespace Radial.Param
         /// <param name="value">The new value.</param>
         private void Update(string path, string description, string value)
         {
-            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -117,7 +115,6 @@ namespace Radial.Param
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
         public void Delete(string path)
         {
-            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -129,7 +126,7 @@ namespace Radial.Param
         /// </returns>
         public IList<ParamObject> Next(string currentPath)
         {
-            throw new NotImplementedException();
+            return new List<ParamObject>();
         }
 
         /// <summary>
@@ -144,7 +141,8 @@ namespace Radial.Param
         /// </returns>
         public IList<ParamObject> Next(string currentPath, int pageSize, int pageIndex, out int objectTotal)
         {
-            throw new NotImplementedException();
+            objectTotal = 0;
+            return new List<ParamObject>();
         }
 
 
@@ -157,7 +155,7 @@ namespace Radial.Param
         /// </returns>
         public IList<ParamObject> Search(string path)
         {
-            throw new NotImplementedException();
+            return new List<ParamObject>();
         }
 
         /// <summary>
@@ -172,7 +170,8 @@ namespace Radial.Param
         /// </returns>
         public IList<ParamObject> Search(string path, int pageSize, int pageIndex, out int objectTotal)
         {
-            throw new NotImplementedException();
+            objectTotal = 0;
+            return new List<ParamObject>();
         }
 
         /// <summary>
@@ -182,7 +181,6 @@ namespace Radial.Param
         /// <param name="value">The value.</param>
         public void Save(string path, string value)
         {
-            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -193,7 +191,6 @@ namespace Radial.Param
         /// <param name="value">The value.</param>
         public void Save(string path, string description, string value)
         {
-            throw new NotSupportedException();
         }
     }
 }

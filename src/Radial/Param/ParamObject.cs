@@ -30,6 +30,11 @@ namespace Radial.Param
         public const string PathRegexPattern = @"^([A-Za-z0-9_-]\.?)+$";
 
         /// <summary>
+        /// The Xml namespace.
+        /// </summary>
+        public const string XmlNs = "urn:radial-xmlparam";
+
+        /// <summary>
         /// Determine whether the specified path is valid.
         /// </summary>
         /// <param name="path">The path.</param>

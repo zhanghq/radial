@@ -19,7 +19,6 @@ namespace Radial.Persist.Nhs.Param
     public class NhParam : IParam
     {
         static object S_SyncRoot = new object();
-        const string Xmlns = "urn:radial-xmlparam";
 
         ParamItem _itemObject;
 
@@ -192,7 +191,7 @@ namespace Radial.Persist.Nhs.Param
         private static XName BuildXName(string name)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(name), "name can not be empty or null");
-            XNamespace ns = Xmlns;
+            XNamespace ns = ParamObject.XmlNs;
             return ns + name;
         }
 

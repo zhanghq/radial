@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Radial.Boot.Cfg;
+using Radial.Extensions;
 
 namespace Radial.Boot
 {
@@ -37,6 +38,36 @@ namespace Radial.Boot
         }
 
         /// <summary>
+        /// Registers boot task.
+        /// </summary>
+        /// <param name="task">The boot task.</param>
+        public static void RegisterTask(IBootTask task)
+        {
+            RegisterTask(task, 0);
+        }
+
+        /// <summary>
+        /// Registers boot task.
+        /// </summary>
+        /// <param name="task">The boot task.</param>
+        /// <param name="priority">The priority.</param>
+        public static void RegisterTask(IBootTask task, int priority)
+        {
+            lock (SyncRoot)
+            {
+                if (Initialized)
+                    return;
+
+                if (task != null)
+                {
+                    Checker.Requires(!Tasks.Contains(o => o.Value.GetType() == task.GetType()), "duplicated boot task: {0}", task.GetType().FullName);
+
+                    Tasks.Add(new KeyValuePair<int, IBootTask>(priority, task));
+                }
+            }
+        }
+
+        /// <summary>
         /// System initialize process.
         /// </summary>
         public static void Initialize()
@@ -45,7 +76,6 @@ namespace Radial.Boot
             {
                 if (Initialized)
                     return;
-
 
                 BootTaskSection section = ConfigurationManager.GetSection("boot") as BootTaskSection;
 
@@ -57,9 +87,14 @@ namespace Radial.Boot
                     IBootTask task = Activator.CreateInstance(Type.GetType(e.Type)) as IBootTask;
 
                     if (task != null)
+                    {
+                        Checker.Requires(!Tasks.Contains(o => o.Value.GetType() == task.GetType()), "duplicated boot task: {0}", task.GetType().FullName);
+
                         Tasks.Add(new KeyValuePair<int, IBootTask>(e.Priority, task));
+                    }
                 }
 
+                //The larger value the higher priority
                 Tasks.Sort((a, b) =>
                 {
                     if (a.Key > b.Key)

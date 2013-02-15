@@ -53,8 +53,8 @@ namespace Radial.Tools.Hosts
         private static Process RuningInstance()
         {
             Process currentProcess = Process.GetCurrentProcess();
-            Process[] Processes = Process.GetProcessesByName(currentProcess.ProcessName);
-            foreach (Process process in Processes)
+            Process[] processes = Process.GetProcessesByName(currentProcess.ProcessName);
+            foreach (Process process in processes)
             {
                 if (process.Id != currentProcess.Id)
                 {

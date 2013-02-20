@@ -29,7 +29,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Cache.Memcached", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Persist.Nhs.Memcached", "Radial.Persist.Nhs.Memcached\Radial.Persist.Nhs.Memcached.csproj", "{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DDD", "DDD", "{348DE062-1CB1-4A1C-81E4-205AAF16604F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.DDD.Domain", "Samples\Samples.DDD.Domain\Samples.DDD.Domain.csproj", "{ED871012-4857-4C6B-9AA6-6017678B698C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{42C4C1F9-7C5E-4FC5-9823-D55DA79C5FB2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DDD", "DDD", "{750CCDC3-260C-45F3-9233-548CE17D7EAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -161,6 +165,16 @@ Global
 		{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}.Release|x86.ActiveCfg = Release|Any CPU
+		{ED871012-4857-4C6B-9AA6-6017678B698C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED871012-4857-4C6B-9AA6-6017678B698C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED871012-4857-4C6B-9AA6-6017678B698C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{ED871012-4857-4C6B-9AA6-6017678B698C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{ED871012-4857-4C6B-9AA6-6017678B698C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ED871012-4857-4C6B-9AA6-6017678B698C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED871012-4857-4C6B-9AA6-6017678B698C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED871012-4857-4C6B-9AA6-6017678B698C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{ED871012-4857-4C6B-9AA6-6017678B698C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{ED871012-4857-4C6B-9AA6-6017678B698C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -170,6 +184,8 @@ Global
 		{488FAE42-3405-4563-958B-A15C2D80660B} = {3AFB6471-9556-4901-9777-3911BE99F7FD}
 		{9849D2DE-3410-46E1-9524-F322765F82FF} = {3AFB6471-9556-4901-9777-3911BE99F7FD}
 		{4A4FCCD1-570A-457D-B49E-7AA8E6F58383} = {3AFB6471-9556-4901-9777-3911BE99F7FD}
+		{750CCDC3-260C-45F3-9233-548CE17D7EAE} = {42C4C1F9-7C5E-4FC5-9823-D55DA79C5FB2}
+		{ED871012-4857-4C6B-9AA6-6017678B698C} = {750CCDC3-260C-45F3-9233-548CE17D7EAE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35

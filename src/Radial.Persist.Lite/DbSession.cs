@@ -380,9 +380,6 @@ namespace Radial.Persist.Lite
 
             DataSet ds = new DataSet();
 
-            if (!command.CommandText.EndsWith(";"))
-                command.CommandText += ";";
-
             command.Connection = Connection;
             command.CommandTimeout = CommandTimeout;
 
@@ -412,8 +409,6 @@ namespace Radial.Persist.Lite
 
             DataTable dt = new DataTable();
 
-            if (!command.CommandText.EndsWith(";"))
-                command.CommandText += ";";
 
             command.Connection = Connection;
             command.CommandTimeout = CommandTimeout;
@@ -440,8 +435,6 @@ namespace Radial.Persist.Lite
             if (command == null || string.IsNullOrEmpty(command.CommandText))
                 throw new ArgumentNullException("command", "DbCommand对象及其命令文本不能为空");
 
-            if (!command.CommandText.EndsWith(";"))
-                command.CommandText += ";";
 
             command.Connection = Connection;
             command.CommandTimeout = CommandTimeout;
@@ -464,8 +457,6 @@ namespace Radial.Persist.Lite
             if (command == null || string.IsNullOrEmpty(command.CommandText))
                 throw new ArgumentNullException("command", "DbCommand对象及其命令文本不能为空");
 
-            if (!command.CommandText.EndsWith(";"))
-                command.CommandText += ";";
 
             command.Connection = Connection;
             command.CommandTimeout = CommandTimeout;
@@ -489,8 +480,6 @@ namespace Radial.Persist.Lite
             if (command == null || string.IsNullOrEmpty(command.CommandText))
                 throw new ArgumentNullException("command", "DbCommand对象及其命令文本不能为空");
 
-            if (!command.CommandText.EndsWith(";"))
-                command.CommandText += ";";
 
             command.Connection = Connection;
             command.CommandTimeout = CommandTimeout;

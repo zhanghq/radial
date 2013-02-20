@@ -54,6 +54,7 @@
     <Compile Include="Persist\Nhs\UnitOfWorkTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestSetup.cs" />
+    <Compile Include="ToolkitsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Radial.Persist.Nhs\Radial.Persist.Nhs.csproj">
@@ -73,6 +74,9 @@
     <None Include="Config\log4net.config" />
     <None Include="Config\NHibernate.config" />
     <None Include="Config\XmlParam.config" />
+    <None Include="data.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Persist\Nhs\Domain\User.hbm.xml" />

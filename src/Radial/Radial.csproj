@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base62Encoder.cs" />
+    <Compile Include="Boot\StartupHttpModule.cs" />
     <Compile Include="Boot\Bootstrapper.cs" />
     <Compile Include="Boot\Cfg\BootTaskElement.cs" />
     <Compile Include="Boot\Cfg\BootTaskElementCollection.cs" />
@@ -113,6 +114,12 @@
     <Compile Include="Net\HttpResponseObj.cs" />
     <Compile Include="Net\HttpWebClient.cs" />
     <Compile Include="Base36Encoder.cs" />
+    <Compile Include="Web\FormsAuth.cs" />
+    <Compile Include="Web\HttpCache.cs" />
+    <Compile Include="Web\HttpKits.cs" />
+    <Compile Include="Web\HttpKnownFaultException.cs" />
+    <Compile Include="Web\HttpPostedFileExtension.cs" />
+    <Compile Include="Web\UserIdentity.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -81,10 +81,6 @@
     <Compile Include="XmlResult.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Radial.Web\Radial.Web.csproj">
-      <Project>{3c6d4547-3aeb-4166-a8ec-aa3217d72838}</Project>
-      <Name>Radial.Web</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Radial\Radial.csproj">
       <Project>{e9ec1cb9-79b6-47bc-af82-e8b7b7affcea}</Project>
       <Name>Radial</Name>

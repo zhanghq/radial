@@ -74,9 +74,6 @@
     <None Include="Config\log4net.config" />
     <None Include="Config\NHibernate.config" />
     <None Include="Config\XmlParam.config" />
-    <None Include="data.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Persist\Nhs\Domain\User.hbm.xml" />

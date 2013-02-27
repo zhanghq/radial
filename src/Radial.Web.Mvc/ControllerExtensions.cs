@@ -145,18 +145,6 @@ namespace Radial.Web.Mvc
         }
 
         /// <summary>
-        /// Renders Excel file to the response.
-        /// </summary>
-        /// <param name="c">The controller.</param>
-        /// <param name="dt">The DataTable.</param>
-        /// <param name="fileName">The file name(without extension).</param>
-        /// <returns>ExcelResult instance.</returns>
-        public static ExcelResult Excel(this Controller c, DataTable dt, string fileName)
-        {
-            return new ExcelResult(dt, fileName);
-        }
-
-        /// <summary>
         /// Throws a new KnownFaultException and let the system itself to decide how to deal with.
         /// </summary>
         /// <param name="c">The controller.</param>

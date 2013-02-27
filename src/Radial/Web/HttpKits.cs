@@ -14,7 +14,6 @@ using System.Text.RegularExpressions;
 using System.Net;
 using Radial.Net;
 using Radial.Extensions;
-using NPOI.SS.UserModel;
 
 namespace Radial.Web
 {
@@ -418,31 +417,6 @@ namespace Radial.Web
         public static void WriteXml<T>(T obj, string contentType, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
             WriteXml(Serialization.XmlSerializer.Serialize<T>(obj), contentType, statusCode);
-        }
-
-        /// <summary>
-        /// Export dataset to Excel file (use return statement to bypass other codes if necessary).
-        /// </summary>
-        /// <param name="dt">The dataset object</param>
-        /// <param name="fileName">The Excel file name(without extension)</param>
-        public static void ExportToExcel(DataTable dt, string fileName)
-        {
-            Encoding encoding = Encoding.GetEncoding("UTF-8");
-
-            Checker.Parameter(dt != null, "DataTable object can not be null");
-            Checker.Parameter(!string.IsNullOrWhiteSpace(fileName), "fileName can not be empty or null");
-
-            IWorkbook hssfworkbook = dt.ToExcelBook();
-
-            CurrentContext.Response.Clear();
-            CurrentContext.Response.Buffer = true;
-            CurrentContext.Response.Charset = encoding.BodyName;
-            CurrentContext.Response.AppendHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(fileName, encoding) + ".xls");
-            CurrentContext.Response.ContentEncoding = encoding;
-            CurrentContext.Response.ContentType = ContentTypes.Excel;
-            hssfworkbook.Write(CurrentContext.Response.OutputStream);
-            CurrentContext.Response.End();
-
         }
 
         /// <summary>

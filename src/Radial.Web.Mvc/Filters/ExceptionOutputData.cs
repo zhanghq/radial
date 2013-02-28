@@ -35,13 +35,22 @@ namespace Radial.Web.Mvc.Filters
         public string ToXml()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            sb.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
             sb.Append("<exception>");
             sb.AppendFormat("<error>{0}</error>", ErrorCode);
-            sb.AppendFormat("<request>{0}</request>", HttpKits.CurrentContext.Server.HtmlEncode(RequestUrl));
-            sb.AppendFormat("<message>{0}</message>", HttpKits.CurrentContext.Server.HtmlEncode(ErrorMessage));
+            sb.AppendFormat("<request>{0}</request>", RequestUrl);
+            sb.AppendFormat("<message>{0}</message>", ErrorMessage);
             sb.Append("</exception>");
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// To the Json.
+        /// </summary>
+        /// <returns>Json string.</returns>
+        public string ToJson()
+        {
+            return Radial.Serialization.JsonSerializer.Serialize(this);
         }
     }
 }

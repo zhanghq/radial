@@ -5,6 +5,7 @@ using System.Text;
 using System.Web.Mvc;
 using System.Web;
 using System.Net;
+using Radial.Net;
 
 namespace Radial.Web.Mvc.Filters
 {
@@ -29,7 +30,7 @@ namespace Radial.Web.Mvc.Filters
         /// <param name="defaultErrorCode">The default error code.</param>
         /// <param name="defaultHttpStatusCode">The default http status code.</param>
         public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode, HttpStatusCode? defaultHttpStatusCode = HttpStatusCode.OK)
-            : this(outputStyle, defaultErrorCode, string.Empty, defaultHttpStatusCode)
+            : this(outputStyle, defaultErrorCode, string.Empty, Encoding.UTF8, defaultHttpStatusCode)
         {
         }
 
@@ -39,12 +40,14 @@ namespace Radial.Web.Mvc.Filters
         /// <param name="outputStyle">The exception output style.</param>
         /// <param name="defaultErrorCode">The default error code.</param>
         /// <param name="contentType">The content type.</param>
+        /// <param name="encoding">The encoding.</param>
         /// <param name="defaultHttpStatusCode">The default http status code.</param>
-        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode, string contentType, HttpStatusCode? defaultHttpStatusCode = HttpStatusCode.OK)
+        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode, string contentType, Encoding encoding, HttpStatusCode? defaultHttpStatusCode = HttpStatusCode.OK)
         {
             OutputStyle = outputStyle;
             DefaultErrorCode = defaultErrorCode;
             DefaultHttpStatusCode = defaultHttpStatusCode.Value;
+            Encoding = encoding;
             ContentType = contentType;
         }
 
@@ -85,6 +88,16 @@ namespace Radial.Web.Mvc.Filters
             private set;
         }
 
+
+        /// <summary>
+        /// Gets the encoding.
+        /// </summary>
+        public Encoding Encoding
+        {
+            get;
+            private set;
+        }
+
         /// <summary>
         /// Called when an exception occurs.
         /// </summary>
@@ -112,27 +125,37 @@ namespace Radial.Web.Mvc.Filters
                 ErrorMessage = filterContext.Exception.Message
             };
 
-            if (OutputStyle == ExceptionOutputStyle.Json)
+            filterContext.HttpContext.Response.Clear();
+            filterContext.HttpContext.Response.ContentEncoding = Encoding;
+
+
+            if (string.IsNullOrWhiteSpace(ContentType))
             {
-                if(!string.IsNullOrWhiteSpace(ContentType))
-                    HttpKits.WriteJson<ExceptionOutputData>(data, ContentType);
-                else
-                    HttpKits.WriteJson<ExceptionOutputData>(data);
+                if (OutputStyle == ExceptionOutputStyle.Json)
+                    filterContext.HttpContext.Response.ContentType = ContentTypes.PlainText;
+                if (OutputStyle == ExceptionOutputStyle.Xml)
+                    filterContext.HttpContext.Response.ContentType = ContentTypes.Xml;
             }
+            else
+                filterContext.HttpContext.Response.ContentType = ContentType;
+
+            string respContext = string.Empty;
+
             if (OutputStyle == ExceptionOutputStyle.Xml)
-            {
-                if (!string.IsNullOrWhiteSpace(ContentType))
-                    HttpKits.WriteXml(data.ToXml(), ContentType);
-                else
-                    HttpKits.WriteXml(data.ToXml());
-            }
+                respContext = data.ToXml();
+            if (OutputStyle == ExceptionOutputStyle.Json)
+                respContext = data.ToJson();
 
             HttpStatusCode scode = DefaultHttpStatusCode;
 
             if (hkfe != null && hkfe.StatusCode.HasValue)
                 scode = hkfe.StatusCode.Value;
 
-            filterContext.Result = new HttpStatusCodeResult((int)scode);
+            filterContext.HttpContext.Response.StatusCode = (int)scode;
+
+            filterContext.HttpContext.Response.Write(respContext);
+
+            filterContext.HttpContext.ApplicationInstance.CompleteRequest();
         }
     }
 }

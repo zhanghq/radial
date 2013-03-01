@@ -243,7 +243,9 @@ namespace Radial.Persist.Lite
         /// </summary>
         public void BeginTransaction()
         {
-            BeginTransaction(IsolationLevel.Unspecified);
+            OpenConnection();
+            if (Transaction == null || Transaction.Connection == null)
+                Transaction = Connection.BeginTransaction();
         }
 
 

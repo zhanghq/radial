@@ -84,6 +84,8 @@ namespace Radial.Boot
 
                 foreach (BootTaskElement e in section.Tasks)
                 {
+                    Checker.Requires(!string.IsNullOrWhiteSpace(e.Type), "boot task type can not be empty or null");
+
                     IBootTask task = Activator.CreateInstance(Type.GetType(e.Type)) as IBootTask;
 
                     if (task != null)

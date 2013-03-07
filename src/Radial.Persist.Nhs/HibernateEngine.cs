@@ -32,17 +32,6 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Gets the configuration path.
-        /// </summary>
-        public static string ConfigurationPath
-        {
-            get
-            {
-                return SystemVariables.GetConfigurationPath("NHibernate.config");
-            }
-        }
-
-        /// <summary>
         /// Create a database connection and open a ISession on it.
         /// </summary>
         /// <returns>ISession instance.</returns>

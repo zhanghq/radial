@@ -84,7 +84,8 @@ namespace Radial.Persist.Nhs.Param
                 ISQLQuery query = session.CreateSQLQuery("SELECT COUNT(*) FROM Param WHERE Id=:Id");
                 query.SetString("Id", ParamItem.ItemId);
 
-                bool exist = query.UniqueResult<int>() > 0 ? true : false;
+                //ToString method for compatibility with different database
+                bool exist = query.UniqueResult().ToString() == "1" ? true : false;
 
                 if (!exist)
                 {

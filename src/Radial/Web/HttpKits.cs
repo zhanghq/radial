@@ -89,8 +89,8 @@ namespace Radial.Web
 
             if (cookie != null)
             {
-                cookie.Expires = DateTime.MinValue;
-                CurrentContext.Response.Cookies.Add(cookie);
+                cookie.Expires = DateTime.Now.AddDays(-1);
+                CurrentContext.Response.Cookies.Set(cookie);
             }
         }
 

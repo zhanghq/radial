@@ -28,7 +28,6 @@ namespace Radial.Boot
 
             context.BeginRequest += context_BeginRequest;
             context.EndRequest += context_EndRequest;
-            context.Error += context_Error;
         }
 
         /// <summary>
@@ -47,16 +46,6 @@ namespace Radial.Boot
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         void context_EndRequest(object sender, EventArgs e)
-        {
-            Bootstrapper.Stop();
-        }
-
-        /// <summary>
-        /// Handles the Error event of the context control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        void context_Error(object sender, EventArgs e)
         {
             Bootstrapper.Stop();
         }

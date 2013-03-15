@@ -13,8 +13,11 @@ namespace Radial.UnitTest.Persist.Nhs
         [Test]
         public void Test1()
         {
+            string path = Guid.NewGuid().ToString("N");
+            string value = "123";
             NhParam p = new NhParam();
-            p.Save("123", "23");
+            p.Save(path, value);
+            Assert.AreEqual(value, p.GetValue(path));
         }
     }
 }

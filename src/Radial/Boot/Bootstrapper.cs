@@ -79,20 +79,21 @@ namespace Radial.Boot
 
                 BootTaskSection section = ConfigurationManager.GetSection("boot") as BootTaskSection;
 
-                if (section == null)
-                    return;
-
-                foreach (BootTaskElement e in section.Tasks)
+                if (section != null)
                 {
-                    Checker.Requires(!string.IsNullOrWhiteSpace(e.Type), "boot task type can not be empty or null");
 
-                    IBootTask task = Activator.CreateInstance(Type.GetType(e.Type)) as IBootTask;
-
-                    if (task != null)
+                    foreach (BootTaskElement e in section.Tasks)
                     {
-                        Checker.Requires(!Tasks.Contains(o => o.Value.GetType() == task.GetType()), "duplicated boot task: {0}", task.GetType().FullName);
+                        Checker.Requires(!string.IsNullOrWhiteSpace(e.Type), "boot task type can not be empty or null");
 
-                        Tasks.Add(new KeyValuePair<int, IBootTask>(e.Priority, task));
+                        IBootTask task = Activator.CreateInstance(Type.GetType(e.Type)) as IBootTask;
+
+                        if (task != null)
+                        {
+                            Checker.Requires(!Tasks.Contains(o => o.Value.GetType() == task.GetType()), "duplicated boot task: {0}", task.GetType().FullName);
+
+                            Tasks.Add(new KeyValuePair<int, IBootTask>(e.Priority, task));
+                        }
                     }
                 }
 

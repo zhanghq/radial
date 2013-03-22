@@ -9,6 +9,9 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Data;
 using System.Data.OleDb;
+using System.Net.NetworkInformation;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Radial
 {
@@ -347,31 +350,37 @@ namespace Radial
             return Convert.FromBase64String(base64Str);
         }
 
+
         /// <summary>
-        /// Send Ping command to the host.
+        /// Gets the ping replies.
         /// </summary>
-        /// <param name="host">The host(ip or hostname).</param>
-        /// <returns>The Ping result string.</returns>
-        public static string GetPingResult(string host)
+        /// <param name="host">The host.</param>
+        /// <param name="count">The ping count.</param>
+        /// <param name="interval">The ping interval milliseconds.</param>
+        /// <param name="bytes">The buffer bytes.</param>
+        /// <param name="timeout">The timeout milliseconds.</param>
+        /// <param name="ttl">The TTL.</param>
+        /// <param name="dontFragment">if set to <c>true</c> [dont fragment].</param>
+        /// <returns></returns>
+        public static IList<PingReply> GetPingReplies(string host, int count = 4, int interval = 1000, int bytes = 32, int timeout = 1000, int ttl = 128, bool dontFragment = false)
         {
-            Checker.Parameter(!string.IsNullOrWhiteSpace(host), "host can not be empty or null");
+            IList<PingReply> list = new List<PingReply>();
 
-            Process prc = new Process();
-            prc.StartInfo.FileName = "cmd.exe";
-            prc.StartInfo.UseShellExecute = false;
-            prc.StartInfo.RedirectStandardInput = true;
-            prc.StartInfo.RedirectStandardOutput = true;
-            prc.StartInfo.RedirectStandardError = true;
-            prc.StartInfo.CreateNoWindow = true;
-            prc.Start();
-            prc.StandardInput.WriteLine(string.Format("ping {0}", host));
-            prc.StandardInput.Close();
+            // Create a buffer of 32 bytes of data to be transmitted.
+            byte[] buffer = new byte[bytes];
+            for (int i = 0; i < buffer.Length; i++)
+                buffer[i] = 0;
 
-            string str = prc.StandardOutput.ReadToEnd().Trim();
+            using (Ping pingSender = new Ping())
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    list.Add(pingSender.Send(host, timeout, buffer, new PingOptions(ttl, dontFragment)));
+                    Thread.Sleep(interval);
+                }
+            }
 
-            str = str.Substring(0, str.LastIndexOf("\r\n\r\n")).Substring(str.IndexOf("Pinging"));
-
-            return str;
+            return list;
         }
 
         /// <summary>

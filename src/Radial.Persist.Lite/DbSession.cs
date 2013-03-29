@@ -244,8 +244,7 @@ namespace Radial.Persist.Lite
         public void BeginTransaction()
         {
             OpenConnection();
-            if (Transaction == null || Transaction.Connection == null)
-                Transaction = Connection.BeginTransaction();
+            Transaction = Connection.BeginTransaction();
         }
 
 
@@ -256,63 +255,31 @@ namespace Radial.Persist.Lite
         public void BeginTransaction(IsolationLevel level)
         {
             OpenConnection();
-            if (Transaction == null || Transaction.Connection == null)
-                Transaction = Connection.BeginTransaction(level);
-        }
-
-        /// <summary>
-        /// 提交DbTransaction事务(需调用EndTransaction关闭事务)
-        /// </summary>
-        public void Commit()
-        {
-            Commit(false);
+            Transaction = Connection.BeginTransaction(level);
         }
 
         /// <summary>
         /// 提交DbTransaction事务
         /// </summary>
-        /// <param name="endTransaction">提交后关闭事务</param>
-        public void Commit(bool endTransaction)
+        public void Commit()
         {
             if (Transaction != null)
             {
                 Transaction.Commit();
-                if (endTransaction)
-                    EndTransaction();
+                Transaction.Dispose();
             }
         }
 
-        /// <summary>
-        /// 回滚DbTransaction事务(需调用EndTransaction关闭事务)
-        /// </summary>
-        public void Rollback()
-        {
-            Rollback(false);
-        }
 
         /// <summary>
         /// 回滚DbTransaction事务
         /// </summary>
-        /// <param name="endTransaction">回滚后关闭事务</param>
-        public void Rollback(bool endTransaction)
+        public void Rollback()
         {
             if (Transaction != null)
             {
                 Transaction.Rollback();
-                if (endTransaction)
-                    EndTransaction();
-            }
-        }
-
-        /// <summary>
-        /// 关闭DbTransaction事务
-        /// </summary>
-        public void EndTransaction()
-        {
-            if (Transaction != null)
-            {
                 Transaction.Dispose();
-                Transaction = null;
             }
         }
 
@@ -339,17 +306,8 @@ namespace Radial.Persist.Lite
         {
             if (Connection != null)
             {
-                if (Connection.State == ConnectionState.Closed)
-                    return;
-                try
-                {
-                    Connection.Close();
-                    EndTransaction();
-                }
-                finally
-                {
-                    Connection.Dispose();
-                }
+                Connection.Close();
+                Connection.Dispose();
             }
         }
 
@@ -446,7 +404,7 @@ namespace Radial.Persist.Lite
 
             OpenConnection();
 
-            return command.ExecuteReader(CommandBehavior.CloseConnection);
+            return command.ExecuteReader();
         }
 
         /// <summary>

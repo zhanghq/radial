@@ -571,20 +571,18 @@ namespace Radial.Persist.Lite
         /// <returns>IList&lt;IList&lt;object&gt;&gt;对象</returns>
         public IList<IList<object>> ExecuteRows(string cmdText, params object[] paramValues)
         {
-            IList<IList<object>> list = new List<IList<object>>();
+            return ExecuteRows(new TextCommandData(cmdText, paramValues));
+        }
 
-            using (DbDataReader reader = ExecuteDataReader(cmdText, paramValues))
-            {
-                while (reader.Read())
-                {
-                    List<object> alist = new List<object>(reader.FieldCount);
-                    for (int i = 0; i < reader.FieldCount; i++)
-                        alist.Add(reader[i]);
-                    list.Add(alist);
-                }
-            }
-
-            return list;
+        /// <summary>
+        /// ExecuteRowsDictionary方法
+        /// </summary>
+        /// <param name="cmdText">命令文本</param>
+        /// <param name="paramValues">参数数组</param>
+        /// <returns>IList&lt;IDictionary&lt;string, object&gt;&gt;对象</returns>
+        public IList<IDictionary<string,object>> ExecuteRowsDictionary(string cmdText, params object[] paramValues)
+        {
+            return ExecuteRowsDictionary(new TextCommandData(cmdText, paramValues));
         }
 
         /// <summary>
@@ -595,12 +593,18 @@ namespace Radial.Persist.Lite
         /// <returns>IList&lt;object&gt;对象</returns>
         public IList<object> ExecuteFirstRow(string cmdText, params object[] paramValues)
         {
-            IList<IList<object>> list = ExecuteRows(cmdText, paramValues);
+            return ExecuteFirstRow(new TextCommandData(cmdText, paramValues));
+        }
 
-            if (list.Count == 0)
-                return new List<object>();
-
-            return list[0];
+        /// <summary>
+        /// ExecuteFirstRowDictionary方法
+        /// </summary>
+        /// <param name="cmdText">命令文本</param>
+        /// <param name="paramValues">参数数组</param>
+        /// <returns>IDictionary&lt;string, object&gt;对象</returns>
+        public IDictionary<string, object> ExecuteFirstRowDictionary(string cmdText, params object[] paramValues)
+        {
+            return ExecuteFirstRowDictionary(new TextCommandData(cmdText, paramValues));
         }
 
         /// <summary>
@@ -687,6 +691,29 @@ namespace Radial.Persist.Lite
             return list;
         }
 
+        /// <summary>
+        /// ExecuteRowsDictionary方法
+        /// </summary>
+        /// <param name="cmdData">文本命令对象</param>
+        /// <returns>IList&lt;IDictionary&lt;string, object&gt;&gt;对象</returns>
+        public IList<IDictionary<string, object>> ExecuteRowsDictionary(TextCommandData cmdData)
+        {
+            IList<IDictionary<string, object>> list = new List<IDictionary<string, object>>();
+
+            using (DbDataReader reader = ExecuteDataReader(cmdData))
+            {
+                while (reader.Read())
+                {
+                    IDictionary<string, object> alist = new Dictionary<string, object>(reader.FieldCount);
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        alist.Add(reader.GetName(i), reader[i]);
+                    list.Add(alist);
+                }
+            }
+
+            return list;
+        }
+
 
         /// <summary>
         /// ExecuteFirstRow方法
@@ -695,12 +722,41 @@ namespace Radial.Persist.Lite
         /// <returns>IList&lt;object&gt;对象</returns>
         public IList<object> ExecuteFirstRow(TextCommandData cmdData)
         {
-            IList<IList<object>> list = ExecuteRows(cmdData);
+            IList<object> list = new List<object>();
 
-            if (list.Count == 0)
-                return new List<object>();
+            using (DbDataReader reader = ExecuteDataReader(cmdData))
+            {
+                while (reader.Read())
+                {
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        list.Add(reader[i]);
+                    break;
+                }
+            }
 
-            return list[0];
+            return list;
+        }
+
+        /// <summary>
+        /// ExecuteFirstRowDictionary方法
+        /// </summary>
+        /// <param name="cmdData">文本命令对象</param>
+        /// <returns>IDictionary&lt;string, object&gt;对象</returns>
+        public IDictionary<string, object> ExecuteFirstRowDictionary(TextCommandData cmdData)
+        {
+            IDictionary<string, object> dict = new Dictionary<string, object>();
+
+            using (DbDataReader reader = ExecuteDataReader(cmdData))
+            {
+                while (reader.Read())
+                {
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        dict.Add(reader.GetName(i), reader[i]);
+                    break;
+                }
+            }
+
+            return dict;
         }
 
         /// <summary>
@@ -870,6 +926,30 @@ namespace Radial.Persist.Lite
         }
 
         /// <summary>
+        /// Stored Procedure ExecuteRowsDictionary
+        /// </summary>
+        /// <param name="spName">存储过程名</param>
+        /// <param name="parameters">存储过程参数</param>
+        /// <returns>IList&lt;IDictionary&lt;string, object&gt;&gt;对象</returns>
+        public IList<IDictionary<string, object>> ExecuteSpRowsDictionary(string spName, params DbParameter[] parameters)
+        {
+            IList<IDictionary<string, object>> list = new List<IDictionary<string, object>>();
+
+            using (DbDataReader reader = ExecuteSpDataReader(spName, parameters))
+            {
+                while (reader.Read())
+                {
+                    IDictionary<string, object> alist = new Dictionary<string, object>(reader.FieldCount);
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        alist.Add(reader.GetName(i), reader[i]);
+                    list.Add(alist);
+                }
+            }
+
+            return list;
+        }
+
+        /// <summary>
         /// Stored Procedure ExecuteFirstRow
         /// </summary>
         /// <param name="spName">存储过程名</param>
@@ -877,12 +957,42 @@ namespace Radial.Persist.Lite
         /// <returns>IList&lt;object&gt;对象</returns>
         public IList<object> ExecuteSpFirstRow(string spName, params DbParameter[] parameters)
         {
-            IList<IList<object>> list = ExecuteSpRows(spName, parameters);
+            IList<object> list = new List<object>();
 
-            if (list.Count == 0)
-                return new List<object>();
+            using (DbDataReader reader = ExecuteSpDataReader(spName, parameters))
+            {
+                while (reader.Read())
+                {
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        list.Add(reader[i]);
+                    break;
+                }
+            }
 
-            return list[0];
+            return list;
+        }
+
+        /// <summary>
+        /// Stored Procedure ExecuteFirstRowDictionary
+        /// </summary>
+        /// <param name="spName">存储过程名</param>
+        /// <param name="parameters">存储过程参数</param>
+        /// <returns>IDictionary&lt;string, object&gt;对象</returns>
+        public IDictionary<string, object> ExecuteSpFirstRowDictionary(string spName, params DbParameter[] parameters)
+        {
+            IDictionary<string, object> dict = new Dictionary<string, object>();
+
+            using (DbDataReader reader = ExecuteSpDataReader(spName, parameters))
+            {
+                while (reader.Read())
+                {
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        dict.Add(reader.GetName(i), reader[i]);
+                    break;
+                }
+            }
+
+            return dict;
         }
 
         /// <summary>

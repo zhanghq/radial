@@ -638,15 +638,19 @@ namespace Radial.Web
 
             string strOutput = strHtml;
 
-            for (int i = 0; i < aryReg.Length; i++)
+            if (string.IsNullOrWhiteSpace(strOutput))
             {
-                Regex regex = new Regex(aryReg[i], RegexOptions.IgnoreCase);
-                strOutput = regex.Replace(strOutput, aryRep[i]);
+                for (int i = 0; i < aryReg.Length; i++)
+                {
+                    Regex regex = new Regex(aryReg[i], RegexOptions.IgnoreCase);
+                    strOutput = regex.Replace(strOutput, aryRep[i]);
+                }
+
+                strOutput.Replace("<", "");
+                strOutput.Replace(">", "");
+                strOutput.Replace("\r\n", "");
             }
 
-            strOutput.Replace("<", "");
-            strOutput.Replace(">", "");
-            strOutput.Replace("\r\n", "");
             return strOutput;
         }
 

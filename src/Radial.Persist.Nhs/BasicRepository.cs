@@ -53,7 +53,7 @@ namespace Radial.Persist.Nhs
 
             Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
 
-            IQuery query = Session.CreateQuery(string.Format("select count(*) from {0} o condition o.{1}=:key", typeof(TObject).Name, metadata.IdentifierPropertyName));
+            IQuery query = Session.CreateQuery(string.Format("select count(*) from {0} o where o.{1}=:key", typeof(TObject).Name, metadata.IdentifierPropertyName));
             query.SetParameter("key", key);
 
             return Convert.ToInt32(query.UniqueResult()) > 0;

@@ -9,7 +9,15 @@ namespace Radial.Persist.Lite
     /// </summary>
     public sealed class RowDataCollection : ReadOnlyCollectionBase,IEnumerable<RowData>
     {
-        private IList<RowData> _genericList = new List<RowData>();
+        private readonly IList<RowData> _genericList;
+
+        /// <summary>
+        /// 初始化一个 <see cref="RowDataCollection"/> 类的对象.
+        /// </summary>
+        public RowDataCollection()
+        {
+            _genericList = new List<RowData>();
+        }
 
         /// <summary>
         /// 将数据行添加到集合中的内部方法

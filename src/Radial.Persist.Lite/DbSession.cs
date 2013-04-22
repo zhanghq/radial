@@ -113,6 +113,46 @@ namespace Radial.Persist.Lite
         }
 
         /// <summary>
+        /// 新建SqlServer数据会话
+        /// </summary>
+        /// <param name="connectionString">连接字符串</param>
+        /// <returns>数据会话对象</returns>
+        public static DbSession NewSqlServerSession(string connectionString)
+        {
+            return new DbSession(connectionString, DataSourceType.SqlServer);
+        }
+
+        /// <summary>
+        /// 新建MySql数据会话
+        /// </summary>
+        /// <param name="connectionString">连接字符串</param>
+        /// <returns>数据会话对象</returns>
+        public static DbSession NewMySqlSession(string connectionString)
+        {
+            return new DbSession(connectionString, DataSourceType.MySql);
+        }
+
+        /// <summary>
+        /// 新建MsAccess数据会话
+        /// </summary>
+        /// <param name="connectionString">连接字符串</param>
+        /// <returns>数据会话对象</returns>
+        public static DbSession NewMsAccessSession(string connectionString)
+        {
+            return new DbSession(connectionString, DataSourceType.MsAccess);
+        }
+
+        /// <summary>
+        /// 新建Sqlite数据会话
+        /// </summary>
+        /// <param name="connectionString">连接字符串</param>
+        /// <returns>数据会话对象</returns>
+        public static DbSession NewSqliteSession(string connectionString)
+        {
+            return new DbSession(connectionString, DataSourceType.Sqlite);
+        }
+
+        /// <summary>
         /// 初始化数据会话
         /// </summary>
         /// <param name="connectionString">连接字符串</param>
@@ -526,44 +566,24 @@ namespace Radial.Persist.Lite
         /// </summary>
         /// <param name="cmdText">命令文本</param>
         /// <param name="paramValues">参数数组</param>
-        /// <returns>IList&lt;IList&lt;object&gt;&gt;对象</returns>
-        public IList<IList<object>> ExecuteRows(string cmdText, params object[] paramValues)
+        /// <returns>IList&lt;RowDataCollection&gt;对象</returns>
+        public IList<RowDataCollection> ExecuteRows(string cmdText, params object[] paramValues)
         {
             return ExecuteRows(new TextCommandData(cmdText, paramValues));
         }
 
-        /// <summary>
-        /// ExecuteRowsDictionary方法
-        /// </summary>
-        /// <param name="cmdText">命令文本</param>
-        /// <param name="paramValues">参数数组</param>
-        /// <returns>IList&lt;IDictionary&lt;string, object&gt;&gt;对象</returns>
-        public IList<IDictionary<string,object>> ExecuteRowsDictionary(string cmdText, params object[] paramValues)
-        {
-            return ExecuteRowsDictionary(new TextCommandData(cmdText, paramValues));
-        }
 
         /// <summary>
         /// ExecuteFirstRow方法
         /// </summary>
         /// <param name="cmdText">命令文本</param>
         /// <param name="paramValues">参数数组</param>
-        /// <returns>IList&lt;object&gt;对象</returns>
-        public IList<object> ExecuteFirstRow(string cmdText, params object[] paramValues)
+        /// <returns>RowDataCollection对象</returns>
+        public RowDataCollection ExecuteFirstRow(string cmdText, params object[] paramValues)
         {
             return ExecuteFirstRow(new TextCommandData(cmdText, paramValues));
         }
 
-        /// <summary>
-        /// ExecuteFirstRowDictionary方法
-        /// </summary>
-        /// <param name="cmdText">命令文本</param>
-        /// <param name="paramValues">参数数组</param>
-        /// <returns>IDictionary&lt;string, object&gt;对象</returns>
-        public IDictionary<string, object> ExecuteFirstRowDictionary(string cmdText, params object[] paramValues)
-        {
-            return ExecuteFirstRowDictionary(new TextCommandData(cmdText, paramValues));
-        }
 
         /// <summary>
         /// ExecuteScalar方法
@@ -630,91 +650,61 @@ namespace Radial.Persist.Lite
         /// ExecuteRows方法
         /// </summary>
         /// <param name="cmdData">文本命令对象</param>
-        /// <returns>IList&lt;IList&lt;object&gt;&gt;对象</returns>
-        public IList<IList<object>> ExecuteRows(TextCommandData cmdData)
+        /// <returns>IList&lt;RowDataCollection&gt;对象</returns>
+        public IList<RowDataCollection> ExecuteRows(TextCommandData cmdData)
         {
-            IList<IList<object>> list = new List<IList<object>>();
+            IList<RowDataCollection> list = new List<RowDataCollection>();
 
             using (DbDataReader reader = ExecuteDataReader(cmdData))
             {
                 while (reader.Read())
                 {
-                    List<object> alist = new List<object>(reader.FieldCount);
+                    RowDataCollection collection = new RowDataCollection();
+
                     for (int i = 0; i < reader.FieldCount; i++)
-                        alist.Add(reader[i]);
-                    list.Add(alist);
+                    {
+                        collection.Add(new RowData
+                        {
+                            FieldName = reader.GetName(i),
+                            FieldType = reader.GetFieldType(i),
+                            Value = reader[i]
+                        });
+                    }
+
+                    list.Add(collection);
                 }
             }
 
             return list;
         }
-
-        /// <summary>
-        /// ExecuteRowsDictionary方法
-        /// </summary>
-        /// <param name="cmdData">文本命令对象</param>
-        /// <returns>IList&lt;IDictionary&lt;string, object&gt;&gt;对象</returns>
-        public IList<IDictionary<string, object>> ExecuteRowsDictionary(TextCommandData cmdData)
-        {
-            IList<IDictionary<string, object>> list = new List<IDictionary<string, object>>();
-
-            using (DbDataReader reader = ExecuteDataReader(cmdData))
-            {
-                while (reader.Read())
-                {
-                    IDictionary<string, object> alist = new Dictionary<string, object>(reader.FieldCount);
-                    for (int i = 0; i < reader.FieldCount; i++)
-                        alist.Add(reader.GetName(i), reader[i]);
-                    list.Add(alist);
-                }
-            }
-
-            return list;
-        }
-
 
         /// <summary>
         /// ExecuteFirstRow方法
         /// </summary>
         /// <param name="cmdData">文本命令对象</param>
-        /// <returns>IList&lt;object&gt;对象</returns>
-        public IList<object> ExecuteFirstRow(TextCommandData cmdData)
+        /// <returns>RowDataCollection对象</returns>
+        public RowDataCollection ExecuteFirstRow(TextCommandData cmdData)
         {
-            IList<object> list = new List<object>();
+            RowDataCollection collection = new RowDataCollection();
 
             using (DbDataReader reader = ExecuteDataReader(cmdData))
             {
                 while (reader.Read())
                 {
                     for (int i = 0; i < reader.FieldCount; i++)
-                        list.Add(reader[i]);
+                    {
+                        collection.Add(new RowData
+                            {
+                                FieldName = reader.GetName(i),
+                                FieldType = reader.GetFieldType(i),
+                                Value = reader[i]
+                            });
+                    }
                     break;
                 }
             }
 
-            return list;
-        }
-
-        /// <summary>
-        /// ExecuteFirstRowDictionary方法
-        /// </summary>
-        /// <param name="cmdData">文本命令对象</param>
-        /// <returns>IDictionary&lt;string, object&gt;对象</returns>
-        public IDictionary<string, object> ExecuteFirstRowDictionary(TextCommandData cmdData)
-        {
-            IDictionary<string, object> dict = new Dictionary<string, object>();
-
-            using (DbDataReader reader = ExecuteDataReader(cmdData))
-            {
-                while (reader.Read())
-                {
-                    for (int i = 0; i < reader.FieldCount; i++)
-                        dict.Add(reader.GetName(i), reader[i]);
-                    break;
-                }
-            }
-
-            return dict;
+            return collection;
         }
 
         /// <summary>
@@ -864,43 +854,28 @@ namespace Radial.Persist.Lite
         /// </summary>
         /// <param name="spName">存储过程名</param>
         /// <param name="parameters">存储过程参数</param>
-        /// <returns>IList&lt;IList&lt;object&gt;&gt;对象</returns>
-        public IList<IList<object>> ExecuteSpRows(string spName, params DbParameter[] parameters)
+        /// <returns>IList&lt;RowDataCollection&gt;对象</returns>
+        public IList<RowDataCollection> ExecuteSpRows(string spName, params DbParameter[] parameters)
         {
-            IList<IList<object>> list = new List<IList<object>>();
+            IList<RowDataCollection> list = new List<RowDataCollection>();
 
             using (DbDataReader reader = ExecuteSpDataReader(spName, parameters))
             {
                 while (reader.Read())
                 {
-                    List<object> alist = new List<object>(reader.FieldCount);
+                    RowDataCollection collection = new RowDataCollection();
+
                     for (int i = 0; i < reader.FieldCount; i++)
-                        alist.Add(reader[i]);
-                    list.Add(alist);
-                }
-            }
+                    {
+                        collection.Add(new RowData
+                            {
+                                FieldName = reader.GetName(i),
+                                FieldType = reader.GetFieldType(i),
+                                Value = reader[i]
+                            });
+                    }
 
-            return list;
-        }
-
-        /// <summary>
-        /// Stored Procedure ExecuteRowsDictionary
-        /// </summary>
-        /// <param name="spName">存储过程名</param>
-        /// <param name="parameters">存储过程参数</param>
-        /// <returns>IList&lt;IDictionary&lt;string, object&gt;&gt;对象</returns>
-        public IList<IDictionary<string, object>> ExecuteSpRowsDictionary(string spName, params DbParameter[] parameters)
-        {
-            IList<IDictionary<string, object>> list = new List<IDictionary<string, object>>();
-
-            using (DbDataReader reader = ExecuteSpDataReader(spName, parameters))
-            {
-                while (reader.Read())
-                {
-                    IDictionary<string, object> alist = new Dictionary<string, object>(reader.FieldCount);
-                    for (int i = 0; i < reader.FieldCount; i++)
-                        alist.Add(reader.GetName(i), reader[i]);
-                    list.Add(alist);
+                    list.Add(collection);
                 }
             }
 
@@ -912,45 +887,29 @@ namespace Radial.Persist.Lite
         /// </summary>
         /// <param name="spName">存储过程名</param>
         /// <param name="parameters">存储过程参数</param>
-        /// <returns>IList&lt;object&gt;对象</returns>
-        public IList<object> ExecuteSpFirstRow(string spName, params DbParameter[] parameters)
+        /// <returns>RowDataCollection对象</returns>
+        public RowDataCollection ExecuteSpFirstRow(string spName, params DbParameter[] parameters)
         {
-            IList<object> list = new List<object>();
+            RowDataCollection collection = new RowDataCollection();
 
             using (DbDataReader reader = ExecuteSpDataReader(spName, parameters))
             {
                 while (reader.Read())
                 {
                     for (int i = 0; i < reader.FieldCount; i++)
-                        list.Add(reader[i]);
+                    {
+                        collection.Add(new RowData
+                        {
+                            FieldName = reader.GetName(i),
+                            FieldType = reader.GetFieldType(i),
+                            Value = reader[i]
+                        });
+                    }
                     break;
                 }
             }
 
-            return list;
-        }
-
-        /// <summary>
-        /// Stored Procedure ExecuteFirstRowDictionary
-        /// </summary>
-        /// <param name="spName">存储过程名</param>
-        /// <param name="parameters">存储过程参数</param>
-        /// <returns>IDictionary&lt;string, object&gt;对象</returns>
-        public IDictionary<string, object> ExecuteSpFirstRowDictionary(string spName, params DbParameter[] parameters)
-        {
-            IDictionary<string, object> dict = new Dictionary<string, object>();
-
-            using (DbDataReader reader = ExecuteSpDataReader(spName, parameters))
-            {
-                while (reader.Read())
-                {
-                    for (int i = 0; i < reader.FieldCount; i++)
-                        dict.Add(reader.GetName(i), reader[i]);
-                    break;
-                }
-            }
-
-            return dict;
+            return collection;
         }
 
         /// <summary>

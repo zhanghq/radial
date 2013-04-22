@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9C681E77-EE18-4273-90D0-F8A0C302D0EB}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{B9ABC4BD-FF24-4643-B1C2-EBDDCC461D65}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Radial.Persist.Lite</RootNamespace>
-    <AssemblyName>Radial.Persist.Lite</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <RootNamespace>PersistLiteDemo</RootNamespace>
+    <AssemblyName>PersistLiteDemo</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,46 +21,38 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Radial.Persist.Lite.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Radial.Persist.Lite.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MySql.Data">
-      <HintPath>..\..\packages\2.0\MySql.Data.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Data.SQLite">
-      <HintPath>..\..\packages\2.0\System.Data.SQLite.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cfg\ConnectionSection.cs" />
-    <Compile Include="Cfg\ConnectionElement.cs" />
-    <Compile Include="Cfg\ConnectionElementCollection.cs" />
-    <Compile Include="DataSourceType.cs" />
-    <Compile Include="DbSession.cs" />
-    <Compile Include="Delegates.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryFactory.cs" />
-    <Compile Include="Query\MsAccessQuery.cs" />
-    <Compile Include="Query\MySqlQuery.cs" />
-    <Compile Include="Query\SqliteQuery.cs" />
-    <Compile Include="Query\SqlServerQuery.cs" />
-    <Compile Include="RowData.cs" />
-    <Compile Include="RowDataCollection.cs" />
-    <Compile Include="SqlQuery.cs" />
-    <Compile Include="TextCommandData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Radial.Persist.Lite\Radial.Persist.Lite.csproj">
+      <Project>{9c681e77-ee18-4273-90d0-f8a0c302d0eb}</Project>
+      <Name>Radial.Persist.Lite</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

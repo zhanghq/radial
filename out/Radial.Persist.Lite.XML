@@ -1,0 +1,727 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Radial.Persist.Lite</name>
+    </assembly>
+    <members>
+        <member name="T:Radial.Persist.Lite.Cfg.ConnectionSection">
+            <summary>
+            数据库设置组结点
+            </summary>
+        </member>
+        <member name="P:Radial.Persist.Lite.Cfg.ConnectionSection.Connections">
+            <summary>
+            获取数据库设置集合
+            </summary>
+        </member>
+        <member name="T:Radial.Persist.Lite.Cfg.ConnectionElement">
+            <summary>
+            数据库配置元素
+            </summary>
+        </member>
+        <member name="P:Radial.Persist.Lite.Cfg.ConnectionElement.Name">
+            <summary>
+            获取或设置名称
+            </summary>
+        </member>
+        <member name="P:Radial.Persist.Lite.Cfg.ConnectionElement.ConnectionString">
+            <summary>
+            获取或设置连接字符串
+            </summary>
+        </member>
+        <member name="P:Radial.Persist.Lite.Cfg.ConnectionElement.DataSourceType">
+            <summary>
+            获取或设置数据源类型
+            </summary>
+        </member>
+        <member name="T:Radial.Persist.Lite.Cfg.ConnectionElementCollection">
+            <summary>
+            数据库配置元素集合
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.Cfg.ConnectionElementCollection.CreateNewElement">
+            <summary>
+            当在派生的类中重写时，创建一个新的 <see cref="T:System.Configuration.ConfigurationElement"/>。
+            </summary>
+            <returns>
+            新的 <see cref="T:System.Configuration.ConfigurationElement"/>。
+            </returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.Cfg.ConnectionElementCollection.GetElementKey(System.Configuration.ConfigurationElement)">
+            <summary>
+            在派生类中重写时获取指定配置元素的元素键。
+            </summary>
+            <param name="element">要为其返回键的 <see cref="T:System.Configuration.ConfigurationElement"/>。</param>
+            <returns>
+            一个 <see cref="T:System.Object"/>，用作指定 <see cref="T:System.Configuration.ConfigurationElement"/> 的键。
+            </returns>
+        </member>
+        <member name="P:Radial.Persist.Lite.Cfg.ConnectionElementCollection.Item(System.Int32)">
+             <summary>
+             获取索引所对应的连接设置
+             </summary>
+            <returns>连接设置</returns>
+        </member>
+        <member name="P:Radial.Persist.Lite.Cfg.ConnectionElementCollection.Item(System.String)">
+            <summary>
+            获取设置名称所对应的连接设置
+            </summary>
+            <param name="name">设置名称</param>
+            <returns>连接设置</returns>
+        </member>
+        <member name="T:Radial.Persist.Lite.DataSourceType">
+            <summary>
+            数据源类型
+            </summary>
+        </member>
+        <member name="F:Radial.Persist.Lite.DataSourceType.SqlServer">
+            <summary>
+            Sql Server Series
+            </summary>
+        </member>
+        <member name="F:Radial.Persist.Lite.DataSourceType.MsAccess">
+            <summary>
+            Ms Access
+            </summary>
+        </member>
+        <member name="F:Radial.Persist.Lite.DataSourceType.Sqlite">
+            <summary>
+            Sqlite
+            </summary>
+        </member>
+        <member name="F:Radial.Persist.Lite.DataSourceType.MySql">
+            <summary>
+            MySql
+            </summary>
+        </member>
+        <member name="T:Radial.Persist.Lite.DbSession">
+            <summary>
+            数据会话
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.#ctor">
+            <summary>
+            初始化数据会话
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.#ctor(Radial.Persist.Lite.PlaceholderSubstitution)">
+            <summary>
+            初始化数据会话
+            </summary>
+            <param name="substitution">占位符替换方法</param>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.#ctor(System.Int32)">
+            <summary>
+            初始化数据会话
+            </summary>
+            <param name="settingsIndex">设置索引(从0开始)</param>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.#ctor(System.Int32,Radial.Persist.Lite.PlaceholderSubstitution)">
+            <summary>
+            初始化数据会话
+            </summary>
+            <param name="settingsIndex">设置索引(从0开始)</param>
+            <param name="substitution">占位符替换方法</param>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.#ctor(System.String)">
+            <summary>
+            初始化数据会话
+            </summary>
+            <param name="settingsName">设置名称(不区分大小写)</param>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.#ctor(System.String,Radial.Persist.Lite.PlaceholderSubstitution)">
+            <summary>
+            初始化数据会话
+            </summary>
+            <param name="settingsName">设置名称(不区分大小写)</param>
+            <param name="substitution">占位符替换方法</param>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.#ctor(System.String,Radial.Persist.Lite.DataSourceType)">
+            <summary>
+            初始化数据会话
+            </summary>
+            <param name="connectionString">连接字符串</param>
+            <param name="dsType">数据源类型</param>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.NewSqlServerSession(System.String)">
+            <summary>
+            新建SqlServer数据会话
+            </summary>
+            <param name="connectionString">连接字符串</param>
+            <returns>数据会话对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.NewMySqlSession(System.String)">
+            <summary>
+            新建MySql数据会话
+            </summary>
+            <param name="connectionString">连接字符串</param>
+            <returns>数据会话对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.NewMsAccessSession(System.String)">
+            <summary>
+            新建MsAccess数据会话
+            </summary>
+            <param name="connectionString">连接字符串</param>
+            <returns>数据会话对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.NewSqliteSession(System.String)">
+            <summary>
+            新建Sqlite数据会话
+            </summary>
+            <param name="connectionString">连接字符串</param>
+            <returns>数据会话对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.Initialize(System.String,Radial.Persist.Lite.DataSourceType)">
+            <summary>
+            初始化数据会话
+            </summary>
+            <param name="connectionString">连接字符串</param>
+            <param name="dsType">数据源类型</param>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ReadCfgSection">
+            <summary>
+            读取配置节点
+            </summary>
+            <returns>数据库设置组节点对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.BeginTransaction">
+            <summary>
+            开启DbTransaction事务
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.BeginTransaction(System.Data.IsolationLevel)">
+            <summary>
+            开启DbTransaction事务
+            </summary>
+            <param name="level">锁定行为</param>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.Commit">
+            <summary>
+            提交DbTransaction事务
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.Rollback">
+            <summary>
+            回滚DbTransaction事务
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.OpenConnection">
+            <summary>
+            打开数据连接
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.CloseConnection">
+            <summary>
+            关闭数据连接
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.CreateParameter">
+            <summary>
+            返回实现 System.Data.Common.DbParameter 类的提供程序的类的一个新实例。
+            </summary>
+            <returns>System.Data.Common.DbParameter 的新实例。</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteDataSet(System.Data.Common.DbCommand)">
+            <summary>
+            ExecuteDataSet方法
+            </summary>
+            <param name="command">DbCommand对象</param>
+            <returns>DataSet对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteDataTable(System.Data.Common.DbCommand)">
+            <summary>
+            ExecuteDataTable方法
+            </summary>
+            <param name="command">DbCommand对象</param>
+            <returns>DataTable对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteDataReader(System.Data.Common.DbCommand)">
+            <summary>
+            ExecuteDataReader方法
+            </summary>
+            <param name="command">DbCommand对象</param>
+            <returns>DataReader对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteNonQuery(System.Data.Common.DbCommand)">
+            <summary>
+            ExecuteNonQuery方法
+            </summary>
+            <param name="command">DbCommand对象</param>
+            <returns>影响的行数</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteScalar(System.Data.Common.DbCommand)">
+            <summary>
+            ExecuteScalar方法
+            </summary>
+            <param name="command">DbCommand对象</param>
+            <returns>object对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteDataSet(System.String,System.Object[])">
+            <summary>
+            ExecuteDataSet方法
+            </summary>
+            <param name="cmdText">命令文本</param>
+            <param name="paramValues">参数数组</param>
+            <returns>DataSet对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteDataTable(System.String,System.Object[])">
+            <summary>
+            ExecuteDataTable方法
+            </summary>
+            <param name="cmdText">命令文本</param>
+            <param name="paramValues">参数数组</param>
+            <returns>DataTable对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteDataReader(System.String,System.Object[])">
+            <summary>
+            ExecuteDataReader方法
+            </summary>
+            <param name="cmdText">命令文本</param>
+            <param name="paramValues">参数数组</param>
+            <returns>DataReader对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteNonQuery(System.String,System.Object[])">
+            <summary>
+            ExecuteNonQuery方法
+            </summary>
+            <param name="cmdText">命令文本</param>
+            <param name="paramValues">参数数组</param>
+            <returns>影响的行数</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteRows(System.String,System.Object[])">
+            <summary>
+            ExecuteRows方法
+            </summary>
+            <param name="cmdText">命令文本</param>
+            <param name="paramValues">参数数组</param>
+            <returns>IList&lt;RowDataCollection&gt;对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteFirstRow(System.String,System.Object[])">
+            <summary>
+            ExecuteFirstRow方法
+            </summary>
+            <param name="cmdText">命令文本</param>
+            <param name="paramValues">参数数组</param>
+            <returns>RowDataCollection对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteScalar(System.String,System.Object[])">
+            <summary>
+            ExecuteScalar方法
+            </summary>
+            <param name="cmdText">命令文本</param>
+            <param name="paramValues">参数数组</param>
+            <returns>object对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteDataSet(Radial.Persist.Lite.TextCommandData)">
+            <summary>
+            ExecuteDataSet方法
+            </summary>
+            <param name="cmdData">文本命令对象</param>
+            <returns>DataSet对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteDataTable(Radial.Persist.Lite.TextCommandData)">
+            <summary>
+            ExecuteDataTable方法
+            </summary>
+            <param name="cmdData">文本命令对象</param>
+            <returns>DataTable对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteDataReader(Radial.Persist.Lite.TextCommandData)">
+            <summary>
+            ExecuteDataReader方法
+            </summary>
+            <param name="cmdData">文本命令对象</param>
+            <returns>DbDataReader对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteRows(Radial.Persist.Lite.TextCommandData)">
+            <summary>
+            ExecuteRows方法
+            </summary>
+            <param name="cmdData">文本命令对象</param>
+            <returns>IList&lt;RowDataCollection&gt;对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteFirstRow(Radial.Persist.Lite.TextCommandData)">
+            <summary>
+            ExecuteFirstRow方法
+            </summary>
+            <param name="cmdData">文本命令对象</param>
+            <returns>RowDataCollection对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteNonQuery(Radial.Persist.Lite.TextCommandData)">
+            <summary>
+            ExecuteNonQuery方法
+            </summary>
+            <param name="cmdData">文本命令对象</param>
+            <returns>影响的行数</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteScalar(Radial.Persist.Lite.TextCommandData)">
+            <summary>
+            ExecuteScalar方法
+            </summary>
+            <param name="cmdData">文本命令对象</param>
+            <returns>object对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteSpDataSet(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Stored Procedure ExecuteDataSet
+            </summary>
+            <param name="spName">存储过程名</param>
+            <param name="parameters">存储过程参数</param>
+            <returns>DataSet对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteSpDataTable(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Stored Procedure ExecuteDataTable
+            </summary>
+            <param name="spName">存储过程名</param>
+            <param name="parameters">存储过程参数</param>
+            <returns>DataTable对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteSpDataReader(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Stored Procedure ExecuteDataReader
+            </summary>
+            <param name="spName">存储过程名</param>
+            <param name="parameters">存储过程参数</param>
+            <returns>DbDataReader对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteSpRows(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Stored Procedure ExecuteRows
+            </summary>
+            <param name="spName">存储过程名</param>
+            <param name="parameters">存储过程参数</param>
+            <returns>IList&lt;RowDataCollection&gt;对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteSpFirstRow(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Stored Procedure ExecuteFirstRow
+            </summary>
+            <param name="spName">存储过程名</param>
+            <param name="parameters">存储过程参数</param>
+            <returns>RowDataCollection对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteSpNonQuery(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Stored Procedure ExecuteNonQuery
+            </summary>
+            <param name="spName">存储过程名</param>
+            <param name="parameters">存储过程参数</param>
+            <returns>影响的行数</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.ExecuteSpScalar(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Stored Procedure ExecuteScalar
+            </summary>
+            <param name="spName">存储过程名</param>
+            <param name="parameters">存储过程参数</param>
+            <returns>object对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.DbSession.Dispose">
+            <summary>
+            执行与释放或重置非托管资源相关的应用程序定义的任务。
+            </summary>
+        </member>
+        <member name="P:Radial.Persist.Lite.DbSession.ConnectionString">
+            <summary>
+            获取打开连接的字符串
+            </summary>
+        </member>
+        <member name="P:Radial.Persist.Lite.DbSession.DataSourceType">
+            <summary>
+            获取数据源类型
+            </summary>
+        </member>
+        <member name="P:Radial.Persist.Lite.DbSession.Connection">
+            <summary>
+            获取或设置数据库连接
+            </summary>
+        </member>
+        <member name="P:Radial.Persist.Lite.DbSession.Transaction">
+            <summary>
+            获取要在数据源执行的DbTransaction事务对象
+            </summary>
+        </member>
+        <member name="P:Radial.Persist.Lite.DbSession.SqlQuery">
+            <summary>
+            获取或设置Sql语句查询类实例
+            </summary>
+        </member>
+        <member name="P:Radial.Persist.Lite.DbSession.CommandTimeout">
+            <summary>
+            获取或设置在终止执行命令的尝试并生成错误之前的等待时间(以秒为单位，默认值为 30 秒)
+            </summary>
+        </member>
+        <member name="T:Radial.Persist.Lite.PlaceholderSubstitution">
+            <summary>
+            占位符替换方法
+            </summary>
+            <param name="originalString">包含占位符的原始字符串</param>
+            <returns>替换占位符后的字符串</returns>
+        </member>
+        <member name="T:Radial.Persist.Lite.ParameterNameBuilder">
+            <summary>
+            参数名称构建方法
+            </summary>
+            <param name="parameterIndex">参数索引</param>
+            <returns>参数名称</returns>
+        </member>
+        <member name="T:Radial.Persist.Lite.QueryFactory">
+            <summary>
+            查询工厂类
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.QueryFactory.CreateSqlQueryInstance(Radial.Persist.Lite.DataSourceType)">
+            <summary>
+            创建Sql语句查询类实例
+            </summary>
+            <param name="dsType">数据源类型</param>
+            <returns>Sql语句查询类实例</returns>
+        </member>
+        <member name="T:Radial.Persist.Lite.Query.MsAccessQuery">
+            <summary>
+            MsAccess查询
+            </summary>
+        </member>
+        <member name="T:Radial.Persist.Lite.SqlQuery">
+            <summary>
+            Sql语句查询基类
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.SqlQuery.CreateParameterName(System.Int32)">
+            <summary>
+            创建参数名称
+            </summary>
+            <param name="parameterIndex">参数索引</param>
+            <returns>参数名称</returns>
+        </member>
+        <member name="P:Radial.Persist.Lite.SqlQuery.DbProvider">
+            <summary>
+            获取提供程序
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.Query.MsAccessQuery.CreateParameterName(System.Int32)">
+            <summary>
+            创建参数名称
+            </summary>
+            <param name="parameterIndex">参数索引</param>
+            <returns>参数名称</returns>
+        </member>
+        <member name="P:Radial.Persist.Lite.Query.MsAccessQuery.DbProvider">
+            <summary>
+            获取提供程序
+            </summary>
+        </member>
+        <member name="T:Radial.Persist.Lite.Query.MySqlQuery">
+            <summary>
+            MySql查询
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.Query.MySqlQuery.CreateParameterName(System.Int32)">
+            <summary>
+            创建参数名称
+            </summary>
+            <param name="parameterIndex">参数索引</param>
+            <returns>参数名称</returns>
+        </member>
+        <member name="P:Radial.Persist.Lite.Query.MySqlQuery.DbProvider">
+            <summary>
+            获取提供程序
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Radial.Persist.Lite.Query.SqliteQuery">
+            <summary>
+            Sqlite查询
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.Query.SqliteQuery.CreateParameterName(System.Int32)">
+            <summary>
+            创建参数名称
+            </summary>
+            <param name="parameterIndex">参数索引</param>
+            <returns>参数名称</returns>
+        </member>
+        <member name="P:Radial.Persist.Lite.Query.SqliteQuery.DbProvider">
+            <summary>
+            获取提供程序
+            </summary>
+        </member>
+        <member name="T:Radial.Persist.Lite.Query.SqlServerQuery">
+            <summary>
+            Sql Server查询
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.Query.SqlServerQuery.CreateParameterName(System.Int32)">
+            <summary>
+            创建参数名称
+            </summary>
+            <param name="parameterIndex">参数索引</param>
+            <returns>参数名称</returns>
+        </member>
+        <member name="P:Radial.Persist.Lite.Query.SqlServerQuery.DbProvider">
+            <summary>
+            获取提供程序
+            </summary>
+        </member>
+        <member name="T:Radial.Persist.Lite.RowData">
+            <summary>
+            表示某一行的数据
+            </summary>
+        </member>
+        <member name="P:Radial.Persist.Lite.RowData.FieldName">
+            <summary>
+            获取或设置数据行的字段名
+            </summary>
+        </member>
+        <member name="P:Radial.Persist.Lite.RowData.FieldType">
+            <summary>
+            获取或设置数据行的字段类型
+            </summary>
+        </member>
+        <member name="P:Radial.Persist.Lite.RowData.Value">
+            <summary>
+            获取或设置数据行的值
+            </summary>
+        </member>
+        <member name="T:Radial.Persist.Lite.RowDataCollection">
+            <summary>
+            表示数据行的集合
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.RowDataCollection.Add(Radial.Persist.Lite.RowData)">
+            <summary>
+            将数据行添加到集合中的内部方法
+            </summary>
+            <param name="row">数据行</param>
+        </member>
+        <member name="M:Radial.Persist.Lite.RowDataCollection.GetEnumerator">
+            <summary>
+            返回一个循环访问集合的枚举数。.
+            </summary>
+            <returns>可用于循环访问集合的 System.Collections.Generic.IEnumerator&lt;RowData&gt;</returns>
+        </member>
+        <member name="P:Radial.Persist.Lite.RowDataCollection.Item(System.Int32)">
+            <summary>
+            按索引获取数据行
+            </summary>
+            <param name="index">从0开始的数据行索引</param>
+        </member>
+        <member name="P:Radial.Persist.Lite.RowDataCollection.Item(System.String)">
+            <summary>
+            按字段名获取数据行
+            </summary>
+            <param name="fieldName">数据行的字段名</param>
+        </member>
+        <member name="P:Radial.Persist.Lite.RowDataCollection.Count">
+            <summary>
+            获取包含在 <see cref="T:System.Collections.ReadOnlyCollectionBase" /> 实例中的元素数。
+            </summary>
+            <returns>包含在 <see cref="T:System.Collections.ReadOnlyCollectionBase" /> 实例中的元素数。检索此属性的值的运算复杂度为 O(1)。</returns>
+        </member>
+        <member name="T:Radial.Persist.Lite.TextCommandData">
+            <summary>
+            文本命令数据类
+            </summary>
+        </member>
+        <member name="F:Radial.Persist.Lite.TextCommandData.SequenceParametersQueryPattern">
+            <summary>
+            获取顺序参数查询语句匹配模式
+            </summary>
+        </member>
+        <member name="F:Radial.Persist.Lite.TextCommandData.DynamicParametersQueryPattern">
+            <summary>
+            获取动态参数查询语句匹配模式
+            </summary>
+        </member>
+        <member name="F:Radial.Persist.Lite.TextCommandData.GroupParametersQueryPattern">
+            <summary>
+            获取组参数查询语句匹配模式
+            </summary>
+        </member>
+        <member name="M:Radial.Persist.Lite.TextCommandData.#ctor(System.String,System.Object[])">
+            <summary>
+            初始化文本命令数据对象
+            </summary>
+            <param name="cmdText">命令文本</param>
+            <param name="paramValues">参数值</param>
+        </member>
+        <member name="M:Radial.Persist.Lite.TextCommandData.ContainsDynamicParametersQuery(System.String)">
+            <summary>
+            是否包含动态参数查询
+            </summary>
+            <param name="cmdText">命令文本</param>
+            <returns>包含返回Ture，否则返回False</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.TextCommandData.ContainsGroupParametersQuery(System.String)">
+            <summary>
+            是否包含组参数查询语句
+            </summary>
+            <param name="cmdText">命令文本</param>
+            <returns>包含返回Ture，否则返回False</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.TextCommandData.ContainsSequenceParametersQuery(System.String)">
+            <summary>
+            是否包含顺序参数查询语句
+            </summary>
+            <param name="cmdText">命令文本</param>
+            <returns>包含返回Ture，否则返回False</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.TextCommandData.ConvertGroupParametersQueryToSequenceParametersQuery(System.String,System.Int32)">
+            <summary>
+            将组参数查询语句转换为顺序参数查询语句
+            </summary>
+            <param name="groupParametersQuery">组参数查询语句</param>
+            <param name="parameterCount">组参数数量</param>
+            <returns>动态参数查询语句</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.TextCommandData.ConvertDynamicParametersQueryToSequenceParametersQuery(System.String)">
+            <summary>
+            将动态参数查询语句转换为顺序参数查询语句
+            </summary>
+            <param name="dynamicParametersQuery">动态参数查询语句</param>
+            <returns>顺序参数查询语句</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.TextCommandData.AppendParameter(System.Data.Common.DbCommand,System.String,System.Object)">
+            <summary>
+            向DbCommand添加参数
+            </summary>
+            <param name="command">DbCommand对象</param>
+            <param name="paramName">参数名称</param>
+            <param name="paramValue">参数值</param>
+        </member>
+        <member name="M:Radial.Persist.Lite.TextCommandData.CreateUniqueParameterIndex">
+            <summary>
+            创建具有唯一性的参数索引
+            </summary>
+            <returns>具有唯一性的参数索引</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.TextCommandData.CreateCommand(System.Data.Common.DbProviderFactory,Radial.Persist.Lite.ParameterNameBuilder)">
+            <summary>
+            创建DbCommand对象
+            </summary>
+            <param name="provider">DbProviderFactory对象</param>
+            <param name="parameterNameBuilder">参数名称构建对象</param>
+            <returns>DbCommand对象</returns>
+        </member>
+        <member name="M:Radial.Persist.Lite.TextCommandData.CreateCommand(System.Data.Common.DbProviderFactory,Radial.Persist.Lite.ParameterNameBuilder,System.Boolean)">
+            <summary>
+            创建DbCommand对象
+            </summary>
+            <param name="provider">DbProviderFactory对象</param>
+            <param name="parameterNameBuilder">参数名称构建对象</param>
+            <param name="useUniqueParameterIndex">是否使用唯一性的参数索引</param>
+            <returns>DbCommand对象</returns>
+        </member>
+        <member name="P:Radial.Persist.Lite.TextCommandData.CommandText">
+            <summary>
+            获取命令文本
+            </summary>
+        </member>
+        <member name="P:Radial.Persist.Lite.TextCommandData.ParameterValues">
+            <summary>
+            获取参数值
+            </summary>
+        </member>
+    </members>
+</doc>

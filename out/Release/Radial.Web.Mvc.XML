@@ -1,0 +1,1453 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Radial.Web.Mvc</name>
+    </assembly>
+    <members>
+        <member name="T:Radial.Web.Mvc.AlertResult">
+            <summary>
+            Popup javascript alert window.
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.AlertResult.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.AlertResult"/> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.AlertResult.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.AlertResult"/> class.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="redirect">The redirect url.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.AlertResult.ExecuteResult(System.Web.Mvc.ControllerContext)">
+            <summary>
+            Enables processing of the result of an action method by a custom type that inherits from the <see cref="T:System.Web.Mvc.ActionResult"/> class.
+            </summary>
+            <param name="context">The context in which the result is executed. The context information includes the controller, HTTP content, request context, and route data.</param>
+        </member>
+        <member name="T:Radial.Web.Mvc.ControllerExtensions">
+            <summary>
+            Controller extension class.
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.ControllerExtensions.Alert(System.Web.Mvc.Controller,System.String)">
+            <summary>
+            Popup javascript alert window.
+            </summary>
+            <param name="c">The controller.</param>
+            <param name="message">The message.</param>
+            <returns>AlertResult instance.</returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.ControllerExtensions.Alert(System.Web.Mvc.Controller,System.String,System.String)">
+            <summary>
+            Popup javascript alert window.
+            </summary>
+            <param name="c">The controller.</param>
+            <param name="message">The message.</param>
+            <param name="redirect">The redirect.</param>
+            <returns>AlertResult instance.</returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.ControllerExtensions.Image(System.Web.Mvc.Controller,System.IO.Stream,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            Renders image to the response.
+            </summary>
+            <param name="c">The controllerontroller.</param>
+            <param name="imageStream">The image stream.</param>
+            <param name="format">The image format.</param>
+            <returns>ImageResult instance.</returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.ControllerExtensions.Image(System.Web.Mvc.Controller,System.Byte[],System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            Renders image to the response.
+            </summary>
+            <param name="c">The controllerontroller.</param>
+            <param name="imageBytes">The image bytes.</param>
+            <param name="format">The image format.</param>
+            <returns>ImageResult instance.</returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.ControllerExtensions.Image(System.Web.Mvc.Controller,System.Drawing.Image,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            Renders image to the response.
+            </summary>
+            <param name="c">The controllerontroller.</param>
+            <param name="image">The image.</param>
+            <param name="format">The image format.</param>
+            <returns>ImageResult instance.</returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.ControllerExtensions.Xml(System.Web.Mvc.Controller,System.String)">
+            <summary>
+            Renders xml to the response.
+            </summary>
+            <param name="c">The controllerontroller.</param>
+            <param name="xml">The xml.</param>
+            <returns>
+            XmlResult instance.
+            </returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.ControllerExtensions.Xml(System.Web.Mvc.Controller,System.String,System.Text.Encoding)">
+            <summary>
+            Renders xml to the response.
+            </summary>
+            <param name="c">The controllerontroller.</param>
+            <param name="xml">The xml.</param>
+            <param name="encoding">The xml encoding.</param>
+            <returns>
+            XmlResult instance.
+            </returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.ControllerExtensions.NewJson(System.Web.Mvc.Controller,System.Object)">
+            <summary>
+            Renders json to the response.
+            </summary>
+            <param name="c">The controller.</param>
+            <param name="data">The data.</param>
+            <returns>NewJsonResult instance.</returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.ControllerExtensions.NewJson(System.Web.Mvc.Controller,System.Object,System.String)">
+            <summary>
+            Renders json to the response.
+            </summary>
+            <param name="c">The controller.</param>
+            <param name="data">The data.</param>
+            <param name="contentType">The content type.</param>
+            <returns>NewJsonResult instance.</returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.ControllerExtensions.NewJson(System.Web.Mvc.Controller,System.Object,System.String,System.Text.Encoding)">
+            <summary>
+            Renders json to the response.
+            </summary>
+            <param name="c">The controller.</param>
+            <param name="data">The data.</param>
+            <param name="contentType">The content type.</param>
+            <param name="encoding">The encoding.</param>
+            <returns>
+            JsonResult instance.
+            </returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.ControllerExtensions.KnownFault(System.Web.Mvc.Controller,System.Int32,System.String)">
+            <summary>
+            Throws a new KnownFaultException and let the system itself to decide how to deal with.
+            </summary>
+            <param name="c">The controller.</param>
+            <param name="errorCode">The error code.</param>
+            <param name="message">The message.</param>
+            <returns>ThrowKnownFaultResult instance.</returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.ControllerExtensions.KnownFault(System.Web.Mvc.Controller,System.Int32,System.String,System.Nullable{System.Net.HttpStatusCode})">
+            <summary>
+            Throws a new KnownFaultException and let the system itself to decide how to deal with.
+            </summary>
+            <param name="c">The controller.</param>
+            <param name="errorCode">The error code.</param>
+            <param name="message">The message.</param>
+            <param name="httpStatusCode">The HTTP status code.</param>
+            <returns>ThrowKnownFaultResult instance.</returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.ControllerExtensions.KnownFault(System.Web.Mvc.Controller,System.Int32,System.String,System.Exception)">
+            <summary>
+            Throws a new KnownFaultException and let the system itself to decide how to deal with.
+            </summary>
+            <param name="c">The controller.</param>
+            <param name="errorCode">The error code.</param>
+            <param name="message">The message.</param>
+            <param name="innerException">The inner exception.</param>
+            <returns>ThrowKnownFaultResult instance.</returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.ControllerExtensions.KnownFault(System.Web.Mvc.Controller,System.Int32,System.String,System.Exception,System.Nullable{System.Net.HttpStatusCode})">
+            <summary>
+            Throws a new KnownFaultException and let the system itself to decide how to deal with.
+            </summary>
+            <param name="c">The controller.</param>
+            <param name="errorCode">The error code.</param>
+            <param name="message">The message.</param>
+            <param name="innerException">The inner exception.</param>
+            <param name="httpStatusCode">The HTTP status code.</param>
+            <returns>ThrowKnownFaultResult instance.</returns>
+        </member>
+        <member name="T:Radial.Web.Mvc.AjaxOnlyAttribute">
+            <summary>
+            Represents an attribute that is used to identifies only allow Ajax request.
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.AjaxOnlyAttribute.IsValidForRequest(System.Web.Mvc.ControllerContext,System.Reflection.MethodInfo)">
+            <summary>
+             Determines whether the action method selection is valid for the specified controller context.
+            </summary>
+            <param name="controllerContext">The controller context.</param>
+            <param name="methodInfo">Information about the action method.</param>
+            <returns> true if the action method selection is valid for the specified controller context; otherwise, false.</returns>
+        </member>
+        <member name="T:Radial.Web.Mvc.HttpKnownFaultResult">
+            <summary>
+            Throw a new HttpKnownFaultException and let the system itself to decide how to deal with.
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.HttpKnownFaultResult.#ctor(System.Int32,System.String,System.Nullable{System.Net.HttpStatusCode})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.HttpKnownFaultResult"/> class.
+            </summary>
+            <param name="errorCode">The error code.</param>
+            <param name="message">The message.</param>
+            <param name="httpStatusCode">The HTTP status code.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.HttpKnownFaultResult.#ctor(System.Int32,System.String,System.Exception,System.Nullable{System.Net.HttpStatusCode})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.HttpKnownFaultResult"/> class.
+            </summary>
+            <param name="errorCode">The error code.</param>
+            <param name="message">The message.</param>
+            <param name="innerException">The inner exception.</param>
+            <param name="httpStatusCode">The HTTP status code.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.HttpKnownFaultResult.ExecuteResult(System.Web.Mvc.ControllerContext)">
+            <summary>
+            Enables processing of the result of an action method by a custom type that inherits from the <see cref="T:System.Web.Mvc.ActionResult"/> class.
+            </summary>
+            <param name="context">The context in which the result is executed. The context information includes the controller, HTTP content, request context, and route data.</param>
+        </member>
+        <member name="T:Radial.Web.Mvc.Filters.ExceptionOutputData">
+            <summary>
+            A struct represents exception data that will display on screen.
+            </summary>
+        </member>
+        <member name="F:Radial.Web.Mvc.Filters.ExceptionOutputData.ErrorCode">
+            <summary>
+            Error code.
+            </summary>
+        </member>
+        <member name="F:Radial.Web.Mvc.Filters.ExceptionOutputData.RequestUrl">
+            <summary>
+            Request url.
+            </summary>
+        </member>
+        <member name="F:Radial.Web.Mvc.Filters.ExceptionOutputData.ErrorMessage">
+            <summary>
+            Error message.
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.Filters.ExceptionOutputData.ToXml">
+            <summary>
+            Toes the XML.
+            </summary>
+            <returns>XML string.</returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Filters.ExceptionOutputData.ToJson">
+            <summary>
+            To the Json.
+            </summary>
+            <returns>Json string.</returns>
+        </member>
+        <member name="T:Radial.Web.Mvc.Filters.ExceptionOutputStyle">
+            <summary>
+            Exception message output style.
+            </summary>
+        </member>
+        <member name="F:Radial.Web.Mvc.Filters.ExceptionOutputStyle.System">
+            <summary>
+            Not set the output style, use system default.
+            </summary>
+        </member>
+        <member name="F:Radial.Web.Mvc.Filters.ExceptionOutputStyle.Xml">
+            <summary>
+            Wraps the exception to XML output format.
+            </summary>
+        </member>
+        <member name="F:Radial.Web.Mvc.Filters.ExceptionOutputStyle.Json">
+            <summary>
+            Wraps the exception to JSON output format.
+            </summary>
+        </member>
+        <member name="T:Radial.Web.Mvc.Filters.HandleExceptionAttribute">
+            <summary>
+            Represents an attribute that is used to handle and log an exception that is thrown by an action method.
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.Filters.HandleExceptionAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.Filters.HandleExceptionAttribute"/> class with ExceptionOutputStyle.System.
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.Filters.HandleExceptionAttribute.#ctor(Radial.Web.Mvc.Filters.ExceptionOutputStyle,System.Int32,System.Nullable{System.Net.HttpStatusCode})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.Filters.HandleExceptionAttribute"/> class.
+            </summary>
+            <param name="outputStyle">The exception output style.</param>
+            <param name="defaultErrorCode">The default error code.</param>
+            <param name="defaultHttpStatusCode">The default http status code.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.Filters.HandleExceptionAttribute.#ctor(Radial.Web.Mvc.Filters.ExceptionOutputStyle,System.Int32,System.String,System.Text.Encoding,System.Nullable{System.Net.HttpStatusCode})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.Filters.HandleExceptionAttribute"/> class.
+            </summary>
+            <param name="outputStyle">The exception output style.</param>
+            <param name="defaultErrorCode">The default error code.</param>
+            <param name="contentType">The content type.</param>
+            <param name="encoding">The encoding.</param>
+            <param name="defaultHttpStatusCode">The default http status code.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.Filters.HandleExceptionAttribute.OnException(System.Web.Mvc.ExceptionContext)">
+            <summary>
+            Called when an exception occurs.
+            </summary>
+            <param name="filterContext">The action-filter context.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="filterContext"/> parameter is null.</exception>
+        </member>
+        <member name="P:Radial.Web.Mvc.Filters.HandleExceptionAttribute.OutputStyle">
+            <summary>
+            Gets the output style.
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Filters.HandleExceptionAttribute.DefaultErrorCode">
+            <summary>
+            Gets the default error code.
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Filters.HandleExceptionAttribute.DefaultHttpStatusCode">
+            <summary>
+            Gets the default http status code.
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Filters.HandleExceptionAttribute.ContentType">
+            <summary>
+            Gets the content type.
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Filters.HandleExceptionAttribute.Encoding">
+            <summary>
+            Gets the encoding.
+            </summary>
+        </member>
+        <member name="T:Radial.Web.Mvc.ImageResult">
+            <summary>
+            Renders image to the response.
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.ImageResult.#ctor(System.Drawing.Image,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.ImageResult"/> class.
+            </summary>
+            <param name="image">The image.</param>
+            <param name="format">The image format.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.ImageResult.ExecuteResult(System.Web.Mvc.ControllerContext)">
+            <summary>
+            Enables processing of the result of an action method by a custom type that inherits from the <see cref="T:System.Web.Mvc.ActionResult"/> class.
+            </summary>
+            <param name="context">The context in which the result is executed. The context information includes the controller, HTTP content, request context, and route data.</param>
+        </member>
+        <member name="T:Radial.Web.Mvc.ModelBinders.BooleanModelBinder">
+            <summary>
+            Boolean ModelBinder.
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.ModelBinders.BooleanModelBinder.BindModel(System.Web.Mvc.ControllerContext,System.Web.Mvc.ModelBindingContext)">
+            <summary>
+            Binds the model to a value by using the specified controller context and binding context.
+            </summary>
+            <param name="controllerContext">The controller context.</param>
+            <param name="bindingContext">The binding context.</param>
+            <returns>
+            The bound value.
+            </returns>
+        </member>
+        <member name="T:Radial.Web.Mvc.ModelBinders.JsonModelBinder`1">
+            <summary>
+            Json ModelBinder.
+            </summary>
+            <typeparam name="TModel">The type of the model.</typeparam>
+        </member>
+        <member name="M:Radial.Web.Mvc.ModelBinders.JsonModelBinder`1.BindModel(System.Web.Mvc.ControllerContext,System.Web.Mvc.ModelBindingContext)">
+            <summary>
+            Binds the model to a value by using the specified controller context and binding context.
+            </summary>
+            <param name="controllerContext">The controller context.</param>
+            <param name="bindingContext">The binding context.</param>
+            <returns>
+            The bound value.
+            </returns>
+        </member>
+        <member name="T:Radial.Web.Mvc.NewJsonResult">
+            <summary>
+            NewJsonResult
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.NewJsonResult.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.NewJsonResult"/> class.
+            </summary>
+            <param name="data">The data.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.NewJsonResult.#ctor(System.Object,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.NewJsonResult"/> class.
+            </summary>
+            <param name="data">The data.</param>
+            <param name="contentType">The content type.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.NewJsonResult.#ctor(System.Object,System.String,System.Text.Encoding)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.NewJsonResult"/> class.
+            </summary>
+            <param name="data">The data.</param>
+            <param name="encoding">The encoding.</param>
+            <param name="contentType">The content type.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.NewJsonResult.ExecuteResult(System.Web.Mvc.ControllerContext)">
+            <summary>
+            Enables processing of the result of an action method by a custom type that inherits from the <see cref="T:System.Web.Mvc.ActionResult"/> class.
+            </summary>
+            <param name="context">The context in which the result is executed. The context information includes the controller, HTTP content, request context, and route data.</param>
+        </member>
+        <member name="T:Radial.Web.Mvc.Pagination.IPagedList">
+            <summary>
+            IPagedList
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.IPagedList.CurrentPageIndex">
+            <summary>
+            Gets or sets the index of the current page.
+            </summary>
+            <value>
+            The index of the current page.
+            </value>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.IPagedList.PageSize">
+            <summary>
+            Gets or sets the size of the page.
+            </summary>
+            <value>
+            The size of the page.
+            </value>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.IPagedList.TotalItemCount">
+            <summary>
+            Gets or sets the total item count.
+            </summary>
+            <value>
+            The total item count.
+            </value>
+        </member>
+        <member name="T:Radial.Web.Mvc.Pagination.PagedList`1">
+            <summary>
+            PagedList
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagedList`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.Pagination.PagedList`1"/> class.
+            </summary>
+            <param name="items">The items.</param>
+            <param name="pageIndex">Index of the page.</param>
+            <param name="pageSize">Size of the page.</param>
+            <param name="totalItemCount">The total item count.</param>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagedList`1.CurrentPageIndex">
+            <summary>
+            Gets or sets the index of the current page.
+            </summary>
+            <value>
+            The index of the current page.
+            </value>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagedList`1.PageSize">
+            <summary>
+            Gets or sets the size of the page.
+            </summary>
+            <value>
+            The size of the page.
+            </value>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagedList`1.TotalItemCount">
+            <summary>
+            Gets or sets the total item count.
+            </summary>
+            <value>
+            The total item count.
+            </value>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagedList`1.TotalPageCount">
+            <summary>
+            Gets the total page count.
+            </summary>
+            <value>
+            The total page count.
+            </value>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagedList`1.StartRecordIndex">
+            <summary>
+            Gets the start index of the record.
+            </summary>
+            <value>
+            The start index of the record.
+            </value>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagedList`1.EndRecordIndex">
+            <summary>
+            Gets the end index of the record.
+            </summary>
+            <value>
+            The end index of the record.
+            </value>
+        </member>
+        <member name="T:Radial.Web.Mvc.Pagination.PageLinqExtensions">
+            <summary>
+            PageLinqExtensions
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PageLinqExtensions.ToPagedList``1(System.Linq.IQueryable{``0},System.Int32,System.Int32)">
+            <summary>
+            To the paged list.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="allItems">All items.</param>
+            <param name="pageIndex">Index of the page.</param>
+            <param name="pageSize">Size of the page.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Radial.Web.Mvc.Pagination.PagerBuilder">
+            <summary>
+            PagerBuilder
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.#ctor(System.Web.Mvc.HtmlHelper,System.Web.Mvc.AjaxHelper,Radial.Web.Mvc.Pagination.PagerOptions,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.Pagination.PagerBuilder"/> class.(适用于PagedList为null时)
+            </summary>
+            <param name="html">The HTML.</param>
+            <param name="ajax">The ajax.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.#ctor(System.Web.Mvc.HtmlHelper,System.Web.Mvc.AjaxHelper,System.String,System.String,System.Int32,System.Int32,Radial.Web.Mvc.Pagination.PagerOptions,System.String,System.Web.Routing.RouteValueDictionary,System.Web.Mvc.Ajax.AjaxOptions,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.Pagination.PagerBuilder"/> class.
+            </summary>
+            <param name="html">The HTML.</param>
+            <param name="ajax">The ajax.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="totalPageCount">The total page count.</param>
+            <param name="pageIndex">Index of the page.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.#ctor(System.Web.Mvc.HtmlHelper,System.String,System.String,System.Int32,System.Int32,Radial.Web.Mvc.Pagination.PagerOptions,System.String,System.Web.Routing.RouteValueDictionary,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.Pagination.PagerBuilder"/> class.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="totalPageCount">The total page count.</param>
+            <param name="pageIndex">Index of the page.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.#ctor(System.Web.Mvc.AjaxHelper,System.String,System.String,System.Int32,System.Int32,Radial.Web.Mvc.Pagination.PagerOptions,System.String,System.Web.Routing.RouteValueDictionary,System.Web.Mvc.Ajax.AjaxOptions,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.Pagination.PagerBuilder"/> class.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="totalPageCount">The total page count.</param>
+            <param name="pageIndex">Index of the page.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.#ctor(System.Web.Mvc.HtmlHelper,System.String,System.String,System.Int32,System.Int32,Radial.Web.Mvc.Pagination.PagerOptions,System.String,System.Web.Routing.RouteValueDictionary,System.Web.Mvc.Ajax.AjaxOptions,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.Pagination.PagerBuilder"/> class.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="totalPageCount">The total page count.</param>
+            <param name="pageIndex">Index of the page.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.AddPrevious(System.Collections.Generic.ICollection{Radial.Web.Mvc.Pagination.PagerItem})">
+            <summary>
+            Adds the previous.
+            </summary>
+            <param name="results">The results.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.AddFirst(System.Collections.Generic.ICollection{Radial.Web.Mvc.Pagination.PagerItem})">
+            <summary>
+            Adds the first.
+            </summary>
+            <param name="results">The results.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.AddMoreBefore(System.Collections.Generic.ICollection{Radial.Web.Mvc.Pagination.PagerItem})">
+            <summary>
+            Adds the more before.
+            </summary>
+            <param name="results">The results.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.AddPageNumbers(System.Collections.Generic.ICollection{Radial.Web.Mvc.Pagination.PagerItem})">
+            <summary>
+            Adds the page numbers.
+            </summary>
+            <param name="results">The results.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.AddMoreAfter(System.Collections.Generic.ICollection{Radial.Web.Mvc.Pagination.PagerItem})">
+            <summary>
+            Adds the more after.
+            </summary>
+            <param name="results">The results.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.AddNext(System.Collections.Generic.ICollection{Radial.Web.Mvc.Pagination.PagerItem})">
+            <summary>
+            Adds the next.
+            </summary>
+            <param name="results">The results.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.AddLast(System.Collections.Generic.ICollection{Radial.Web.Mvc.Pagination.PagerItem})">
+            <summary>
+            Adds the last.
+            </summary>
+            <param name="results">The results.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.GenerateUrl(System.Int32)">
+            <summary>
+            根据页索引生成分页导航Url
+            </summary>
+            <param name="pageIndex">要生成导航链接的页索引</param>
+            <returns>分页导航链接Url</returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.RenderPager">
+            <summary>
+            生成最终的分页Html代码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.BuildGoToPageSection(System.String@)">
+            <summary>
+            Builds the go to page section.
+            </summary>
+            <param name="pagerScript">The pager script.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.GenerateAnchor(Radial.Web.Mvc.Pagination.PagerItem)">
+            <summary>
+            Generates the anchor.
+            </summary>
+            <param name="item">The item.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.GeneratePagerElement(Radial.Web.Mvc.Pagination.PagerItem)">
+            <summary>
+            Generates the pager element.
+            </summary>
+            <param name="item">The item.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.GenerateJqAjaxPagerElement(Radial.Web.Mvc.Pagination.PagerItem)">
+            <summary>
+            Generates the jq ajax pager element.
+            </summary>
+            <param name="item">The item.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.GenerateMsAjaxPagerElement(Radial.Web.Mvc.Pagination.PagerItem)">
+            <summary>
+            Generates the ms ajax pager element.
+            </summary>
+            <param name="item">The item.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.CreateWrappedPagerElement(Radial.Web.Mvc.Pagination.PagerItem,System.String)">
+            <summary>
+            Creates the wrapped pager element.
+            </summary>
+            <param name="item">The item.</param>
+            <param name="el">The el.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerBuilder.GetCurrentRouteValues(System.Web.Mvc.ViewContext)">
+            <summary>
+            Gets the current route values.
+            </summary>
+            <param name="viewContext">The view context.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Radial.Web.Mvc.Pagination.PagerHelper">
+            <summary>
+            PagerHelper
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.HtmlHelper,System.Int32,System.Int32,System.Int32,System.String,System.String,Radial.Web.Mvc.Pagination.PagerOptions,System.String,System.Object,System.Object)">
+            <summary>
+            Pagers the specified helper.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="totalItemCount">The total item count.</param>
+            <param name="pageSize">Size of the page.</param>
+            <param name="pageIndex">Index of the page.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.HtmlHelper,System.Int32,System.Int32,System.Int32,System.String,System.String,Radial.Web.Mvc.Pagination.PagerOptions,System.String,System.Web.Routing.RouteValueDictionary,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Pagers the specified helper.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="totalItemCount">The total item count.</param>
+            <param name="pageSize">Size of the page.</param>
+            <param name="pageIndex">Index of the page.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.PagerOptions,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Pagers the specified helper.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList)">
+            <summary>
+            Pagers the specified helper.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="pagedList">The paged list.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,Radial.Web.Mvc.Pagination.PagerOptions)">
+            <summary>
+            Pagers the specified helper.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,Radial.Web.Mvc.Pagination.PagerOptions,System.Object)">
+            <summary>
+            Pagers the specified helper.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,Radial.Web.Mvc.Pagination.PagerOptions,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Pagers the specified helper.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,Radial.Web.Mvc.Pagination.PagerOptions,System.String,System.Object)">
+            <summary>
+            Pagers the specified helper.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,Radial.Web.Mvc.Pagination.PagerOptions,System.String,System.Web.Routing.RouteValueDictionary)">
+            <summary>
+            Pagers the specified helper.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,Radial.Web.Mvc.Pagination.PagerOptions,System.String,System.Object,System.Object)">
+            <summary>
+            Pagers the specified helper.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,Radial.Web.Mvc.Pagination.PagerOptions,System.String,System.Web.Routing.RouteValueDictionary,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Pagers the specified helper.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,System.String,System.Object,System.Object)">
+            <summary>
+            Pagers the specified helper.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,System.String,System.Web.Routing.RouteValueDictionary,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Pagers the specified helper.
+            </summary>
+            <param name="helper">The helper.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.AjaxPager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.PagerOptions,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Ajaxes the pager.
+            </summary>
+            <param name="html">The HTML.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.AjaxPager(System.Web.Mvc.HtmlHelper,System.Int32,System.Int32,System.Int32,System.String,System.String,System.String,Radial.Web.Mvc.Pagination.PagerOptions,System.Object,System.Web.Mvc.Ajax.AjaxOptions,System.Object)">
+            <summary>
+            Ajaxes the pager.
+            </summary>
+            <param name="html">The HTML.</param>
+            <param name="totalItemCount">The total item count.</param>
+            <param name="pageSize">Size of the page.</param>
+            <param name="pageIndex">Index of the page.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.AjaxPager(System.Web.Mvc.HtmlHelper,System.Int32,System.Int32,System.Int32,System.String,System.String,System.String,Radial.Web.Mvc.Pagination.PagerOptions,System.Web.Routing.RouteValueDictionary,System.Web.Mvc.Ajax.AjaxOptions,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Ajaxes the pager.
+            </summary>
+            <param name="html">The HTML.</param>
+            <param name="totalItemCount">The total item count.</param>
+            <param name="pageSize">Size of the page.</param>
+            <param name="pageIndex">Index of the page.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.AjaxPager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,System.Web.Mvc.Ajax.AjaxOptions)">
+            <summary>
+            Ajaxes the pager.
+            </summary>
+            <param name="html">The HTML.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.AjaxPager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,System.String,System.Web.Mvc.Ajax.AjaxOptions)">
+            <summary>
+            Ajaxes the pager.
+            </summary>
+            <param name="html">The HTML.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.AjaxPager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,Radial.Web.Mvc.Pagination.PagerOptions,System.Web.Mvc.Ajax.AjaxOptions)">
+            <summary>
+            Ajaxes the pager.
+            </summary>
+            <param name="html">The HTML.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.AjaxPager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,Radial.Web.Mvc.Pagination.PagerOptions,System.Web.Mvc.Ajax.AjaxOptions,System.Object)">
+            <summary>
+            Ajaxes the pager.
+            </summary>
+            <param name="html">The HTML.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.AjaxPager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,Radial.Web.Mvc.Pagination.PagerOptions,System.Web.Mvc.Ajax.AjaxOptions,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Ajaxes the pager.
+            </summary>
+            <param name="html">The HTML.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.AjaxPager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,System.String,System.Object,Radial.Web.Mvc.Pagination.PagerOptions,System.Web.Mvc.Ajax.AjaxOptions)">
+            <summary>
+            Ajaxes the pager.
+            </summary>
+            <param name="html">The HTML.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.AjaxPager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,System.String,System.Object,Radial.Web.Mvc.Pagination.PagerOptions,System.Web.Mvc.Ajax.AjaxOptions,System.Object)">
+            <summary>
+            Ajaxes the pager.
+            </summary>
+            <param name="html">The HTML.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.AjaxPager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,System.String,System.Web.Routing.RouteValueDictionary,Radial.Web.Mvc.Pagination.PagerOptions,System.Web.Mvc.Ajax.AjaxOptions,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Ajaxes the pager.
+            </summary>
+            <param name="html">The HTML.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.AjaxPager(System.Web.Mvc.HtmlHelper,Radial.Web.Mvc.Pagination.IPagedList,System.String,System.String,Radial.Web.Mvc.Pagination.PagerOptions,System.Web.Mvc.Ajax.AjaxOptions)">
+            <summary>
+            Ajaxes the pager.
+            </summary>
+            <param name="html">The HTML.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.AjaxHelper,System.Int32,System.Int32,System.Int32,System.String,System.String,System.String,Radial.Web.Mvc.Pagination.PagerOptions,System.Object,System.Web.Mvc.Ajax.AjaxOptions,System.Object)">
+            <summary>
+            Pagers the specified ajax.
+            </summary>
+            <param name="ajax">The ajax.</param>
+            <param name="totalItemCount">The total item count.</param>
+            <param name="pageSize">Size of the page.</param>
+            <param name="pageIndex">Index of the page.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.AjaxHelper,System.Int32,System.Int32,System.Int32,System.String,System.String,System.String,Radial.Web.Mvc.Pagination.PagerOptions,System.Web.Routing.RouteValueDictionary,System.Web.Mvc.Ajax.AjaxOptions,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Pagers the specified ajax.
+            </summary>
+            <param name="ajax">The ajax.</param>
+            <param name="totalItemCount">The total item count.</param>
+            <param name="pageSize">Size of the page.</param>
+            <param name="pageIndex">Index of the page.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.AjaxHelper,Radial.Web.Mvc.Pagination.PagerOptions,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Pagers the specified ajax.
+            </summary>
+            <param name="ajax">The ajax.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.AjaxHelper,Radial.Web.Mvc.Pagination.IPagedList,System.Web.Mvc.Ajax.AjaxOptions)">
+            <summary>
+            Pagers the specified ajax.
+            </summary>
+            <param name="ajax">The ajax.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.AjaxHelper,Radial.Web.Mvc.Pagination.IPagedList,Radial.Web.Mvc.Pagination.PagerOptions,System.Web.Mvc.Ajax.AjaxOptions)">
+            <summary>
+            Pagers the specified ajax.
+            </summary>
+            <param name="ajax">The ajax.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.AjaxHelper,Radial.Web.Mvc.Pagination.IPagedList,Radial.Web.Mvc.Pagination.PagerOptions,System.Web.Mvc.Ajax.AjaxOptions,System.Object)">
+            <summary>
+            Pagers the specified ajax.
+            </summary>
+            <param name="ajax">The ajax.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.AjaxHelper,Radial.Web.Mvc.Pagination.IPagedList,Radial.Web.Mvc.Pagination.PagerOptions,System.Web.Mvc.Ajax.AjaxOptions,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Pagers the specified ajax.
+            </summary>
+            <param name="ajax">The ajax.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.AjaxHelper,Radial.Web.Mvc.Pagination.IPagedList,System.String,System.Object,System.Web.Mvc.Ajax.AjaxOptions,System.Object)">
+            <summary>
+            Pagers the specified ajax.
+            </summary>
+            <param name="ajax">The ajax.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.AjaxHelper,Radial.Web.Mvc.Pagination.IPagedList,System.String,System.Web.Routing.RouteValueDictionary,System.Web.Mvc.Ajax.AjaxOptions,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Pagers the specified ajax.
+            </summary>
+            <param name="ajax">The ajax.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.AjaxHelper,Radial.Web.Mvc.Pagination.IPagedList,System.String,System.Object,Radial.Web.Mvc.Pagination.PagerOptions,System.Web.Mvc.Ajax.AjaxOptions,System.Object)">
+            <summary>
+            Pagers the specified ajax.
+            </summary>
+            <param name="ajax">The ajax.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerHelper.Pager(System.Web.Mvc.AjaxHelper,Radial.Web.Mvc.Pagination.IPagedList,System.String,System.Web.Routing.RouteValueDictionary,Radial.Web.Mvc.Pagination.PagerOptions,System.Web.Mvc.Ajax.AjaxOptions,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Pagers the specified ajax.
+            </summary>
+            <param name="ajax">The ajax.</param>
+            <param name="pagedList">The paged list.</param>
+            <param name="routeName">Name of the route.</param>
+            <param name="routeValues">The route values.</param>
+            <param name="pagerOptions">The pager options.</param>
+            <param name="ajaxOptions">The ajax options.</param>
+            <param name="htmlAttributes">The HTML attributes.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Radial.Web.Mvc.Pagination.PagerItem">
+            <summary>
+            PagerItem
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerItem.#ctor(System.String,System.Int32,System.Boolean,Radial.Web.Mvc.Pagination.PagerItemType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.Pagination.PagerItem"/> class.
+            </summary>
+            <param name="text">The text.</param>
+            <param name="pageIndex">Index of the page.</param>
+            <param name="disabled">if set to <c>true</c> [disabled].</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerItem.Text">
+            <summary>
+            Gets or sets the text.
+            </summary>
+            <value>
+            The text.
+            </value>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerItem.PageIndex">
+            <summary>
+            Gets or sets the index of the page.
+            </summary>
+            <value>
+            The index of the page.
+            </value>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerItem.Disabled">
+            <summary>
+            Gets or sets a value indicating whether this <see cref="T:Radial.Web.Mvc.Pagination.PagerItem"/> is disabled.
+            </summary>
+            <value>
+              <c>true</c> if disabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerItem.Type">
+            <summary>
+            Gets or sets the type.
+            </summary>
+            <value>
+            The type.
+            </value>
+        </member>
+        <member name="T:Radial.Web.Mvc.Pagination.PagerItemType">
+            <summary>
+            PagerItemType
+            </summary>
+        </member>
+        <member name="F:Radial.Web.Mvc.Pagination.PagerItemType.FirstPage">
+            <summary>
+            FirstPage
+            </summary>
+        </member>
+        <member name="F:Radial.Web.Mvc.Pagination.PagerItemType.NextPage">
+            <summary>
+            NextPage
+            </summary>
+        </member>
+        <member name="F:Radial.Web.Mvc.Pagination.PagerItemType.PrevPage">
+            <summary>
+            PrevPage
+            </summary>
+        </member>
+        <member name="F:Radial.Web.Mvc.Pagination.PagerItemType.LastPage">
+            <summary>
+            LastPage
+            </summary>
+        </member>
+        <member name="F:Radial.Web.Mvc.Pagination.PagerItemType.MorePage">
+            <summary>
+            MorePage
+            </summary>
+        </member>
+        <member name="F:Radial.Web.Mvc.Pagination.PagerItemType.NumericPage">
+            <summary>
+            NumericPage
+            </summary>
+        </member>
+        <member name="T:Radial.Web.Mvc.Pagination.PagerOptions">
+            <summary>
+            PagerOptions
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.Pagination.PagerOptions.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.Pagination.PagerOptions"/> class.
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.AutoHide">
+            <summary>
+            当总页数只有一页时是否自动隐藏
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.PageIndexOutOfRangeErrorMessage">
+            <summary>
+            页索引超出范围时显示的错误消息
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.InvalidPageIndexErrorMessage">
+            <summary>
+            页索引无效时显示的错误消息
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.PageIndexParameterName">
+            <summary>
+            url中页索引参数的名称
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.ShowPageIndexBox">
+            <summary>
+            是否显示页索引输入出选择框
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.PageIndexBoxType">
+            <summary>
+            页索引输入或选择框的类型
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.MaximumPageIndexItems">
+            <summary>
+            页索引下拉框中显示的最大页索引条数，该属性仅当PageIndexBoxType设为PageIndexBoxType.DropDownList时有效
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.ShowGoButton">
+            <summary>
+            是否显示跳转按钮
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.GoButtonText">
+            <summary>
+            跳转按钮上的文本
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.PageNumberFormatString">
+            <summary>
+            数字页索引格式字符串
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.CurrentPageNumberFormatString">
+            <summary>
+            当前页索引格式字符串
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.ContainerTagName">
+            <summary>
+            分页控件html容器标签名，默认为div
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.PagerItemWrapperFormatString">
+            <summary>
+            包容数字页、当前页及上、下、前、后分页元素的html文本格式字符串
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.NumericPagerItemWrapperFormatString">
+            <summary>
+            包容数字页索引分页元素的html文本格式字符串
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.CurrentPagerItemWrapperFormatString">
+            <summary>
+            包容当前页分页元素的html文本格式字符串
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.NavigationPagerItemWrapperFormatString">
+            <summary>
+            包容上页、下页、首页和尾首四个分页元素的html文本格式字符串
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.MorePagerItemWrapperFormatString">
+            <summary>
+            包容更多页分页元素的html文本格式字符串
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.PageIndexBoxWrapperFormatString">
+            <summary>
+            包容页索引输入或选择框的html文本格式字符串
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.GoToPageSectionWrapperFormatString">
+            <summary>
+            包容页索引框及跳转按钮所在区域的html文本框字符串
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.AlwaysShowFirstLastPageNumber">
+            <summary>
+            whether or not show first and last numeric page number
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.NumericPagerItemCount">
+            <summary>
+            显示的最大数字页索引按钮数
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.ShowPrevNext">
+            <summary>
+            是否显示上页和下页
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.PrevPageText">
+            <summary>
+            上一页文本
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.NextPageText">
+            <summary>
+            下一页文本
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.ShowNumericPagerItems">
+            <summary>
+            是否显示数字页索引按钮及更多页按钮
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.ShowFirstLast">
+            <summary>
+            是否显示第一页和最后一页
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.FirstPageText">
+            <summary>
+            第一页文本
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.LastPageText">
+            <summary>
+            最后一页文本
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.ShowMorePagerItems">
+            <summary>
+            是否显示更多页按钮
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.MorePageText">
+            <summary>
+            更多页按钮文本
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.Id">
+            <summary>
+            包含分页控件的div标签的ID
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.HorizontalAlign">
+            <summary>
+            水平对齐方式
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.CssClass">
+            <summary>
+            CSS样式类
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.ShowDisabledPagerItems">
+            <summary>
+            whether or not show disabled navigation buttons
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.SeparatorHtml">
+            <summary>
+            seperating item html
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.MaxPageIndex">
+            <summary>
+            限制显示的最大页数，默认值为0，即根据总记录数算出的总页数
+            </summary>
+        </member>
+        <member name="P:Radial.Web.Mvc.Pagination.PagerOptions.UseJqueryAjax">
+            <summary>
+            是否使用jQuery实现Ajax分页(内部用)
+            </summary>
+        </member>
+        <member name="T:Radial.Web.Mvc.Pagination.PageIndexBoxType">
+            <summary>
+            PageIndexBoxType
+            </summary>
+        </member>
+        <member name="F:Radial.Web.Mvc.Pagination.PageIndexBoxType.TextBox">
+            <summary>
+            文本框输入
+            </summary>
+        </member>
+        <member name="F:Radial.Web.Mvc.Pagination.PageIndexBoxType.DropDownList">
+            <summary>
+            下拉框选择
+            </summary>
+        </member>
+        <member name="T:Radial.Web.Mvc.UrlHelperExtensions">
+            <summary>
+            UrlHelper extension class.
+            </summary>
+        </member>
+        <member name="F:Radial.Web.Mvc.UrlHelperExtensions.ResourceBaseUrlConfigName">
+            <summary>
+            Resource base url config name. 
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.UrlHelperExtensions.Resource(System.Web.Mvc.UrlHelper,System.String)">
+            <summary>
+            Converts a virtual (relative) path to a resource absolute url.
+            </summary>
+            <param name="helper">The UrlHelper object.</param>
+            <param name="contentPath">The virtual path of the content.</param>
+            <returns>The resource absolute url.</returns>
+        </member>
+        <member name="T:Radial.Web.Mvc.XmlResult">
+            <summary>
+            Renders xml to the response.
+            </summary>
+        </member>
+        <member name="M:Radial.Web.Mvc.XmlResult.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.XmlResult"/> class.
+            </summary>
+            <param name="xml">The xml.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.XmlResult.#ctor(System.String,System.Text.Encoding)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Web.Mvc.XmlResult"/> class.
+            </summary>
+            <param name="xml">The xml.</param>
+            <param name="encoding">The xml encoding.</param>
+        </member>
+        <member name="M:Radial.Web.Mvc.XmlResult.ExecuteResult(System.Web.Mvc.ControllerContext)">
+            <summary>
+            Enables processing of the result of an action method by a custom type that inherits from the <see cref="T:System.Web.Mvc.ActionResult"/> class.
+            </summary>
+            <param name="context">The context in which the result is executed. The context information includes the controller, HTTP content, request context, and route data.</param>
+        </member>
+    </members>
+</doc>

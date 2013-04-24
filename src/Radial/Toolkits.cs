@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.IO;
 using System.IO.Compression;
-using System.Text.RegularExpressions;
 using System.Reflection;
-using System.Diagnostics;
-using System.Data;
-using System.Data.OleDb;
 using System.Net.NetworkInformation;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Radial
 {

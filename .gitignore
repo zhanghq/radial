@@ -2,7 +2,6 @@
 bin
 obj
 out/Debug
-out/Release
 log
 *.suo
 *.user

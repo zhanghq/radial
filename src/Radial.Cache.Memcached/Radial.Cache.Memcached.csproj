@@ -24,7 +24,7 @@
     <DocumentationFile>..\..\out\Debug\Radial.Cache.Memcached.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\out\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>

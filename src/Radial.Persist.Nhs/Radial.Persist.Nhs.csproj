@@ -23,7 +23,7 @@
     <DocumentationFile>..\..\out\Debug\Radial.Persist.Nhs.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\out\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -69,10 +69,6 @@
     <Compile Include="SessionFactoryWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Radial.Persist\Radial.Persist.csproj">
-      <Project>{15f72b76-ec3a-43a4-98dc-dd1a969ee655}</Project>
-      <Name>Radial.Persist</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Radial\Radial.csproj">
       <Project>{e9ec1cb9-79b6-47bc-af82-e8b7b7affcea}</Project>
       <Name>Radial</Name>

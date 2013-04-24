@@ -24,7 +24,7 @@
     <DocumentationFile>..\..\out\Debug\Radial.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\out\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -78,6 +78,12 @@
     <Compile Include="FileWatcher.cs" />
     <Compile Include="Boot\IBootTask.cs" />
     <Compile Include="Net\ContentTypes.cs" />
+    <Compile Include="Persist\IRepository.cs" />
+    <Compile Include="Persist\IStoragePolicy.cs" />
+    <Compile Include="Persist\IUnitOfWork.cs" />
+    <Compile Include="Persist\IUnitOfWorkEssential.cs" />
+    <Compile Include="Persist\OrderBySnippet.cs" />
+    <Compile Include="Persist\StorageRouter.cs" />
     <Compile Include="PerWebRequestLifetimeManager.cs" />
     <Compile Include="RangeValue.cs" />
     <Compile Include="KnownFaultException.cs" />

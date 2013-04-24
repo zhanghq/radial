@@ -61,10 +61,6 @@
       <Project>{719dee63-aeeb-4dbe-bd84-f005e3d3a39f}</Project>
       <Name>Radial.Persist.Nhs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Radial.Persist\Radial.Persist.csproj">
-      <Project>{15f72b76-ec3a-43a4-98dc-dd1a969ee655}</Project>
-      <Name>Radial.Persist</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Radial\Radial.csproj">
       <Project>{e9ec1cb9-79b6-47bc-af82-e8b7b7affcea}</Project>
       <Name>Radial</Name>

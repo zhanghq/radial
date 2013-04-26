@@ -12,12 +12,23 @@ namespace Radial.Persist.Nhs
     /// </summary>
     public class NhUnitOfWork : IUnitOfWork
     {
-        ISession _session;
+        private readonly ISession _session;
+        private readonly ITransaction _transaction;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
         /// </summary>
-        public NhUnitOfWork() : this(null) { }
+        public NhUnitOfWork() : this(null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
+        /// </summary>
+        /// <param name="isolationLevel">Isolation level for the new transaction.</param>
+        public NhUnitOfWork(IsolationLevel isolationLevel) : this(null, isolationLevel)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
@@ -29,6 +40,23 @@ namespace Radial.Persist.Nhs
                 _session = HibernateEngine.OpenSession();
             else
                 _session = SessionFactoryPool.OpenSession(alias);
+
+            _transaction = _session.BeginTransaction();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
+        /// </summary>
+        /// <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
+        /// <param name="isolationLevel">Isolation level for the new transaction.</param>
+        public NhUnitOfWork(string alias, IsolationLevel isolationLevel)
+        {
+            if (string.IsNullOrWhiteSpace(alias))
+                _session = HibernateEngine.OpenSession();
+            else
+                _session = SessionFactoryPool.OpenSession(alias);
+
+            _transaction = _session.BeginTransaction(isolationLevel);
         }
 
         /// <summary>
@@ -36,10 +64,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         public virtual object UnderlyingContext
         {
-            get
-            {
-                return _session;
-            }
+            get { return _session; }
         }
 
         /// <summary>
@@ -134,11 +159,13 @@ namespace Radial.Persist.Nhs
         /// <param name="key">The object key.</param>
         public virtual void RegisterDelete<TObject, TKey>(TKey key) where TObject : class
         {
-            var metadata = _session.SessionFactory.GetClassMetadata(typeof(TObject));
+            var metadata = _session.SessionFactory.GetClassMetadata(typeof (TObject));
 
-            Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
+            Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property",
+                             typeof (TObject).FullName);
 
-            string query = string.Format("from {0} o where o.{1}=?", typeof(TObject).Name, metadata.IdentifierPropertyName);
+            string query = string.Format("from {0} o where o.{1}=?", typeof (TObject).Name,
+                                         metadata.IdentifierPropertyName);
 
             _session.Delete(query, key, metadata.IdentifierType);
         }
@@ -149,64 +176,39 @@ namespace Radial.Persist.Nhs
         /// <typeparam name="TObject">The type of object.</typeparam>
         public virtual void RegisterClear<TObject>() where TObject : class
         {
-            _session.Delete(string.Format("from {0}", typeof(TObject).Name));
+            _session.Delete(string.Format("from {0}", typeof (TObject).Name));
         }
 
         /// <summary>
         /// Commit changes to data source.
         /// </summary>
-        /// <remarks>use underlying transaction automatically when the ambient transaction is null.</remarks>
         public void Commit()
         {
-            if (System.Transactions.Transaction.Current == null)
+            if (_transaction != null)
             {
-                //generate ITransaction if the ambient transaction is null. 
-                ITransaction tx = _session.BeginTransaction();
                 try
                 {
-                    tx.Commit();
+                    _transaction.Commit();
                 }
                 catch
                 {
-                    tx.Rollback();
+                    _transaction.Rollback();
                     throw;
                 }
                 finally
                 {
-                    tx.Dispose();
+                    _transaction.Dispose();
                 }
             }
         }
-
-        /// <summary>
-        /// Commit changes to data source.
-        /// </summary>
-        /// <remarks>use underlying transaction automatically.</remarks>
-        /// <param name="isolationLevel">Isolation level for the new transaction.</param>
-        public void Commit(IsolationLevel isolationLevel)
-        {
-            ITransaction tx = _session.BeginTransaction(isolationLevel);
-            try
-            {
-                tx.Commit();
-            }
-            catch
-            {
-                tx.Rollback();
-                throw;
-            }
-            finally
-            {
-                tx.Dispose();
-            }
-        }
-
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
+            if (_transaction != null)
+                _transaction.Dispose();
             if (_session != null)
                 _session.Dispose();
         }

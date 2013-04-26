@@ -581,6 +581,25 @@
             Initializes a new instance of the <see cref="T:Radial.Persist.Nhs.ContextualUnitOfWork"/> class.
             </summary>
         </member>
+        <member name="M:Radial.Persist.Nhs.ContextualUnitOfWork.#ctor(System.Data.IsolationLevel)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Persist.Nhs.ContextualUnitOfWork"/> class.
+            </summary>
+            <param name="isolationLevel">Isolation level for the new transaction.</param>
+        </member>
+        <member name="M:Radial.Persist.Nhs.ContextualUnitOfWork.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Persist.Nhs.ContextualUnitOfWork"/> class.
+            </summary>
+            <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
+        </member>
+        <member name="M:Radial.Persist.Nhs.ContextualUnitOfWork.#ctor(System.String,System.Data.IsolationLevel)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Persist.Nhs.ContextualUnitOfWork"/> class.
+            </summary>
+            <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
+            <param name="isolationLevel">Isolation level for the new transaction.</param>
+        </member>
         <member name="M:Radial.Persist.Nhs.ContextualUnitOfWork.RegisterNew``1(``0)">
             <summary>
             Register object which will be inserted.
@@ -641,14 +660,6 @@
             <summary>
             Commit changes to data source.
             </summary>
-            <remarks>use underlying transaction automatically when the ambient transaction is null.</remarks>
-        </member>
-        <member name="M:Radial.Persist.Nhs.ContextualUnitOfWork.Commit(System.Data.IsolationLevel)">
-            <summary>
-            Commit changes to data source.
-            </summary>
-            <remarks>use underlying transaction automatically.</remarks>
-            <param name="isolationLevel">Isolation level for the new transaction.</param>
         </member>
         <member name="M:Radial.Persist.Nhs.ContextualUnitOfWork.Dispose">
             <summary>
@@ -954,11 +965,24 @@
             Initializes a new instance of the <see cref="T:Radial.Persist.Nhs.NhUnitOfWork"/> class.
             </summary>
         </member>
+        <member name="M:Radial.Persist.Nhs.NhUnitOfWork.#ctor(System.Data.IsolationLevel)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Persist.Nhs.NhUnitOfWork"/> class.
+            </summary>
+            <param name="isolationLevel">Isolation level for the new transaction.</param>
+        </member>
         <member name="M:Radial.Persist.Nhs.NhUnitOfWork.#ctor(System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:Radial.Persist.Nhs.NhUnitOfWork"/> class.
             </summary>
             <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
+        </member>
+        <member name="M:Radial.Persist.Nhs.NhUnitOfWork.#ctor(System.String,System.Data.IsolationLevel)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Radial.Persist.Nhs.NhUnitOfWork"/> class.
+            </summary>
+            <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
+            <param name="isolationLevel">Isolation level for the new transaction.</param>
         </member>
         <member name="M:Radial.Persist.Nhs.NhUnitOfWork.RegisterNew``1(``0)">
             <summary>
@@ -1020,14 +1044,6 @@
             <summary>
             Commit changes to data source.
             </summary>
-            <remarks>use underlying transaction automatically when the ambient transaction is null.</remarks>
-        </member>
-        <member name="M:Radial.Persist.Nhs.NhUnitOfWork.Commit(System.Data.IsolationLevel)">
-            <summary>
-            Commit changes to data source.
-            </summary>
-            <remarks>use underlying transaction automatically.</remarks>
-            <param name="isolationLevel">Isolation level for the new transaction.</param>
         </member>
         <member name="M:Radial.Persist.Nhs.NhUnitOfWork.Dispose">
             <summary>

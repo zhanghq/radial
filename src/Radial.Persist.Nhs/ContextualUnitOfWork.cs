@@ -12,14 +12,51 @@ namespace Radial.Persist.Nhs
     /// </summary>
     public class ContextualUnitOfWork : IUnitOfWork
     {
-        ISession _session;
+        private readonly ISession _session;
+        private readonly ITransaction _transaction;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextualUnitOfWork"/> class.
         /// </summary>
-        public ContextualUnitOfWork()
+        public ContextualUnitOfWork() : this(null)
         {
-            _session = HibernateEngine.CurrentSession;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContextualUnitOfWork"/> class.
+        /// </summary>
+        /// <param name="isolationLevel">Isolation level for the new transaction.</param>
+        public ContextualUnitOfWork(IsolationLevel isolationLevel) : this(null, isolationLevel)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContextualUnitOfWork"/> class.
+        /// </summary>
+        /// <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
+        public ContextualUnitOfWork(string alias)
+        {
+            if (string.IsNullOrWhiteSpace(alias))
+                _session = HibernateEngine.OpenSession();
+            else
+                _session = SessionFactoryPool.OpenSession(alias);
+
+            _transaction = _session.BeginTransaction();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContextualUnitOfWork"/> class.
+        /// </summary>
+        /// <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
+        /// <param name="isolationLevel">Isolation level for the new transaction.</param>
+        public ContextualUnitOfWork(string alias, IsolationLevel isolationLevel)
+        {
+            if (string.IsNullOrWhiteSpace(alias))
+                _session = HibernateEngine.OpenSession();
+            else
+                _session = SessionFactoryPool.OpenSession(alias);
+
+            _transaction = _session.BeginTransaction(isolationLevel);
         }
 
         /// <summary>
@@ -146,58 +183,33 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Commit changes to data source.
         /// </summary>
-        /// <remarks>use underlying transaction automatically when the ambient transaction is null.</remarks>
         public void Commit()
         {
-            if (System.Transactions.Transaction.Current == null)
+            if (_transaction != null)
             {
-                //generate ITransaction if the ambient transaction is null. 
-                ITransaction tx = _session.BeginTransaction();
                 try
                 {
-                    tx.Commit();
+                    _transaction.Commit();
                 }
                 catch
                 {
-                    tx.Rollback();
+                    _transaction.Rollback();
                     throw;
                 }
                 finally
                 {
-                    tx.Dispose();
+                    _transaction.Dispose();
                 }
             }
         }
-
-        /// <summary>
-        /// Commit changes to data source.
-        /// </summary>
-        /// <remarks>use underlying transaction automatically.</remarks>
-        /// <param name="isolationLevel">Isolation level for the new transaction.</param>
-        public void Commit(IsolationLevel isolationLevel)
-        {
-            ITransaction tx = _session.BeginTransaction(isolationLevel);
-            try
-            {
-                tx.Commit();
-            }
-            catch
-            {
-                tx.Rollback();
-                throw;
-            }
-            finally
-            {
-                tx.Dispose();
-            }
-        }
-
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
+            if (_transaction != null)
+                _transaction.Dispose();
         }
     }
 }

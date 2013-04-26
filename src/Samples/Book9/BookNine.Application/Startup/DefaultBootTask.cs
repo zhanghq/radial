@@ -23,7 +23,7 @@ namespace BookNine.Application.Startup
             ModelConversion.RegisterMappers();
 
             //unit of work
-            Components.Container.RegisterType<IUnitOfWork, ContextualUnitOfWork>(new PerWebRequestLifetimeManager());
+            Components.Container.RegisterType<IUnitOfWork, ContextualUnitOfWork>(new InjectionConstructor());
 
             //repository
             Components.Container.RegisterType<IUserRepository, UserRepository>();

@@ -1354,14 +1354,6 @@
             <summary>
             Commit changes to data source.
             </summary>
-            <remarks>use underlying transaction automatically when the ambient transaction is null.</remarks>
-        </member>
-        <member name="M:Radial.Persist.IUnitOfWork.Commit(System.Data.IsolationLevel)">
-            <summary>
-            Commit changes to data source.
-            </summary>
-            <remarks>use underlying transaction automatically.</remarks>
-            <param name="isolationLevel">Isolation level for the new transaction.</param>
         </member>
         <member name="T:Radial.Persist.OrderBySnippet`1">
             <summary>

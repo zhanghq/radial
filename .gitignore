@@ -8,3 +8,4 @@ log
 /src/Samples/Book9/BookNine.Web/Log
 
 /out/Release/*.pdb
+/out

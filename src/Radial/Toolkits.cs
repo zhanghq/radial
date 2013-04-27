@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.IO;
 using System.IO.Compression;
@@ -435,5 +436,37 @@ namespace Radial
 
         }
 
+        /// <summary>
+        /// Deeps clone.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <returns></returns>
+        public static object DeepClone(object obj)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var bf = new BinaryFormatter();
+                bf.Serialize(ms, obj);
+                ms.Seek(0, 0);
+                return bf.Deserialize(ms);
+            }
+        }
+
+        /// <summary>
+        /// Deeps clone.
+        /// </summary>
+        /// <typeparam name="T">The type of object.</typeparam>
+        /// <param name="obj">The object.</param>
+        /// <returns></returns>
+        public static T DeepClone<T>(T obj) where T : class
+        {
+            using (var ms = new MemoryStream())
+            {
+                var bf = new BinaryFormatter();
+                bf.Serialize(ms, obj);
+                ms.Seek(0, 0);
+                return bf.Deserialize(ms) as T;
+            }
+        }
     }
 }

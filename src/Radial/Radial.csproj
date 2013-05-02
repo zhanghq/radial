@@ -74,6 +74,7 @@
     <Compile Include="Checker.cs" />
     <Compile Include="Drawing\ImageKits.cs" />
     <Compile Include="EnumItemAttribute.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="FileWatcher.cs" />
     <Compile Include="Boot\IBootTask.cs" />

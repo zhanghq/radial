@@ -42,7 +42,7 @@ namespace Radial.Persist.Nhs
 
 
         /// <summary>
-        /// Opens and binds the specified session to the current context.
+        /// Open and bind the specified session to the current context.
         /// </summary>
         /// <returns>ISession instance.</returns>
         public static void OpenAndBindSession()
@@ -71,15 +71,17 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Unbinds and disposes current session.
+        /// Close and unbind the specified session from the current context.
         /// </summary>
-        /// <returns>The session instance .</returns>
-        public static void UnbindAndDisposeSession()
+        public static void CloseAndUnbindSession()
         {
             ISession session = CurrentSessionContext.Unbind(SessionFactory);
 
             if (session != null)
+            {
+                session.Close();
                 session.Dispose();
+            }
         }
 
         /// <summary>

@@ -73,7 +73,7 @@ namespace Radial.Persist.Nhs
         void context_EndRequest(object sender, EventArgs e)
         {
             if (NeedSession(sender as HttpApplication))
-                HibernateEngine.UnbindAndDisposeSession();
+                HibernateEngine.CloseAndUnbindSession();
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Radial.Persist.Nhs
         void context_Error(object sender, EventArgs e)
         {
             if (NeedSession(sender as HttpApplication))
-                HibernateEngine.UnbindAndDisposeSession();
+                HibernateEngine.CloseAndUnbindSession();
         }
 
 

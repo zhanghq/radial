@@ -36,7 +36,7 @@ namespace BookNine.Application.Startup
 
         public void Stop()
         {
-            HibernateEngine.UnbindAndDisposeSession();
+            HibernateEngine.CloseAndUnbindSession();
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Radial.Persist.Nhs.NamingStrategy
             if (string.Compare(driverClassTypeString, typeof(SqlClientDriver).FullName, true) == 0
                 || string.Compare(driverClassTypeString, typeof(SqlServerCeDriver).FullName, true) == 0
                 || string.Compare(driverClassTypeString, typeof(Sql2008ClientDriver).FullName, true) == 0)
-                return new MsSqlNamingStrategy();
+                return new SqlServerNamingStrategy();
             if (string.Compare(driverClassTypeString, typeof(MySqlDataDriver).FullName, true) == 0)
                 return new MySqlNamingStrategy();
             if (string.Compare(driverClassTypeString, typeof(SQLite20Driver).FullName, true) == 0)

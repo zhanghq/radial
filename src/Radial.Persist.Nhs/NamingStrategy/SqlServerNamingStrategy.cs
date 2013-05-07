@@ -8,9 +8,9 @@ using NHibernate.Util;
 namespace Radial.Persist.Nhs.NamingStrategy
 {
     /// <summary>
-    /// MsSql naming strategy
+    /// SqlServer naming strategy
     /// </summary>
-    public sealed class MsSqlNamingStrategy : INamingStrategy
+    public sealed class SqlServerNamingStrategy : INamingStrategy
     {
 
         /// <summary>

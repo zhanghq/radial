@@ -57,11 +57,12 @@
     <Compile Include="DefaultFactoryPoolInitializer.cs" />
     <Compile Include="HibernateEngine.cs" />
     <Compile Include="IFactoryPoolInitializer.cs" />
-    <Compile Include="NamingStrategy\MsSqlNamingStrategy.cs" />
+    <Compile Include="NamingStrategy\SqlServerNamingStrategy.cs" />
     <Compile Include="NamingStrategy\MySqlNamingStrategy.cs" />
     <Compile Include="NamingStrategy\NamingStrategyFactory.cs" />
     <Compile Include="NamingStrategy\SqliteNamingStrategy.cs" />
     <Compile Include="NhUnitOfWork.cs" />
+    <Compile Include="Order\SqlServerRandomOrder.cs" />
     <Compile Include="Param\NhParam.cs" />
     <Compile Include="Param\ParamItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -11,7 +11,7 @@ namespace Radial.Tools.NhAuto.Kernel
     {
         public Profiles()
         {
-            EnableLazyModel = true;
+            ModelLazy = true;
         }
 
         /// <summary>
@@ -35,9 +35,9 @@ namespace Radial.Tools.NhAuto.Kernel
         public string ModelNamespace { get; set; }
 
         /// <summary>
-        /// 获取或设置模型类是否开启延迟加载(&lt;class lazy=&quot;true|false&quot;&gt;)
+        /// 获取或设置模型类是否延迟加载(&lt;class lazy=&quot;true|false&quot;&gt;)
         /// </summary>
-        public bool EnableLazyModel { get; set; }
+        public bool ModelLazy { get; set; }
 
         /// <summary>
         /// 获取或设置输出目录

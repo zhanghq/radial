@@ -42,11 +42,11 @@ namespace Radial.Persist.Lite.Cfg
         /// <summary>
         /// 获取或设置数据源类型
         /// </summary>
-        [ConfigurationProperty("type", DefaultValue = DataSourceType.SqlServer)]
-        public DataSourceType DataSourceType
+        [ConfigurationProperty("type", DefaultValue = DataSource.SqlServer)]
+        public DataSource DataSource
         {
             get
-            { return (DataSourceType)this["type"]; }
+            { return (DataSource)this["type"]; }
             set
             { this["type"] = value; }
         }

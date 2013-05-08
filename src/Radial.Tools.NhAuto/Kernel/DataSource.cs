@@ -2,28 +2,25 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Radial.Persist.Lite
+namespace Radial.Tools.NhAuto.Kernel
 {
     /// <summary>
     /// 数据源类型
     /// </summary>
-    public enum DataSourceType
+    public enum DataSource
     {
         /// <summary>
         /// Sql Server Series
         /// </summary>
         SqlServer = 0,
         /// <summary>
-        /// Ms Access
+        /// MySql
         /// </summary>
-        MsAccess = 1,
+        MySql = 2,
         /// <summary>
         /// Sqlite
         /// </summary>
-        Sqlite = 2,
-        /// <summary>
-        /// MySql
-        /// </summary>
-        MySql = 3
+        Sqlite = 3
+
     }
 }

@@ -13,17 +13,17 @@ namespace Radial.Persist.Lite
         /// <summary>
         /// 创建Sql语句查询类实例
         /// </summary>
-        /// <param name="dsType">数据源类型</param>
+        /// <param name="ds">数据源类型</param>
         /// <returns>Sql语句查询类实例</returns>
-        public static SqlQuery CreateSqlQueryInstance(DataSourceType dsType)
+        public static SqlQuery CreateSqlQueryInstance(DataSource ds)
         {
-            switch (dsType)
+            switch (ds)
             {
-                case DataSourceType.SqlServer: return new SqlServerQuery();
-                case DataSourceType.MsAccess: return new MsAccessQuery();
-                case DataSourceType.MySql: return new MySqlQuery();
-                case DataSourceType.Sqlite: return new SqliteQuery();
-                default: throw new NotSupportedException("暂不支持" + dsType.ToString() + "数据源类型");
+                case DataSource.SqlServer: return new SqlServerQuery();
+                case DataSource.MsAccess: return new MsAccessQuery();
+                case DataSource.MySql: return new MySqlQuery();
+                case DataSource.Sqlite: return new SqliteQuery();
+                default: throw new NotSupportedException("暂不支持" + ds.ToString() + "数据源类型");
             }
         }
     }

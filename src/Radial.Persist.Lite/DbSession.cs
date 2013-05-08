@@ -16,7 +16,7 @@ namespace Radial.Persist.Lite
     {
         #region Fields
 
-        DataSourceType _dsType;
+        DataSource _ds;
         DbConnection _connection;
         DbTransaction _transaction;
         SqlQuery _sqlQuery;
@@ -70,7 +70,7 @@ namespace Radial.Persist.Lite
             if (substitution != null)
                 connectionString = substitution(connectionString);
 
-            Initialize(connectionString, settings.DataSourceType);
+            Initialize(connectionString, settings.DataSource);
         }
 
         /// <summary>
@@ -99,17 +99,17 @@ namespace Radial.Persist.Lite
             if (substitution != null)
                 connectionString = substitution(connectionString);
 
-            Initialize(connectionString, settings.DataSourceType);
+            Initialize(connectionString, settings.DataSource);
         }
 
         /// <summary>
         /// 初始化数据会话
         /// </summary>
         /// <param name="connectionString">连接字符串</param>
-        /// <param name="dsType">数据源类型</param>
-        public DbSession(string connectionString, DataSourceType dsType)
+        /// <param name="ds">数据源类型</param>
+        public DbSession(string connectionString, DataSource ds)
         {
-            Initialize(connectionString, dsType);
+            Initialize(connectionString, ds);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace Radial.Persist.Lite
         /// <returns>数据会话对象</returns>
         public static DbSession NewSqlServerSession(string connectionString)
         {
-            return new DbSession(connectionString, DataSourceType.SqlServer);
+            return new DbSession(connectionString, DataSource.SqlServer);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace Radial.Persist.Lite
         /// <returns>数据会话对象</returns>
         public static DbSession NewMySqlSession(string connectionString)
         {
-            return new DbSession(connectionString, DataSourceType.MySql);
+            return new DbSession(connectionString, DataSource.MySql);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Radial.Persist.Lite
         /// <returns>数据会话对象</returns>
         public static DbSession NewMsAccessSession(string connectionString)
         {
-            return new DbSession(connectionString, DataSourceType.MsAccess);
+            return new DbSession(connectionString, DataSource.MsAccess);
         }
 
         /// <summary>
@@ -149,21 +149,21 @@ namespace Radial.Persist.Lite
         /// <returns>数据会话对象</returns>
         public static DbSession NewSqliteSession(string connectionString)
         {
-            return new DbSession(connectionString, DataSourceType.Sqlite);
+            return new DbSession(connectionString, DataSource.Sqlite);
         }
 
         /// <summary>
         /// 初始化数据会话
         /// </summary>
         /// <param name="connectionString">连接字符串</param>
-        /// <param name="dsType">数据源类型</param>
-        private void Initialize(string connectionString, DataSourceType dsType)
+        /// <param name="ds">数据源类型</param>
+        private void Initialize(string connectionString, DataSource ds)
         {
             if (string.IsNullOrEmpty(connectionString))
                 throw new ArgumentNullException("connectionString", "用于打开连接的字符串不能为空");
 
-            SqlQuery = QueryFactory.CreateSqlQueryInstance(dsType);
-            DataSourceType = dsType;
+            SqlQuery = QueryFactory.CreateSqlQueryInstance(ds);
+            DataSourceType = ds;
             Connection = SqlQuery.DbProvider.CreateConnection();
             Connection.ConnectionString = connectionString;
         }
@@ -200,15 +200,15 @@ namespace Radial.Persist.Lite
         /// <summary>
         /// 获取数据源类型
         /// </summary>
-        public DataSourceType DataSourceType
+        public DataSource DataSourceType
         {
             get
             {
-                return _dsType;
+                return _ds;
             }
             private set
             {
-                _dsType = value;
+                _ds = value;
             }
         }
 

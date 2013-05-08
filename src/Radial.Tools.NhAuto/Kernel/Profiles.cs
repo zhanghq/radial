@@ -9,6 +9,11 @@ namespace Radial.Tools.NhAuto.Kernel
     /// </summary>
     public class Profiles
     {
+        public Profiles()
+        {
+            EnableLazyModel = true;
+        }
+
         /// <summary>
         /// 获取或设置数据源类型
         /// </summary>
@@ -20,14 +25,24 @@ namespace Radial.Tools.NhAuto.Kernel
         public string ConnectionString { get; set; }
 
         /// <summary>
-        /// 获取或设置模型的程序集名称
+        /// 获取或设置模型类的程序集名称
         /// </summary>
         public string ModelAssembly { get; set; }
 
         /// <summary>
-        /// 获取或设置模型的命名空间
+        /// 获取或设置模型类的命名空间
         /// </summary>
         public string ModelNamespace { get; set; }
+
+        /// <summary>
+        /// 获取或设置模型类是否开启延迟加载(&lt;class lazy=&quot;true|false&quot;&gt;)
+        /// </summary>
+        public bool EnableLazyModel { get; set; }
+
+        /// <summary>
+        /// 获取或设置输出目录
+        /// </summary>
+        public string OutputDirectory { get; set; }
 
     }
 }

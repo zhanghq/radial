@@ -66,7 +66,10 @@ namespace Radial
             lock (S_SyncRoot)
             {
                 if (!S_IsStart)
-                    XmlConfigurator.ConfigureAndWatch(new FileInfo(ConfigurationPath));
+                {
+                    if (File.Exists(ConfigurationPath))
+                        XmlConfigurator.ConfigureAndWatch(new FileInfo(ConfigurationPath));
+                }
             }
         }
 

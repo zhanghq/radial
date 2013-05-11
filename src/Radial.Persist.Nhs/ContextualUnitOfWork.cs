@@ -49,7 +49,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Prepares the transaction.
         /// </summary>
-        private void PrepareTransaction()
+        protected virtual void PrepareTransaction()
         {
             if (_transaction == null)
             {

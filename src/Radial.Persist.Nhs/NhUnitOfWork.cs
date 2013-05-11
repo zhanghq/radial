@@ -13,12 +13,14 @@ namespace Radial.Persist.Nhs
     public class NhUnitOfWork : IUnitOfWork
     {
         private readonly ISession _session;
-        private readonly ITransaction _transaction;
+        private readonly IsolationLevel? _isolationLevel;
+        private ITransaction _transaction;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
         /// </summary>
-        public NhUnitOfWork() : this(null)
+        public NhUnitOfWork()
+            : this(null)
         {
         }
 
@@ -26,7 +28,8 @@ namespace Radial.Persist.Nhs
         /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
         /// </summary>
         /// <param name="isolationLevel">Isolation level for the new transaction.</param>
-        public NhUnitOfWork(IsolationLevel isolationLevel) : this(null, isolationLevel)
+        public NhUnitOfWork(IsolationLevel isolationLevel)
+            : this(null, isolationLevel)
         {
         }
 
@@ -40,8 +43,6 @@ namespace Radial.Persist.Nhs
                 _session = HibernateEngine.OpenSession();
             else
                 _session = SessionFactoryPool.OpenSession(alias);
-
-            _transaction = _session.BeginTransaction();
         }
 
         /// <summary>
@@ -50,13 +51,23 @@ namespace Radial.Persist.Nhs
         /// <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
         /// <param name="isolationLevel">Isolation level for the new transaction.</param>
         public NhUnitOfWork(string alias, IsolationLevel isolationLevel)
+            : this(alias)
         {
-            if (string.IsNullOrWhiteSpace(alias))
-                _session = HibernateEngine.OpenSession();
-            else
-                _session = SessionFactoryPool.OpenSession(alias);
+            _isolationLevel = isolationLevel;
+        }
 
-            _transaction = _session.BeginTransaction(isolationLevel);
+        /// <summary>
+        /// Prepares the transaction.
+        /// </summary>
+        private void PrepareTransaction()
+        {
+            if (_transaction == null)
+            {
+                if (!_isolationLevel.HasValue)
+                    _transaction = _session.BeginTransaction();
+                else
+                    _transaction = _session.BeginTransaction(_isolationLevel.Value);
+            }
         }
 
         /// <summary>
@@ -75,7 +86,10 @@ namespace Radial.Persist.Nhs
         public virtual void RegisterNew<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
+            {
+                PrepareTransaction();
                 _session.Save(obj);
+            }
         }
 
         /// <summary>
@@ -85,8 +99,10 @@ namespace Radial.Persist.Nhs
         /// <param name="objs">The object set.</param>
         public virtual void RegisterNew<TObject>(IEnumerable<TObject> objs) where TObject : class
         {
-            if (objs != null)
+            if (objs != null && objs.Count() > 0)
             {
+                PrepareTransaction();
+
                 foreach (TObject obj in objs)
                 {
                     if (obj != null)
@@ -103,7 +119,10 @@ namespace Radial.Persist.Nhs
         public virtual void RegisterSave<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
+            {
+                PrepareTransaction();
                 _session.SaveOrUpdate(obj);
+            }
         }
 
         /// <summary>
@@ -113,8 +132,10 @@ namespace Radial.Persist.Nhs
         /// <param name="objs">The object set.</param>
         public virtual void RegisterSave<TObject>(IEnumerable<TObject> objs) where TObject : class
         {
-            if (objs != null)
+            if (objs != null && objs.Count() > 0)
             {
+                PrepareTransaction();
+
                 foreach (TObject obj in objs)
                 {
                     if (obj != null)
@@ -131,7 +152,10 @@ namespace Radial.Persist.Nhs
         public virtual void RegisterDelete<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
+            {
+                PrepareTransaction();
                 _session.Delete(obj);
+            }
         }
 
         /// <summary>
@@ -141,8 +165,10 @@ namespace Radial.Persist.Nhs
         /// <param name="objs">The object instance.</param>
         public void RegisterDelete<TObject>(IEnumerable<TObject> objs) where TObject : class
         {
-            if (objs != null)
+            if (objs != null && objs.Count() > 0)
             {
+                PrepareTransaction();
+
                 foreach (TObject obj in objs)
                 {
                     if (obj != null)
@@ -167,6 +193,8 @@ namespace Radial.Persist.Nhs
             string query = string.Format("from {0} o where o.{1}=?", typeof (TObject).Name,
                                          metadata.IdentifierPropertyName);
 
+            PrepareTransaction();
+
             _session.Delete(query, key, metadata.IdentifierType);
         }
 
@@ -176,6 +204,8 @@ namespace Radial.Persist.Nhs
         /// <typeparam name="TObject">The type of object.</typeparam>
         public virtual void RegisterClear<TObject>() where TObject : class
         {
+            PrepareTransaction();
+
             _session.Delete(string.Format("from {0}", typeof (TObject).Name));
         }
 

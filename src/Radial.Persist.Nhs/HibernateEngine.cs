@@ -47,8 +47,7 @@ namespace Radial.Persist.Nhs
         /// <returns>ISession instance.</returns>
         public static void OpenAndBindSession()
         {
-            ISession session = SessionFactory.OpenSession();
-            CurrentSessionContext.Bind(session);
+            CurrentSessionContext.Bind(SessionFactory.OpenSession());
         }
 
 

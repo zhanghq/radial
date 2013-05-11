@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using Microsoft.Practices.Unity;
 using NHibernate;
 
 namespace Radial.Persist.Nhs
@@ -13,50 +14,25 @@ namespace Radial.Persist.Nhs
     public class ContextualUnitOfWork : IUnitOfWork
     {
         private readonly ISession _session;
-        private readonly ITransaction _transaction;
+        private readonly IsolationLevel? _isolationLevel;
+        private ITransaction _transaction;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextualUnitOfWork"/> class.
         /// </summary>
-        public ContextualUnitOfWork() : this(null)
+        public ContextualUnitOfWork()
         {
+            _session = HibernateEngine.CurrentSession;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextualUnitOfWork"/> class.
         /// </summary>
         /// <param name="isolationLevel">Isolation level for the new transaction.</param>
-        public ContextualUnitOfWork(IsolationLevel isolationLevel) : this(null, isolationLevel)
+        public ContextualUnitOfWork(IsolationLevel isolationLevel)
+            : this()
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContextualUnitOfWork"/> class.
-        /// </summary>
-        /// <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
-        public ContextualUnitOfWork(string alias)
-        {
-            if (string.IsNullOrWhiteSpace(alias))
-                _session = HibernateEngine.OpenSession();
-            else
-                _session = SessionFactoryPool.OpenSession(alias);
-
-            _transaction = _session.BeginTransaction();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContextualUnitOfWork"/> class.
-        /// </summary>
-        /// <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
-        /// <param name="isolationLevel">Isolation level for the new transaction.</param>
-        public ContextualUnitOfWork(string alias, IsolationLevel isolationLevel)
-        {
-            if (string.IsNullOrWhiteSpace(alias))
-                _session = HibernateEngine.OpenSession();
-            else
-                _session = SessionFactoryPool.OpenSession(alias);
-
-            _transaction = _session.BeginTransaction(isolationLevel);
+            _isolationLevel = isolationLevel;
         }
 
         /// <summary>
@@ -71,6 +47,20 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
+        /// Prepares the transaction.
+        /// </summary>
+        private void PrepareTransaction()
+        {
+            if (_transaction == null)
+            {
+                if (!_isolationLevel.HasValue)
+                    _transaction = _session.BeginTransaction();
+                else
+                    _transaction = _session.BeginTransaction(_isolationLevel.Value);
+            }
+        }
+
+        /// <summary>
         /// Register object which will be inserted.
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>
@@ -78,7 +68,10 @@ namespace Radial.Persist.Nhs
         public virtual void RegisterNew<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
+            {
+                PrepareTransaction();
                 _session.Save(obj);
+            }
         }
 
         /// <summary>
@@ -88,8 +81,10 @@ namespace Radial.Persist.Nhs
         /// <param name="objs">The object set.</param>
         public virtual void RegisterNew<TObject>(IEnumerable<TObject> objs) where TObject : class
         {
-            if (objs != null)
+            if (objs != null && objs.Count() > 0)
             {
+                PrepareTransaction();
+
                 foreach (TObject obj in objs)
                 {
                     if (obj != null)
@@ -106,7 +101,10 @@ namespace Radial.Persist.Nhs
         public virtual void RegisterSave<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
+            {
+                PrepareTransaction();
                 _session.SaveOrUpdate(obj);
+            }
         }
 
         /// <summary>
@@ -116,8 +114,10 @@ namespace Radial.Persist.Nhs
         /// <param name="objs">The object set.</param>
         public virtual void RegisterSave<TObject>(IEnumerable<TObject> objs) where TObject : class
         {
-            if (objs != null)
+            if (objs != null && objs.Count() > 0)
             {
+                PrepareTransaction();
+
                 foreach (TObject obj in objs)
                 {
                     if (obj != null)
@@ -134,7 +134,10 @@ namespace Radial.Persist.Nhs
         public virtual void RegisterDelete<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
+            {
+                PrepareTransaction();
                 _session.Delete(obj);
+            }
         }
 
         /// <summary>
@@ -144,8 +147,10 @@ namespace Radial.Persist.Nhs
         /// <param name="objs">The object instance.</param>
         public void RegisterDelete<TObject>(IEnumerable<TObject> objs) where TObject : class
         {
-            if (objs != null)
+            if (objs != null && objs.Count() > 0)
             {
+                PrepareTransaction();
+
                 foreach (TObject obj in objs)
                 {
                     if (obj != null)
@@ -168,6 +173,8 @@ namespace Radial.Persist.Nhs
 
             string query = string.Format("from {0} o where o.{1}=?", typeof(TObject).Name, metadata.IdentifierPropertyName);
 
+            PrepareTransaction();
+
             _session.Delete(query, key, metadata.IdentifierType);
         }
 
@@ -177,6 +184,7 @@ namespace Radial.Persist.Nhs
         /// <typeparam name="TObject">The type of object.</typeparam>
         public virtual void RegisterClear<TObject>() where TObject : class
         {
+            PrepareTransaction();
             _session.Delete(string.Format("from {0}", typeof(TObject).Name));
         }
 

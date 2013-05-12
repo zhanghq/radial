@@ -51,7 +51,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         protected virtual void PrepareTransaction()
         {
-            if (_transaction == null)
+            if (_transaction == null && System.Transactions.Transaction.Current == null)
             {
                 if (!_isolationLevel.HasValue)
                     _transaction = _session.BeginTransaction();
@@ -193,7 +193,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         public void Commit()
         {
-            if (_transaction != null)
+            if (_transaction != null && System.Transactions.Transaction.Current == null)
             {
                 try
                 {

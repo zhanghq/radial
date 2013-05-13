@@ -61,7 +61,7 @@ namespace Radial
         /// <summary>
         /// Starts the log component.
         /// </summary>
-        public static void Start()
+        private static void Start()
         {
             lock (S_SyncRoot)
             {

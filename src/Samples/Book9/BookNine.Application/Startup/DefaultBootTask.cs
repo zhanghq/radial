@@ -17,8 +17,6 @@ namespace BookNine.Application.Startup
     {
         public void Initialize()
         {
-            Logger.Start();
-
             //model conversion
             ModelConversion.RegisterMappers();
 

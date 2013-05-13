@@ -28,5 +28,17 @@ namespace Radial.Extensions
             for (int i = 0; i < temps.Count(); i++)
                 source.Remove(temps.ElementAt(i));
         }
+
+        /// <summary>
+        /// Adds objects to the specified source.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="objs">The objs.</param>
+        public static void Add<TSource>(this ICollection<TSource> source, IEnumerable<TSource> objs)
+        {
+            foreach (TSource o in objs)
+                source.Add(o);
+        }
     }
 }

@@ -22,12 +22,7 @@ namespace Radial.Extensions
         /// <exception cref="System.ArgumentNullException">source or predicate is null.</exception>
         public static bool Contains<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            if (source == null)
-                throw new System.ArgumentNullException("source");
-            if (predicate == null)
-                throw new System.ArgumentNullException("predicate");
-
-            return source.Count<TSource>(predicate) > 0;
+            return source.Any<TSource>(predicate);
         }
     }
 }

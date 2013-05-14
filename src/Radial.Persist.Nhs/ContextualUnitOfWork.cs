@@ -86,10 +86,7 @@ namespace Radial.Persist.Nhs
                 PrepareTransaction();
 
                 foreach (TObject obj in objs)
-                {
-                    if (obj != null)
-                        _session.Save(obj);
-                }
+                    _session.Save(obj);
             }
         }
 
@@ -119,10 +116,7 @@ namespace Radial.Persist.Nhs
                 PrepareTransaction();
 
                 foreach (TObject obj in objs)
-                {
-                    if (obj != null)
-                        _session.SaveOrUpdate(obj);
-                }
+                    _session.SaveOrUpdate(obj);
             }
         }
 
@@ -152,10 +146,7 @@ namespace Radial.Persist.Nhs
                 PrepareTransaction();
 
                 foreach (TObject obj in objs)
-                {
-                    if (obj != null)
-                        _session.Delete(obj);
-                }
+                    _session.Delete(obj);
             }
         }
 

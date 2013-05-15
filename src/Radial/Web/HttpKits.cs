@@ -358,17 +358,15 @@ namespace Radial.Web
         public static void WriteXml(string xml, string contentType, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
 
-            Encoding encoding = Encoding.GetEncoding("UTF-8");
-
             if (string.IsNullOrWhiteSpace(xml))
-                xml = string.Format("<?xml version=\"1.0\" encoding=\"{0}\"?>", encoding.BodyName.ToLower());
+                xml = string.Format("<?xml version=\"1.0\" encoding=\"{0}\"?>", Encoding.UTF8.BodyName.ToLower());
 
             if (string.IsNullOrWhiteSpace(contentType))
                 CurrentContext.Response.ContentType = ContentTypes.Xml;
             else
                 CurrentContext.Response.ContentType = contentType.Trim();
 
-            CurrentContext.Response.Charset = encoding.BodyName;
+            CurrentContext.Response.Charset = Encoding.UTF8.BodyName;
             CurrentContext.Response.Write(xml);
             if (statusCode.HasValue)
                 CurrentContext.Response.StatusCode = (int)statusCode.Value;

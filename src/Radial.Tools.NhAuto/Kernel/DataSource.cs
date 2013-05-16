@@ -16,11 +16,6 @@ namespace Radial.Tools.NhAuto.Kernel
         /// <summary>
         /// MySql
         /// </summary>
-        MySql = 2,
-        /// <summary>
-        /// Sqlite
-        /// </summary>
-        Sqlite = 3
-
+        MySql = 1
     }
 }

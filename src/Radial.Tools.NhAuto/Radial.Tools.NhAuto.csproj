@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\packages\2.0\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -40,8 +43,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Kernel\FieldDefinition.cs" />
     <Compile Include="Kernel\DataSource.cs" />
-    <Compile Include="Kernel\Profiles.cs" />
+    <Compile Include="Kernel\Profile.cs" />
+    <Compile Include="Kernel\Data\DbSession.cs" />
+    <Compile Include="Kernel\Data\Delegates.cs" />
+    <Compile Include="Kernel\Data\QueryFactory.cs" />
+    <Compile Include="Kernel\Data\Query\MySqlQuery.cs" />
+    <Compile Include="Kernel\Data\Query\SqlServerQuery.cs" />
+    <Compile Include="Kernel\Data\RowData.cs" />
+    <Compile Include="Kernel\Data\RowDataCollection.cs" />
+    <Compile Include="Kernel\Data\SqlQuery.cs" />
+    <Compile Include="Kernel\Data\TextCommandData.cs" />
+    <Compile Include="Kernel\TableDefinition.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,6 +72,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -68,6 +83,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SqlServerTablesQuery.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SqlServerFieldDefinitionQuery.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

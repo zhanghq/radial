@@ -33,16 +33,6 @@ namespace Radial.Cache
         {
             Instance.Set(key, value);
         }
-        /// <summary>
-        /// Set cache data.
-        /// </summary>
-        /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <param name="value">The cache value.</param>
-        public static void Set<T>(string key, T value)
-        {
-            Instance.Set(key, value);
-        }
 
         /// <summary>
         /// Set cache data.
@@ -66,29 +56,6 @@ namespace Radial.Cache
             Instance.Set(key, value, ts);
         }
 
-        /// <summary>
-        /// Set cache data.
-        /// </summary>
-        /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <param name="value">The cache value.</param>
-        /// <param name="cacheSeconds">The cache holding seconds.</param>
-        public static void Set<T>(string key, T value, int cacheSeconds)
-        {
-            Instance.Set<T>(key, value, cacheSeconds);
-        }
-
-        /// <summary>
-        /// Set cache data.
-        /// </summary>
-        /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <param name="value">The cache value.</param>
-        /// <param name="ts">The cache holding time.</param>
-        public static void Set<T>(string key, T value, TimeSpan ts)
-        {
-            Instance.Set<T>(key, value, ts);
-        }
 
         /// <summary>
         /// Retrieve cached data.

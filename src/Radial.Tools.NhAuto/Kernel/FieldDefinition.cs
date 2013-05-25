@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using Radial.Tools.NhAuto.Data;
 using Radial.Tools.NhAuto.Properties;
 
@@ -63,7 +64,7 @@ namespace Radial.Tools.NhAuto.Kernel
 
             using (DbSession session = DbSession.NewSqlServerSession(connectionString))
             {
-                IList<RowDataCollection> rows = session.ExecuteRows(Resources.SqlServerFieldDefinitionQuery, tableDef.SchemaName, tableDef.TableName);
+                IList<RowDataCollection> rows = session.ExecuteRows(Resources.SqlServerFieldDefinitionQuery, tableDef.Schema, tableDef.Name);
 
                 foreach (RowDataCollection row in rows)
                 {

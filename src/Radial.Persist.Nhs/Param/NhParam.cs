@@ -137,7 +137,7 @@ namespace Radial.Persist.Nhs.Param
                         _itemObject = ReadFromDatabase();
 
                         if (_itemObject != null)
-                            CacheStatic.Set<string>(CacheKey, _itemObject.ToCacheString());
+                            CacheStatic.Set(CacheKey, _itemObject.ToCacheString());
                     }
 
                     //database empty
@@ -180,7 +180,7 @@ namespace Radial.Persist.Nhs.Param
                 WriteToDatabase(_itemObject);
 
                 //set entity cache
-                CacheStatic.Set<string>(CacheKey, _itemObject.ToCacheString());
+                CacheStatic.Set(CacheKey, _itemObject.ToCacheString());
             }
         }
 

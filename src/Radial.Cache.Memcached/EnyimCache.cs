@@ -44,17 +44,6 @@ namespace Radial.Cache.Memcached
             _client.Store(Enyim.Caching.Memcached.StoreMode.Set, NormalizeKey(key), value);
         }
 
-        /// <summary>
-        /// Set cache data.
-        /// </summary>
-        /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="key">The cache key.</param>
-        /// <param name="value">The cache value.</param>
-        /// <remarks>The cache will be discarding only if server or explicitly removed.</remarks>
-        public void Set<T>(string key, T value)
-        {
-            _client.Store(Enyim.Caching.Memcached.StoreMode.Set, NormalizeKey(key), value);
-        }
 
         /// <summary>
         /// Set cache data.
@@ -78,29 +67,6 @@ namespace Radial.Cache.Memcached
             _client.Store(Enyim.Caching.Memcached.StoreMode.Set, NormalizeKey(key), value, ts);
         }
 
-        /// <summary>
-        /// Set cache data.
-        /// </summary>
-        /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="key">The cache key.</param>
-        /// <param name="value">The cache value.</param>
-        /// <param name="cacheSeconds">The cache holding seconds.</param>
-        public void Set<T>(string key, T value, int cacheSeconds)
-        {
-            Set<T>(key, value, TimeSpan.FromSeconds(cacheSeconds));
-        }
-
-        /// <summary>
-        /// Set cache data.
-        /// </summary>
-        /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="key">The cache key.</param>
-        /// <param name="value">The cache value.</param>
-        /// <param name="ts">The cache holding time.</param>
-        public void Set<T>(string key, T value, TimeSpan ts)
-        {
-            _client.Store(Enyim.Caching.Memcached.StoreMode.Set, NormalizeKey(key), value, ts);
-        }
 
         /// <summary>
         /// Retrieve cached data.

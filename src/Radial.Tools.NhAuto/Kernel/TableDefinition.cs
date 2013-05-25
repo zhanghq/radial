@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using Radial.Tools.NhAuto.Data;
 using Radial.Tools.NhAuto.Properties;
 
@@ -14,12 +15,12 @@ namespace Radial.Tools.NhAuto.Kernel
         /// <summary>
         /// 获取表Schema名称
         /// </summary>
-        public string SchemaName { get; private set; }
+        public string Schema { get; private set; }
 
         /// <summary>
         /// 获取表名
         /// </summary>
-        public string TableName { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// Returns a hash code for this instance.
@@ -29,9 +30,9 @@ namespace Radial.Tools.NhAuto.Kernel
         /// </returns>
         public override int GetHashCode()
         {
-            if (SchemaName != null)
-                return (SchemaName.ToLower() + TableName.ToLower()).GetHashCode();
-            return TableName.ToLower().GetHashCode();
+            if (Schema != null)
+                return (Schema.ToLower() + Name.ToLower()).GetHashCode();
+            return Name.ToLower().GetHashCode();
         }
 
         /// <summary>
@@ -104,7 +105,7 @@ namespace Radial.Tools.NhAuto.Kernel
 
                 foreach (RowDataCollection row in rows)
                 {
-                    list.Add(new TableDefinition { SchemaName = row["SchemaName"].ToString(), TableName = row["TableName"].ToString() });
+                    list.Add(new TableDefinition { Schema = row["SchemaName"].ToString(), Name = row["TableName"].ToString() });
                 }
             }
 

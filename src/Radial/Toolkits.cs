@@ -443,6 +443,9 @@ namespace Radial
         /// <returns></returns>
         public static object DeepClone(object obj)
         {
+            if (obj == null)
+                return null;
+
             using (var ms = new MemoryStream())
             {
                 var bf = new BinaryFormatter();
@@ -460,6 +463,9 @@ namespace Radial
         /// <returns></returns>
         public static T DeepClone<T>(T obj) where T : class
         {
+            if (obj == null)
+                return null;
+
             using (var ms = new MemoryStream())
             {
                 var bf = new BinaryFormatter();

@@ -25,33 +25,10 @@ namespace Radial.Cache
         /// <summary>
         /// Set cache data.
         /// </summary>
-        /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <param name="value">The cache value.</param>
-        public void Set<T>(string key, T value)
-        {
-
-        }
-
-        /// <summary>
-        /// Set cache data.
-        /// </summary>
         /// <param name="key">The cache key(case insensitive).</param>
         /// <param name="value">The cache value.</param>
         /// <param name="ts">The cache holding time.</param>
         public void Set(string key, object value, TimeSpan ts)
-        {
-
-        }
-
-        /// <summary>
-        /// Set cache data.
-        /// </summary>
-        /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <param name="value">The cache value.</param>
-        /// <param name="ts">The cache holding time.</param>
-        public void Set<T>(string key, T value, TimeSpan ts)
         {
 
         }
@@ -127,15 +104,6 @@ namespace Radial.Cache
         /// <param name="value">The cache value.</param>
         /// <param name="cacheSeconds">The cache holding seconds.</param>
         public void Set(string key, object value, int cacheSeconds) { }
-
-        /// <summary>
-        /// Set cache data.
-        /// </summary>
-        /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <param name="value">The cache value.</param>
-        /// <param name="cacheSeconds">The cache holding seconds.</param>
-        public void Set<T>(string key, T value, int cacheSeconds) { }
 
     }
 }

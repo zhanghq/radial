@@ -64,7 +64,7 @@ namespace Radial.Tools.NhAuto.Properties {
         ///   查找类似 --参数@P0：Schema Name
         ///--参数@P1：Table Name
         ///DECLARE @schema_id int
-        ///SELECT @schema_id=schema_id FROM sys.schemas WHERE name=@P0
+        ///SELECT @schema_id=schema_id FROM sys.schemas WHERE name={0}
         ///
         ///SELECT     
         ///a.name AS [Name],c.name AS [Type],a.length AS [Length],

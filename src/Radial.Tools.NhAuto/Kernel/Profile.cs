@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Radial.Tools.NhAuto.Kernel
 {
@@ -11,7 +12,6 @@ namespace Radial.Tools.NhAuto.Kernel
     {
         public Profile()
         {
-            MapByXml = true;
             LazyModel = true;
         }
 
@@ -41,24 +41,14 @@ namespace Radial.Tools.NhAuto.Kernel
         public bool LazyModel { get; set; }
 
         /// <summary>
-        /// 获取或设置是否通过Xml保存映射配置
+        /// 获取或设置模型名称生成脚本
         /// </summary>
-        public bool MapByXml { get; set; }
+        public string ModelNameScript { get; set; }
 
         /// <summary>
-        /// 获取或设置是否使用Map By Code
+        /// 获取或设置属性名称生成脚本
         /// </summary>
-        public bool MapByCode { get; set; }
-
-        /// <summary>
-        /// 获取或设置Map By Code类的命名空间
-        /// </summary>
-        public string MapByCodeNamespace { get; set; }
-
-        /// <summary>
-        /// 获取或设置映射表名是否包括数据库的Schema名称
-        /// </summary>
-        public string IncludeSchemaName { get; set; }
+        public string PropertyNameScript { get; set; }
 
         /// <summary>
         /// 获取或设置输出目录
@@ -76,8 +66,6 @@ namespace Radial.Tools.NhAuto.Kernel
                 throw new Exception("模型类程序集名称不能为空");
             if (ModelNamespace == null || ModelNamespace.Trim().Length == 0)
                 throw new Exception("模型类命名空间不能为空");
-            if (MapByCode && (MapByCodeNamespace == null || MapByCodeNamespace.Trim().Length == 0))
-                throw new Exception("Map By Code类的命名空间");
             if (OutputDirectory == null || OutputDirectory.Trim().Length == 0)
                 throw new Exception("输出目录不能为空");
         }

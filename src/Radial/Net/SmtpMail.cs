@@ -242,7 +242,7 @@ namespace Radial.Net
             catch (SmtpException ex)
             {
                 code = ex.StatusCode;
-                Logger.Fatal(ex, "can not send mail from {0} to {1}, async={2}", message.From.Address, BuildToAddressString(message.To), async);
+                Logger.Error(ex, "can not send mail from {0} to {1}, async={2}", message.From.Address, BuildToAddressString(message.To), async);
             }
 
             return code;

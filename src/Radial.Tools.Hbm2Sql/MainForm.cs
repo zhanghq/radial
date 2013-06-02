@@ -47,7 +47,7 @@ namespace Radial.Tools.Hbm2Sql
         {
             if (string.IsNullOrWhiteSpace(tbHbmAssembly.Text))
             {
-                MessageBox.Show(this, "请选择hbm程序集文件", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(this, "请选择Hbm程序集文件", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 

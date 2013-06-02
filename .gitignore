@@ -1,11 +1,9 @@
 # git ignore file
 bin
 obj
-out/Debug
-log
+*.log
 *.suo
 *.user
-/src/Samples/Book9/BookNine.Web/Log
 
-/out/Release/*.pdb
-/out
+/out/Debug
+/out/Release

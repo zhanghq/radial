@@ -95,17 +95,16 @@ namespace Radial.Tools.Hbm2Sql
 
                 string sql = sb.ToString();
 
-                if (string.IsNullOrWhiteSpace(sql))
+                if (!string.IsNullOrWhiteSpace(sql))
                 {
-                    MessageBox.Show(this, "生成的Sql语句为空", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
+                    TSqlStandardFormatter formatter = new TSqlStandardFormatter();
+                    formatter.Options.TrailingCommas = true;
+                    SqlFormattingManager m = new SqlFormattingManager(formatter);
+
+                    rtbSql.Text = m.Format(sql);
                 }
-
-                TSqlStandardFormatter formatter = new TSqlStandardFormatter();
-                formatter.Options.TrailingCommas = true;
-                SqlFormattingManager m = new SqlFormattingManager(formatter);
-
-                rtbSql.Text = m.Format(sql);
+                else
+                    rtbSql.Text = "No Sql Script Generated!";
             }
             catch (Exception ex)
             {

@@ -308,7 +308,6 @@ namespace Radial.Tools.NhDbFirst
             catch (Exception ex)
             {
                 MessageBox.Show(this, ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
 
             pForm.Close();

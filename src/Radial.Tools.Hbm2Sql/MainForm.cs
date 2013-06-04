@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using NHibernate.Cfg;
 using NHibernate.Dialect;
@@ -51,6 +52,22 @@ namespace Radial.Tools.Hbm2Sql
                 return;
             }
 
+            PendingForm pForm = new PendingForm();
+
+            Thread exeThread = new Thread(ExecuteThread);
+
+            exeThread.Start(new { pendingForm = pForm });
+
+
+            pForm.ShowDialog(this);
+
+        }
+
+        private void ExecuteThread(object obj)
+        {
+            dynamic objd = (obj as dynamic);
+            PendingForm pForm = objd.pendingForm;
+
             try
             {
                 var cfg = new Configuration();
@@ -94,6 +111,8 @@ namespace Radial.Tools.Hbm2Sql
             {
                 MessageBox.Show(this, ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            pForm.Close();
         }
     }
 }

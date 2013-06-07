@@ -91,6 +91,7 @@
     <Compile Include="Cache\ICache.cs" />
     <Compile Include="Cache\LocalCache.cs" />
     <Compile Include="Components.cs" />
+    <Compile Include="Cycler.cs" />
     <Compile Include="Drawing\Captcha.cs" />
     <Compile Include="Checker.cs" />
     <Compile Include="Drawing\ImageKits.cs" />

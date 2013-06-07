@@ -5,9 +5,9 @@ using System.Text;
 using System.Net.Mail;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
-using log4net.Core;
 using System.Configuration;
 using System.Net.Configuration;
+
 
 namespace Radial.Net
 {
@@ -16,15 +16,9 @@ namespace Radial.Net
     /// </summary>
     public sealed class SmtpMail
     {
-        SmtpClient _client;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SmtpMail"/> class by using configuration file settings.
-        /// </summary>
-        public SmtpMail()
-        {
-            _client = new SmtpClient();
-        }
+        string _host;
+        int _port = 25;
+        bool _enableSsl = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SmtpMail"/> class.
@@ -53,31 +47,52 @@ namespace Radial.Net
         /// <param name="enableSsl">if set to <c>true</c> [enable SSL].</param>
         public SmtpMail(string host, int port, bool enableSsl)
         {
-            _client = new SmtpClient(host, port);
-            _client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            _client.EnableSsl = enableSsl;
+            Checker.Parameter(!string.IsNullOrWhiteSpace(host), "smtp host can not be empty or null");
+
+            _host = host;
+            _port = port;
+            _enableSsl = enableSsl;
         }
 
-
         /// <summary>
-        /// Gets the sender credential.
+        /// Create SmtpMail instance from the configuration file.
         /// </summary>
-        public NetworkCredential SenderCredential
+        /// <returns></returns>
+        public static SmtpMail FromConfiguration()
         {
-            get
-            {
-                return _client.Credentials as NetworkCredential;
-            }
+            return new SmtpMail(ConfigurationSection.Network.Host, ConfigurationSection.Network.Port, ConfigurationSection.Network.EnableSsl);
         }
 
         /// <summary>
-        /// Gets the smtp section in configuration file.
+        /// Gets the smtp section in the configuration file.
         /// </summary>
-        public SmtpSection ConfigurationSection
+        public static SmtpSection ConfigurationSection
         {
             get
             {
                 return ConfigurationManager.GetSection("system.net/mailSettings/smtp") as SmtpSection;
+            }
+        }
+
+        /// <summary>
+        /// Gets the smtp account name from the configuration file.
+        /// </summary>
+        public static string ConfigurationAccountName
+        {
+            get
+            {
+                return ConfigurationSection.Network.UserName;
+            }
+        }
+
+        /// <summary>
+        /// Gets the smtp account password from the configuration file.
+        /// </summary>
+        public static string ConfigurationAccountPassword
+        {
+            get
+            {
+                return ConfigurationSection.Network.Password;
             }
         }
 
@@ -88,7 +103,7 @@ namespace Radial.Net
         {
             get
             {
-                return Radial.Logger.GetInstance("SmtpMail");
+                return Logger.GetInstance("SmtpMail");
             }
         }
 
@@ -112,164 +127,66 @@ namespace Radial.Net
             return string.Join(";", tos.ToArray());
         }
 
-
         /// <summary>
         /// Sends mail message.
         /// </summary>
+        /// <param name="smtpAccountName">Name of the SMTP account.</param>
+        /// <param name="smtpAccountPassword">The SMTP account password.</param>
         /// <param name="message">The mail message.</param>
-        /// <returns>
-        /// An System.Net.Mail.SmtpStatusCode value that indicates the error that occurred.
-        /// </returns>
-        public SmtpStatusCode Send(MailMessage message)
+        /// <returns>If mail send ok return true, otherwise false</returns>
+        public bool Send(string smtpAccountName, string smtpAccountPassword, MailMessage message)
         {
-            return Send(null, null, message, false);
+            return Send(smtpAccountName, smtpAccountPassword, null, message);
         }
 
-        /// <summary>
-        /// Sends mail message.
-        /// </summary>
-        /// <param name="senderCertificate">The sender certificate.</param>
-        /// <param name="message">The mail message.</param>
-        /// <returns>
-        /// An System.Net.Mail.SmtpStatusCode value that indicates the error that occurred.
-        /// </returns>
-        public SmtpStatusCode Send(X509Certificate senderCertificate, MailMessage message)
-        {
-            return Send(null, senderCertificate, message, false);
-        }
 
         /// <summary>
         /// Sends mail message.
         /// </summary>
+        /// <param name="smtpAccountName">Name of the SMTP account.</param>
+        /// <param name="smtpAccountPassword">The SMTP account password.</param>
+        /// <param name="clientCertificates">The client certificates.</param>
         /// <param name="message">The mail message.</param>
-        /// <param name="async">if set to <c>true</c> will use asynchronous call and always return SmtpStatusCode.Ok.</param>
-        /// <returns>
-        /// An System.Net.Mail.SmtpStatusCode value that indicates the error that occurred.
-        /// </returns>
-        public SmtpStatusCode Send(MailMessage message, bool async)
+        /// <returns>If mail send ok return true, otherwise false</returns>
+        public bool Send(string smtpAccountName, string smtpAccountPassword, X509CertificateCollection clientCertificates, MailMessage message)
         {
-            return Send(null, null, message, async);
-        }
-
-        /// <summary>
-        /// Sends mail message.
-        /// </summary>
-        /// <param name="senderCertificate">The sender certificate.</param>
-        /// <param name="message">The mail message.</param>
-        /// <param name="async">if set to <c>true</c> will use asynchronous call and always return SmtpStatusCode.Ok.</param>
-        /// <returns>
-        /// An System.Net.Mail.SmtpStatusCode value that indicates the error that occurred.
-        /// </returns>
-        public SmtpStatusCode Send(X509Certificate senderCertificate, MailMessage message, bool async)
-        {
-            return Send(null, senderCertificate, message, async);
-        }
-
-        /// <summary>
-        /// Sends mail message.
-        /// </summary>
-        /// <param name="senderCredential">The sender credential.</param>
-        /// <param name="message">The mail message.</param>
-        /// <returns>An System.Net.Mail.SmtpStatusCode value that indicates the error that occurred.</returns>
-        public SmtpStatusCode Send(NetworkCredential senderCredential, MailMessage message)
-        {
-            return Send(senderCredential, null, message, false);
-        }
-
-        /// <summary>
-        /// Sends mail message.
-        /// </summary>
-        /// <param name="senderCredential">The sender credential.</param>
-        /// <param name="senderCertificate">The sender certificate.</param>
-        /// <param name="message">The mail message.</param>
-        /// <returns>An System.Net.Mail.SmtpStatusCode value that indicates the error that occurred.</returns>
-        public SmtpStatusCode Send(NetworkCredential senderCredential, X509Certificate senderCertificate, MailMessage message)
-        {
-            return Send(senderCredential, senderCertificate, message, false);
-        }
-
-        /// <summary>
-        /// Sends mail message.
-        /// </summary>
-        /// <param name="senderCredential">The sender credential.</param>
-        /// <param name="message">The mail message.</param>
-        /// <param name="async">if set to <c>true</c> will use asynchronous call and always return SmtpStatusCode.Ok.</param>
-        /// <returns>An System.Net.Mail.SmtpStatusCode value that indicates the error that occurred.</returns>
-        public SmtpStatusCode Send(NetworkCredential senderCredential, MailMessage message, bool async)
-        {
-            return Send(senderCredential, null, message, async);
-        }
-
-        /// <summary>
-        /// Sends mail message.
-        /// </summary>
-        /// <param name="senderCredential">The sender credential.</param>
-        /// <param name="senderCertificate">The sender certificate.</param>
-        /// <param name="message">The mail message.</param>
-        /// <param name="async">if set to <c>true</c> will use asynchronous call and always return SmtpStatusCode.Ok.</param>
-        /// <returns>An System.Net.Mail.SmtpStatusCode value that indicates the error that occurred.</returns>
-        public SmtpStatusCode Send(NetworkCredential senderCredential, X509Certificate senderCertificate, MailMessage message, bool async)
-        {
+            Checker.Parameter(!string.IsNullOrWhiteSpace(smtpAccountName), "smtp account name can not be empty or null");
+            Checker.Parameter(!string.IsNullOrWhiteSpace(smtpAccountPassword), "smtp account password can not be empty or null");
             Checker.Parameter(message != null, "mail message can not be null");
 
-            SmtpStatusCode code = SmtpStatusCode.Ok;
+            bool isOk = false;
 
-            Checker.Requires(senderCredential != null || _client.Credentials != null, "sender credential not exist");
+            string tranId = Guid.NewGuid().ToString("N");
 
-            if (senderCredential != null)
-                _client.Credentials = senderCredential;
+            SmtpClient client = new SmtpClient(_host, _port);
+            client.EnableSsl = _enableSsl;
 
-            if (senderCertificate != null)
-                _client.ClientCertificates.Add(senderCertificate);
+            client.Credentials = new NetworkCredential(smtpAccountName, smtpAccountPassword);
 
+            if (clientCertificates != null)
+            {
+                foreach (var cc in clientCertificates)
+                    client.ClientCertificates.Add(cc);
+            }
 
             try
             {
-                Logger.Debug("begin send mail from {0} to {1}, async={2}", message.From.Address, BuildToAddressString(message.To), async);
+                Logger.Info("begin mail transaction {0}", tranId);
 
-                if (async)
-                {
-                    _client.SendCompleted += new SendCompletedEventHandler(SendCompleted);
-                    _client.SendAsync(message, new { from = message.From.Address, to = BuildToAddressString(message.To) });
-                }
-                else
-                {
-                    _client.Send(message);
+                Logger.Debug("mail transaction {0} details: from {1} to {2}", tranId, message.From.Address, BuildToAddressString(message.To));
 
-                    Logger.Debug("end send mail from {0} to {1}, async={2}", message.From.Address, BuildToAddressString(message.To), async);
-                }
+                client.Send(message);
+
+                isOk = true;
+
+                Logger.Info("end mail transaction {0}", tranId);
             }
             catch (SmtpException ex)
             {
-                code = ex.StatusCode;
-                Logger.Error(ex, "can not send mail from {0} to {1}, async={2}", message.From.Address, BuildToAddressString(message.To), async);
+                Logger.Error(ex, "can not finish mail transaction {0}", tranId);
             }
 
-            return code;
+            return isOk;
         }
-
-        /// <summary>
-        /// Sends the completed.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.ComponentModel.AsyncCompletedEventArgs"/> instance containing the event data.</param>
-        private void SendCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-        {
-            if (e.Error != null)
-            {
-                Logger.Fatal(e.Error);
-                return;
-            }
-
-            if (e.Cancelled)
-            {
-                Logger.Debug("send mail from {0} to {1} has been cancelled, async=True", ((dynamic)e.UserState).from, ((dynamic)e.UserState).to);
-                return;
-            }
-
-            Logger.Debug("end send mail from {0} to {1}, async=True", ((dynamic)e.UserState).from, ((dynamic)e.UserState).to);
-        }
-
-
     }
 }

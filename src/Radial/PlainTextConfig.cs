@@ -83,7 +83,7 @@ namespace Radial
         public static PlainTextConfig LoadFromText(string text)
         {
             if (!string.IsNullOrWhiteSpace(text))
-                return new PlainTextConfig(text.Split('\n', '\r'));
+                return new PlainTextConfig(text.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries));
             return new PlainTextConfig();
         }
 

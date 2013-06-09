@@ -14,12 +14,15 @@ namespace Radial
     public class PlainTextConfig
     {
         /*
-         * property format example:
+         * property line example:
          * style 1: abc=34ax
          * style 2: abc="dfs"
-         * comment text start with # (Unix shell style) eg. # some comment
+         * 
+         * comment line start with #, example:
+         * #some comment
+         * abc=3
          */
-        
+
 
         const string PropertyLineMatchPattern1 = "^([\\w_.-]*)\\s*=([^\"\'#=]*)$";
         const string PropertyLineMatchPattern2 = "^([\\w_.-]*)\\s*=\\s*[\"\'](.*)[\"\']$";

@@ -6,8 +6,8 @@ using System.Data;
 using System.Web;
 using NPOI.SS.UserModel;
 using NPOI.HSSF.UserModel;
-using Radial.Net;
 using System.IO;
+using Radial.Net;
 
 namespace Radial
 {
@@ -17,6 +17,14 @@ namespace Radial
     public static class ExcelTools
     {
         /// <summary>
+        /// The known cell data formats, separated by commas.
+        /// </summary>
+        public const string KnownCellDataFormats = "14,15,16,17,18,19,20,21,22,30,31,32,33,45,46,47,49,55,56,57,58,176,177,"
+            + "178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,"
+            + "207,208,209";
+
+
+        /// <summary>
         /// Exports to HTTP stream.
         /// </summary>
         /// <param name="data">The data.</param>
@@ -25,7 +33,7 @@ namespace Radial
         {
             Checker.Parameter(fileName != null, "download file name can not be empty or null");
 
-            fileName=fileName.Trim();
+            fileName = fileName.Trim();
 
             IWorkbook book = BuildHSSFWorkbook(data);
 
@@ -115,13 +123,14 @@ namespace Radial
         /// <param name="sheetIndex">The zero-based index of the sheet.</param>
         /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
+        /// <param name="skipEmptyRow">if set to <c>true</c> [skip empty row].</param>
         /// <returns></returns>
-        public static DataTable ImportToDataTable(string excelFilePath, int sheetIndex, Func<ICell, object> cellValueInterpreter = null, bool firstRowHeader = true)
+        public static DataTable ImportToDataTable(string excelFilePath, int sheetIndex, Func<ICell, object> cellValueInterpreter = null, bool firstRowHeader = true, bool skipEmptyRow = false)
         {
             IWorkbook workbook = WorkbookFactory.Create(excelFilePath);
             ISheet sheet = workbook.GetSheetAt(sheetIndex);
 
-            return BuildDataTableFromSheet(sheet, cellValueInterpreter, firstRowHeader);
+            return BuildDataTableFromSheet(sheet, cellValueInterpreter, firstRowHeader, skipEmptyRow);
         }
 
         /// <summary>
@@ -131,13 +140,14 @@ namespace Radial
         /// <param name="sheetName">Name of the sheet.</param>
         /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
+        /// <param name="skipEmptyRow">if set to <c>true</c> [skip empty row].</param>
         /// <returns></returns>
-        public static DataTable ImportToDataTable(string excelFilePath, string sheetName, Func<ICell, object> cellValueInterpreter = null, bool firstRowHeader = true)
+        public static DataTable ImportToDataTable(string excelFilePath, string sheetName, Func<ICell, object> cellValueInterpreter = null, bool firstRowHeader = true, bool skipEmptyRow = false)
         {
             IWorkbook workbook = WorkbookFactory.Create(excelFilePath);
             ISheet sheet = workbook.GetSheet(sheetName);
 
-            return BuildDataTableFromSheet(sheet, cellValueInterpreter, firstRowHeader);
+            return BuildDataTableFromSheet(sheet, cellValueInterpreter, firstRowHeader, skipEmptyRow);
         }
 
         /// <summary>
@@ -147,13 +157,14 @@ namespace Radial
         /// <param name="sheetIndex">The zero-based index of the sheet.</param>
         /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
+        /// <param name="skipEmptyRow">if set to <c>true</c> [skip empty row].</param>
         /// <returns></returns>
-        public static DataTable ImportToDataTable(Stream excelStream, int sheetIndex, Func<ICell, object> cellValueInterpreter = null, bool firstRowHeader = true)
+        public static DataTable ImportToDataTable(Stream excelStream, int sheetIndex, Func<ICell, object> cellValueInterpreter = null, bool firstRowHeader = true, bool skipEmptyRow = false)
         {
             IWorkbook workbook = WorkbookFactory.Create(excelStream);
             ISheet sheet = workbook.GetSheetAt(sheetIndex);
 
-            return BuildDataTableFromSheet(sheet, cellValueInterpreter, firstRowHeader);
+            return BuildDataTableFromSheet(sheet, cellValueInterpreter, firstRowHeader, skipEmptyRow);
         }
 
         /// <summary>
@@ -163,13 +174,14 @@ namespace Radial
         /// <param name="sheetName">Name of the sheet.</param>
         /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
+        /// <param name="skipEmptyRow">if set to <c>true</c> [skip empty row].</param>
         /// <returns></returns>
-        public static DataTable ImportToDataTable(Stream excelStream, string sheetName, Func<ICell, object> cellValueInterpreter = null, bool firstRowHeader = true)
+        public static DataTable ImportToDataTable(Stream excelStream, string sheetName, Func<ICell, object> cellValueInterpreter = null, bool firstRowHeader = true, bool skipEmptyRow = false)
         {
             IWorkbook workbook = WorkbookFactory.Create(excelStream);
             ISheet sheet = workbook.GetSheet(sheetName);
 
-            return BuildDataTableFromSheet(sheet,cellValueInterpreter,firstRowHeader);
+            return BuildDataTableFromSheet(sheet, cellValueInterpreter, firstRowHeader, skipEmptyRow);
         }
 
         /// <summary>
@@ -178,49 +190,92 @@ namespace Radial
         /// <param name="sheet">The sheet.</param>
         /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
+        /// <param name="skipEmptyRow">if set to <c>true</c> [skip empty row].</param>
         /// <returns></returns>
-        private static DataTable BuildDataTableFromSheet(ISheet sheet, Func<ICell, object> cellValueInterpreter, bool firstRowHeader)
+        private static DataTable BuildDataTableFromSheet(ISheet sheet, Func<ICell, object> cellValueInterpreter, bool firstRowHeader, bool skipEmptyRow)
         {
             DataTable table = new DataTable();
 
-            IRow firstRow = sheet.GetRow(0);
+            //空表格
+            if (sheet.LastRowNum == 0)
+                return table;
 
-            int cellCount = firstRow.LastCellNum;
+            //最大的有效单元格编号
+            int maxCellsNum = 0;
+
+            for (int i = sheet.FirstRowNum; i <= sheet.LastRowNum; i++)
+            {
+                IRow row = sheet.GetRow(i);
+
+                if (row != null)
+                {
+                    foreach (var c in row.Cells)
+                    {
+                        //跳过空列
+                        if (!string.IsNullOrWhiteSpace(c.ToString()) && c.ColumnIndex + 1 > maxCellsNum)
+                            maxCellsNum = c.ColumnIndex;
+                    }
+                }
+            }
+
+
+            //构建表头
+            IRow firstRow = sheet.GetRow(sheet.FirstRowNum);
 
             IDictionary<string, int> sameColumns = new Dictionary<string, int>();
 
-            for (int i = firstRow.FirstCellNum; i < cellCount; i++)
+            for (int i = 0; i <= maxCellsNum; i++)
             {
-                if (firstRowHeader)
+                if (!firstRowHeader)
                 {
-                    ICell hc = firstRow.GetCell(i);
-
-                    string columnName = hc.ToString().Trim();
-
-                    if (table.Columns.Contains(columnName))
-                    {
-                        if (!sameColumns.ContainsKey(columnName))
-                            sameColumns[columnName] = 1;
-                        else
-                            sameColumns[columnName]++;
-
-                        columnName += sameColumns[columnName];
-                    }
-
-                    table.Columns.Add(new DataColumn(columnName));
-                }
-                else
                     table.Columns.Add(new DataColumn(i.ToString()));
+                    continue;
+                }
+
+                ICell hc = firstRow.GetCell(i);
+
+                if (hc == null)
+                {
+                    table.Columns.Add(new DataColumn(i.ToString()));
+                    continue;
+                }
+
+                //检查重名
+                string columnName = hc.ToString().Trim();
+
+                if (table.Columns.Contains(columnName))
+                {
+                    if (!sameColumns.ContainsKey(columnName))
+                        sameColumns[columnName] = 1;
+                    else
+                        sameColumns[columnName]++;
+
+                    columnName += sameColumns[columnName];
+
+                }
+
+                table.Columns.Add(new DataColumn(columnName));
+
             }
 
 
             //读取数据行
-            for (int i = sheet.FirstRowNum + 1; i <= sheet.LastRowNum; i++)
+            int dataRowNum = firstRowHeader ? sheet.FirstRowNum + 1 : sheet.FirstRowNum;//数据行开始编号
+
+            for (int i = dataRowNum; i <= sheet.LastRowNum; i++)
             {
-                IRow row = sheet.GetRow(i);
-                if (row == null) continue;
                 DataRow dataRow = table.NewRow();
-                for (int j = row.FirstCellNum; j < cellCount; j++)
+
+                IRow row = sheet.GetRow(i);
+
+                if (row == null)
+                {
+                    //添加空行，后面再删除空行
+                    table.Rows.Add(dataRow);
+                    continue;
+                }
+
+                for (int j = 0; j <= maxCellsNum; j++)
                 {
                     ICell cell = row.GetCell(j);
 
@@ -234,7 +289,7 @@ namespace Radial
                                 case CellType.Boolean: dataRow[j] = cell.BooleanCellValue; break;
                                 case CellType.Numeric:
                                     //区分BuiltIn的数字和时间
-                                    if ((cell.CellStyle.DataFormat >= 14 && cell.CellStyle.DataFormat <= 22) || (cell.CellStyle.DataFormat >= 45 && cell.CellStyle.DataFormat <= 47))
+                                    if (KnownCellDataFormats.Split(',').Contains(cell.CellStyle.DataFormat.ToString()))
                                         dataRow[j] = cell.DateCellValue;
                                     else
                                         dataRow[j] = cell.NumericCellValue;
@@ -248,6 +303,19 @@ namespace Radial
                     }
                 }
                 table.Rows.Add(dataRow);
+            }
+
+            //删除空行
+            if (skipEmptyRow)
+            {
+                for (int i = 0; i < table.Rows.Count; i++)
+                {
+                    if (table.Rows[i].ItemArray.All(o => o == null || string.IsNullOrWhiteSpace(o.ToString())))
+                    {
+                        table.Rows.RemoveAt(i);
+                        i--;
+                    }
+                }
             }
 
             return table;

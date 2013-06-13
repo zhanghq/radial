@@ -17,9 +17,9 @@ namespace Radial
     public static class ExcelTools
     {
         /// <summary>
-        /// The known cell data formats, separated by commas.
+        /// The buildin date formats, separated by commas.
         /// </summary>
-        public const string KnownCellDataFormats = "14,15,16,17,18,19,20,21,22,30,31,32,33,45,46,47,49,55,56,57,58,176,177,"
+        public const string BuildinDateFormats = "14,15,16,17,18,19,20,21,22,30,31,32,33,45,46,47,49,55,56,57,58,176,177,"
             + "178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,"
             + "207,208,209";
 
@@ -28,22 +28,20 @@ namespace Radial
         /// Exports to HTTP stream.
         /// </summary>
         /// <param name="data">The data.</param>
-        /// <param name="fileName"> The download file name.</param>
-        public static void ExportToHttp(DataTable data, string fileName)
+        /// <param name="downloadFileName"> The download file name.</param>
+        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        public static void ExportToHttp(DataTable data, string downloadFileName, bool columnHeader = true)
         {
-            Checker.Parameter(fileName != null, "download file name can not be empty or null");
+            Checker.Parameter(downloadFileName != null, "download file name can not be empty or null");
 
-            fileName = fileName.Trim();
+            downloadFileName = downloadFileName.Trim();
 
-            IWorkbook book = BuildHSSFWorkbook(data);
+            IWorkbook book = BuildHSSFWorkbook(data, columnHeader);
 
-            if (fileName.LastIndexOf('.') > 0)
-            {
-                string ext = fileName.Substring(fileName.LastIndexOf('.'));
+            string ext = Path.GetExtension(downloadFileName);
 
-                if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
-                    fileName.Replace(ext, string.Empty);
-            }
+            if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
+                downloadFileName = downloadFileName.Replace(ext, string.Empty);
 
 
             HttpResponse httpResponse = HttpContext.Current.Response;
@@ -51,7 +49,7 @@ namespace Radial
             httpResponse.Clear();
             httpResponse.Buffer = true;
             httpResponse.Charset = Encoding.UTF8.BodyName;
-            httpResponse.AppendHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(fileName, Encoding.UTF8) + ".xls");
+            httpResponse.AppendHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(downloadFileName, Encoding.UTF8) + ".xls");
             httpResponse.ContentEncoding = Encoding.UTF8;
             httpResponse.ContentType = ContentTypes.Excel;
             book.Write(httpResponse.OutputStream);
@@ -62,26 +60,24 @@ namespace Radial
         /// Exports to file.
         /// </summary>
         /// <param name="data">The data.</param>
-        /// <param name="savePath">The export file save path</param>
-        public static void ExportToFile(DataTable data, string savePath)
+        /// <param name="exportFilePath">The export XLS file full path.</param>
+        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        public static void ExportToFile(DataTable data, string exportFilePath, bool columnHeader = true)
         {
-            Checker.Parameter(savePath != null, "export file save path can not be empty or null");
+            Checker.Parameter(exportFilePath != null, "export file path can not be empty or null");
 
-            savePath = savePath.Trim();
+            exportFilePath = exportFilePath.Trim();
 
-            IWorkbook book = BuildHSSFWorkbook(data);
+            IWorkbook book = BuildHSSFWorkbook(data, columnHeader);
 
-            if (savePath.LastIndexOf('.') > 0)
-            {
-                string ext = savePath.Substring(savePath.LastIndexOf('.'));
+            string ext = Path.GetExtension(exportFilePath);
 
-                if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
-                    savePath.Replace(ext, string.Empty);
-            }
+            if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
+                exportFilePath = exportFilePath.Replace(ext, string.Empty);
 
-            savePath += ".xls";
+            exportFilePath += ".xls";
 
-            using (FileStream fs = new FileStream(savePath, FileMode.Create))
+            using (FileStream fs = new FileStream(exportFilePath, FileMode.Create))
             {
                 book.Write(fs);
             }
@@ -91,8 +87,9 @@ namespace Radial
         /// Builds the workbook.
         /// </summary>
         /// <param name="data">The data.</param>
+        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
         /// <returns></returns>
-        private static HSSFWorkbook BuildHSSFWorkbook(DataTable data)
+        private static HSSFWorkbook BuildHSSFWorkbook(DataTable data, bool columnHeader)
         {
             Checker.Parameter(data != null, "export data can not be null");
 
@@ -100,15 +97,22 @@ namespace Radial
 
             ISheet sheet = book.CreateSheet(string.IsNullOrWhiteSpace(data.TableName) ? "Sheet1" : data.TableName);
 
-            //Title Row
-            IRow row0 = sheet.CreateRow(0);
-            for (int i = 0; i < data.Columns.Count; i++)
-                row0.CreateCell(i, CellType.String).SetCellValue(data.Columns[i].ColumnName);
+            int firstRowNum = 0;
+
+            if (columnHeader)
+            {
+                //header row
+                IRow row0 = sheet.CreateRow(0);
+                for (int i = 0; i < data.Columns.Count; i++)
+                    row0.CreateCell(i, CellType.String).SetCellValue(data.Columns[i].ColumnName);
+
+                firstRowNum = 1;
+            }
 
             //Data Rows
             for (int i = 0; i < data.Rows.Count; i++)
             {
-                IRow drow = sheet.CreateRow(i + 1);
+                IRow drow = sheet.CreateRow(i + firstRowNum);
                 for (int j = 0; j < data.Columns.Count; j++)
                     drow.CreateCell(j, CellType.String).SetCellValue(data.Rows[i][j].ToString());
             }
@@ -121,16 +125,18 @@ namespace Radial
         /// </summary>
         /// <param name="excelFilePath">The excel file path.</param>
         /// <param name="sheetIndex">The zero-based index of the sheet.</param>
-        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
-        /// <param name="skipEmptyRow">if set to <c>true</c> [skip empty row].</param>
+        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <returns></returns>
-        public static DataTable ImportToDataTable(string excelFilePath, int sheetIndex, Func<ICell, object> cellValueInterpreter = null, bool firstRowHeader = true, bool skipEmptyRow = false)
+        public static DataTable ImportToDataTable(string excelFilePath, int sheetIndex, bool firstRowHeader = true, Func<ICell, object> cellValueInterpreter = null)
         {
+            if (!File.Exists(excelFilePath))
+                throw new FileNotFoundException(excelFilePath);
+
             IWorkbook workbook = WorkbookFactory.Create(excelFilePath);
             ISheet sheet = workbook.GetSheetAt(sheetIndex);
 
-            return BuildDataTableFromSheet(sheet, cellValueInterpreter, firstRowHeader, skipEmptyRow);
+            return BuildDataTableFromSheet(sheet, firstRowHeader, cellValueInterpreter);
         }
 
         /// <summary>
@@ -138,16 +144,18 @@ namespace Radial
         /// </summary>
         /// <param name="excelFilePath">The excel file path.</param>
         /// <param name="sheetName">Name of the sheet.</param>
-        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
-        /// <param name="skipEmptyRow">if set to <c>true</c> [skip empty row].</param>
+        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <returns></returns>
-        public static DataTable ImportToDataTable(string excelFilePath, string sheetName, Func<ICell, object> cellValueInterpreter = null, bool firstRowHeader = true, bool skipEmptyRow = false)
+        public static DataTable ImportToDataTable(string excelFilePath, string sheetName, bool firstRowHeader = true, Func<ICell, object> cellValueInterpreter = null)
         {
+            if (!File.Exists(excelFilePath))
+                throw new FileNotFoundException(excelFilePath);
+
             IWorkbook workbook = WorkbookFactory.Create(excelFilePath);
             ISheet sheet = workbook.GetSheet(sheetName);
 
-            return BuildDataTableFromSheet(sheet, cellValueInterpreter, firstRowHeader, skipEmptyRow);
+            return BuildDataTableFromSheet(sheet, firstRowHeader, cellValueInterpreter);
         }
 
         /// <summary>
@@ -155,16 +163,15 @@ namespace Radial
         /// </summary>
         /// <param name="excelStream">The excel stream.</param>
         /// <param name="sheetIndex">The zero-based index of the sheet.</param>
-        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
-        /// <param name="skipEmptyRow">if set to <c>true</c> [skip empty row].</param>
+        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <returns></returns>
-        public static DataTable ImportToDataTable(Stream excelStream, int sheetIndex, Func<ICell, object> cellValueInterpreter = null, bool firstRowHeader = true, bool skipEmptyRow = false)
+        public static DataTable ImportToDataTable(Stream excelStream, int sheetIndex, bool firstRowHeader = true, Func<ICell, object> cellValueInterpreter = null)
         {
             IWorkbook workbook = WorkbookFactory.Create(excelStream);
             ISheet sheet = workbook.GetSheetAt(sheetIndex);
 
-            return BuildDataTableFromSheet(sheet, cellValueInterpreter, firstRowHeader, skipEmptyRow);
+            return BuildDataTableFromSheet(sheet, firstRowHeader, cellValueInterpreter);
         }
 
         /// <summary>
@@ -172,27 +179,25 @@ namespace Radial
         /// </summary>
         /// <param name="excelStream">The excel stream.</param>
         /// <param name="sheetName">Name of the sheet.</param>
-        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
-        /// <param name="skipEmptyRow">if set to <c>true</c> [skip empty row].</param>
+        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <returns></returns>
-        public static DataTable ImportToDataTable(Stream excelStream, string sheetName, Func<ICell, object> cellValueInterpreter = null, bool firstRowHeader = true, bool skipEmptyRow = false)
+        public static DataTable ImportToDataTable(Stream excelStream, string sheetName, bool firstRowHeader = true, Func<ICell, object> cellValueInterpreter = null)
         {
             IWorkbook workbook = WorkbookFactory.Create(excelStream);
             ISheet sheet = workbook.GetSheet(sheetName);
 
-            return BuildDataTableFromSheet(sheet, cellValueInterpreter, firstRowHeader, skipEmptyRow);
+            return BuildDataTableFromSheet(sheet, firstRowHeader, cellValueInterpreter);
         }
 
         /// <summary>
         /// Builds the data table from sheet.
         /// </summary>
         /// <param name="sheet">The sheet.</param>
-        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
-        /// <param name="skipEmptyRow">if set to <c>true</c> [skip empty row].</param>
+        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <returns></returns>
-        private static DataTable BuildDataTableFromSheet(ISheet sheet, Func<ICell, object> cellValueInterpreter, bool firstRowHeader, bool skipEmptyRow)
+        private static DataTable BuildDataTableFromSheet(ISheet sheet, bool firstRowHeader, Func<ICell, object> cellValueInterpreter)
         {
             DataTable table = new DataTable();
 
@@ -289,7 +294,7 @@ namespace Radial
                                 case CellType.Boolean: dataRow[j] = cell.BooleanCellValue; break;
                                 case CellType.Numeric:
                                     //区分BuiltIn的数字和时间
-                                    if (KnownCellDataFormats.Split(',').Contains(cell.CellStyle.DataFormat.ToString()))
+                                    if (BuildinDateFormats.Split(',').Contains(cell.CellStyle.DataFormat.ToString()))
                                         dataRow[j] = cell.DateCellValue;
                                     else
                                         dataRow[j] = cell.NumericCellValue;
@@ -305,16 +310,13 @@ namespace Radial
                 table.Rows.Add(dataRow);
             }
 
-            //删除空行
-            if (skipEmptyRow)
+
+            //删除最后的空行
+            for (int i = table.Rows.Count - 1; i >= 0; i--)
             {
-                for (int i = 0; i < table.Rows.Count; i++)
+                if (i == table.Rows.Count - 1 && table.Rows[i].ItemArray.All(o => o == null || string.IsNullOrWhiteSpace(o.ToString())))
                 {
-                    if (table.Rows[i].ItemArray.All(o => o == null || string.IsNullOrWhiteSpace(o.ToString())))
-                    {
-                        table.Rows.RemoveAt(i);
-                        i--;
-                    }
+                    table.Rows.RemoveAt(i);
                 }
             }
 

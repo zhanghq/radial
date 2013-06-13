@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExcelToolsTest.cs" />
+    <Compile Include="SmtpMailTest.cs" />
     <Compile Include="Persist\Nhs\Domain\User.cs" />
     <Compile Include="Persist\Nhs\Domain\Order.cs" />
     <Compile Include="Persist\Nhs\ParamTest.cs" />
@@ -87,6 +88,9 @@
     <None Include="Config\log4net.config" />
     <None Include="Config\NHibernate.config" />
     <None Include="Config\XmlParam.config" />
+    <None Include="demo.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Persist\Nhs\Domain\User.hbm.xml" />

@@ -17,26 +17,20 @@ namespace Radial
     public static class ExcelTools
     {
         /// <summary>
-        /// The buildin date formats, separated by commas.
-        /// </summary>
-        public const string BuildinDateFormats = "14,15,16,17,18,19,20,21,22,30,31,32,33,45,46,47,49,55,56,57,58,176,177,"
-            + "178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,"
-            + "207,208,209";
-
-
-        /// <summary>
         /// Exports to HTTP stream.
         /// </summary>
         /// <param name="data">The data.</param>
-        /// <param name="downloadFileName"> The download file name.</param>
+        /// <param name="downloadFileName">The download file name.</param>
         /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
-        public static void ExportToHttp(DataTable data, string downloadFileName, bool columnHeader = true)
+        /// <param name="headerCellStyleFormater">The header cell style formater.</param>
+        /// <param name="dataCellStyleFormater">The data cell style formater.</param>
+        public static void ExportToHttp(DataTable data, string downloadFileName, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
         {
             Checker.Parameter(downloadFileName != null, "download file name can not be empty or null");
 
             downloadFileName = downloadFileName.Trim();
 
-            IWorkbook book = BuildHSSFWorkbook(data, columnHeader);
+            IWorkbook book = BuildHSSFWorkbook(data, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
 
             string ext = Path.GetExtension(downloadFileName);
 
@@ -62,13 +56,15 @@ namespace Radial
         /// <param name="data">The data.</param>
         /// <param name="exportFilePath">The export XLS file full path.</param>
         /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
-        public static void ExportToFile(DataTable data, string exportFilePath, bool columnHeader = true)
+        /// <param name="headerCellStyleFormater">The header cell style formater.</param>
+        /// <param name="dataCellStyleFormater">The data cell style formater.</param>
+        public static void ExportToFile(DataTable data, string exportFilePath, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
         {
             Checker.Parameter(exportFilePath != null, "export file path can not be empty or null");
 
             exportFilePath = exportFilePath.Trim();
 
-            IWorkbook book = BuildHSSFWorkbook(data, columnHeader);
+            IWorkbook book = BuildHSSFWorkbook(data, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
 
             string ext = Path.GetExtension(exportFilePath);
 
@@ -88,8 +84,10 @@ namespace Radial
         /// </summary>
         /// <param name="data">The data.</param>
         /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="headerCellStyleFormater">The header cell style formater.</param>
+        /// <param name="dataCellStyleFormater">The data cell style formater.</param>
         /// <returns></returns>
-        private static HSSFWorkbook BuildHSSFWorkbook(DataTable data, bool columnHeader)
+        private static HSSFWorkbook BuildHSSFWorkbook(DataTable data, bool columnHeader, Func<ICell, ICellStyle> headerCellStyleFormater, Func<ICell, ICellStyle> dataCellStyleFormater)
         {
             Checker.Parameter(data != null, "export data can not be null");
 
@@ -104,7 +102,16 @@ namespace Radial
                 //header row
                 IRow row0 = sheet.CreateRow(0);
                 for (int i = 0; i < data.Columns.Count; i++)
-                    row0.CreateCell(i, CellType.String).SetCellValue(data.Columns[i].ColumnName);
+                {
+                    ICell cell = row0.CreateCell(i, CellType.String);
+                    cell.SetCellValue(data.Columns[i].ColumnName);
+                    if (headerCellStyleFormater != null)
+                    {
+                        var style = headerCellStyleFormater(cell);
+                        if (style != null)
+                            cell.CellStyle = style;
+                    }
+                }
 
                 firstRowNum = 1;
             }
@@ -114,7 +121,16 @@ namespace Radial
             {
                 IRow drow = sheet.CreateRow(i + firstRowNum);
                 for (int j = 0; j < data.Columns.Count; j++)
-                    drow.CreateCell(j, CellType.String).SetCellValue(data.Rows[i][j].ToString());
+                {
+                    ICell cell = drow.CreateCell(j, CellType.String);
+                    cell.SetCellValue(data.Rows[i][j].ToString());
+                    if (dataCellStyleFormater != null)
+                    {
+                        var style=dataCellStyleFormater(cell);
+                        if(style!=null)
+                            cell.CellStyle = style;
+                    }
+                }
             }
 
             //自动列宽
@@ -297,8 +313,7 @@ namespace Radial
                                 case CellType.Blank: dataRow[j] = null; break;
                                 case CellType.Boolean: dataRow[j] = cell.BooleanCellValue; break;
                                 case CellType.Numeric:
-                                    //区分BuiltIn的数字和时间
-                                    if (BuildinDateFormats.Split(',').Contains(cell.CellStyle.DataFormat.ToString()))
+                                    if (DateUtil.IsCellDateFormatted(cell))
                                         dataRow[j] = cell.DateCellValue;
                                     else
                                         dataRow[j] = cell.NumericCellValue;
@@ -315,13 +330,22 @@ namespace Radial
             }
 
 
-            //删除最后的空行
-            for (int i = table.Rows.Count - 1; i >= 0; i--)
+            //删除头尾的空行
+            while (true)
             {
-                if (i == table.Rows.Count - 1 && table.Rows[i].ItemArray.All(o => o == null || string.IsNullOrWhiteSpace(o.ToString())))
+                if (table.Rows[0].ItemArray.All(o => o == null || string.IsNullOrWhiteSpace(o.ToString())))
                 {
-                    table.Rows.RemoveAt(i);
+                    table.Rows.RemoveAt(0);
+                    continue;
                 }
+
+                if (table.Rows[table.Rows.Count - 1].ItemArray.All(o => o == null || string.IsNullOrWhiteSpace(o.ToString())))
+                {
+                    table.Rows.RemoveAt(table.Rows.Count - 1);
+                    continue;
+                }
+
+                break;
             }
 
             return table;

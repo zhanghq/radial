@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using NPOI.HSSF.UserModel;
+using NPOI.HSSF.Util;
+using NPOI.SS.UserModel;
 using NUnit.Framework;
 
 namespace Radial.UnitTest
@@ -13,7 +16,9 @@ namespace Radial.UnitTest
         [Test]
         public void ImportToDataTable()
         {
-            Assert.AreEqual(ExcelTools.ImportToDataTable("demo.xlsx", 0, false).Rows.Count, 12);
+            DataTable table = ExcelTools.ImportToDataTable("demo.xlsx", 0, false);
+            Assert.AreEqual(table.Columns.Count, 4);
+            Assert.AreEqual(table.Rows.Count, 12);
         }
 
         [Test]
@@ -38,7 +43,30 @@ namespace Radial.UnitTest
             Assert.DoesNotThrow(() => ExcelTools.ExportToFile(table, "export.xls", true));
 
 
-            Assert.DoesNotThrow(() => ExcelTools.ExportToFile(table, "export.xls", false));
+            Assert.DoesNotThrow(() => ExcelTools.ExportToFile(table, "export.xls", false, null, o =>
+            {
+                ICellStyle style = o.Sheet.Workbook.CreateCellStyle();
+
+                style.BorderBottom = BorderStyle.Thin;
+                style.BorderLeft = BorderStyle.Thin;
+                style.BorderRight = BorderStyle.Thin;
+                style.BorderTop = BorderStyle.Thin;
+
+                if (o.RowIndex == 0)
+                {
+
+                    style.Alignment = HorizontalAlignment.Center;
+
+                    IFont font = o.Sheet.Workbook.CreateFont();
+                    font.Boldweight = (short)FontBoldWeight.Bold;
+                    font.Color = HSSFColor.Red.Index;
+                    style.SetFont(font);
+
+                    style.FillForegroundColor = HSSFColor.Blue.Index;
+                    style.FillPattern = FillPattern.SolidForeground;
+                }
+                return style;
+            }));
 
             DataTable dt = ExcelTools.ImportToDataTable("export.xls", 0, false);
 

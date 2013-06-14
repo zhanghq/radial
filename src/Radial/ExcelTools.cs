@@ -117,6 +117,10 @@ namespace Radial
                     drow.CreateCell(j, CellType.String).SetCellValue(data.Rows[i][j].ToString());
             }
 
+            //自动列宽
+            for (int i = 0; i <= data.Columns.Count; i++)
+                sheet.AutoSizeColumn(i, true);
+
             return book;
         }
 

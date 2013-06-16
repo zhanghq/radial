@@ -184,18 +184,10 @@ namespace Radial.Persist
         /// Find all objects.
         /// </summary>
         /// <returns>
-        /// If data exists, return an objects list, otherwise return an empty list.
-        /// </returns>
-        IList<TObject> FindAll();
-
-        /// <summary>
-        /// Find all objects.
-        /// </summary>
         /// <param name="orderBys">The order by snippets</param>
-        /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> FindAll(OrderBySnippet<TObject>[] orderBys);
+        IList<TObject> FindAll(params OrderBySnippet<TObject>[] orderBys);
 
         /// <summary>
         /// Find all objects.
@@ -316,6 +308,16 @@ namespace Radial.Persist
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
         IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal);
+
+        /// <summary>
+        /// Find all objects by keys.
+        /// </summary>
+        /// <param name="keys">The object keys.</param>
+        /// <param name="orderBys">The order by snippets.</param>
+        /// <returns>
+        /// If data exists, return an objects list, otherwise return an empty list.
+        /// </returns>
+        IList<TObject> FindByKeys(TKey[] keys, params OrderBySnippet<TObject>[] orderBys);
 
         /// <summary>
         /// Add an object.

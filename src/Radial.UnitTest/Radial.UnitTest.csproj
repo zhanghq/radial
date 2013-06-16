@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="ExcelToolsTest.cs" />
     <Compile Include="FtpClientTest.cs" />
+    <Compile Include="Persist\Nhs\RepositoryTest.cs" />
     <Compile Include="SmtpMailTest.cs" />
     <Compile Include="Persist\Nhs\Domain\User.cs" />
     <Compile Include="Persist\Nhs\Domain\Order.cs" />

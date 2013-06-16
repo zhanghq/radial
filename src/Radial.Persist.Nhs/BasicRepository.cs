@@ -72,10 +72,7 @@ namespace Radial.Persist.Nhs
 
             Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
 
-            IQuery query = Session.CreateQuery(string.Format("select count(*) from {0} o where o.{1}=:key", typeof(TObject).Name, metadata.IdentifierPropertyName));
-            query.SetParameter("key", key);
-
-            return Convert.ToInt32(query.UniqueResult()) > 0;
+            return Session.QueryOver<TObject>().Where(Expression.Eq(metadata.IdentifierPropertyName, key)).RowCount() > 0;
         }
 
         /// <summary>
@@ -228,22 +225,11 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Find all objects.
         /// </summary>
+        /// <param name="orderBys">The order by snippets.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindAll()
-        {
-            return FindAll(null, null);
-        }
-
-        /// <summary>
-        /// Find all objects.
-        /// </summary>
-        /// <param name="orderBys">The order by snippets</param>
-        /// <returns>
-        /// If data exists, return an objects list, otherwise return an empty list.
-        /// </returns>
-        public virtual IList<TObject> FindAll(OrderBySnippet<TObject>[] orderBys)
+        public virtual IList<TObject> FindAll(params OrderBySnippet<TObject>[] orderBys)
         {
             return FindAll(null, orderBys);
         }
@@ -960,6 +946,39 @@ namespace Radial.Persist.Nhs
         {
             foreach (TObject o in FindAll(condition))
                 Remove(o);
+        }
+
+        /// <summary>
+        /// Find all objects by keys.
+        /// </summary>
+        /// <param name="keys">The object keys.</param>
+        /// <param name="orderBys">The order by snippets.</param>
+        /// <returns>
+        /// If data exists, return an objects list, otherwise return an empty list.
+        /// </returns>
+        public IList<TObject> FindByKeys(TKey[] keys, params OrderBySnippet<TObject>[] orderBys)
+        {
+            if (keys == null || keys.Length == 0)
+                return FindAll(orderBys);
+
+            var metadata = Session.SessionFactory.GetClassMetadata(typeof(TObject));
+
+            Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
+
+            var query = Session.QueryOver<TObject>().Where(Expression.InG<TKey>(metadata.IdentifierPropertyName, keys));
+
+            if (orderBys == null || orderBys.Length == 0)
+                orderBys = DefaultOrderBys.ToArray();
+
+            foreach (OrderBySnippet<TObject> order in orderBys)
+            {
+                if (order.IsAscending)
+                    query = query.OrderBy(order.Property).Asc;
+                else
+                    query = query.OrderBy(order.Property).Desc;
+            }
+
+            return query.List();
         }
     }
 }

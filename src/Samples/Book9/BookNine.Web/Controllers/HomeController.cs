@@ -23,14 +23,5 @@ namespace BookNine.Web.Controllers
 
             return View(model);
         }
-
-        public ActionResult Test()
-        {
-            var list = new List<string>();
-            list.Add("123");
-            list.Add("456");
-            return this.NewJson(list);
-        }
-
     }
 }

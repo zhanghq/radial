@@ -126,6 +126,10 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Radial.Web.Mvc\Radial.Web.Mvc.csproj">
+      <Project>{e8c8ddf8-642e-4ed2-8903-5ab537972011}</Project>
+      <Name>Radial.Web.Mvc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Radial\Radial.csproj">
       <Project>{e9ec1cb9-79b6-47bc-af82-e8b7b7affcea}</Project>
       <Name>Radial</Name>

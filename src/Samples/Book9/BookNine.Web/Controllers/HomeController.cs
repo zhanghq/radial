@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using BookNine.Application;
 using BookNine.TransferObject;
+using Radial.Web.Mvc;
+
 
 namespace BookNine.Web.Controllers
 {
@@ -20,6 +22,14 @@ namespace BookNine.Web.Controllers
             ViewBag.ChangePasswordResult = UserService.ChangePassword(model.Id, "123456", "1234567");
 
             return View(model);
+        }
+
+        public ActionResult Test()
+        {
+            var list = new List<string>();
+            list.Add("123");
+            list.Add("456");
+            return this.NewJson(list);
         }
 
     }

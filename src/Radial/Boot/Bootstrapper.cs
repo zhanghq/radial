@@ -109,6 +109,7 @@ namespace Radial.Boot
                     return 0;
                 });
 
+                //higher priority initialize first
                 Tasks.ForEach(o => o.Value.Initialize());
 
                 Initialized = true;

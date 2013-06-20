@@ -112,7 +112,6 @@ namespace Radial.Boot
                 Tasks.ForEach(o => o.Value.Initialize());
 
                 Initialized = true;
-
             }
         }
 
@@ -123,6 +122,7 @@ namespace Radial.Boot
         {
             lock (SyncRoot)
             {
+                //higher priority start first
                 if (Initialized)
                     Tasks.ForEach(o => o.Value.Start());
             }
@@ -136,7 +136,11 @@ namespace Radial.Boot
             lock (SyncRoot)
             {
                 if (Initialized)
-                    Tasks.ForEach(o => o.Value.Stop());
+                {
+                    //higher priority stop last
+                    var reversed = new List<KeyValuePair<int, IBootTask>>(Tasks.Reverse<KeyValuePair<int, IBootTask>>());
+                    reversed.ForEach(o => o.Value.Stop());
+                }
             }
         }
     }

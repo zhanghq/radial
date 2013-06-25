@@ -14,7 +14,7 @@ namespace Radial.UnitTest
         [SetUp]
         public void SetUp()
         {
-            SystemVariables.BasicConfigurationDirectory = SystemVariables.BasicConfigurationDirectory.Replace(@"\bin\Debug", string.Empty);
+            SystemSettings.ConfigDirectory = SystemSettings.BaseDirectory.Replace(@"\bin\Debug", string.Empty);
         }
 
         [TearDown]

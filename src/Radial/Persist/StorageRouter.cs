@@ -62,7 +62,7 @@ namespace Radial.Persist
         {
             get
             {
-                return SystemVariables.GetConfigurationPath("StoragePolicy.config");
+                return SystemSettings.GetConfigPath("StoragePolicy.config");
             }
         }
 

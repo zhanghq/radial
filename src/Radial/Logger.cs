@@ -54,7 +54,7 @@ namespace Radial
         {
             get
             {
-                return SystemVariables.GetConfigurationPath("log4net.config");
+                return SystemSettings.GetConfigPath("log4net.config");
             }
         }
 

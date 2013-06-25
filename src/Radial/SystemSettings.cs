@@ -1,36 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
 namespace Radial
 {
     /// <summary>
-    /// Represents a class that contains system variables
+    /// Represents a class that contains system settings.
     /// </summary>
-    public static class SystemVariables
+    public static class SystemSettings
     {
-        /// <summary>
-        /// Local hot ip
-        /// </summary>
-        public const string LocalHostIP = "127.0.0.1";
-
         /// <summary>
         /// Application base directory
         /// </summary>
         static string S_BaseDirectory;
         /// <summary>
-        /// Application base configuration directory
+        /// Application configuration directory
         /// </summary>
-        static string S_BasicConfigurationDirectory;
+        static string S_ConfigDirectory;
 
         /// <summary>
-        /// Initializes the <see cref="SystemVariables"/> class.
+        /// Initializes the <see cref="SystemSettings"/> class.
         /// </summary>
-        static SystemVariables()
+        static SystemSettings()
         {
             S_BaseDirectory = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
-            S_BasicConfigurationDirectory = S_BaseDirectory + @"\Config";
+            S_ConfigDirectory = S_BaseDirectory + @"\Config";
         }
 
 
@@ -46,18 +42,18 @@ namespace Radial
         }
 
         /// <summary>
-        /// Gets or sets application base configuration directory
+        /// Gets or sets application configuration directory
         /// </summary>
-        public static string BasicConfigurationDirectory
+        public static string ConfigDirectory
         {
             get
             {
-                return S_BasicConfigurationDirectory;
+                return S_ConfigDirectory;
             }
             set
             {
-                Checker.Requires(!string.IsNullOrWhiteSpace(value), "application base configuration directory can not be empty or null.");
-                S_BasicConfigurationDirectory = value.TrimEnd('\\', ' ');
+                Checker.Requires(!string.IsNullOrWhiteSpace(value), "application configuration directory can not be empty or null.");
+                S_ConfigDirectory = value.TrimEnd('\\', ' ');
             }
         }
 
@@ -66,10 +62,10 @@ namespace Radial
         /// </summary>
         /// <param name="fileName">The configuration file name contains extension.</param>
         /// <returns>The full path of configuration file.</returns>
-        public static string GetConfigurationPath(string fileName)
+        public static string GetConfigPath(string fileName)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(fileName), "configuration file name can not be empty or null.");
-            return BasicConfigurationDirectory + @"\" + fileName.Trim('\\', ' ');
+            return Path.Combine(ConfigDirectory, fileName.Trim('\\', ' '));
         }
     }
 }

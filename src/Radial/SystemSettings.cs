@@ -26,7 +26,7 @@ namespace Radial
         static SystemSettings()
         {
             S_BaseDirectory = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
-            S_ConfigDirectory = S_BaseDirectory + @"\Config";
+            S_ConfigDirectory = Path.Combine(S_BaseDirectory, "Config");
         }
 
 

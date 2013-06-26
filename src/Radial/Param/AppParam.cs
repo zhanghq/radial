@@ -156,17 +156,11 @@ namespace Radial.Param
             if (!bool.TryParse(paramValue, out returnValue))
             {
                 if (paramValue == "1" || string.Compare(paramValue, "y", true) == 0 || string.Compare(paramValue, "yes", true) == 0)
-                {
                     returnValue = true;
-                }
+                else if (paramValue == "0" || string.Compare(paramValue, "n", true) == 0 || string.Compare(paramValue, "no", true) == 0)
+                    returnValue = false;
                 else
-                {
-                    if (paramValue == "0" || string.Compare(paramValue, "n", true) == 0 || string.Compare(paramValue, "no", true) == 0)
-                        returnValue = false;
-                    else
-                        Checker.Requires(!string.IsNullOrWhiteSpace(paramValue), CanNotConvertExceptionFormat, path, typeof(bool).FullName);
-                }
-
+                    throw new NotSupportedException(string.Format(CanNotConvertExceptionFormat, path, typeof(bool).FullName));
             }
 
             return returnValue;

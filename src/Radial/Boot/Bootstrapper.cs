@@ -17,6 +17,7 @@ namespace Radial.Boot
         static object SyncRoot = new object();
 
         static List<KeyValuePair<int, IBootTask>> Tasks = new List<KeyValuePair<int, IBootTask>>();
+        static List<KeyValuePair<int, IBootTask>> ReversedTasks = new List<KeyValuePair<int, IBootTask>>();
 
         static bool Initialized = false;
 
@@ -55,8 +56,7 @@ namespace Radial.Boot
         {
             lock (SyncRoot)
             {
-                if (Initialized)
-                    return;
+                Checker.Requires(!Initialized, "can not register boot task after system initialized");
 
                 if (task != null)
                 {
@@ -109,6 +109,8 @@ namespace Radial.Boot
                     return 0;
                 });
 
+                ReversedTasks = new List<KeyValuePair<int, IBootTask>>(Tasks.Reverse<KeyValuePair<int, IBootTask>>());
+
                 //higher priority initialize first
                 Tasks.ForEach(o => o.Value.Initialize());
 
@@ -136,12 +138,9 @@ namespace Radial.Boot
         {
             lock (SyncRoot)
             {
+                //higher priority stop last
                 if (Initialized)
-                {
-                    //higher priority stop last
-                    var reversed = new List<KeyValuePair<int, IBootTask>>(Tasks.Reverse<KeyValuePair<int, IBootTask>>());
-                    reversed.ForEach(o => o.Value.Stop());
-                }
+                    ReversedTasks.ForEach(o => o.Value.Stop());
             }
         }
     }

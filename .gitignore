@@ -1,6 +1,7 @@
 # git ignore file
 bin
 obj
+Log
 *.log
 *.suo
 *.user

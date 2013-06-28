@@ -44,7 +44,7 @@ namespace Radial.Web.Mvc
         /// <summary>
         /// Renders image to the response.
         /// </summary>
-        /// <param name="c">The controllerontroller.</param>
+        /// <param name="c">The controller.</param>
         /// <param name="imageStream">The image stream.</param>
         /// <param name="format">The image format.</param>
         /// <returns>ImageResult instance.</returns>
@@ -56,7 +56,7 @@ namespace Radial.Web.Mvc
         /// <summary>
         /// Renders image to the response.
         /// </summary>
-        /// <param name="c">The controllerontroller.</param>
+        /// <param name="c">The controller.</param>
         /// <param name="imageBytes">The image bytes.</param>
         /// <param name="format">The image format.</param>
         /// <returns>ImageResult instance.</returns>
@@ -68,7 +68,7 @@ namespace Radial.Web.Mvc
         /// <summary>
         /// Renders image to the response.
         /// </summary>
-        /// <param name="c">The controllerontroller.</param>
+        /// <param name="c">The controller.</param>
         /// <param name="image">The image.</param>
         /// <param name="format">The image format.</param>
         /// <returns>ImageResult instance.</returns>
@@ -80,7 +80,7 @@ namespace Radial.Web.Mvc
         /// <summary>
         /// Renders xml to the response.
         /// </summary>
-        /// <param name="c">The controllerontroller.</param>
+        /// <param name="c">The controller.</param>
         /// <param name="xml">The xml.</param>
         /// <returns>
         /// XmlResult instance.
@@ -93,7 +93,7 @@ namespace Radial.Web.Mvc
         /// <summary>
         /// Renders xml to the response.
         /// </summary>
-        /// <param name="c">The controllerontroller.</param>
+        /// <param name="c">The controller.</param>
         /// <param name="xml">The xml.</param>
         /// <param name="encoding">The xml encoding.</param>
         /// <returns>

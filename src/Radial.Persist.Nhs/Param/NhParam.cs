@@ -14,7 +14,7 @@ using System.Collections;
 namespace Radial.Persist.Nhs.Param
 {
     /// <summary>
-    /// IParam implement using NHibernate. 
+    /// IParam implementation using NHibernate. 
     /// </summary>
     public class NhParam : IParam
     {

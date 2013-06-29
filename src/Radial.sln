@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Web.Mvc4", "Radial.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookNine.Win", "Samples\Book9\BookNine.Win\BookNine.Win.csproj", "{9461FBEA-EC34-4483-BD0B-C5FFDFF061C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Redis", "Radial.Redis\Radial.Redis.csproj", "{3AD800EA-AFE1-4AF2-A15D-4FAECD282C1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -259,6 +261,16 @@ Global
 		{9461FBEA-EC34-4483-BD0B-C5FFDFF061C5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{9461FBEA-EC34-4483-BD0B-C5FFDFF061C5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{9461FBEA-EC34-4483-BD0B-C5FFDFF061C5}.Release|x86.ActiveCfg = Release|Any CPU
+		{3AD800EA-AFE1-4AF2-A15D-4FAECD282C1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AD800EA-AFE1-4AF2-A15D-4FAECD282C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AD800EA-AFE1-4AF2-A15D-4FAECD282C1B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3AD800EA-AFE1-4AF2-A15D-4FAECD282C1B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3AD800EA-AFE1-4AF2-A15D-4FAECD282C1B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3AD800EA-AFE1-4AF2-A15D-4FAECD282C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AD800EA-AFE1-4AF2-A15D-4FAECD282C1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AD800EA-AFE1-4AF2-A15D-4FAECD282C1B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3AD800EA-AFE1-4AF2-A15D-4FAECD282C1B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3AD800EA-AFE1-4AF2-A15D-4FAECD282C1B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

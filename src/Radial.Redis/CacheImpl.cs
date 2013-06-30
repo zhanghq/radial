@@ -8,7 +8,7 @@ using Radial.Cache;
 namespace Radial.Redis
 {
     /// <summary>
-    /// Redis cache.
+    /// Redis cache implementation.
     /// </summary>
     public class CacheImpl : ICache
     {

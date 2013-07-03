@@ -112,7 +112,7 @@ namespace Radial
         /// </summary>
         /// <param name="property">The property.</param>
         /// <returns>
-        /// If property exist, return its value or String.Empty, otherwise return null.
+        /// If property exist, return its value, otherwise return null.
         /// </returns>
         public string GetValue(string property)
         {

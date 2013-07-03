@@ -66,11 +66,11 @@ namespace Radial
                 TEnum fv = (TEnum)f.GetValue(null);
                 if (fv.Equals(enumValue))
                 {
-                    object[] attObjs = f.GetCustomAttributes(typeof(EnumItemAttribute), false);
+                    object[] attObjs = f.GetCustomAttributes(typeof(EnumDescriptionAttribute), false);
 
                     string desp = string.Empty;
                     if (attObjs.Length == 1)
-                        desp = (attObjs[0] as EnumItemAttribute).Description;
+                        desp = (attObjs[0] as EnumDescriptionAttribute).Text;
 
                     return desp;
                 }

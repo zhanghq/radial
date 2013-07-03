@@ -7,3 +7,4 @@ Log
 *.user
 
 /out
+/src/Radial.Test.WebForm/uploads

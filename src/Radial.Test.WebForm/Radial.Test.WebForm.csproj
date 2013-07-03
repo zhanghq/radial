@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
+    <Content Include="UploadTest.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +70,13 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UploadTest.aspx.cs">
+      <DependentUpon>UploadTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UploadTest.aspx.designer.cs">
+      <DependentUpon>UploadTest.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Web.Debug.config">
@@ -82,6 +90,10 @@
     <ProjectReference Include="..\Radial.Persist.Lite\Radial.Persist.Lite.csproj">
       <Project>{9c681e77-ee18-4273-90d0-f8a0c302d0eb}</Project>
       <Name>Radial.Persist.Lite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Radial\Radial.csproj">
+      <Project>{e9ec1cb9-79b6-47bc-af82-e8b7b7affcea}</Project>
+      <Name>Radial</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -99,6 +99,7 @@
     <Compile Include="ExcelTools.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\IOExtensions.cs" />
     <Compile Include="FileWatcher.cs" />
     <Compile Include="Boot\IBootTask.cs" />
     <Compile Include="Net\ContentTypes.cs" />

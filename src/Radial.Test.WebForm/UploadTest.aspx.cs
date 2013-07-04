@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Radial.Web;
+using Radial.Extensions;
 
 namespace Radial.Test.WebForm
 {
@@ -18,10 +19,7 @@ namespace Radial.Test.WebForm
         {
             UploadSettings settings = new UploadSettings {  MaxFileSize=100, AllowedExtensions="doc|docx|txt|xls|xlsx", RootDirectory="/" };
             GeneralUpload uploader = new GeneralUpload(settings);
-
-
             var result = uploader.Save(FileUpload1.FileName, FileUpload1.FileBytes, "uploads", true);
-
             Literal1.Text = string.Format("state: {0}, file path={1}", result.State, result.FilePath);
         }
     }

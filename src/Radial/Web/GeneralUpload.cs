@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using Radial.Extensions;
+using Newtonsoft.Json;
 
 namespace Radial.Web
 {
@@ -37,11 +38,13 @@ namespace Radial.Web
         /// <summary>
         /// Gets or sets the upload state.
         /// </summary>
+        [JsonProperty("state")]
         public UploadState State { get; set; }
 
         /// <summary>
         /// Gets or sets the upload file relative path.
         /// </summary>
+        [JsonProperty("file_path")]
         public string FilePath { get; set; }
     }
 
@@ -67,9 +70,9 @@ namespace Radial.Web
         /// </summary>
         ExceedMaxSize = -2,
         /// <summary>
-        /// IO exception
+        /// Illegal character
         /// </summary>
-        IOException = -1,
+        IllegalCharacter = -1,
         /// <summary>
         /// Succeed
         /// </summary>
@@ -128,7 +131,7 @@ namespace Radial.Web
                 foreach (string path in paths)
                 {
                     if (!string.IsNullOrWhiteSpace(path))
-                        levels.Add(path.Trim('~', '/', ' '));
+                        levels.Add(path.Replace(@"\", "/").Trim('~', '/', ' '));
                 }
             }
 
@@ -167,28 +170,6 @@ namespace Radial.Web
             }
         }
 
-
-        /// <summary>
-        /// Gets the upload result from exception.
-        /// </summary>
-        /// <param name="ex">The exception.</param>
-        /// <returns>Upload result.</returns>
-        protected UploadResult GetResultFromException(Exception ex)
-        {
-            if (ex != null)
-            {
-                Logger.Default.Error(ex, "General Upload Error");
-
-                if (ex is IOException)
-                    return new UploadResult { State = UploadState.IOException };
-
-                if (ex is UnauthorizedAccessException)
-                    return new UploadResult { State = UploadState.PermissionDenied };
-            }
-
-            return new UploadResult { State = UploadState.UnknownError };
-        }
-
         /// <summary>
         /// Save posted file to the root directory.
         /// </summary>
@@ -210,6 +191,11 @@ namespace Radial.Web
         public UploadResult Save(System.Web.HttpPostedFile postedFile, string storedDirectory, bool saveAsRandomName = false)
         {
             Checker.Parameter(postedFile != null, "posted file can not be null");
+
+            if ((Settings != null && Settings.RootDirectory.Any(o => Path.GetInvalidPathChars().Contains(o)))
+                || (!string.IsNullOrWhiteSpace(storedDirectory) && storedDirectory.Any(o => Path.GetInvalidPathChars().Contains(o)))
+                || postedFile.FileName.Any(o => Path.GetInvalidFileNameChars().Contains(o)))
+                return new UploadResult { State = UploadState.IllegalCharacter };
 
             if (Settings != null && Settings.MaxFileSize > 0 && postedFile.ContentLength > Settings.MaxFileSize * 1024)
                 return new UploadResult { State = UploadState.ExceedMaxSize };
@@ -239,8 +225,13 @@ namespace Radial.Web
             }
             catch (Exception ex)
             {
-                return GetResultFromException(ex);
+                Logger.Default.Error(ex, "General Upload Error");
+
+                if (ex is UnauthorizedAccessException)
+                    return new UploadResult { State = UploadState.PermissionDenied };
             }
+
+            return new UploadResult { State = UploadState.UnknownError };
         }
 
         /// <summary>
@@ -265,6 +256,11 @@ namespace Radial.Web
         {
             Checker.Parameter(postedFile != null, "posted file can not be null");
 
+            if ((Settings != null && Settings.RootDirectory.Any(o => Path.GetInvalidPathChars().Contains(o)))
+                || (!string.IsNullOrWhiteSpace(storedDirectory) && storedDirectory.Any(o => Path.GetInvalidPathChars().Contains(o)))
+                || postedFile.FileName.Any(o => Path.GetInvalidFileNameChars().Contains(o)))
+                return new UploadResult { State = UploadState.IllegalCharacter };
+
             if (Settings != null && Settings.MaxFileSize > 0 && postedFile.ContentLength > Settings.MaxFileSize * 1024)
                 return new UploadResult { State = UploadState.ExceedMaxSize };
 
@@ -293,8 +289,13 @@ namespace Radial.Web
             }
             catch (Exception ex)
             {
-                return GetResultFromException(ex);
+                Logger.Default.Error(ex, "General Upload Error");
+
+                if (ex is UnauthorizedAccessException)
+                    return new UploadResult { State = UploadState.PermissionDenied };
             }
+
+            return new UploadResult { State = UploadState.UnknownError };
         }
 
 
@@ -322,6 +323,11 @@ namespace Radial.Web
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(uploadFileName), "upload file name can not be empty or null");
             Checker.Parameter(uploadFileBytes != null, "upload file bytes can not be null");
+
+            if ((Settings != null && Settings.RootDirectory.Any(o => Path.GetInvalidPathChars().Contains(o)))
+                || (!string.IsNullOrWhiteSpace(storedDirectory) && storedDirectory.Any(o => Path.GetInvalidPathChars().Contains(o)))
+                || uploadFileName.Any(o => Path.GetInvalidFileNameChars().Contains(o)))
+                return new UploadResult { State = UploadState.IllegalCharacter };
 
             if (Settings != null && Settings.MaxFileSize > 0 && uploadFileBytes.Length > Settings.MaxFileSize * 1024)
                 return new UploadResult { State = UploadState.ExceedMaxSize };
@@ -352,8 +358,13 @@ namespace Radial.Web
             }
             catch (Exception ex)
             {
-                return GetResultFromException(ex);
+                Logger.Default.Error(ex, "General Upload Error");
+
+                if (ex is UnauthorizedAccessException)
+                    return new UploadResult { State = UploadState.PermissionDenied };
             }
+
+            return new UploadResult { State = UploadState.UnknownError };
 
         }
     }

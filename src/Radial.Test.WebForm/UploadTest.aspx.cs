@@ -12,14 +12,15 @@ namespace Radial.Test.WebForm
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            UploadSettings settings = new UploadSettings {  MaxFileSize=100, AllowedExtensions="doc|docx", RootDirectory="/" };
+            UploadSettings settings = new UploadSettings {  MaxFileSize=100, AllowedExtensions="doc|docx|txt|xls|xlsx", RootDirectory="/" };
             GeneralUpload uploader = new GeneralUpload(settings);
-            var result = uploader.Save(FileUpload1.FileName, FileUpload1.FileBytes, "uploads");
+
+
+            var result = uploader.Save(FileUpload1.FileName, FileUpload1.FileBytes, "uploads", true);
 
             Literal1.Text = string.Format("state: {0}, file path={1}", result.State, result.FilePath);
         }

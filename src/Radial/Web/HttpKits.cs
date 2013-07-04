@@ -491,7 +491,7 @@ namespace Radial.Web
             if (string.IsNullOrWhiteSpace(relativeUrl))
                 relativeUrl = "";
             else
-                relativeUrl = relativeUrl.Trim('~', '/');
+                relativeUrl = relativeUrl.Trim('~', '/',' ');
 
             if (relativeUrl.ToLower().StartsWith("http://") || relativeUrl.ToLower().StartsWith("https://") || relativeUrl.ToLower().StartsWith("ftp://"))
                 return relativeUrl;
@@ -532,12 +532,30 @@ namespace Radial.Web
             url += "/" + CurrentContext.Request.ApplicationPath.Trim('/');
             url = url.Trim('/');
 
-            string temp = absoluteUrl.Replace(url, "").Trim('/');
+            return "/" + absoluteUrl.Replace(url, "").Trim('/');
+        }
 
-            if (!temp.StartsWith("/"))
-                return "~/" + temp;
-            else
-                return "~" + temp;
+        /// <summary>
+        /// Combine relative urls.
+        /// </summary>
+        /// <param name="urls">The urls.</param>
+        /// <returns></returns>
+        public static string CombineRelativeUrl(params string[] urls)
+        {
+            IList<string> levels = new List<string>();
+
+            if (urls != null)
+            {
+                foreach (string url in urls)
+                {
+                    if (!string.IsNullOrWhiteSpace(url))
+                        levels.Add(url.Replace(@"\", "/").Trim('~', '/', ' '));
+                }
+            }
+
+            levels.Remove(o => string.IsNullOrWhiteSpace(o));
+
+            return "/" + string.Join("/", levels.ToArray());
         }
 
         /// <summary>

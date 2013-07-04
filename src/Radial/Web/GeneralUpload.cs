@@ -118,27 +118,19 @@ namespace Radial.Web
         }
 
         /// <summary>
-        /// Combines the relative path.
+        /// Gets the random name of the file.
         /// </summary>
-        /// <param name="paths">The paths.</param>
+        /// <param name="extension">The extension (include dot).</param>
         /// <returns></returns>
-        protected string CombineRelativePath(params string[] paths)
+        protected virtual string GetRandomFileName(string extension)
         {
-            IList<string> levels = new List<string>();
+            if (!string.IsNullOrWhiteSpace(extension))
+                extension = extension.ToLower();
 
-            if (paths != null)
-            {
-                foreach (string path in paths)
-                {
-                    if (!string.IsNullOrWhiteSpace(path))
-                        levels.Add(path.Replace(@"\", "/").Trim('~', '/', ' '));
-                }
-            }
-
-            levels.Remove(o => string.IsNullOrWhiteSpace(o));
-
-            return "/" + string.Join("/", levels.ToArray());
+            return Path.GetRandomFileName().Remove(8, 1) + extension;
         }
+
+
 
         /// <summary>
         /// Prepares the directory.
@@ -148,7 +140,7 @@ namespace Radial.Web
         {
             lock (SyncRoot)
             {
-                string rootAP = Settings != null ? HttpServerUtility.MapPath(CombineRelativePath(Settings.RootDirectory)) : SystemSettings.BaseDirectory;
+                string rootAP = Settings != null ? HttpServerUtility.MapPath(HttpKits.CombineRelativeUrl(Settings.RootDirectory)) : SystemSettings.BaseDirectory;
 
                 //create root dir if not exist
                 if (!Directory.Exists(rootAP))
@@ -171,6 +163,34 @@ namespace Radial.Web
         }
 
         /// <summary>
+        /// Determines whether [is contains illegal character] [the specified file name].
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="directory">The directory.</param>
+        /// <returns>
+        ///   <c>true</c> if [is contains illegal character] [the specified file name]; otherwise, <c>false</c>.
+        /// </returns>
+        protected virtual bool IsContainsIllegalCharacter(string fileName, string directory)
+        {
+            try
+            {
+                // test illegal character
+                if (Settings != null && !string.IsNullOrWhiteSpace(Settings.RootDirectory))
+                    Path.GetDirectoryName(Settings.RootDirectory);
+                if (!string.IsNullOrWhiteSpace(directory))
+                    Path.GetDirectoryName(directory);
+                if (!string.IsNullOrWhiteSpace(fileName))
+                    Path.GetFileName(fileName);
+
+                return false; //all test passed
+            }
+            catch (ArgumentException)
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
         /// Save posted file to the root directory.
         /// </summary>
         /// <param name="postedFile">The http posted file.</param>
@@ -188,36 +208,34 @@ namespace Radial.Web
         /// <param name="storedDirectory">The relative directory where file will be stored.</param>
         /// <param name="saveAsRandomName">A value indicating whether to save file using random name.</param>
         /// <returns>Upload result.</returns>
-        public UploadResult Save(System.Web.HttpPostedFile postedFile, string storedDirectory, bool saveAsRandomName = false)
+        public virtual UploadResult Save(System.Web.HttpPostedFile postedFile, string storedDirectory, bool saveAsRandomName = false)
         {
             Checker.Parameter(postedFile != null, "posted file can not be null");
 
-            if ((Settings != null && Settings.RootDirectory.Any(o => Path.GetInvalidPathChars().Contains(o)))
-                || (!string.IsNullOrWhiteSpace(storedDirectory) && storedDirectory.Any(o => Path.GetInvalidPathChars().Contains(o)))
-                || postedFile.FileName.Any(o => Path.GetInvalidFileNameChars().Contains(o)))
-                return new UploadResult { State = UploadState.IllegalCharacter };
-
-            if (Settings != null && Settings.MaxFileSize > 0 && postedFile.ContentLength > Settings.MaxFileSize * 1024)
-                return new UploadResult { State = UploadState.ExceedMaxSize };
-
-            string fileExt = Path.GetExtension(postedFile.FileName).ToLower();
-
-            string[] allowedExts = new string[] { };
-            if (Settings != null && !string.IsNullOrWhiteSpace(Settings.AllowedExtensions))
-                allowedExts = Settings.AllowedExtensions.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (allowedExts.Length > 0 && !allowedExts.Any(o => string.Compare(o.Trim('.', ' '), fileExt.Trim('.'), true) == 0))
-                return new UploadResult { State = UploadState.InvalidExtension };
-
-            string fileName = (saveAsRandomName ? Path.GetRandomFileName().Remove(8, 1) : Path.GetFileNameWithoutExtension(postedFile.FileName)) + fileExt;
-
-
-            string fileRelativePath = CombineRelativePath(Settings != null ? Settings.RootDirectory : "/", storedDirectory, fileName);
-
-            string fileAbsolutePath = HttpServerUtility.MapPath(fileRelativePath);
-
             try
             {
+                if (IsContainsIllegalCharacter(postedFile.FileName, storedDirectory))
+                    return new UploadResult { State = UploadState.IllegalCharacter };
+
+                if (Settings != null && Settings.MaxFileSize > 0 && postedFile.ContentLength > Settings.MaxFileSize * 1024)
+                    return new UploadResult { State = UploadState.ExceedMaxSize };
+
+                string fileExt = Path.GetExtension(postedFile.FileName).ToLower();
+
+                string[] allowedExts = new string[] { };
+                if (Settings != null && !string.IsNullOrWhiteSpace(Settings.AllowedExtensions))
+                    allowedExts = Settings.AllowedExtensions.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (allowedExts.Length > 0 && !allowedExts.Any(o => string.Compare(o.Trim('.', ' '), fileExt.Trim('.'), true) == 0))
+                    return new UploadResult { State = UploadState.InvalidExtension };
+
+                string fileName = saveAsRandomName ? GetRandomFileName(fileExt) : Path.GetFileNameWithoutExtension(postedFile.FileName) + fileExt;
+
+                string fileRelativePath = HttpKits.CombineRelativeUrl(Settings != null ? Settings.RootDirectory : "/", storedDirectory, fileName);
+
+                string fileAbsolutePath = HttpServerUtility.MapPath(fileRelativePath);
+
+
                 PrepareDirectory(storedDirectory);
                 postedFile.SaveAs(fileAbsolutePath);
 
@@ -230,7 +248,6 @@ namespace Radial.Web
                 if (ex is UnauthorizedAccessException)
                     return new UploadResult { State = UploadState.PermissionDenied };
             }
-
             return new UploadResult { State = UploadState.UnknownError };
         }
 
@@ -252,36 +269,34 @@ namespace Radial.Web
         /// <param name="storedDirectory">The relative directory where file will be stored.</param>
         /// <param name="saveAsRandomName">A value indicating whether to save file using random name.</param>
         /// <returns>Upload result.</returns>
-        public UploadResult Save(System.Web.HttpPostedFileBase postedFile, string storedDirectory, bool saveAsRandomName = false)
+        public virtual UploadResult Save(System.Web.HttpPostedFileBase postedFile, string storedDirectory, bool saveAsRandomName = false)
         {
             Checker.Parameter(postedFile != null, "posted file can not be null");
 
-            if ((Settings != null && Settings.RootDirectory.Any(o => Path.GetInvalidPathChars().Contains(o)))
-                || (!string.IsNullOrWhiteSpace(storedDirectory) && storedDirectory.Any(o => Path.GetInvalidPathChars().Contains(o)))
-                || postedFile.FileName.Any(o => Path.GetInvalidFileNameChars().Contains(o)))
-                return new UploadResult { State = UploadState.IllegalCharacter };
-
-            if (Settings != null && Settings.MaxFileSize > 0 && postedFile.ContentLength > Settings.MaxFileSize * 1024)
-                return new UploadResult { State = UploadState.ExceedMaxSize };
-
-            string fileExt = Path.GetExtension(postedFile.FileName).ToLower();
-
-            string[] allowedExts = new string[] { };
-            if (Settings != null && !string.IsNullOrWhiteSpace(Settings.AllowedExtensions))
-                allowedExts = Settings.AllowedExtensions.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (allowedExts.Length > 0 && !allowedExts.Any(o => string.Compare(o.Trim('.', ' '), fileExt.Trim('.'), true) == 0))
-                return new UploadResult { State = UploadState.InvalidExtension };
-
-            string fileName = (saveAsRandomName ? Path.GetRandomFileName().Remove(8, 1) : Path.GetFileNameWithoutExtension(postedFile.FileName)) + fileExt;
-
-
-            string fileRelativePath = CombineRelativePath(Settings != null ? Settings.RootDirectory : "/", storedDirectory, fileName);
-
-            string fileAbsolutePath = HttpServerUtility.MapPath(fileRelativePath);
-
             try
             {
+                if (IsContainsIllegalCharacter(postedFile.FileName, storedDirectory))
+                    return new UploadResult { State = UploadState.IllegalCharacter };
+
+                if (Settings != null && Settings.MaxFileSize > 0 && postedFile.ContentLength > Settings.MaxFileSize * 1024)
+                    return new UploadResult { State = UploadState.ExceedMaxSize };
+
+                string fileExt = Path.GetExtension(postedFile.FileName).ToLower();
+
+                string[] allowedExts = new string[] { };
+                if (Settings != null && !string.IsNullOrWhiteSpace(Settings.AllowedExtensions))
+                    allowedExts = Settings.AllowedExtensions.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (allowedExts.Length > 0 && !allowedExts.Any(o => string.Compare(o.Trim('.', ' '), fileExt.Trim('.'), true) == 0))
+                    return new UploadResult { State = UploadState.InvalidExtension };
+
+                string fileName = saveAsRandomName ? GetRandomFileName(fileExt) : Path.GetFileNameWithoutExtension(postedFile.FileName) + fileExt;
+
+                string fileRelativePath = HttpKits.CombineRelativeUrl(Settings != null ? Settings.RootDirectory : "/", storedDirectory, fileName);
+
+                string fileAbsolutePath = HttpServerUtility.MapPath(fileRelativePath);
+
+
                 PrepareDirectory(storedDirectory);
                 postedFile.SaveAs(fileAbsolutePath);
 
@@ -319,37 +334,36 @@ namespace Radial.Web
         /// <param name="storedDirectory">The relative directory.</param>
         /// <param name="saveAsRandomName">A value indicating whether to save file using random name.</param>
         /// <returns>Upload result.</returns>
-        public UploadResult Save(string uploadFileName, byte[] uploadFileBytes, string storedDirectory, bool saveAsRandomName = false)
+        public virtual UploadResult Save(string uploadFileName, byte[] uploadFileBytes, string storedDirectory, bool saveAsRandomName = false)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(uploadFileName), "upload file name can not be empty or null");
             Checker.Parameter(uploadFileBytes != null, "upload file bytes can not be null");
 
-            if ((Settings != null && Settings.RootDirectory.Any(o => Path.GetInvalidPathChars().Contains(o)))
-                || (!string.IsNullOrWhiteSpace(storedDirectory) && storedDirectory.Any(o => Path.GetInvalidPathChars().Contains(o)))
-                || uploadFileName.Any(o => Path.GetInvalidFileNameChars().Contains(o)))
-                return new UploadResult { State = UploadState.IllegalCharacter };
-
-            if (Settings != null && Settings.MaxFileSize > 0 && uploadFileBytes.Length > Settings.MaxFileSize * 1024)
-                return new UploadResult { State = UploadState.ExceedMaxSize };
-
-            string fileExt = Path.GetExtension(uploadFileName).ToLower();
-
-            string[] allowedExts = new string[] { };
-            if (Settings != null && !string.IsNullOrWhiteSpace(Settings.AllowedExtensions))
-                allowedExts = Settings.AllowedExtensions.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (allowedExts.Length > 0 && !allowedExts.Any(o => string.Compare(o.Trim('.', ' '), fileExt.Trim('.'), true) == 0))
-                return new UploadResult { State = UploadState.InvalidExtension };
-
-            string fileName = (saveAsRandomName ? Path.GetRandomFileName().Remove(8, 1) : Path.GetFileNameWithoutExtension(uploadFileName)) + fileExt;
-
-
-            string fileRelativePath = CombineRelativePath(Settings != null ? Settings.RootDirectory : "/", storedDirectory, fileName);
-
-            string fileAbsolutePath = HttpServerUtility.MapPath(fileRelativePath);
-
             try
             {
+                if (IsContainsIllegalCharacter(uploadFileName, storedDirectory))
+                    return new UploadResult { State = UploadState.IllegalCharacter };
+
+
+                if (Settings != null && Settings.MaxFileSize > 0 && uploadFileBytes.Length > Settings.MaxFileSize * 1024)
+                    return new UploadResult { State = UploadState.ExceedMaxSize };
+
+                string fileExt = Path.GetExtension(uploadFileName).ToLower();
+
+                string[] allowedExts = new string[] { };
+                if (Settings != null && !string.IsNullOrWhiteSpace(Settings.AllowedExtensions))
+                    allowedExts = Settings.AllowedExtensions.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (allowedExts.Length > 0 && !allowedExts.Any(o => string.Compare(o.Trim('.', ' '), fileExt.Trim('.'), true) == 0))
+                    return new UploadResult { State = UploadState.InvalidExtension };
+
+                string fileName = saveAsRandomName ? GetRandomFileName(fileExt) : Path.GetFileNameWithoutExtension(uploadFileName) + fileExt;
+
+
+                string fileRelativePath = HttpKits.CombineRelativeUrl(Settings != null ? Settings.RootDirectory : "/", storedDirectory, fileName);
+
+                string fileAbsolutePath = HttpServerUtility.MapPath(fileRelativePath);
+
                 PrepareDirectory(storedDirectory);
 
                 File.WriteAllBytes(fileAbsolutePath, uploadFileBytes);
@@ -365,7 +379,6 @@ namespace Radial.Web
             }
 
             return new UploadResult { State = UploadState.UnknownError };
-
         }
     }
 }

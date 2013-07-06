@@ -58,6 +58,14 @@ namespace Radial.Web
         /// </summary>
         UnknownError = -9,
         /// <summary>
+        /// Not file specified.
+        /// </summary>
+        NotFileSpecified=-6,
+        /// <summary>
+        /// Empty file name
+        /// </summary>
+        EmptyFileName=-5,
+        /// <summary>
         /// Permission denied
         /// </summary>
         PermissionDenied = -4,
@@ -73,6 +81,10 @@ namespace Radial.Web
         /// Illegal character
         /// </summary>
         IllegalCharacter = -1,
+        /// <summary>
+        /// Not set
+        /// </summary>
+        NotSet=0,
         /// <summary>
         /// Succeed
         /// </summary>
@@ -210,7 +222,8 @@ namespace Radial.Web
         /// <returns>Upload result.</returns>
         public virtual UploadResult Save(System.Web.HttpPostedFile postedFile, string storedDirectory, bool saveAsRandomName = false)
         {
-            Checker.Parameter(postedFile != null, "posted file can not be null");
+            if (postedFile == null)
+                return new UploadResult { State = UploadState.NotFileSpecified };
 
             try
             {
@@ -271,7 +284,8 @@ namespace Radial.Web
         /// <returns>Upload result.</returns>
         public virtual UploadResult Save(System.Web.HttpPostedFileBase postedFile, string storedDirectory, bool saveAsRandomName = false)
         {
-            Checker.Parameter(postedFile != null, "posted file can not be null");
+            if (postedFile == null)
+                return new UploadResult { State = UploadState.NotFileSpecified };
 
             try
             {
@@ -336,8 +350,11 @@ namespace Radial.Web
         /// <returns>Upload result.</returns>
         public virtual UploadResult Save(string uploadFileName, byte[] uploadFileBytes, string storedDirectory, bool saveAsRandomName = false)
         {
-            Checker.Parameter(!string.IsNullOrWhiteSpace(uploadFileName), "upload file name can not be empty or null");
-            Checker.Parameter(uploadFileBytes != null, "upload file bytes can not be null");
+            if (string.IsNullOrWhiteSpace(uploadFileName))
+                return new UploadResult { State = UploadState.EmptyFileName };
+
+            if (uploadFileBytes == null)
+                return new UploadResult { State = UploadState.NotFileSpecified };
 
             try
             {

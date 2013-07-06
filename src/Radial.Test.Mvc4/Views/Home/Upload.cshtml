@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Upload";
+}
+@section scripts{
+    <script src="~/Scripts/jquery.form.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#formCtr').ajaxForm({
+                success: function (data) {
+                    $("#result").html(data);
+                }
+            });
+
+            $("#fileCtr").change(function () {
+                $("#formCtr").submit();
+            });
+        });
+    </script>
+}
+<h2>Upload</h2>
+<form id="formCtr" method="post" action="/home/upload" enctype="multipart/form-data">
+    <input type="file" name="file" id="fileCtr" />
+
+    <div id="result"></div>
+</form>

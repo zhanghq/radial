@@ -222,9 +222,9 @@ namespace Radial.Tools.NhDbFirst
                 return;
             }
 
-            IList<TableDefinition> tableDefChecks=new List<TableDefinition>();
+            IList<TableDefinition> tableDefChecks = new List<TableDefinition>();
 
-            foreach(var o in checks)
+            foreach (var o in checks)
             {
                 tableDefChecks.Add(o as TableDefinition);
             }
@@ -275,7 +275,8 @@ namespace Radial.Tools.NhDbFirst
                         ClassName = Toolkits.NormalizeName(tableDef.Name, profile.NameSpliters),
                         AssemblyName = profile.ClassAssembly,
                         NamespaceName = profile.ClassNamespace,
-                        LazyModel = profile.LazyModel
+                        LazyModel = profile.LazyModel,
+                        DataSource = profile.DataSource
                     };
 
                     IList<FieldDefinition> fieldDefs = FieldDefinition.Generate(profile, tableDef);
@@ -288,6 +289,7 @@ namespace Radial.Tools.NhDbFirst
                             FieldDefinition = fd,
                             TypeString = SqlTypeTransfer.GetPropertyTypeString(profile.DataSource, fd.SqlType),
                             PropertyName = Toolkits.NormalizeName(fd.Name, profile.NameSpliters),
+                            DataSource = profile.DataSource
                         };
 
                         cm.Properties.Add(pm);

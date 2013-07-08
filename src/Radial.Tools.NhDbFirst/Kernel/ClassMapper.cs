@@ -9,7 +9,7 @@ namespace Radial.Tools.NhDbFirst.Kernel
     /// <summary>
     /// 表示模型类映射
     /// </summary>
-    public class ClassMapper:IOutput
+    public class ClassMapper : IOutput
     {
         public ClassMapper()
         {
@@ -43,6 +43,12 @@ namespace Radial.Tools.NhDbFirst.Kernel
         public IList<PropertyMapper> Properties { get; set; }
 
 
+        public DataSource DataSource
+        {
+            get;
+            set;
+        }
+
         public void WriteCode(TextWriter writer)
         {
             writer.WriteLine("using System;");
@@ -73,6 +79,15 @@ namespace Radial.Tools.NhDbFirst.Kernel
 
         public void WriteXml(TextWriter writer)
         {
+            switch (DataSource)
+            {
+                case DataSource.SqlServer: WriteSqlServerXml(writer); break;
+                default: throw new NotSupportedException("不支持的数据源类型：" + DataSource.ToString());
+            }
+        }
+
+        private void WriteSqlServerXml(TextWriter writer)
+        {
             writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
             writer.WriteLine(string.Format("<hibernate-mapping assembly=\"{0}\" namespace=\"{1}\" xmlns=\"urn:nhibernate-mapping-2.2\">", AssemblyName, NamespaceName));
 
@@ -86,5 +101,7 @@ namespace Radial.Tools.NhDbFirst.Kernel
             writer.WriteLine("</hibernate-mapping>");
 
         }
+
+
     }
 }

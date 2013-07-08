@@ -7,6 +7,8 @@ using Radial.Tools.NhDbFirst.Properties;
 
 namespace Radial.Tools.NhDbFirst.Kernel
 {
+    //参考：http://msdn.microsoft.com/query/dev10.query?appId=Dev10IDEF1&l=ZH-CN&k=k(COLUMNPROPERTY_TSQL);k(SQL11.SWB.TSQLRESULTS.F1);k(SQL11.SWB.TSQLQUERY.F1);k(MISCELLANEOUSFILESPROJECT);k(DevLang-TSQL)&rd=true
+
     /// <summary>
     /// 字段定义
     /// </summary>
@@ -21,9 +23,13 @@ namespace Radial.Tools.NhDbFirst.Kernel
         /// </summary>
         public string SqlType { get; private set; }
         /// <summary>
-        /// 获取字段长度
+        /// 获取数据类型的长度
         /// </summary>
         public int Length { get; private set; }
+        /// <summary>
+        /// 获取数据类型的小数位数
+        /// </summary>
+        public int? Scale { get; private set; }
         /// <summary>
         /// 获取是否为主键
         /// </summary>
@@ -75,13 +81,12 @@ namespace Radial.Tools.NhDbFirst.Kernel
                         IsPrimaryKey = int.Parse(row["IsPrimaryKey"].Value.ToString()) == 1,
                         IsIdentity = int.Parse(row["IsIdentity"].Value.ToString()) == 1,
                         IsRowGuid = int.Parse(row["IsRowGuid"].Value.ToString()) == 1,
-                        IsNullable = int.Parse(row["IsNullable"].Value.ToString()) == 1
+                        IsNullable = int.Parse(row["IsNullable"].Value.ToString()) == 1,
+                        Length = int.Parse(row["Length"].Value.ToString()),
                     };
 
-                    //仅包含char型的字段才有length
-                    int length = int.Parse(row["Length"].Value.ToString());
-                    if (length > 0 && f.SqlType.Contains("char"))
-                        f.Length = length;
+                    if (row["Scale"].Value != DBNull.Value)
+                        f.Scale = int.Parse(row["Scale"].Value.ToString());
 
                     list.Add(f);
                 }

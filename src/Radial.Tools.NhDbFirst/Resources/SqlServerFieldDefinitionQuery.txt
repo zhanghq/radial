@@ -4,7 +4,7 @@ DECLARE @schema_id int
 SELECT @schema_id=schema_id FROM sys.schemas WHERE name={0}
 
 SELECT     
-a.name AS [Name],c.name AS [Type],COLUMNPROPERTY(a.id,a.name,'PRECISION') AS [Length],
+a.name AS [Name],c.name AS [Type],COLUMNPROPERTY(a.id,a.name,'PRECISION') AS [Length],COLUMNPROPERTY(a.id,a.name,'Scale') AS [Scale],
 CASE WHEN EXISTS
                            (SELECT     1
                              FROM          sysobjects

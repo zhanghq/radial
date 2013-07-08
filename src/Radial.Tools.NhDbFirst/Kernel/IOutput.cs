@@ -8,8 +8,9 @@ namespace Radial.Tools.NhDbFirst.Kernel
 {
     interface IOutput
     {
-        void WriteCode(TextWriter writer);
+        DataSource DataSource { get; set; }
 
+        void WriteCode(TextWriter writer);
 
         void WriteXml(TextWriter writer);
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Xml;
 
 namespace Radial.Serialization
 {
@@ -22,13 +23,19 @@ namespace Radial.Serialization
             Checker.Parameter(objType != null, "object type can not be null");
 
             System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(objType);
-            using (MemoryStream stream = new MemoryStream())
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                serializer.Serialize(stream, obj);
-                stream.Position = 0;
 
-                return reader.ReadToEnd();
+            Encoding enc = new UTF8Encoding(false);
+
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.Encoding = enc;
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                XmlWriter writer = XmlWriter.Create(ms, settings);
+                serializer.Serialize(writer, obj);
+                writer.Flush();
+                return enc.GetString(ms.ToArray());
             }
         }
 
@@ -61,7 +68,7 @@ namespace Radial.Serialization
             if (!string.IsNullOrWhiteSpace(xml))
             {
                 System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(objType);
-                using (TextReader tr = new StringReader(xml))
+                using (TextReader tr = new StringReader(xml.Trim()))
                 {
                     obj = serializer.Deserialize(tr);
                 }
@@ -84,7 +91,7 @@ namespace Radial.Serialization
             if (!string.IsNullOrWhiteSpace(xml))
             {
                 System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(TObject));
-                using (TextReader tr = new StringReader(xml))
+                using (TextReader tr = new StringReader(xml.Trim()))
                 {
                     obj = (TObject)serializer.Deserialize(tr);
                 }
@@ -112,7 +119,7 @@ namespace Radial.Serialization
                 try
                 {
                     System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(objType);
-                    using (TextReader tr = new StringReader(xml))
+                    using (TextReader tr = new StringReader(xml.Trim()))
                     {
                         obj = serializer.Deserialize(tr);
                         success = true;
@@ -141,7 +148,7 @@ namespace Radial.Serialization
                 try
                 {
                     System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(TObject));
-                    using (TextReader tr = new StringReader(xml))
+                    using (TextReader tr = new StringReader(xml.Trim()))
                     {
                         obj = (TObject)serializer.Deserialize(tr);
                         success = true;

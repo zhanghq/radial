@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Xml;
 
 namespace Radial.Tools.NhDbFirst.Kernel
 {
@@ -20,14 +21,21 @@ namespace Radial.Tools.NhDbFirst.Kernel
         public static string Serialize(object obj, Type objType)
         {
             System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(objType);
-            using (MemoryStream stream = new MemoryStream())
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                serializer.Serialize(stream, obj);
-                stream.Position = 0;
 
-                return reader.ReadToEnd();
+            Encoding enc = new UTF8Encoding(false);
+
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.Encoding = enc;
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                XmlWriter writer = XmlWriter.Create(ms, settings);
+                serializer.Serialize(writer, obj);
+                writer.Flush();
+                return enc.GetString(ms.ToArray());
             }
+
         }
 
         /// <summary>
@@ -57,7 +65,7 @@ namespace Radial.Tools.NhDbFirst.Kernel
             if (!string.IsNullOrWhiteSpace(xml))
             {
                 System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(objType);
-                using (TextReader tr = new StringReader(xml))
+                using (TextReader tr = new StringReader(xml.Trim()))
                 {
                     obj = serializer.Deserialize(tr);
                 }
@@ -80,7 +88,7 @@ namespace Radial.Tools.NhDbFirst.Kernel
             if (!string.IsNullOrWhiteSpace(xml))
             {
                 System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(TObject));
-                using (TextReader tr = new StringReader(xml))
+                using (TextReader tr = new StringReader(xml.Trim()))
                 {
                     obj = (TObject)serializer.Deserialize(tr);
                 }
@@ -95,7 +103,7 @@ namespace Radial.Tools.NhDbFirst.Kernel
         /// <param name="objType">The type of the object.</param>
         /// <param name="obj">Deserialized object instance.</param>
         /// <returns>If successful deserialized return True, otherwise return False.</returns>
-        public static bool TryDeserialize(string xml, Type objType,out object obj)
+        public static bool TryDeserialize(string xml, Type objType, out object obj)
         {
             bool success = false;
 
@@ -106,7 +114,7 @@ namespace Radial.Tools.NhDbFirst.Kernel
                 try
                 {
                     System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(objType);
-                    using (TextReader tr = new StringReader(xml))
+                    using (TextReader tr = new StringReader(xml.Trim()))
                     {
                         obj = serializer.Deserialize(tr);
                         success = true;
@@ -135,7 +143,7 @@ namespace Radial.Tools.NhDbFirst.Kernel
                 try
                 {
                     System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(TObject));
-                    using (TextReader tr = new StringReader(xml))
+                    using (TextReader tr = new StringReader(xml.Trim()))
                     {
                         obj = (TObject)serializer.Deserialize(tr);
                         success = true;

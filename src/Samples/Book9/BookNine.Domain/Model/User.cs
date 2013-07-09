@@ -10,11 +10,16 @@ namespace BookNine.Domain.Model
 {
     public class User
     {
+        public User()
+        {
+            RegisterTime = DateTime.Now;
+        }
+
         public virtual int Id { get; set; }
         public virtual string Mail { get; set; }
         protected virtual string Password { get; set; }
         protected virtual string Salt { get; set; }
-        public virtual DateTime RegisterTime { get; set; }
+        public virtual DateTime RegisterTime { get; protected set; }
 
         public virtual void SetPassword(string password)
         {

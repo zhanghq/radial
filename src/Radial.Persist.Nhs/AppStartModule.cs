@@ -98,8 +98,7 @@ namespace Radial.Persist.Nhs
         {
             Checker.Parameter(app != null, "HttpApplication instance can not be null");
 
-            string path = app.Request.Path;
-            string fileExt = Path.GetExtension(path).Trim('.', ' ').ToLower();
+            string fileExt = Path.GetExtension(HttpContext.Current.Request.Path).Trim('.', ' ').ToLower();
 
             return !NotNeedNhSessionFileExtensions.Contains(fileExt);
 

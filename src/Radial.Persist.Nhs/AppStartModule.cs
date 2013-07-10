@@ -5,6 +5,7 @@ using System.Text;
 using System.Web;
 using System.Configuration;
 using NHibernate;
+using System.IO;
 
 namespace Radial.Persist.Nhs
 {
@@ -98,7 +99,7 @@ namespace Radial.Persist.Nhs
             Checker.Parameter(app != null, "HttpApplication instance can not be null");
 
             string path = app.Request.Path;
-            string fileExt = path.Substring(path.LastIndexOf(".") + 1).Trim().ToLower();
+            string fileExt = Path.GetExtension(path).Trim('.', ' ').ToLower();
 
             return !NotNeedNhSessionFileExtensions.Contains(fileExt);
 

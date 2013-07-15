@@ -39,36 +39,41 @@ namespace Radial.UnitTest
             table.Rows.Add("test3", "23.4", "45%", "$19.4", "Fd09", DateTime.Now);
 
 
+            DataTable table2 = table.Copy();
+            table2.TableName = "Test2";
 
-            Assert.DoesNotThrow(() => ExcelTools.ExportToFile(table, "export.xls", true));
+            DataSet ds = new DataSet();
+            ds.Tables.Add(table);
+            ds.Tables.Add(table2);
+
+            Assert.DoesNotThrow(() => ExcelTools.ExportToFile(ds, "export.xls", true));
 
 
-            Assert.DoesNotThrow(() => ExcelTools.ExportToFile(table, "export.xls", false, null, o =>
-            {
-                ICellStyle style = o.Sheet.Workbook.CreateCellStyle();
+            //Assert.DoesNotThrow(() => ExcelTools.ExportToFile(table, "export.xls", false, null, o =>
+            //{
+            //    ICellStyle style = o.Sheet.Workbook.CreateCellStyle();
 
-                style.BorderBottom = BorderStyle.Thin;
-                style.BorderLeft = BorderStyle.Thin;
-                style.BorderRight = BorderStyle.Thin;
-                style.BorderTop = BorderStyle.Thin;
+            //    style.BorderBottom = BorderStyle.Thin;
+            //    style.BorderLeft = BorderStyle.Thin;
+            //    style.BorderRight = BorderStyle.Thin;
+            //    style.BorderTop = BorderStyle.Thin;
 
-                if (o.RowIndex == 0)
-                {
+            //    if (o.RowIndex == 0)
+            //    {
+            //        style.Alignment = HorizontalAlignment.Center;
 
-                    style.Alignment = HorizontalAlignment.Center;
+            //        IFont font = o.Sheet.Workbook.CreateFont();
+            //        font.Boldweight = (short)FontBoldWeight.Bold;
+            //        font.Color = HSSFColor.Red.Index;
+            //        style.SetFont(font);
 
-                    IFont font = o.Sheet.Workbook.CreateFont();
-                    font.Boldweight = (short)FontBoldWeight.Bold;
-                    font.Color = HSSFColor.Red.Index;
-                    style.SetFont(font);
+            //        style.FillForegroundColor = HSSFColor.Blue.Index;
+            //        style.FillPattern = FillPattern.SolidForeground;
+            //    }
+            //    return style;
+            //}));
 
-                    style.FillForegroundColor = HSSFColor.Blue.Index;
-                    style.FillPattern = FillPattern.SolidForeground;
-                }
-                return style;
-            }));
-
-            DataTable dt = ExcelTools.ImportToDataTable("export.xls", 0, false);
+            DataTable dt = ExcelTools.ImportToDataTable("export.xls", 0, true);
 
             Assert.AreEqual(dt.Rows.Count, 6);
         }

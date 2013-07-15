@@ -19,18 +19,48 @@ namespace Radial
         /// <summary>
         /// Exports to HTTP stream.
         /// </summary>
-        /// <param name="data">The data.</param>
+        /// <param name="table">The export data table.</param>
         /// <param name="downloadFileName">The download file name.</param>
         /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
         /// <param name="headerCellStyleFormater">The header cell style formater.</param>
         /// <param name="dataCellStyleFormater">The data cell style formater.</param>
-        public static void ExportToHttp(DataTable data, string downloadFileName, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
+        public static void ExportToHttp(DataTable table, string downloadFileName, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
+        {
+            ExportToHttp(new DataTable[] { table }, downloadFileName, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
+        }
+
+        /// <summary>
+        /// Exports to HTTP stream.
+        /// </summary>
+        /// <param name="dataSet">The export data set.</param>
+        /// <param name="downloadFileName">The download file name.</param>
+        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="headerCellStyleFormater">The header cell style formater.</param>
+        /// <param name="dataCellStyleFormater">The data cell style formater.</param>
+        public static void ExportToHttp(DataSet dataSet, string downloadFileName, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
+        {
+            Checker.Parameter(dataSet != null, "export data set can not be null");
+            DataTable[] tables = new DataTable[dataSet.Tables.Count];
+            dataSet.Tables.CopyTo(tables, 0);
+
+            ExportToHttp(tables, downloadFileName, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
+        }
+
+        /// <summary>
+        /// Exports to HTTP stream.
+        /// </summary>
+        /// <param name="tables">The export data tables.</param>
+        /// <param name="downloadFileName">The download file name.</param>
+        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="headerCellStyleFormater">The header cell style formater.</param>
+        /// <param name="dataCellStyleFormater">The data cell style formater.</param>
+        public static void ExportToHttp(IEnumerable<DataTable> tables, string downloadFileName, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
         {
             Checker.Parameter(downloadFileName != null, "download file name can not be empty or null");
 
             downloadFileName = downloadFileName.Trim();
 
-            IWorkbook book = BuildHSSFWorkbook(data, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
+            IWorkbook book = BuildHSSFWorkbook(tables, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
 
             string ext = Path.GetExtension(downloadFileName);
 
@@ -53,18 +83,48 @@ namespace Radial
         /// <summary>
         /// Exports to file.
         /// </summary>
-        /// <param name="data">The data.</param>
+        /// <param name="table">The export data table.</param>
         /// <param name="exportFilePath">The export XLS file full path.</param>
         /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
         /// <param name="headerCellStyleFormater">The header cell style formater.</param>
         /// <param name="dataCellStyleFormater">The data cell style formater.</param>
-        public static void ExportToFile(DataTable data, string exportFilePath, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
+        public static void ExportToFile(DataTable table, string exportFilePath, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
+        {
+            ExportToFile(new DataTable[] { table }, exportFilePath, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
+        }
+
+        /// <summary>
+        /// Exports to file.
+        /// </summary>
+        /// <param name="dataSet">The export data set.</param>
+        /// <param name="exportFilePath">The export XLS file full path.</param>
+        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="headerCellStyleFormater">The header cell style formater.</param>
+        /// <param name="dataCellStyleFormater">The data cell style formater.</param>
+        public static void ExportToFile(DataSet dataSet, string exportFilePath, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
+        {
+            Checker.Parameter(dataSet != null, "export data set can not be null");
+            DataTable[] tables = new DataTable[dataSet.Tables.Count];
+            dataSet.Tables.CopyTo(tables, 0);
+
+            ExportToFile(tables, exportFilePath, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
+        }
+
+        /// <summary>
+        /// Exports to file.
+        /// </summary>
+        /// <param name="tables">The export data tables.</param>
+        /// <param name="exportFilePath">The export XLS file full path.</param>
+        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="headerCellStyleFormater">The header cell style formater.</param>
+        /// <param name="dataCellStyleFormater">The data cell style formater.</param>
+        public static void ExportToFile(IEnumerable<DataTable> tables, string exportFilePath, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
         {
             Checker.Parameter(exportFilePath != null, "export file path can not be empty or null");
 
             exportFilePath = exportFilePath.Trim();
 
-            IWorkbook book = BuildHSSFWorkbook(data, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
+            IWorkbook book = BuildHSSFWorkbook(tables, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
 
             string ext = Path.GetExtension(exportFilePath);
 
@@ -82,60 +142,65 @@ namespace Radial
         /// <summary>
         /// Builds the workbook.
         /// </summary>
-        /// <param name="data">The data.</param>
+        /// <param name="tables">The export data tables.</param>
         /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
         /// <param name="headerCellStyleFormater">The header cell style formater.</param>
         /// <param name="dataCellStyleFormater">The data cell style formater.</param>
         /// <returns></returns>
-        private static HSSFWorkbook BuildHSSFWorkbook(DataTable data, bool columnHeader, Func<ICell, ICellStyle> headerCellStyleFormater, Func<ICell, ICellStyle> dataCellStyleFormater)
+        private static HSSFWorkbook BuildHSSFWorkbook(IEnumerable<DataTable> tables, bool columnHeader, Func<ICell, ICellStyle> headerCellStyleFormater, Func<ICell, ICellStyle> dataCellStyleFormater)
         {
-            Checker.Parameter(data != null, "export data can not be null");
+            Checker.Parameter(tables != null || tables.Count() > 0 || tables.All(o => o != null), "export data tables can not be empty or contains null value");
 
             HSSFWorkbook book = new HSSFWorkbook();
 
-            ISheet sheet = book.CreateSheet(string.IsNullOrWhiteSpace(data.TableName) ? "Sheet1" : data.TableName);
-
-            int firstRowNum = 0;
-
-            if (columnHeader)
+            for (int t = 0; t < tables.Count(); t++)
             {
-                //header row
-                IRow row0 = sheet.CreateRow(0);
-                for (int i = 0; i < data.Columns.Count; i++)
+                DataTable table = tables.ElementAt(t);
+
+                ISheet sheet = book.CreateSheet(string.IsNullOrWhiteSpace(table.TableName) ? "Sheet" + (t + 1) : table.TableName);
+
+                int firstRowNum = 0;
+
+                if (columnHeader)
                 {
-                    ICell cell = row0.CreateCell(i, CellType.String);
-                    cell.SetCellValue(data.Columns[i].ColumnName);
-                    if (headerCellStyleFormater != null)
+                    //header row
+                    IRow row0 = sheet.CreateRow(0);
+                    for (int i = 0; i < table.Columns.Count; i++)
                     {
-                        var style = headerCellStyleFormater(cell);
-                        if (style != null)
-                            cell.CellStyle = style;
+                        ICell cell = row0.CreateCell(i, CellType.String);
+                        cell.SetCellValue(table.Columns[i].ColumnName);
+                        if (headerCellStyleFormater != null)
+                        {
+                            var style = headerCellStyleFormater(cell);
+                            if (style != null)
+                                cell.CellStyle = style;
+                        }
+                    }
+
+                    firstRowNum = 1;
+                }
+
+                //Data Rows
+                for (int i = 0; i < table.Rows.Count; i++)
+                {
+                    IRow drow = sheet.CreateRow(i + firstRowNum);
+                    for (int j = 0; j < table.Columns.Count; j++)
+                    {
+                        ICell cell = drow.CreateCell(j, CellType.String);
+                        cell.SetCellValue(table.Rows[i][j].ToString());
+                        if (dataCellStyleFormater != null)
+                        {
+                            var style = dataCellStyleFormater(cell);
+                            if (style != null)
+                                cell.CellStyle = style;
+                        }
                     }
                 }
 
-                firstRowNum = 1;
+                //自动列宽
+                for (int i = 0; i <= table.Columns.Count; i++)
+                    sheet.AutoSizeColumn(i, true);
             }
-
-            //Data Rows
-            for (int i = 0; i < data.Rows.Count; i++)
-            {
-                IRow drow = sheet.CreateRow(i + firstRowNum);
-                for (int j = 0; j < data.Columns.Count; j++)
-                {
-                    ICell cell = drow.CreateCell(j, CellType.String);
-                    cell.SetCellValue(data.Rows[i][j].ToString());
-                    if (dataCellStyleFormater != null)
-                    {
-                        var style=dataCellStyleFormater(cell);
-                        if(style!=null)
-                            cell.CellStyle = style;
-                    }
-                }
-            }
-
-            //自动列宽
-            for (int i = 0; i <= data.Columns.Count; i++)
-                sheet.AutoSizeColumn(i, true);
 
             return book;
         }

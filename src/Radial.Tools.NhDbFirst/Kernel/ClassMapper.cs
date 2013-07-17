@@ -64,7 +64,7 @@ namespace Radial.Tools.NhDbFirst.Kernel
 
             writer.WriteLine("    /// <summary>");
             writer.WriteLine(string.Format("    /// {0} class.", ClassName));
-            writer.WriteLine("    /// <summary>");
+            writer.WriteLine("    /// </summary>");
 
             writer.WriteLine(string.Format("    public class {0}", ClassName));
             writer.WriteLine("    {");

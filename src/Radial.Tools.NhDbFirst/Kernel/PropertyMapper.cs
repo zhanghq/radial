@@ -27,7 +27,7 @@ namespace Radial.Tools.NhDbFirst.Kernel
         {
             writer.WriteLine("        /// <summary>");
             writer.WriteLine(string.Format("        /// Gets or sets {0}.", PropertyName));
-            writer.WriteLine("        /// <summary>");
+            writer.WriteLine("        /// </summary>");
 
             writer.WriteLine(string.Format("        public{0}{1} {2} ", ClassMapper.LazyModel ? " virtual " : " ", TypeString, PropertyName) + "{ get; set; }");
 

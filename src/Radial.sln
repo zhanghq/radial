@@ -53,6 +53,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Redis", "Radial.Redi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Test.Mvc4", "Radial.Test.Mvc4\Radial.Test.Mvc4.csproj", "{2004E387-58C5-4907-BD2C-9C17E73A58BD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Play", "Play", "{8931F66A-0499-425B-AD38-6FE90B8F59D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Play.PrintConsole", "Play\Radial.Play.PrintConsole\Radial.Play.PrintConsole.csproj", "{A79045BD-9229-4DCA-A344-D0CB2DF67E20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -283,6 +287,16 @@ Global
 		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Release|x86.ActiveCfg = Release|Any CPU
+		{A79045BD-9229-4DCA-A344-D0CB2DF67E20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A79045BD-9229-4DCA-A344-D0CB2DF67E20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A79045BD-9229-4DCA-A344-D0CB2DF67E20}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A79045BD-9229-4DCA-A344-D0CB2DF67E20}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A79045BD-9229-4DCA-A344-D0CB2DF67E20}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A79045BD-9229-4DCA-A344-D0CB2DF67E20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A79045BD-9229-4DCA-A344-D0CB2DF67E20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A79045BD-9229-4DCA-A344-D0CB2DF67E20}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A79045BD-9229-4DCA-A344-D0CB2DF67E20}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A79045BD-9229-4DCA-A344-D0CB2DF67E20}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -303,6 +317,7 @@ Global
 		{4A7B25C9-CCBD-47EA-9395-C96643866040} = {671FEF71-6EB5-4DD0-99F5-4F1DD14F4D94}
 		{C8937362-D8BB-4D4B-AC82-3FBE7B31CC92} = {671FEF71-6EB5-4DD0-99F5-4F1DD14F4D94}
 		{9461FBEA-EC34-4483-BD0B-C5FFDFF061C5} = {671FEF71-6EB5-4DD0-99F5-4F1DD14F4D94}
+		{A79045BD-9229-4DCA-A344-D0CB2DF67E20} = {8931F66A-0499-425B-AD38-6FE90B8F59D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35

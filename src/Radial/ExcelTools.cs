@@ -8,6 +8,7 @@ using NPOI.SS.UserModel;
 using NPOI.HSSF.UserModel;
 using System.IO;
 using Radial.Net;
+using Radial.Web;
 
 namespace Radial
 {
@@ -56,22 +57,22 @@ namespace Radial
         /// <param name="dataCellStyleFormater">The data cell style formater.</param>
         public static void ExportToHttp(IEnumerable<DataTable> tables, string downloadFileName, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
         {
-            Checker.Parameter(downloadFileName != null, "download file name can not be empty or null");
+            if (!HttpKits.IsWebApp)
+                return;
 
-            downloadFileName = downloadFileName.Trim();
+            Checker.Parameter(downloadFileName != null, "download file name can not be empty or null");
 
             IWorkbook book = BuildHSSFWorkbook(tables, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
 
-            string ext = Path.GetExtension(downloadFileName);
+            string ext = Path.GetExtension(downloadFileName.Trim());
 
             if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
                 downloadFileName = downloadFileName.Replace(ext, string.Empty);
 
 
-            HttpResponse httpResponse = HttpContext.Current.Response;
+            HttpResponse httpResponse = HttpKits.CurrentContext.Response;
 
             httpResponse.Clear();
-            httpResponse.Buffer = true;
             httpResponse.Charset = Encoding.UTF8.BodyName;
             httpResponse.AppendHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(downloadFileName, Encoding.UTF8) + ".xls");
             httpResponse.ContentEncoding = Encoding.UTF8;
@@ -122,11 +123,9 @@ namespace Radial
         {
             Checker.Parameter(exportFilePath != null, "export file path can not be empty or null");
 
-            exportFilePath = exportFilePath.Trim();
-
             IWorkbook book = BuildHSSFWorkbook(tables, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
 
-            string ext = Path.GetExtension(exportFilePath);
+            string ext = Path.GetExtension(exportFilePath.Trim());
 
             if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
                 exportFilePath = exportFilePath.Replace(ext, string.Empty);
@@ -196,10 +195,6 @@ namespace Radial
                         }
                     }
                 }
-
-                //自动列宽
-                for (int i = 0; i <= table.Columns.Count; i++)
-                    sheet.AutoSizeColumn(i, true);
             }
 
             return book;
@@ -274,6 +269,53 @@ namespace Radial
 
             return BuildDataTableFromSheet(sheet, firstRowHeader, cellValueInterpreter);
         }
+
+
+        /// <summary>
+        /// Imports to data set.
+        /// </summary>
+        /// <param name="excelStream">The excel stream.</param>
+        /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
+        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
+        /// <returns></returns>
+        public static DataSet ImportToDataSet(Stream excelStream,  bool firstRowHeader = true, Func<ICell, object> cellValueInterpreter = null)
+        {
+            IWorkbook workbook = WorkbookFactory.Create(excelStream);
+
+            DataSet ds = new DataSet();
+
+            for (int i = 0; i < workbook.NumberOfSheets; i++)
+            {
+                ds.Tables.Add(BuildDataTableFromSheet(workbook.GetSheetAt(i), firstRowHeader, cellValueInterpreter));
+            }
+
+            return ds;
+        }
+
+        /// <summary>
+        /// Imports to data set.
+        /// </summary>
+        /// <param name="excelFilePath">The excel file path.</param>
+        /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
+        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
+        /// <returns></returns>
+        public static DataSet ImportToDataTable(string excelFilePath, bool firstRowHeader = true, Func<ICell, object> cellValueInterpreter = null)
+        {
+            if (!File.Exists(excelFilePath))
+                throw new FileNotFoundException(excelFilePath);
+
+            IWorkbook workbook = WorkbookFactory.Create(excelFilePath);
+
+            DataSet ds = new DataSet();
+
+            for (int i = 0; i < workbook.NumberOfSheets; i++)
+            {
+                ds.Tables.Add(BuildDataTableFromSheet(workbook.GetSheetAt(i), firstRowHeader, cellValueInterpreter));
+            }
+
+            return ds;
+        }
+
 
         /// <summary>
         /// Builds the data table from sheet.

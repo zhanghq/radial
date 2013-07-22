@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Test.WebForm", "Radi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Cache.Memcached", "Radial.Cache.Memcached\Radial.Cache.Memcached.csproj", "{CC555389-A855-4FB6-A2E5-DD52522F22B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Persist.Nhs.Memcached", "Radial.Persist.Nhs.Memcached\Radial.Persist.Nhs.Memcached.csproj", "{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{42C4C1F9-7C5E-4FC5-9823-D55DA79C5FB2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Book9", "Book9", "{671FEF71-6EB5-4DD0-99F5-4F1DD14F4D94}"
@@ -56,6 +54,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Play", "Play", "{8931F66A-0499-425B-AD38-6FE90B8F59D9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Play.PrintConsole", "Play\Radial.Play.PrintConsole\Radial.Play.PrintConsole.csproj", "{A79045BD-9229-4DCA-A344-D0CB2DF67E20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernate.Caches.EnyimMemcached", "NHibernate.Caches.EnyimMemcached\NHibernate.Caches.EnyimMemcached.csproj", "{72A79BFF-BD1B-4A03-BE95-EF7951804BEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -137,16 +137,6 @@ Global
 		{CC555389-A855-4FB6-A2E5-DD52522F22B0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{CC555389-A855-4FB6-A2E5-DD52522F22B0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CC555389-A855-4FB6-A2E5-DD52522F22B0}.Release|x86.ActiveCfg = Release|Any CPU
-		{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{3D892D0E-BFBC-4B99-BD40-62A239A9BE9C}.Release|x86.ActiveCfg = Release|Any CPU
 		{342F8CA9-5AD3-49F8-9634-2B691AA3F6D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{342F8CA9-5AD3-49F8-9634-2B691AA3F6D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{342F8CA9-5AD3-49F8-9634-2B691AA3F6D4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -297,6 +287,16 @@ Global
 		{A79045BD-9229-4DCA-A344-D0CB2DF67E20}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{A79045BD-9229-4DCA-A344-D0CB2DF67E20}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A79045BD-9229-4DCA-A344-D0CB2DF67E20}.Release|x86.ActiveCfg = Release|Any CPU
+		{72A79BFF-BD1B-4A03-BE95-EF7951804BEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72A79BFF-BD1B-4A03-BE95-EF7951804BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72A79BFF-BD1B-4A03-BE95-EF7951804BEC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{72A79BFF-BD1B-4A03-BE95-EF7951804BEC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{72A79BFF-BD1B-4A03-BE95-EF7951804BEC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{72A79BFF-BD1B-4A03-BE95-EF7951804BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72A79BFF-BD1B-4A03-BE95-EF7951804BEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72A79BFF-BD1B-4A03-BE95-EF7951804BEC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{72A79BFF-BD1B-4A03-BE95-EF7951804BEC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{72A79BFF-BD1B-4A03-BE95-EF7951804BEC}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

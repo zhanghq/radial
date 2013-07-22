@@ -158,6 +158,8 @@ namespace Radial
 
                 ISheet sheet = book.CreateSheet(string.IsNullOrWhiteSpace(table.TableName) ? "Sheet" + (t + 1) : table.TableName);
 
+                int defaultColumnWidth = sheet.GetColumnWidth(0) / 256;
+
                 int firstRowNum = 0;
 
                 if (columnHeader)
@@ -167,6 +169,7 @@ namespace Radial
                     for (int i = 0; i < table.Columns.Count; i++)
                     {
                         ICell cell = row0.CreateCell(i, CellType.String);
+
                         cell.SetCellValue(table.Columns[i].ColumnName);
                         if (headerCellStyleFormater != null)
                         {
@@ -186,6 +189,7 @@ namespace Radial
                     for (int j = 0; j < table.Columns.Count; j++)
                     {
                         ICell cell = drow.CreateCell(j, CellType.String);
+
                         cell.SetCellValue(table.Rows[i][j].ToString());
                         if (dataCellStyleFormater != null)
                         {
@@ -193,6 +197,11 @@ namespace Radial
                             if (style != null)
                                 cell.CellStyle = style;
                         }
+
+                        //adjust column width
+                        int textBytes = Encoding.Default.GetByteCount(table.Rows[i][j].ToString());
+                        if (textBytes > defaultColumnWidth)
+                            sheet.SetColumnWidth(j, textBytes * 256);
                     }
                 }
             }

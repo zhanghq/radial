@@ -214,7 +214,7 @@ namespace Radial.Persist
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> FindAll(OrderBySnippet<TObject>[] orderBys, int returnObjectCount);
+        IList<TObject> FindAll(IEnumerable<OrderBySnippet<TObject>> orderBys, int returnObjectCount);
 
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace Radial.Persist
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, OrderBySnippet<TObject>[] orderBys, int returnObjectCount);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int returnObjectCount);
 
 
         /// <summary>
@@ -271,7 +271,7 @@ namespace Radial.Persist
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex);
 
         /// <summary>
         /// Find all objects.
@@ -307,7 +307,7 @@ namespace Radial.Persist
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal);
+        IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex, out int objectTotal);
 
         /// <summary>
         /// Find all objects by keys.
@@ -317,7 +317,7 @@ namespace Radial.Persist
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> FindByKeys(TKey[] keys, params OrderBySnippet<TObject>[] orderBys);
+        IList<TObject> FindByKeys(IEnumerable<TKey> keys, params OrderBySnippet<TObject>[] orderBys);
 
         /// <summary>
         /// Add an object.

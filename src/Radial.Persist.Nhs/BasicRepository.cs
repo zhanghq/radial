@@ -44,7 +44,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Gets the default order by snippets.
         /// </summary>
-        private IList<OrderBySnippet<TObject>> DefaultOrderBys { get; set; }
+        private  IEnumerable<OrderBySnippet<TObject>> DefaultOrderBys { get; set; }
 
         /// <summary>
         /// Sets the default order by snippets.
@@ -53,7 +53,7 @@ namespace Radial.Persist.Nhs
         protected void SetDefaultOrderBys(IEnumerable<OrderBySnippet<TObject>> orderBys)
         {
             if (orderBys != null)
-                DefaultOrderBys = new List<OrderBySnippet<TObject>>(orderBys);
+                DefaultOrderBys = orderBys;
             else
                 DefaultOrderBys = new List<OrderBySnippet<TObject>>();
         }
@@ -301,7 +301,7 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex, out int objectTotal)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex, out int objectTotal)
         {
             IQueryOver<TObject, TObject> countQuery = Session.QueryOver<TObject>();
             IQueryOver<TObject, TObject> dataQuery = Session.QueryOver<TObject>();
@@ -312,8 +312,8 @@ namespace Radial.Persist.Nhs
                 dataQuery = dataQuery.Where(condition);
             }
 
-            if (orderBys == null || orderBys.Length == 0)
-                orderBys = DefaultOrderBys.ToArray();
+            if (orderBys == null || orderBys.Count() == 0)
+                orderBys = DefaultOrderBys;
 
             foreach (OrderBySnippet<TObject> order in orderBys)
             {
@@ -347,7 +347,7 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindAll(OrderBySnippet<TObject>[] orderBys, int returnObjectCount)
+        public virtual IList<TObject> FindAll(IEnumerable<OrderBySnippet<TObject>> orderBys, int returnObjectCount)
         {
             return FindAll(null, orderBys, returnObjectCount);
         }
@@ -374,15 +374,15 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, OrderBySnippet<TObject>[] orderBys, int returnObjectCount)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int returnObjectCount)
         {
             IQueryOver<TObject, TObject> query = Session.QueryOver<TObject>();
 
             if (condition != null)
                 query = query.Where(condition);
 
-            if (orderBys == null || orderBys.Length == 0)
-                orderBys = DefaultOrderBys.ToArray();
+            if (orderBys == null || orderBys.Count() == 0)
+                orderBys = DefaultOrderBys;
 
             foreach (OrderBySnippet<TObject> order in orderBys)
             {
@@ -434,15 +434,15 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, OrderBySnippet<TObject>[] orderBys, int pageSize, int pageIndex)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex)
         {
             IQueryOver<TObject, TObject> query = Session.QueryOver<TObject>();
 
             if (condition != null)
                 query = query.Where(condition);
 
-            if (orderBys == null || orderBys.Length == 0)
-                orderBys = DefaultOrderBys.ToArray();
+            if (orderBys == null || orderBys.Count() == 0)
+                orderBys = DefaultOrderBys;
 
             foreach (OrderBySnippet<TObject> order in orderBys)
             {
@@ -527,7 +527,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <param name="hqls">The hql queries.</param>
         /// <returns>The query result list.</returns>
-        protected virtual IMultiQuery CreateMultiQuery(string[] hqls)
+        protected virtual IMultiQuery CreateMultiQuery(IEnumerable<string> hqls)
         {
             Checker.Parameter(hqls != null, "multiple hql queries can not be null");
 
@@ -542,7 +542,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <param name="criterias">The criterias.</param>
         /// <returns>The IMultiCriteria object.</returns>
-        protected virtual IMultiCriteria CreateMultiQuery(ICriteria[] criterias)
+        protected virtual IMultiCriteria CreateMultiQuery(IEnumerable<ICriteria> criterias)
         {
             Checker.Parameter(criterias != null, "multiple criterias can not be null");
 
@@ -557,7 +557,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <param name="queries">The queries.</param>
         /// <returns>The IMultiQuery object.</returns>
-        protected virtual IMultiQuery CreateMultiQuery(IQuery[] queries)
+        protected virtual IMultiQuery CreateMultiQuery(IEnumerable<IQuery> queries)
         {
             Checker.Parameter(queries != null, "multiple queries can not be null");
 
@@ -572,7 +572,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <param name="queries">The queries.</param>
         /// <returns>The IMultiQuery object.</returns>
-        protected virtual IMultiQuery CreateMultiQuery(IQueryOver<TObject>[] queries)
+        protected virtual IMultiQuery CreateMultiQuery(IEnumerable<IQueryOver<TObject>> queries)
         {
             Checker.Parameter(queries != null, "multiple queries can not be null");
 
@@ -587,7 +587,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <param name="hqls">The hql queries.</param>
         /// <returns>The IMultiQuery object.</returns>
-        protected virtual IMultiQuery CreateMultiQuery(KeyValuePair<string, string>[] hqls)
+        protected virtual IMultiQuery CreateMultiQuery(IEnumerable<KeyValuePair<string, string>> hqls)
         {
             Checker.Parameter(hqls != null, "multiple hql queries can not be null");
 
@@ -602,7 +602,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <param name="criterias">The criterias.</param>
         /// <returns>The IMultiCriteria object.</returns>
-        protected virtual IMultiCriteria CreateMultiQuery(KeyValuePair<string, ICriteria>[] criterias)
+        protected virtual IMultiCriteria CreateMultiQuery(IEnumerable<KeyValuePair<string, ICriteria>> criterias)
         {
             Checker.Parameter(criterias != null, "multiple criterias can not be null");
 
@@ -617,7 +617,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <param name="queries">The queries.</param>
         /// <returns>The IMultiQuery object.</returns>
-        protected virtual IMultiQuery CreateMultiQuery(KeyValuePair<string, IQuery>[] queries)
+        protected virtual IMultiQuery CreateMultiQuery(IEnumerable<KeyValuePair<string, IQuery>> queries)
         {
             Checker.Parameter(queries != null, "multiple queries can not be null");
 
@@ -843,7 +843,7 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// The max value.
         /// </returns>
-        public virtual  TResult GetMax<TResult>(System.Linq.Expressions.Expression<Func<TObject, object>> selector, System.Linq.Expressions.Expression<Func<TObject, bool>> condition) where TResult : struct
+        public virtual TResult GetMax<TResult>(System.Linq.Expressions.Expression<Func<TObject, object>> selector, System.Linq.Expressions.Expression<Func<TObject, bool>> condition) where TResult : struct
         {
             Checker.Requires(SupportedAggregationResultTypeNames.Contains(typeof(TResult).FullName), "not support the aggregation return type: {0}", typeof(TResult).FullName);
             Checker.Parameter(selector != null, "the selector can not be null");
@@ -956,9 +956,9 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public IList<TObject> FindByKeys(TKey[] keys, params OrderBySnippet<TObject>[] orderBys)
+        public IList<TObject> FindByKeys(IEnumerable<TKey> keys, params OrderBySnippet<TObject>[] orderBys)
         {
-            if (keys == null || keys.Length == 0)
+            if (keys == null || keys.Count() == 0)
                 return FindAll(orderBys);
 
             var metadata = Session.SessionFactory.GetClassMetadata(typeof(TObject));

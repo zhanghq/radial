@@ -9,6 +9,7 @@ using NPOI.HSSF.UserModel;
 using System.IO;
 using Radial.Net;
 using Radial.Web;
+using System.Drawing;
 
 namespace Radial
 {
@@ -158,8 +159,6 @@ namespace Radial
 
                 ISheet sheet = book.CreateSheet(string.IsNullOrWhiteSpace(table.TableName) ? "Sheet" + (t + 1) : table.TableName);
 
-                int defaultColumnWidth = sheet.GetColumnWidth(0) / 256;
-
                 int firstRowNum = 0;
 
                 if (columnHeader)
@@ -177,6 +176,12 @@ namespace Radial
                             if (style != null)
                                 cell.CellStyle = style;
                         }
+
+                        //adjust column width
+                        int textBytes = Encoding.Default.GetBytes(table.Columns[i].ColumnName).Length;
+
+                        if (textBytes > sheet.DefaultColumnWidth)
+                            sheet.SetColumnWidth(i, textBytes * 256);
                     }
 
                     firstRowNum = 1;
@@ -199,8 +204,10 @@ namespace Radial
                         }
 
                         //adjust column width
-                        int textBytes = Encoding.Default.GetByteCount(table.Rows[i][j].ToString());
-                        if (textBytes > defaultColumnWidth)
+                        int columnWidth = sheet.GetColumnWidth(j);
+                        int textBytes = Encoding.Default.GetBytes(table.Rows[i][j].ToString()).Length;
+
+                        if (textBytes > columnWidth)
                             sheet.SetColumnWidth(j, textBytes * 256);
                     }
                 }
@@ -287,7 +294,7 @@ namespace Radial
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
         /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <returns></returns>
-        public static DataSet ImportToDataSet(Stream excelStream,  bool firstRowHeader = true, Func<ICell, object> cellValueInterpreter = null)
+        public static DataSet ImportToDataSet(Stream excelStream, bool firstRowHeader = true, Func<ICell, object> cellValueInterpreter = null)
         {
             IWorkbook workbook = WorkbookFactory.Create(excelStream);
 

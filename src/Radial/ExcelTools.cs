@@ -204,7 +204,7 @@ namespace Radial
                         }
 
                         //adjust column width
-                        int columnWidth = sheet.GetColumnWidth(j);
+                        int columnWidth = sheet.GetColumnWidth(j) / 256;
                         int textBytes = Encoding.Default.GetBytes(table.Rows[i][j].ToString()).Length;
 
                         if (textBytes > columnWidth)

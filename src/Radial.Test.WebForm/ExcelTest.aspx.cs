@@ -31,27 +31,27 @@ namespace Radial.Test.WebForm
 
             table.Rows.Add("test", "测试的方式发生地方我认为人反感的风格时光飞逝的歌爱上对方是乏味让我发的发二恶烷", "45%", "$19.4", "Fd09", DateTime.Now);
             table.Rows.Add("test2", "23.4", "45%", "19.4", "Fd09", DateTime.Now);
-            for (int i = 0; i < 655; i++)
+            for (int i = 0; i < 100; i++)
             {
                 table.Rows.Add("test3", "23.4", "45%", "$19.4", "Fd09", DateTime.Now);
             }
 
 
             DataTable table2 = table.Copy();
-            table2.TableName = "Test2";
+
 
             DataSet ds = new DataSet();
             ds.Tables.Add(table);
             ds.Tables.Add(table2);
 
-            ExcelTools.ExportToHttp(ds, "test");
+            ExcelTools.ExportToHttp(ds);
         }
 
         protected void Button2_Click(object sender, EventArgs e)
         {
             if (FileUpload1.HasFile)
             {
-                GridView1.DataSource = ExcelTools.ImportToDataSet(FileUpload1.FileContent,false);
+                GridView1.DataSource = ExcelTools.ImportToDataSet(FileUpload1.FileContent, true);
                 GridView1.DataBind();
             }
         }

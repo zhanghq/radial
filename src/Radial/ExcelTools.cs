@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Data;
 using System.Web;
-using NPOI.SS.UserModel;
-using NPOI.HSSF.UserModel;
-using System.IO;
+using OfficeOpenXml;
 using Radial.Net;
 using Radial.Web;
-using System.Drawing;
 
 namespace Radial
 {
@@ -18,294 +16,295 @@ namespace Radial
     /// </summary>
     public static class ExcelTools
     {
-        /// <summary>
-        /// Exports to HTTP stream.
-        /// </summary>
-        /// <param name="table">The export data table.</param>
-        /// <param name="downloadFileName">The download file name.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
-        /// <param name="headerCellStyleFormater">The header cell style formater.</param>
-        /// <param name="dataCellStyleFormater">The data cell style formater.</param>
-        public static void ExportToHttp(DataTable table, string downloadFileName, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
-        {
-            ExportToHttp(new DataTable[] { table }, downloadFileName, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
-        }
+        #region Export
 
         /// <summary>
         /// Exports to HTTP stream.
         /// </summary>
-        /// <param name="dataSet">The export data set.</param>
+        /// <param name="dataTables">The export data tables.</param>
         /// <param name="downloadFileName">The download file name.</param>
         /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
-        /// <param name="headerCellStyleFormater">The header cell style formater.</param>
-        /// <param name="dataCellStyleFormater">The data cell style formater.</param>
-        public static void ExportToHttp(DataSet dataSet, string downloadFileName, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
+        /// <param name="customHandler">The custom handler.</param>
+        public static void ExportToHttp(IEnumerable<DataTable> dataTables, string downloadFileName = null, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
         {
-            Checker.Parameter(dataSet != null, "export data set can not be null");
-            DataTable[] tables = new DataTable[dataSet.Tables.Count];
-            dataSet.Tables.CopyTo(tables, 0);
-
-            ExportToHttp(tables, downloadFileName, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
-        }
-
-        /// <summary>
-        /// Exports to HTTP stream.
-        /// </summary>
-        /// <param name="tables">The export data tables.</param>
-        /// <param name="downloadFileName">The download file name.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
-        /// <param name="headerCellStyleFormater">The header cell style formater.</param>
-        /// <param name="dataCellStyleFormater">The data cell style formater.</param>
-        public static void ExportToHttp(IEnumerable<DataTable> tables, string downloadFileName, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
-        {
-            if (!HttpKits.IsWebApp)
+            if (dataTables == null || dataTables.Count() == 0 || !HttpKits.IsWebApp)
                 return;
 
-            Checker.Parameter(downloadFileName != null, "download file name can not be empty or null");
+            if (!string.IsNullOrWhiteSpace(downloadFileName))
+            {
+                string ext = Path.GetExtension(downloadFileName.Trim());
 
-            IWorkbook book = BuildHSSFWorkbook(tables, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
+                if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
+                    downloadFileName = HttpUtility.UrlEncode(downloadFileName.Replace(ext, string.Empty), Encoding.UTF8) + ".xlsx";
+            }
+            else
+                downloadFileName = Guid.NewGuid().ToString("N") + ".xlsx";
 
-            string ext = Path.GetExtension(downloadFileName.Trim());
+            using (ExcelPackage pck = new ExcelPackage())
+            {
+                for (int i = 0; i < dataTables.Count(); i++)
+                {
+                    DataTable table = dataTables.ElementAt(i);
 
-            if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
-                downloadFileName = downloadFileName.Replace(ext, string.Empty);
+                    if (table == null)
+                        continue;
 
+                    FillWorkbook(pck, table, i, columnHeader, customHandler);
+                }
 
-            HttpResponse httpResponse = HttpKits.CurrentContext.Response;
+                HttpResponse httpResponse = HttpKits.CurrentContext.Response;
+                httpResponse.Clear();
+                httpResponse.Charset = Encoding.UTF8.BodyName;
+                httpResponse.AppendHeader("Content-Disposition", "attachment;filename=" + downloadFileName);
+                httpResponse.ContentEncoding = Encoding.UTF8;
+                httpResponse.ContentType = ContentTypes.Excel;
+                httpResponse.BinaryWrite(pck.GetAsByteArray());
+                httpResponse.End();
+            }
+        }
 
-            httpResponse.Clear();
-            httpResponse.Charset = Encoding.UTF8.BodyName;
-            httpResponse.AppendHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(downloadFileName, Encoding.UTF8) + ".xls");
-            httpResponse.ContentEncoding = Encoding.UTF8;
-            httpResponse.ContentType = ContentTypes.Excel;
-            book.Write(httpResponse.OutputStream);
-            httpResponse.End();
+        /// <summary>
+        /// Exports to HTTP stream.
+        /// </summary>
+        /// <param name="dataTable">The export data table.</param>
+        /// <param name="downloadFileName">The download file name.</param>
+        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="customHandler">The custom handler.</param>
+        public static void ExportToHttp(DataTable dataTable, string downloadFileName = null, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
+        {
+            ExportToHttp(new DataTable[] { dataTable }, downloadFileName, columnHeader, customHandler);
+        }
+
+        /// <summary>
+        /// Exports to HTTP stream.
+        /// </summary>
+        /// <param name="dataSet">The export data set.</param>
+        /// <param name="downloadFileName">The download file name.</param>
+        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="customHandler">The custom handler.</param>
+        public static void ExportToHttp(DataSet dataSet, string downloadFileName = null, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
+        {
+            if (dataSet == null || !HttpKits.IsWebApp)
+                return;
+
+            if (!string.IsNullOrWhiteSpace(downloadFileName))
+            {
+                string ext = Path.GetExtension(downloadFileName.Trim());
+
+                if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
+                    downloadFileName = HttpUtility.UrlEncode(downloadFileName.Replace(ext, string.Empty), Encoding.UTF8) + ".xlsx";
+            }
+            else
+                downloadFileName = Guid.NewGuid().ToString("N") + ".xlsx";
+
+            using (ExcelPackage pck = new ExcelPackage())
+            {
+                for (int i = 0; i < dataSet.Tables.Count; i++)
+                {
+                    DataTable table = dataSet.Tables[i];
+
+                    if (table == null)
+                        continue;
+
+                    FillWorkbook(pck, table, i, columnHeader, customHandler);
+                }
+
+                HttpResponse httpResponse = HttpKits.CurrentContext.Response;
+                httpResponse.Clear();
+                httpResponse.Charset = Encoding.UTF8.BodyName;
+                httpResponse.AppendHeader("Content-Disposition", "attachment;filename=" + downloadFileName);
+                httpResponse.ContentEncoding = Encoding.UTF8;
+                httpResponse.ContentType = ContentTypes.Excel;
+                httpResponse.BinaryWrite(pck.GetAsByteArray());
+                httpResponse.End();
+            }
         }
 
         /// <summary>
         /// Exports to file.
         /// </summary>
-        /// <param name="table">The export data table.</param>
-        /// <param name="exportFilePath">The export XLS file full path.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
-        /// <param name="headerCellStyleFormater">The header cell style formater.</param>
-        /// <param name="dataCellStyleFormater">The data cell style formater.</param>
-        public static void ExportToFile(DataTable table, string exportFilePath, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
+        /// <param name="dataTables">The export data tables.</param>
+        /// <param name="excelFilePath">The excel file path.</param>
+        /// <param name="columnHeader">if set to <c>true</c> [column header].</param>
+        /// <param name="customHandler">The custom handler.</param>
+        public static void ExportToFile(IEnumerable<DataTable> dataTables, string excelFilePath = null, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
         {
-            ExportToFile(new DataTable[] { table }, exportFilePath, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
+            if (dataTables == null || dataTables.Count() == 0)
+                return;
+
+            if (!string.IsNullOrWhiteSpace(excelFilePath))
+            {
+                string ext = Path.GetExtension(excelFilePath.Trim());
+
+                if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
+                    excelFilePath = excelFilePath.Replace(ext, string.Empty) + ".xlsx";
+            }
+            else
+                excelFilePath = Guid.NewGuid().ToString("N") + ".xlsx";
+
+            using (ExcelPackage pck = new ExcelPackage())
+            {
+                for (int i = 0; i < dataTables.Count(); i++)
+                {
+                    DataTable table = dataTables.ElementAt(i);
+
+                    if (table == null)
+                        continue;
+
+                    FillWorkbook(pck, table, i, columnHeader, customHandler);
+                }
+
+                pck.SaveAs(new FileInfo(excelFilePath));
+            }
+        }
+
+        /// <summary>
+        /// Exports to file.
+        /// </summary>
+        /// <param name="dataTable">The export data table.</param>
+        /// <param name="excelFilePath">The excel file path.</param>
+        /// <param name="columnHeader">if set to <c>true</c> [column header].</param>
+        /// <param name="customHandler">The custom handler.</param>
+        public static void ExportToFile(DataTable dataTable, string excelFilePath = null, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
+        {
+            ExportToFile(new DataTable[] { dataTable }, excelFilePath, columnHeader, customHandler);
         }
 
         /// <summary>
         /// Exports to file.
         /// </summary>
         /// <param name="dataSet">The export data set.</param>
-        /// <param name="exportFilePath">The export XLS file full path.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
-        /// <param name="headerCellStyleFormater">The header cell style formater.</param>
-        /// <param name="dataCellStyleFormater">The data cell style formater.</param>
-        public static void ExportToFile(DataSet dataSet, string exportFilePath, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
+        /// <param name="excelFilePath">The excel file path.</param>
+        /// <param name="columnHeader">if set to <c>true</c> [column header].</param>
+        /// <param name="customHandler">The custom handler.</param>
+        public static void ExportToFile(DataSet dataSet, string excelFilePath = null, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
         {
-            Checker.Parameter(dataSet != null, "export data set can not be null");
-            DataTable[] tables = new DataTable[dataSet.Tables.Count];
-            dataSet.Tables.CopyTo(tables, 0);
+            if (dataSet == null)
+                return;
 
-            ExportToFile(tables, exportFilePath, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
-        }
-
-        /// <summary>
-        /// Exports to file.
-        /// </summary>
-        /// <param name="tables">The export data tables.</param>
-        /// <param name="exportFilePath">The export XLS file full path.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
-        /// <param name="headerCellStyleFormater">The header cell style formater.</param>
-        /// <param name="dataCellStyleFormater">The data cell style formater.</param>
-        public static void ExportToFile(IEnumerable<DataTable> tables, string exportFilePath, bool columnHeader = true, Func<ICell, ICellStyle> headerCellStyleFormater = null, Func<ICell, ICellStyle> dataCellStyleFormater = null)
-        {
-            Checker.Parameter(exportFilePath != null, "export file path can not be empty or null");
-
-            IWorkbook book = BuildHSSFWorkbook(tables, columnHeader, headerCellStyleFormater, dataCellStyleFormater);
-
-            string ext = Path.GetExtension(exportFilePath.Trim());
-
-            if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
-                exportFilePath = exportFilePath.Replace(ext, string.Empty);
-
-            exportFilePath += ".xls";
-
-            using (FileStream fs = new FileStream(exportFilePath, FileMode.Create))
+            if (!string.IsNullOrWhiteSpace(excelFilePath))
             {
-                book.Write(fs);
+                string ext = Path.GetExtension(excelFilePath.Trim());
+
+                if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
+                    excelFilePath = excelFilePath.Replace(ext, string.Empty) + ".xlsx";
+            }
+            else
+                excelFilePath = Guid.NewGuid().ToString("N") + ".xlsx";
+
+            using (ExcelPackage pck = new ExcelPackage())
+            {
+                for (int i = 0; i < dataSet.Tables.Count; i++)
+                {
+                    DataTable table = dataSet.Tables[i];
+
+                    if (table == null)
+                        continue;
+
+                    FillWorkbook(pck, table,i, columnHeader, customHandler);
+                }
+
+                pck.SaveAs(new FileInfo(excelFilePath));
             }
         }
 
         /// <summary>
-        /// Builds the workbook.
+        /// Fills the workbook.
         /// </summary>
-        /// <param name="tables">The export data tables.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
-        /// <param name="headerCellStyleFormater">The header cell style formater.</param>
-        /// <param name="dataCellStyleFormater">The data cell style formater.</param>
+        /// <param name="pck">The PCK.</param>
+        /// <param name="table">The table.</param>
+        /// <param name="tableIndex">Index of the table.</param>
+        /// <param name="columnHeader">if set to <c>true</c> [column header].</param>
+        /// <param name="customHandler">The custom handler.</param>
+        private static void FillWorkbook(ExcelPackage pck, DataTable table, int tableIndex, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
+        {
+            ExcelWorksheet sheet = pck.Workbook.Worksheets.Add(string.IsNullOrWhiteSpace(table.TableName) ? "Sheet" + (tableIndex + 1) : table.TableName);
+            sheet.Cells["A1"].LoadFromDataTable(table, columnHeader);
+
+            foreach (var cell in sheet.Cells)
+                cell.AutoFitColumns();
+
+            if (customHandler != null)
+                customHandler(sheet);
+        }
+
+#endregion
+
+        #region Import
+
+        /// <summary>
+        /// Imports to data table.
+        /// </summary>
+        /// <param name="excelFilePath">The excel file path.</param>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
         /// <returns></returns>
-        private static HSSFWorkbook BuildHSSFWorkbook(IEnumerable<DataTable> tables, bool columnHeader, Func<ICell, ICellStyle> headerCellStyleFormater, Func<ICell, ICellStyle> dataCellStyleFormater)
+        public static DataTable ImportToDataTable(string excelFilePath, string tableName, bool firstRowHeader = true)
         {
-            Checker.Parameter(tables != null || tables.Count() > 0 || tables.All(o => o != null), "export data tables can not be empty or contains null value");
-
-            HSSFWorkbook book = new HSSFWorkbook();
-
-            for (int t = 0; t < tables.Count(); t++)
+            using (FileStream fs = File.OpenRead(excelFilePath))
             {
-                DataTable table = tables.ElementAt(t);
-
-                ISheet sheet = book.CreateSheet(string.IsNullOrWhiteSpace(table.TableName) ? "Sheet" + (t + 1) : table.TableName);
-
-                int firstRowNum = 0;
-
-                if (columnHeader)
-                {
-                    //header row
-                    IRow row0 = sheet.CreateRow(0);
-                    for (int i = 0; i < table.Columns.Count; i++)
-                    {
-                        ICell cell = row0.CreateCell(i, CellType.String);
-
-                        cell.SetCellValue(table.Columns[i].ColumnName);
-                        if (headerCellStyleFormater != null)
-                        {
-                            var style = headerCellStyleFormater(cell);
-                            if (style != null)
-                                cell.CellStyle = style;
-                        }
-
-                        //adjust column width
-                        int textBytes = Encoding.Default.GetBytes(table.Columns[i].ColumnName).Length;
-
-                        if (textBytes > sheet.DefaultColumnWidth)
-                            sheet.SetColumnWidth(i, textBytes * 256);
-                    }
-
-                    firstRowNum = 1;
-                }
-
-                //Data Rows
-                for (int i = 0; i < table.Rows.Count; i++)
-                {
-                    IRow drow = sheet.CreateRow(i + firstRowNum);
-                    for (int j = 0; j < table.Columns.Count; j++)
-                    {
-                        ICell cell = drow.CreateCell(j, CellType.String);
-
-                        cell.SetCellValue(table.Rows[i][j].ToString());
-                        if (dataCellStyleFormater != null)
-                        {
-                            var style = dataCellStyleFormater(cell);
-                            if (style != null)
-                                cell.CellStyle = style;
-                        }
-
-                        //adjust column width
-                        int columnWidth = sheet.GetColumnWidth(j) / 256;
-                        int textBytes = Encoding.Default.GetBytes(table.Rows[i][j].ToString()).Length;
-
-                        if (textBytes > columnWidth)
-                            sheet.SetColumnWidth(j, textBytes * 256);
-                    }
-                }
+                return ImportToDataTable(fs, tableName, firstRowHeader);
             }
-
-            return book;
         }
 
         /// <summary>
         /// Imports to data table.
         /// </summary>
         /// <param name="excelFilePath">The excel file path.</param>
-        /// <param name="sheetIndex">The zero-based index of the sheet.</param>
+        /// <param name="tableIndex">Index of the table.</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
-        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <returns></returns>
-        public static DataTable ImportToDataTable(string excelFilePath, int sheetIndex, bool firstRowHeader = true, Func<ICell, object> cellValueInterpreter = null)
+        public static DataTable ImportToDataTable(string excelFilePath, int tableIndex, bool firstRowHeader = true)
         {
-            if (!File.Exists(excelFilePath))
-                throw new FileNotFoundException(excelFilePath);
-
-            IWorkbook workbook = WorkbookFactory.Create(excelFilePath);
-            ISheet sheet = workbook.GetSheetAt(sheetIndex);
-
-            return BuildDataTableFromSheet(sheet, firstRowHeader, cellValueInterpreter);
-        }
-
-        /// <summary>
-        /// Imports to data table.
-        /// </summary>
-        /// <param name="excelFilePath">The excel file path.</param>
-        /// <param name="sheetName">Name of the sheet.</param>
-        /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
-        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
-        /// <returns></returns>
-        public static DataTable ImportToDataTable(string excelFilePath, string sheetName, bool firstRowHeader = true, Func<ICell, object> cellValueInterpreter = null)
-        {
-            if (!File.Exists(excelFilePath))
-                throw new FileNotFoundException(excelFilePath);
-
-            IWorkbook workbook = WorkbookFactory.Create(excelFilePath);
-            ISheet sheet = workbook.GetSheet(sheetName);
-
-            return BuildDataTableFromSheet(sheet, firstRowHeader, cellValueInterpreter);
-        }
-
-        /// <summary>
-        /// Imports to data table.
-        /// </summary>
-        /// <param name="excelStream">The excel stream.</param>
-        /// <param name="sheetIndex">The zero-based index of the sheet.</param>
-        /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
-        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
-        /// <returns></returns>
-        public static DataTable ImportToDataTable(Stream excelStream, int sheetIndex, bool firstRowHeader = true, Func<ICell, object> cellValueInterpreter = null)
-        {
-            IWorkbook workbook = WorkbookFactory.Create(excelStream);
-            ISheet sheet = workbook.GetSheetAt(sheetIndex);
-
-            return BuildDataTableFromSheet(sheet, firstRowHeader, cellValueInterpreter);
-        }
-
-        /// <summary>
-        /// Imports to data table.
-        /// </summary>
-        /// <param name="excelStream">The excel stream.</param>
-        /// <param name="sheetName">Name of the sheet.</param>
-        /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
-        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
-        /// <returns></returns>
-        public static DataTable ImportToDataTable(Stream excelStream, string sheetName, bool firstRowHeader = true, Func<ICell, object> cellValueInterpreter = null)
-        {
-            IWorkbook workbook = WorkbookFactory.Create(excelStream);
-            ISheet sheet = workbook.GetSheet(sheetName);
-
-            return BuildDataTableFromSheet(sheet, firstRowHeader, cellValueInterpreter);
-        }
-
-
-        /// <summary>
-        /// Imports to data set.
-        /// </summary>
-        /// <param name="excelStream">The excel stream.</param>
-        /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
-        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
-        /// <returns></returns>
-        public static DataSet ImportToDataSet(Stream excelStream, bool firstRowHeader = true, Func<ICell, object> cellValueInterpreter = null)
-        {
-            IWorkbook workbook = WorkbookFactory.Create(excelStream);
-
-            DataSet ds = new DataSet();
-
-            for (int i = 0; i < workbook.NumberOfSheets; i++)
+            using (FileStream fs = File.OpenRead(excelFilePath))
             {
-                ds.Tables.Add(BuildDataTableFromSheet(workbook.GetSheetAt(i), firstRowHeader, cellValueInterpreter));
+                return ImportToDataTable(fs, tableIndex, firstRowHeader);
+            }
+        }
+
+        /// <summary>
+        /// Imports to data table.
+        /// </summary>
+        /// <param name="excelStream">The excel stream.</param>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
+        /// <returns></returns>
+        public static DataTable ImportToDataTable(Stream excelStream, string tableName, bool firstRowHeader = true)
+        {
+            using (ExcelPackage pck = new ExcelPackage())
+            {
+                pck.Load(excelStream);
+
+                var sheet = pck.Workbook.Worksheets[tableName];
+
+                if (sheet != null && sheet.Dimension != null)
+                    return CreateDataTable(sheet, firstRowHeader);
             }
 
-            return ds;
+            return null;
+        }
+
+        /// <summary>
+        /// Imports to data table.
+        /// </summary>
+        /// <param name="excelStream">The excel stream.</param>
+        /// <param name="tableIndex">Index of the table.</param>
+        /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
+        /// <returns></returns>
+        public static DataTable ImportToDataTable(Stream excelStream, int tableIndex, bool firstRowHeader = true)
+        {
+
+            using (ExcelPackage pck = new ExcelPackage())
+            {
+                pck.Load(excelStream);
+
+                var sheet = pck.Workbook.Worksheets[tableIndex + 1];
+
+                if (sheet != null && sheet.Dimension != null)
+                    return CreateDataTable(sheet, firstRowHeader);
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -313,165 +312,143 @@ namespace Radial
         /// </summary>
         /// <param name="excelFilePath">The excel file path.</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
-        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <returns></returns>
-        public static DataSet ImportToDataTable(string excelFilePath, bool firstRowHeader = true, Func<ICell, object> cellValueInterpreter = null)
+        public static DataSet ImportToDataSet(string excelFilePath, bool firstRowHeader = true)
         {
-            if (!File.Exists(excelFilePath))
-                throw new FileNotFoundException(excelFilePath);
+            using (FileStream fs = File.OpenRead(excelFilePath))
+            {
+                return ImportToDataSet(fs, firstRowHeader);
+            }
+        }
 
-            IWorkbook workbook = WorkbookFactory.Create(excelFilePath);
-
+        /// <summary>
+        /// Imports to data set.
+        /// </summary>
+        /// <param name="excelStream">The excel stream.</param>
+        /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
+        /// <returns></returns>
+        public static DataSet ImportToDataSet(Stream excelStream, bool firstRowHeader = true)
+        {
             DataSet ds = new DataSet();
 
-            for (int i = 0; i < workbook.NumberOfSheets; i++)
+            using (ExcelPackage pck = new ExcelPackage())
             {
-                ds.Tables.Add(BuildDataTableFromSheet(workbook.GetSheetAt(i), firstRowHeader, cellValueInterpreter));
+                pck.Load(excelStream);
+
+                for (int i = 0; i < pck.Workbook.Worksheets.Count; i++)
+                {
+                    var sheet = pck.Workbook.Worksheets[i + 1];
+
+                    if (sheet == null || sheet.Dimension == null)
+                        continue;
+
+                    ds.Tables.Add(CreateDataTable(sheet, firstRowHeader));
+                }
             }
 
             return ds;
         }
 
-
         /// <summary>
-        /// Builds the data table from sheet.
+        /// Creates the data table.
         /// </summary>
         /// <param name="sheet">The sheet.</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
-        /// <param name="cellValueInterpreter">The cell value interpreter.</param>
         /// <returns></returns>
-        private static DataTable BuildDataTableFromSheet(ISheet sheet, bool firstRowHeader, Func<ICell, object> cellValueInterpreter)
+        private static DataTable CreateDataTable(ExcelWorksheet sheet, bool firstRowHeader)
         {
-            DataTable table = new DataTable();
+            DataTable table = new DataTable(string.IsNullOrWhiteSpace(sheet.Name) ? "Sheet" + sheet.Index : sheet.Name);
 
-            //空表格
-            if (sheet.LastRowNum == 0)
-                return table;
+            IDictionary<int, IList<ExcelRangeBase>> excelRows = new Dictionary<int, IList<ExcelRangeBase>>();
 
-            //最大的有效单元格编号
-            int maxCellsNum = 0;
-
-            for (int i = sheet.FirstRowNum; i <= sheet.LastRowNum; i++)
+            foreach (var cell in sheet.Cells)
             {
-                IRow row = sheet.GetRow(i);
+                if (!excelRows.ContainsKey(cell.Start.Row))
+                    excelRows.Add(cell.Start.Row, new List<ExcelRangeBase>());
 
-                if (row != null)
-                {
-                    foreach (var c in row.Cells)
-                    {
-                        //跳过空列
-                        if (!string.IsNullOrWhiteSpace(c.ToString()) && c.ColumnIndex + 1 > maxCellsNum)
-                            maxCellsNum = c.ColumnIndex;
-                    }
-                }
+                //fill count
+                int fcount = cell.Start.Column - excelRows[cell.Start.Row].Count;
+
+                for (int f = 0; f < fcount; f++)
+                    excelRows[cell.Start.Row].Add(null);
+
+                excelRows[cell.Start.Row][cell.Start.Column - 1] = cell;
             }
 
-
-            //构建表头
-            IRow firstRow = sheet.GetRow(sheet.FirstRowNum);
-
-            IDictionary<string, int> sameColumns = new Dictionary<string, int>();
-
-            for (int i = 0; i <= maxCellsNum; i++)
-            {
-                if (!firstRowHeader)
-                {
-                    table.Columns.Add(new DataColumn(i.ToString()));
-                    continue;
-                }
-
-                ICell hc = firstRow.GetCell(i);
-
-                if (hc == null)
-                {
-                    table.Columns.Add(new DataColumn(i.ToString()));
-                    continue;
-                }
-
-                //检查重名
-                string columnName = hc.ToString().Trim();
-
-                if (table.Columns.Contains(columnName))
-                {
-                    if (!sameColumns.ContainsKey(columnName))
-                        sameColumns[columnName] = 1;
-                    else
-                        sameColumns[columnName]++;
-
-                    columnName += sameColumns[columnName];
-
-                }
-
-                table.Columns.Add(new DataColumn(columnName));
-
-            }
-
-
-            //读取数据行
-            int dataRowNum = firstRowHeader ? sheet.FirstRowNum + 1 : sheet.FirstRowNum;//数据行开始编号
-
-            for (int i = dataRowNum; i <= sheet.LastRowNum; i++)
-            {
-                DataRow dataRow = table.NewRow();
-
-                IRow row = sheet.GetRow(i);
-
-                if (row == null)
-                {
-                    //添加空行，后面再删除空行
-                    table.Rows.Add(dataRow);
-                    continue;
-                }
-
-                for (int j = 0; j <= maxCellsNum; j++)
-                {
-                    ICell cell = row.GetCell(j);
-
-                    if (cell != null)
-                    {
-                        if (cellValueInterpreter == null)
-                        {
-                            switch (cell.CellType)
-                            {
-                                case CellType.Blank: dataRow[j] = null; break;
-                                case CellType.Boolean: dataRow[j] = cell.BooleanCellValue; break;
-                                case CellType.Numeric:
-                                    if (DateUtil.IsCellDateFormatted(cell))
-                                        dataRow[j] = cell.DateCellValue;
-                                    else
-                                        dataRow[j] = cell.NumericCellValue;
-                                    break;
-                                case CellType.String: dataRow[j] = cell.StringCellValue; break;
-                                default: dataRow[j] = cell.ToString(); break;
-                            }
-                        }
-                        else
-                            dataRow[j] = cellValueInterpreter(cell);
-                    }
-                }
-                table.Rows.Add(dataRow);
-            }
-
-
-            //删除头尾的空行
+            //remove last empty row
             while (true)
             {
-                if (table.Rows[0].ItemArray.All(o => o == null || string.IsNullOrWhiteSpace(o.ToString())))
+                var t = excelRows.ElementAt(excelRows.Count - 1);
+
+                if (t.Value.Any(o => o != null && !string.IsNullOrWhiteSpace(o.Text)))
+                    break;
+
+                excelRows.Remove(t.Key);
+            }
+
+            if (excelRows.Count > 0)
+            {
+                //find total column
+                int totalColumn = 0;
+
+                for (int c = 0; c < excelRows.Count; c++)
                 {
-                    table.Rows.RemoveAt(0);
-                    continue;
+                    var er = excelRows.ElementAt(c);
+
+                    var lastNotNull = er.Value.LastOrDefault(o => o != null && !string.IsNullOrWhiteSpace(o.Text));
+
+                    if (lastNotNull == null)
+                        continue;
+
+                    var lastNotNullIndex = er.Value.IndexOf(lastNotNull);
+
+                    if (lastNotNullIndex + 1 > totalColumn)
+                        totalColumn = lastNotNullIndex + 1;
                 }
 
-                if (table.Rows[table.Rows.Count - 1].ItemArray.All(o => o == null || string.IsNullOrWhiteSpace(o.ToString())))
+                //Add column
+                var firstRowCellRanges = excelRows.ElementAt(0);
+
+                for (int c = 0; c < totalColumn; c++)
                 {
-                    table.Rows.RemoveAt(table.Rows.Count - 1);
-                    continue;
+                    string columnName = string.Empty;
+
+                    if (c < firstRowCellRanges.Value.Count)
+                    {
+                        ExcelRangeBase cells = firstRowCellRanges.Value[c];
+
+                        if (firstRowHeader)
+                            columnName = cells.Text;
+                        else
+                            columnName = cells.Address;
+                    }
+                    else
+                        columnName = sheet.Cells[firstRowCellRanges.Key, sheet.Dimension.Start.Column + c].Address;
+
+                    table.Columns.Add(columnName);
                 }
 
-                break;
+                //add data row
+                for (int c = firstRowHeader ? 1 : 0; c < excelRows.Count; c++)
+                {
+                    var er = excelRows.ElementAt(c);
+
+                    IList<string> drowObjs = new List<string>();
+                    for (int x = 0; x < totalColumn; x++)
+                    {
+                        if (x < er.Value.Count && er.Value[x] != null)
+                            drowObjs.Add(er.Value[x].Text);
+                        else
+                            drowObjs.Add(null);
+                    }
+
+                    table.Rows.Add(drowObjs.ToArray());
+                }
             }
 
             return table;
         }
+
+        #endregion
     }
 }

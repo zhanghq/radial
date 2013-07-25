@@ -31,12 +31,7 @@ namespace Radial
                 return;
 
             if (!string.IsNullOrWhiteSpace(downloadFileName))
-            {
-                string ext = Path.GetExtension(downloadFileName.Trim());
-
-                if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
-                    downloadFileName = HttpUtility.UrlEncode(downloadFileName.Replace(ext, string.Empty), Encoding.UTF8) + ".xlsx";
-            }
+                downloadFileName = HttpUtility.UrlEncode(Path.GetFileNameWithoutExtension(downloadFileName), Encoding.UTF8) + ".xlsx";
             else
                 downloadFileName = Guid.NewGuid().ToString("N") + ".xlsx";
 
@@ -88,12 +83,7 @@ namespace Radial
                 return;
 
             if (!string.IsNullOrWhiteSpace(downloadFileName))
-            {
-                string ext = Path.GetExtension(downloadFileName.Trim());
-
-                if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
-                    downloadFileName = HttpUtility.UrlEncode(downloadFileName.Replace(ext, string.Empty), Encoding.UTF8) + ".xlsx";
-            }
+                downloadFileName = HttpUtility.UrlEncode(Path.GetFileNameWithoutExtension(downloadFileName), Encoding.UTF8) + ".xlsx";
             else
                 downloadFileName = Guid.NewGuid().ToString("N") + ".xlsx";
 
@@ -133,12 +123,7 @@ namespace Radial
                 return;
 
             if (!string.IsNullOrWhiteSpace(excelFilePath))
-            {
-                string ext = Path.GetExtension(excelFilePath.Trim());
-
-                if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
-                    excelFilePath = excelFilePath.Replace(ext, string.Empty) + ".xlsx";
-            }
+                excelFilePath = Path.GetFileNameWithoutExtension(excelFilePath) + ".xlsx";
             else
                 excelFilePath = Guid.NewGuid().ToString("N") + ".xlsx";
 
@@ -183,12 +168,7 @@ namespace Radial
                 return;
 
             if (!string.IsNullOrWhiteSpace(excelFilePath))
-            {
-                string ext = Path.GetExtension(excelFilePath.Trim());
-
-                if (ext.ToLower() == ".xls" || ext.ToLower() == ".xlsx")
-                    excelFilePath = excelFilePath.Replace(ext, string.Empty) + ".xlsx";
-            }
+                excelFilePath = Path.GetFileNameWithoutExtension(excelFilePath) + ".xlsx";
             else
                 excelFilePath = Guid.NewGuid().ToString("N") + ".xlsx";
 
@@ -201,7 +181,7 @@ namespace Radial
                     if (table == null)
                         continue;
 
-                    FillWorkbook(pck, table,i, columnHeader, customHandler);
+                    FillWorkbook(pck, table, i, columnHeader, customHandler);
                 }
 
                 pck.SaveAs(new FileInfo(excelFilePath));
@@ -228,7 +208,7 @@ namespace Radial
                 customHandler(sheet);
         }
 
-#endregion
+        #endregion
 
         #region Import
 

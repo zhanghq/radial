@@ -288,6 +288,48 @@ namespace Radial
         }
 
         /// <summary>
+        /// Imports to data tables.
+        /// </summary>
+        /// <param name="excelFilePath">The excel file path.</param>
+        /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
+        /// <returns></returns>
+        public static IEnumerable<DataTable> ImportToDataTables(string excelFilePath, bool firstRowHeader = true)
+        {
+            using (FileStream fs = File.OpenRead(excelFilePath))
+            {
+                return ImportToDataTables(fs, firstRowHeader);
+            }
+        }
+
+        /// <summary>
+        /// Imports to data tables.
+        /// </summary>
+        /// <param name="excelStream">The excel stream.</param>
+        /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
+        /// <returns></returns>
+        public static IEnumerable<DataTable> ImportToDataTables(Stream excelStream, bool firstRowHeader = true)
+        {
+            IList<DataTable> tables = new List<DataTable>();
+
+            using (ExcelPackage pck = new ExcelPackage())
+            {
+                pck.Load(excelStream);
+
+                for (int i = 0; i < pck.Workbook.Worksheets.Count; i++)
+                {
+                    var sheet = pck.Workbook.Worksheets[i + 1];
+
+                    if (sheet == null || sheet.Dimension == null)
+                        continue;
+
+                    tables.Add(CreateDataTable(sheet, firstRowHeader));
+                }
+            }
+
+            return tables;
+        }
+
+        /// <summary>
         /// Imports to data set.
         /// </summary>
         /// <param name="excelFilePath">The excel file path.</param>

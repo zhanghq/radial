@@ -195,5 +195,44 @@ namespace Radial.Web.Mvc
         {
             return new HttpKnownFaultResult(errorCode, message, innerException, httpStatusCode);
         }
+
+        /// <summary>
+        /// Export data to excel file.
+        /// </summary>
+        /// <param name="c">The c.</param>
+        /// <param name="dataTables">The data tables.</param>
+        /// <param name="downloadFileName">The download file name.</param>
+        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <returns>ExcelResult instance.</returns>
+        public static ExcelResult Excel(this Controller c, IEnumerable<DataTable> dataTables, string downloadFileName = null, bool columnHeader = true)
+        {
+            return new ExcelResult(dataTables, downloadFileName, columnHeader);
+        }
+
+        /// <summary>
+        /// Export data to excel file.
+        /// </summary>
+        /// <param name="c">The c.</param>
+        /// <param name="dataTable">The data table.</param>
+        /// <param name="downloadFileName">The download file name.</param>
+        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <returns>ExcelResult instance.</returns>
+        public static ExcelResult Excel(this Controller c, DataTable dataTable, string downloadFileName = null, bool columnHeader = true)
+        {
+            return new ExcelResult(dataTable, downloadFileName, columnHeader);
+        }
+
+        /// <summary>
+        /// Export data to excel file.
+        /// </summary>
+        /// <param name="c">The c.</param>
+        /// <param name="dataSet">The data set.</param>
+        /// <param name="downloadFileName">The download file name.</param>
+        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <returns>ExcelResult instance.</returns>
+        public static ExcelResult Excel(this Controller c, DataSet dataSet, string downloadFileName = null, bool columnHeader = true)
+        {
+            return new ExcelResult(dataSet, downloadFileName, columnHeader);
+        }
     }
 }

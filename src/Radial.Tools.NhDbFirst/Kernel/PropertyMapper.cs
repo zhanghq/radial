@@ -39,7 +39,29 @@ namespace Radial.Tools.NhDbFirst.Kernel
             switch (DataSource)
             {
                 case DataSource.SqlServer: WriteSqlServerXml(writer); break;
+                case DataSource.MySql: WriteMySqlXml(writer); break;
                 default: throw new NotSupportedException("不支持的数据源类型：" + DataSource.ToString());
+            }
+        }
+
+        private void WriteMySqlXml(System.IO.TextWriter writer)
+        {
+            if (FieldDefinition.IsPrimaryKey)
+            {
+                writer.WriteLine(string.Format("    <id name=\"{0}\"{1}>", PropertyName, TypeString == "short" || TypeString == "int" || TypeString == "long" || TypeString == "float" || TypeString == "double" || TypeString == "decimal" ? " unsaved-value=\"0\"" : string.Empty));
+                writer.WriteLine(string.Format("      <column name=\"{0}\" sql-type=\"{1}\"/>", FieldDefinition.Name, FieldDefinition.SqlType));
+                if (FieldDefinition.IsIdentity)
+                    writer.WriteLine("      <generator class=\"native\"/>");
+                else
+                    writer.WriteLine("      <generator class=\"assigned\"/>");
+
+                writer.WriteLine("    </id>");
+            }
+            else
+            {
+                writer.WriteLine(string.Format("    <property name=\"{0}\">", PropertyName));
+                writer.WriteLine(string.Format("      <column name=\"{0}\" sql-type=\"{1}\"{2}{3}/>", FieldDefinition.Name, FieldDefinition.SqlType, FieldDefinition.IsNullable ? string.Empty : " not-null=\"true\"", string.IsNullOrWhiteSpace(FieldDefinition.Default) ? string.Empty : " default=\"" + FieldDefinition.Default + "\""));
+                writer.WriteLine("    </property>");
             }
         }
 
@@ -84,7 +106,7 @@ namespace Radial.Tools.NhDbFirst.Kernel
             else
             {
                 writer.WriteLine(string.Format("    <property name=\"{0}\">", PropertyName));
-                writer.WriteLine(string.Format("      <column name=\"{0}\" sql-type=\"{1}\"{2}/>", FieldDefinition.Name, BuildSqlServerSqlType(FieldDefinition), FieldDefinition.IsNullable ? string.Empty : " not-null=\"true\""));
+                writer.WriteLine(string.Format("      <column name=\"{0}\" sql-type=\"{1}\"{2}{3}/>", FieldDefinition.Name, BuildSqlServerSqlType(FieldDefinition), FieldDefinition.IsNullable ? string.Empty : " not-null=\"true\"", string.IsNullOrWhiteSpace(FieldDefinition.Default) ? string.Empty : " default=\"" + FieldDefinition.Default + "\""));
                 writer.WriteLine("    </property>");
             }
         }

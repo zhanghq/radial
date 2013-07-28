@@ -82,8 +82,25 @@ namespace Radial.Tools.NhDbFirst.Kernel
             switch (DataSource)
             {
                 case DataSource.SqlServer: WriteSqlServerXml(writer); break;
+                case DataSource.MySql: WriteMySqlXml(writer); break;
                 default: throw new NotSupportedException("不支持的数据源类型：" + DataSource.ToString());
             }
+        }
+
+        private void WriteMySqlXml(TextWriter writer)
+        {
+            writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+            writer.WriteLine(string.Format("<hibernate-mapping assembly=\"{0}\" namespace=\"{1}\" xmlns=\"urn:nhibernate-mapping-2.2\">", AssemblyName, NamespaceName));
+
+            writer.WriteLine(string.Format("  <class name=\"{0}\" table=\"{1}\"{2}>", ClassName, TableDefinition.Name, LazyModel ? string.Empty : " lazy=\"false\""));
+
+            foreach (PropertyMapper p in Properties)
+                p.WriteXml(writer);
+
+            writer.WriteLine("  </class>");
+
+            writer.WriteLine("</hibernate-mapping>");
+
         }
 
         private void WriteSqlServerXml(TextWriter writer)

@@ -86,8 +86,32 @@ namespace Radial.Tools.NhDbFirst.Kernel
             switch (profile.DataSource)
             {
                 case DataSource.SqlServer: return RetrieveSqlServer(profile.ConnectionString);
-                default: throw new NotSupportedException("不支持的数据源类型：" + profile.DataSource.ToString());
+                case DataSource.MySql: return RetrieveMySql(profile.ConnectionString);
+                default: return new List<TableDefinition>();
             }
+        }
+
+        /// <summary>
+        /// Retrieves my SQL.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        private static IList<TableDefinition> RetrieveMySql(string connectionString)
+        {
+            IList<TableDefinition> list = new List<TableDefinition>();
+
+            using (DbSession session = DbSession.NewMySqlSession(connectionString))
+            {
+                IList<RowDataCollection> rows = session.ExecuteRows(Resources.MySqlTablesQuery);
+
+                foreach (RowDataCollection row in rows)
+                {
+                    list.Add(new TableDefinition { Name = row[0].ToString() });
+                }
+            }
+
+            return list;
         }
 
         /// <summary>
@@ -120,7 +144,9 @@ namespace Radial.Tools.NhDbFirst.Kernel
         /// </returns>
         public override string ToString()
         {
-            return string.Join(".", Schema, Name);
+            if (!string.IsNullOrWhiteSpace(Schema))
+                return string.Join(".", Schema, Name);
+            return Name;
         }
     }
 }

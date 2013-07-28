@@ -46,6 +46,10 @@ namespace Radial.Tools.NhDbFirst.Kernel
         /// 获取是否允许为空
         /// </summary>
         public bool IsNullable { get; private set; }
+        /// <summary>
+        /// 获取默认值
+        /// </summary>
+        public string Default { get; private set; }
 
 
         /// <summary>
@@ -60,17 +64,63 @@ namespace Radial.Tools.NhDbFirst.Kernel
             switch (profile.DataSource)
             {
                 case DataSource.SqlServer: return GenerateSqlServer(profile.ConnectionString, tableDef);
-                default: throw new NotSupportedException("不支持的数据源类型：" + profile.DataSource.ToString());
+                case DataSource.MySql: return GenerateMySql(profile.ConnectionString, tableDef);
+                default: return new List<FieldDefinition>();
             }
         }
 
+        /// <summary>
+        /// Generates my SQL.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="tableDef">The table def.</param>
+        /// <returns></returns>
+        private static IList<FieldDefinition> GenerateMySql(string connectionString, TableDefinition tableDef)
+        {
+            IList<FieldDefinition> list = new List<FieldDefinition>();
+
+            using (DbSession session = DbSession.NewMySqlSession(connectionString))
+            {
+                IList<RowDataCollection> rows = session.ExecuteRows(string.Format(Resources.MySqlFieldsQuery, tableDef.Name));
+
+                foreach (RowDataCollection row in rows)
+                {
+                    var f = new FieldDefinition
+                    {
+                        Name = row["Field"].ToString(),
+                        SqlType = row["Type"].ToString(),
+                        IsNullable = row["Null"].Value.ToString() == "NO" ? false : true,
+                        Default = row["Default"].ToString()
+                    };
+
+                    if (row["Key"].ToString() == "PRI")
+                    {
+                        f.IsPrimaryKey = true;
+                        if (row["Extra"].ToString() == "auto_increment")
+                            f.IsIdentity = true;
+                    }
+
+                    list.Add(f);
+                }
+
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// Generates the SQL server.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="tableDef">The table def.</param>
+        /// <returns></returns>
         private static IList<FieldDefinition> GenerateSqlServer(string connectionString, TableDefinition tableDef)
         {
             IList<FieldDefinition> list = new List<FieldDefinition>();
 
             using (DbSession session = DbSession.NewSqlServerSession(connectionString))
             {
-                IList<RowDataCollection> rows = session.ExecuteRows(Resources.SqlServerFieldDefinitionQuery, tableDef.Schema, tableDef.Name);
+                IList<RowDataCollection> rows = session.ExecuteRows(Resources.SqlServerFieldsQuery, tableDef.Schema, tableDef.Name);
 
                 foreach (RowDataCollection row in rows)
                 {
@@ -82,11 +132,22 @@ namespace Radial.Tools.NhDbFirst.Kernel
                         IsIdentity = int.Parse(row["IsIdentity"].Value.ToString()) == 1,
                         IsRowGuid = int.Parse(row["IsRowGuid"].Value.ToString()) == 1,
                         IsNullable = int.Parse(row["IsNullable"].Value.ToString()) == 1,
-                        Length = int.Parse(row["Length"].Value.ToString()),
+                        Length = int.Parse(row["Length"].Value.ToString())
                     };
 
                     if (row["Scale"].Value != DBNull.Value)
                         f.Scale = int.Parse(row["Scale"].Value.ToString());
+
+                    if (!string.IsNullOrWhiteSpace(row["Default"].ToString()))
+                    {
+                        if (row["Default"].ToString().StartsWith("(") && row["Default"].ToString().EndsWith(")"))
+                        {
+                            string temp=row["Default"].ToString().Remove(0, 1);
+                            f.Default=temp.Remove(temp.Length-1,1);
+                        }
+                        else
+                            f.Default = row["Default"].ToString();
+                    }
 
                     list.Add(f);
                 }

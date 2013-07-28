@@ -118,7 +118,9 @@
     <Content Include="newProfile.png" />
     <Content Include="loadProfile.png" />
     <Content Include="readSchema.png" />
-    <Content Include="Resources\SqlServerFieldDefinitionQuery.txt" />
+    <Content Include="Resources\MySqlFieldsQuery.txt" />
+    <Content Include="Resources\MySqlTablesQuery.txt" />
+    <Content Include="Resources\SqlServerFieldsQuery.txt" />
     <Content Include="Resources\SqlServerTablesQuery.txt" />
     <Content Include="saveProfile.png" />
   </ItemGroup>

@@ -21,7 +21,7 @@ namespace Radial.Tools.NhDbFirst.Data
             switch (ds)
             {
                 case DataSource.SqlServer: return new SqlServerQuery();
-                //case DataSource.MySql: return new MySqlQuery();
+                case DataSource.MySql: return new MySqlQuery();
                 default: throw new NotSupportedException("不支持" + ds.ToString() + "数据源类型");
             }
         }

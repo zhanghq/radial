@@ -22,7 +22,7 @@ namespace Radial
         /// Exports to HTTP stream.
         /// </summary>
         /// <param name="dataTables">The export data tables.</param>
-        /// <param name="downloadFileName">The download file name.</param>
+        /// <param name="downloadFileName">The download file name, use random name if set to null.</param>
         /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
         /// <param name="customHandler">The custom handler.</param>
         public static void ExportToHttp(IEnumerable<DataTable> dataTables, string downloadFileName = null, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
@@ -33,7 +33,7 @@ namespace Radial
             if (!string.IsNullOrWhiteSpace(downloadFileName))
                 downloadFileName = HttpUtility.UrlEncode(Path.GetFileNameWithoutExtension(downloadFileName), Encoding.UTF8) + ".xlsx";
             else
-                downloadFileName = Guid.NewGuid().ToString("N") + ".xlsx";
+                downloadFileName = Path.GetRandomFileName().Replace(".", string.Empty) + ".xlsx";
 
             using (ExcelPackage pck = new ExcelPackage())
             {
@@ -62,7 +62,7 @@ namespace Radial
         /// Exports to HTTP stream.
         /// </summary>
         /// <param name="dataTable">The export data table.</param>
-        /// <param name="downloadFileName">The download file name.</param>
+        /// <param name="downloadFileName">The download file name, use random name if set to null.</param>
         /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
         /// <param name="customHandler">The custom handler.</param>
         public static void ExportToHttp(DataTable dataTable, string downloadFileName = null, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
@@ -74,7 +74,7 @@ namespace Radial
         /// Exports to HTTP stream.
         /// </summary>
         /// <param name="dataSet">The export data set.</param>
-        /// <param name="downloadFileName">The download file name.</param>
+        /// <param name="downloadFileName">The download file name, use random name if set to null.</param>
         /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
         /// <param name="customHandler">The custom handler.</param>
         public static void ExportToHttp(DataSet dataSet, string downloadFileName = null, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
@@ -85,7 +85,7 @@ namespace Radial
             if (!string.IsNullOrWhiteSpace(downloadFileName))
                 downloadFileName = HttpUtility.UrlEncode(Path.GetFileNameWithoutExtension(downloadFileName), Encoding.UTF8) + ".xlsx";
             else
-                downloadFileName = Guid.NewGuid().ToString("N") + ".xlsx";
+                downloadFileName = Path.GetRandomFileName().Replace(".", string.Empty) + ".xlsx";
 
             using (ExcelPackage pck = new ExcelPackage())
             {
@@ -114,7 +114,7 @@ namespace Radial
         /// Exports to file.
         /// </summary>
         /// <param name="dataTables">The export data tables.</param>
-        /// <param name="excelFilePath">The excel file path.</param>
+        /// <param name="excelFilePath">The excel file path, use random path if set to null.</param>
         /// <param name="columnHeader">if set to <c>true</c> [column header].</param>
         /// <param name="customHandler">The custom handler.</param>
         public static void ExportToFile(IEnumerable<DataTable> dataTables, string excelFilePath = null, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
@@ -125,7 +125,7 @@ namespace Radial
             if (!string.IsNullOrWhiteSpace(excelFilePath))
                 excelFilePath = Path.GetFileNameWithoutExtension(excelFilePath) + ".xlsx";
             else
-                excelFilePath = Guid.NewGuid().ToString("N") + ".xlsx";
+                excelFilePath = Path.GetRandomFileName().Replace(".", string.Empty) + ".xlsx";
 
             using (ExcelPackage pck = new ExcelPackage())
             {
@@ -147,7 +147,7 @@ namespace Radial
         /// Exports to file.
         /// </summary>
         /// <param name="dataTable">The export data table.</param>
-        /// <param name="excelFilePath">The excel file path.</param>
+        /// <param name="excelFilePath">The excel file path, use random path if set to null.</param>
         /// <param name="columnHeader">if set to <c>true</c> [column header].</param>
         /// <param name="customHandler">The custom handler.</param>
         public static void ExportToFile(DataTable dataTable, string excelFilePath = null, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
@@ -159,7 +159,7 @@ namespace Radial
         /// Exports to file.
         /// </summary>
         /// <param name="dataSet">The export data set.</param>
-        /// <param name="excelFilePath">The excel file path.</param>
+        /// <param name="excelFilePath">The excel file path, use random path if set to null.</param>
         /// <param name="columnHeader">if set to <c>true</c> [column header].</param>
         /// <param name="customHandler">The custom handler.</param>
         public static void ExportToFile(DataSet dataSet, string excelFilePath = null, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
@@ -170,7 +170,7 @@ namespace Radial
             if (!string.IsNullOrWhiteSpace(excelFilePath))
                 excelFilePath = Path.GetFileNameWithoutExtension(excelFilePath) + ".xlsx";
             else
-                excelFilePath = Guid.NewGuid().ToString("N") + ".xlsx";
+                excelFilePath = Path.GetRandomFileName().Replace(".", string.Empty) + ".xlsx";
 
             using (ExcelPackage pck = new ExcelPackage())
             {
@@ -193,12 +193,12 @@ namespace Radial
         /// </summary>
         /// <param name="pck">The PCK.</param>
         /// <param name="table">The table.</param>
-        /// <param name="tableIndex">Index of the table.</param>
+        /// <param name="sheetIndex">Index of the sheet (zero-base).</param>
         /// <param name="columnHeader">if set to <c>true</c> [column header].</param>
         /// <param name="customHandler">The custom handler.</param>
-        private static void FillWorkbook(ExcelPackage pck, DataTable table, int tableIndex, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
+        private static void FillWorkbook(ExcelPackage pck, DataTable table, int sheetIndex = 0, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
         {
-            ExcelWorksheet sheet = pck.Workbook.Worksheets.Add(string.IsNullOrWhiteSpace(table.TableName) ? "Sheet" + (tableIndex + 1) : table.TableName);
+            ExcelWorksheet sheet = pck.Workbook.Worksheets.Add(string.IsNullOrWhiteSpace(table.TableName) ? "Sheet" + (sheetIndex + 1) : table.TableName);
             sheet.Cells["A1"].LoadFromDataTable(table, columnHeader);
 
             foreach (var cell in sheet.Cells)
@@ -216,14 +216,14 @@ namespace Radial
         /// Imports to data table.
         /// </summary>
         /// <param name="excelFilePath">The excel file path.</param>
-        /// <param name="tableName">Name of the table.</param>
+        /// <param name="sheetName">Name of the sheet.</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
         /// <returns></returns>
-        public static DataTable ImportToDataTable(string excelFilePath, string tableName, bool firstRowHeader = true)
+        public static DataTable ImportToDataTable(string excelFilePath, string sheetName, bool firstRowHeader = true)
         {
             using (FileStream fs = File.OpenRead(excelFilePath))
             {
-                return ImportToDataTable(fs, tableName, firstRowHeader);
+                return ImportToDataTable(fs, sheetName, firstRowHeader);
             }
         }
 
@@ -231,14 +231,14 @@ namespace Radial
         /// Imports to data table.
         /// </summary>
         /// <param name="excelFilePath">The excel file path.</param>
-        /// <param name="tableIndex">Index of the table.</param>
+        /// <param name="sheetIndex">Index of the sheet (zero-base).</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
         /// <returns></returns>
-        public static DataTable ImportToDataTable(string excelFilePath, int tableIndex, bool firstRowHeader = true)
+        public static DataTable ImportToDataTable(string excelFilePath, int sheetIndex = 0, bool firstRowHeader = true)
         {
             using (FileStream fs = File.OpenRead(excelFilePath))
             {
-                return ImportToDataTable(fs, tableIndex, firstRowHeader);
+                return ImportToDataTable(fs, sheetIndex, firstRowHeader);
             }
         }
 
@@ -246,16 +246,16 @@ namespace Radial
         /// Imports to data table.
         /// </summary>
         /// <param name="excelStream">The excel stream.</param>
-        /// <param name="tableName">Name of the table.</param>
+        /// <param name="sheetName">Name of the sheet.</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
         /// <returns></returns>
-        public static DataTable ImportToDataTable(Stream excelStream, string tableName, bool firstRowHeader = true)
+        public static DataTable ImportToDataTable(Stream excelStream, string sheetName, bool firstRowHeader = true)
         {
             using (ExcelPackage pck = new ExcelPackage())
             {
                 pck.Load(excelStream);
 
-                var sheet = pck.Workbook.Worksheets[tableName];
+                var sheet = pck.Workbook.Worksheets[sheetName];
 
                 if (sheet != null && sheet.Dimension != null)
                     return CreateDataTable(sheet, firstRowHeader);
@@ -268,17 +268,17 @@ namespace Radial
         /// Imports to data table.
         /// </summary>
         /// <param name="excelStream">The excel stream.</param>
-        /// <param name="tableIndex">Index of the table.</param>
+        /// <param name="sheetIndex">Index of the sheet (zero-base).</param>
         /// <param name="firstRowHeader">if set to <c>true</c> [first row header].</param>
         /// <returns></returns>
-        public static DataTable ImportToDataTable(Stream excelStream, int tableIndex, bool firstRowHeader = true)
+        public static DataTable ImportToDataTable(Stream excelStream, int sheetIndex = 0, bool firstRowHeader = true)
         {
 
             using (ExcelPackage pck = new ExcelPackage())
             {
                 pck.Load(excelStream);
 
-                var sheet = pck.Workbook.Worksheets[tableIndex + 1];
+                var sheet = pck.Workbook.Worksheets[sheetIndex + 1];
 
                 if (sheet != null && sheet.Dimension != null)
                     return CreateDataTable(sheet, firstRowHeader);

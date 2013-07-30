@@ -17,7 +17,7 @@ namespace Radial.Persist.Nhs
     {
         IUnitOfWorkEssential _uow;
 
-        static string[] SupportedAggregationResultTypeNames = new string[] { typeof(int).FullName, typeof(long).FullName, typeof(decimal).FullName, typeof(float).FullName, typeof(double).FullName };
+        static string[] SupportedAggregationResultTypeNames = new string[] { typeof(short).FullName, typeof(ushort).FullName, typeof(int).FullName, typeof(uint).FullName, typeof(long).FullName, typeof(ulong).FullName, typeof(decimal).FullName, typeof(float).FullName, typeof(double).FullName };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicRepository&lt;TObject, TKey&gt;"/> class.
@@ -44,7 +44,12 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Gets the default order by snippets.
         /// </summary>
-        private  IEnumerable<OrderBySnippet<TObject>> DefaultOrderBys { get; set; }
+        protected IEnumerable<OrderBySnippet<TObject>> DefaultOrderBys { get; set; }
+
+        /// <summary>
+        /// Gets the extra condition which will be used in every default query (but not apply to multi-query, hql and your own query).
+        /// </summary>
+        protected System.Linq.Expressions.Expression<Func<TObject, bool>> ExtraCondition { get; private set; }
 
         /// <summary>
         /// Sets the default order by snippets.
@@ -56,6 +61,28 @@ namespace Radial.Persist.Nhs
                 DefaultOrderBys = orderBys;
             else
                 DefaultOrderBys = new List<OrderBySnippet<TObject>>();
+        }
+
+        /// <summary>
+        /// Sets the extra condition which will be used in every default query (but not apply to multi-query, hql and your own query).
+        /// </summary>
+        /// <param name="condition">The condition.</param>
+        protected void SetExtraCondition(System.Linq.Expressions.Expression<Func<TObject, bool>> condition)
+        {
+            ExtraCondition = condition;
+        }
+
+        /// <summary>
+        /// Builds the query over.
+        /// </summary>
+        /// <param name="withExtraCondition">if set to <c>true</c> [with extra condition].</param>
+        /// <returns></returns>
+        protected IQueryOver<TObject, TObject> BuildQueryOver(bool withExtraCondition = true)
+        {
+            if (withExtraCondition && ExtraCondition != null)
+                return Session.QueryOver<TObject>().Where(ExtraCondition);
+
+            return Session.QueryOver<TObject>();
         }
 
 
@@ -72,13 +99,13 @@ namespace Radial.Persist.Nhs
 
             Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
 
-            return Session.QueryOver<TObject>().Where(Expression.Eq(metadata.IdentifierPropertyName, key)).RowCount() > 0;
+            return BuildQueryOver().Where(Expression.Eq(metadata.IdentifierPropertyName, key)).RowCount() > 0;
         }
 
         /// <summary>
-        /// Determine whether contains objects that match The condition..
+        /// Determine whether contains objects that match The condition.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         ///   <c>true</c> if objects that match The condition. is exists; otherwise, <c>false</c>.
         /// </returns>
@@ -88,9 +115,9 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Determine whether contains objects that match The condition..
+        /// Determine whether contains objects that match The condition.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         ///   <c>true</c> if objects that match The condition. is exists; otherwise, <c>false</c>.
         /// </returns>
@@ -108,35 +135,35 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public virtual int GetCount()
         {
-            return Session.QueryOver<TObject>().RowCount();
+            return BuildQueryOver().RowCount();
         }
 
         /// <summary>
         /// Gets objects total using the specified condition.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// The objects total.
         /// </returns>
         public virtual int GetCount(System.Linq.Expressions.Expression<Func<TObject, bool>> condition)
         {
             if (condition != null)
-                return Session.QueryOver<TObject>().Where(condition).RowCount();
-            return Session.QueryOver<TObject>().RowCount();
+                return BuildQueryOver().Where(condition).RowCount();
+            return BuildQueryOver().RowCount();
         }
 
         /// <summary>
         /// Gets objects total using the specified condition.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// The objects total.
         /// </returns>
         protected virtual int GetCount(ICriterion condition)
         {
             if (condition != null)
-                return Session.QueryOver<TObject>().Where(condition).RowCount();
-            return Session.QueryOver<TObject>().RowCount();
+                return BuildQueryOver().Where(condition).RowCount();
+            return BuildQueryOver().RowCount();
         }
 
         /// <summary>
@@ -147,35 +174,35 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public virtual long GetCountInt64()
         {
-            return Session.QueryOver<TObject>().RowCountInt64();
+            return BuildQueryOver().RowCountInt64();
         }
 
         /// <summary>
         /// Gets objects total using the specified condition.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// The objects total.
         /// </returns>
         public virtual long GetCountInt64(System.Linq.Expressions.Expression<Func<TObject, bool>> condition)
         {
             if (condition != null)
-                return Session.QueryOver<TObject>().Where(condition).RowCountInt64();
-            return Session.QueryOver<TObject>().RowCountInt64();
+                return BuildQueryOver().Where(condition).RowCountInt64();
+            return BuildQueryOver().RowCountInt64();
         }
 
         /// <summary>
         /// Gets objects total using the specified condition.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// The objects total.
         /// </returns>
         protected virtual long GetCountInt64(ICriterion condition)
         {
             if (condition != null)
-                return Session.QueryOver<TObject>().Where(condition).RowCountInt64();
-            return Session.QueryOver<TObject>().RowCountInt64();
+                return BuildQueryOver().Where(condition).RowCountInt64();
+            return BuildQueryOver().RowCountInt64();
         }
 
         /// <summary>
@@ -185,33 +212,42 @@ namespace Radial.Persist.Nhs
         /// <returns>If data exists, return the object, otherwise return null.</returns>
         public virtual TObject Find(TKey key)
         {
+            if (ExtraCondition != null)
+            {
+                var metadata = Session.SessionFactory.GetClassMetadata(typeof(TObject));
+
+                Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
+
+                return BuildQueryOver().Where(Expression.Eq(metadata.IdentifierPropertyName, key)).SingleOrDefault();
+            }
+
             return Session.Get<TObject>(key);
         }
 
         /// <summary>
         /// Find object.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// If data exists, return the object, otherwise return null.
         /// </returns>
         public virtual TObject Find(System.Linq.Expressions.Expression<Func<TObject, bool>> condition)
         {
             Checker.Parameter(condition != null, "where condition can not be null");
-            return Session.QueryOver<TObject>().Where(condition).SingleOrDefault();
+            return BuildQueryOver().Where(condition).SingleOrDefault();
         }
 
         /// <summary>
         /// Find object.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// If data exists, return the object, otherwise return null.
         /// </returns>
-        protected virtual TObject Get(ICriterion condition)
+        protected virtual TObject Find(ICriterion condition)
         {
             Checker.Parameter(condition != null, "where condition can not be null");
-            return Session.QueryOver<TObject>().Where(condition).SingleOrDefault();
+            return BuildQueryOver().Where(condition).SingleOrDefault();
         }
 
         /// <summary>
@@ -242,7 +278,7 @@ namespace Radial.Persist.Nhs
         /// <returns>If data exists, return an objects list, otherwise return an empty list.</returns>
         public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
         {
-            IQueryOver<TObject, TObject> query = Session.QueryOver<TObject>();
+            IQueryOver<TObject, TObject> query = BuildQueryOver();
 
             if (condition != null)
                 query = query.Where(condition);
@@ -303,8 +339,8 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex, out int objectTotal)
         {
-            IQueryOver<TObject, TObject> countQuery = Session.QueryOver<TObject>();
-            IQueryOver<TObject, TObject> dataQuery = Session.QueryOver<TObject>();
+            IQueryOver<TObject, TObject> countQuery = BuildQueryOver();
+            IQueryOver<TObject, TObject> dataQuery = BuildQueryOver();
 
             if (condition != null)
             {
@@ -355,7 +391,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
@@ -368,7 +404,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order by snippets.</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
@@ -376,7 +412,7 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int returnObjectCount)
         {
-            IQueryOver<TObject, TObject> query = Session.QueryOver<TObject>();
+            IQueryOver<TObject, TObject> query = BuildQueryOver();
 
             if (condition != null)
                 query = query.Where(condition);
@@ -436,7 +472,7 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex)
         {
-            IQueryOver<TObject, TObject> query = Session.QueryOver<TObject>();
+            IQueryOver<TObject, TObject> query = BuildQueryOver();
 
             if (condition != null)
                 query = query.Where(condition);
@@ -808,7 +844,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// The min value.
         /// </returns>
@@ -818,9 +854,9 @@ namespace Radial.Persist.Nhs
             Checker.Parameter(selector != null, "the selector can not be null");
 
             if (condition == null)
-                return Session.QueryOver<TObject>().Select(Projections.Min(selector)).SingleOrDefault<TResult>();
+                return BuildQueryOver().Select(Projections.Min(selector)).SingleOrDefault<TResult>();
             else
-                return Session.QueryOver<TObject>().Select(Projections.Min(selector)).Where(condition).SingleOrDefault<TResult>();
+                return BuildQueryOver().Select(Projections.Min(selector)).Where(condition).SingleOrDefault<TResult>();
         }
 
         /// <summary>
@@ -839,7 +875,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// The max value.
         /// </returns>
@@ -849,9 +885,9 @@ namespace Radial.Persist.Nhs
             Checker.Parameter(selector != null, "the selector can not be null");
 
             if (condition == null)
-                return Session.QueryOver<TObject>().Select(Projections.Max(selector)).SingleOrDefault<TResult>();
+                return BuildQueryOver().Select(Projections.Max(selector)).SingleOrDefault<TResult>();
             else
-                return Session.QueryOver<TObject>().Select(Projections.Max(selector)).Where(condition).SingleOrDefault<TResult>();
+                return BuildQueryOver().Select(Projections.Max(selector)).Where(condition).SingleOrDefault<TResult>();
         }
 
         /// <summary>
@@ -870,7 +906,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// The sum value.
         /// </returns>
@@ -880,9 +916,9 @@ namespace Radial.Persist.Nhs
             Checker.Parameter(selector != null, "the selector can not be null");
 
             if (condition == null)
-                return Session.QueryOver<TObject>().Select(Projections.Sum(selector)).SingleOrDefault<TResult>();
+                return BuildQueryOver().Select(Projections.Sum(selector)).SingleOrDefault<TResult>();
             else
-                return Session.QueryOver<TObject>().Select(Projections.Sum(selector)).Where(condition).SingleOrDefault<TResult>();
+                return BuildQueryOver().Select(Projections.Sum(selector)).Where(condition).SingleOrDefault<TResult>();
         }
 
         /// <summary>
@@ -901,7 +937,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// The average value.
         /// </returns>
@@ -911,9 +947,9 @@ namespace Radial.Persist.Nhs
             Checker.Parameter(selector != null, "the selector can not be null");
 
             if (condition == null)
-                return Session.QueryOver<TObject>().Select(Projections.Avg(selector)).SingleOrDefault<TResult>();
+                return BuildQueryOver().Select(Projections.Avg(selector)).SingleOrDefault<TResult>();
             else
-                return Session.QueryOver<TObject>().Select(Projections.Avg(selector)).Where(condition).SingleOrDefault<TResult>();
+                return BuildQueryOver().Select(Projections.Avg(selector)).Where(condition).SingleOrDefault<TResult>();
         }
 
         /// <summary>
@@ -965,7 +1001,7 @@ namespace Radial.Persist.Nhs
 
             Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
 
-            var query = Session.QueryOver<TObject>().Where(Expression.InG<TKey>(metadata.IdentifierPropertyName, keys));
+            var query = BuildQueryOver().Where(Expression.InG<TKey>(metadata.IdentifierPropertyName, keys));
 
             if (orderBys == null || orderBys.Length == 0)
                 orderBys = DefaultOrderBys.ToArray();

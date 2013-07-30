@@ -23,9 +23,9 @@ namespace Radial.Persist
         bool Exist(TKey key);
 
         /// <summary>
-        /// Determine whether contains objects that match The condition..
+        /// Determine whether contains objects that match The condition.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         ///   <c>true</c> if objects that match The condition. is exists; otherwise, <c>false</c>.
         /// </returns>
@@ -43,7 +43,7 @@ namespace Radial.Persist
         /// <summary>
         /// Gets objects count using the specified condition.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// The objects count.
         /// </returns>
@@ -60,7 +60,7 @@ namespace Radial.Persist
         /// <summary>
         /// Gets objects count using the specified condition.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// The objects count.
         /// </returns>
@@ -81,7 +81,7 @@ namespace Radial.Persist
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// The min value.
         /// </returns>
@@ -100,7 +100,7 @@ namespace Radial.Persist
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// The max value.
         /// </returns>
@@ -119,7 +119,7 @@ namespace Radial.Persist
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// The sum value.
         /// </returns>
@@ -138,7 +138,7 @@ namespace Radial.Persist
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="selector">The selector.</param>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// The average value.
         /// </returns>
@@ -159,7 +159,7 @@ namespace Radial.Persist
         /// <summary>
         /// Find object.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <returns>
         /// If data exists, return the object, otherwise return null.
         /// </returns>
@@ -220,7 +220,7 @@ namespace Radial.Persist
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
@@ -231,7 +231,7 @@ namespace Radial.Persist
         /// <summary>
         /// Find all objects.
         /// </summary>
-        /// <param name="condition">The condition..</param>
+        /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order by snippets.</param>
         /// <param name="returnObjectCount">The number of objects returned.</param>
         /// <returns>

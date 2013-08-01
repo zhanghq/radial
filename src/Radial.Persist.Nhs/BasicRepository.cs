@@ -44,7 +44,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Gets the default order by snippets.
         /// </summary>
-        protected IEnumerable<OrderBySnippet<TObject>> DefaultOrderBys { get; set; }
+        protected IEnumerable<OrderBySnippet<TObject>> DefaultOrderBys { get; private set; }
 
         /// <summary>
         /// Gets the extra condition which will be used in every default query (but not apply to multi-query, hql and your own query).

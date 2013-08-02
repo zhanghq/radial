@@ -431,21 +431,34 @@ namespace Radial
                 //Add column
                 var firstRowCellRanges = excelRows.ElementAt(0);
 
+                //for ckeck duplication name
+                HashSet<string> columnNames = new HashSet<string>();
+
                 for (int c = 0; c < totalColumn; c++)
                 {
                     string columnName = string.Empty;
 
                     if (c < firstRowCellRanges.Value.Count)
                     {
-                        ExcelRangeBase cells = firstRowCellRanges.Value[c];
+                        ExcelRangeBase cell = firstRowCellRanges.Value[c];
 
                         if (firstRowHeader)
-                            columnName = cells.Text;
+                        {
+                            columnName = cell.Text;
+
+                            //ckeck duplication name
+                            if (columnNames.Contains(columnName))
+                                columnName += "[" + cell.Address + "]";
+                            else
+                                columnNames.Add(columnName);
+                        }
                         else
-                            columnName = cells.Address;
+                            columnName = cell.Address;
                     }
                     else
                         columnName = sheet.Cells[firstRowCellRanges.Key, sheet.Dimension.Start.Column + c].Address;
+
+
 
                     table.Columns.Add(columnName);
                 }

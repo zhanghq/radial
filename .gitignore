@@ -6,5 +6,6 @@ Log
 *.suo
 *.user
 
-/src/out
-/src/Radial.Test.WebForm/uploads
+uploads
+out
+publish

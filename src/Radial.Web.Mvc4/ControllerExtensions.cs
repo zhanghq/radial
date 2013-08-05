@@ -9,6 +9,7 @@ using System.IO;
 using Radial.Serialization;
 using System.Data;
 using System.Net;
+using System.Web.Routing;
 
 namespace Radial.Web.Mvc
 {
@@ -233,6 +234,95 @@ namespace Radial.Web.Mvc
         public static ExcelResult Excel(this Controller c, DataSet dataSet, string downloadFileName = null, bool columnHeader = true)
         {
             return new ExcelResult(dataSet, downloadFileName, columnHeader);
+        }
+
+        /// <summary>
+        /// Transfers the specified c.
+        /// </summary>
+        /// <param name="c">The c.</param>
+        /// <param name="url">The URL.</param>
+        /// <returns></returns>
+        public static TransferResult Transfer(this Controller c, string url)
+        {
+            return new TransferResult(url);
+        }
+
+        /// <summary>
+        /// Transfers to route.
+        /// </summary>
+        /// <param name="c">The c.</param>
+        /// <param name="routeName">Name of the route.</param>
+        /// <param name="routeValues">The route values.</param>
+        /// <returns></returns>
+        public static TransferToRouteResult TransferToRoute(this Controller c, string routeName, RouteValueDictionary routeValues)
+        {
+            return new TransferToRouteResult(routeName, routeValues);
+        }
+
+        /// <summary>
+        /// Transfers to route.
+        /// </summary>
+        /// <param name="c">The c.</param>
+        /// <param name="routeValues">The route values.</param>
+        /// <returns></returns>
+        public static TransferToRouteResult TransferToRoute(this Controller c, RouteValueDictionary routeValues)
+        {
+            return new TransferToRouteResult(routeValues);
+        }
+
+        /// <summary>
+        /// Transfers to action.
+        /// </summary>
+        /// <param name="c">The c.</param>
+        /// <param name="actionName">Name of the action.</param>
+        /// <returns></returns>
+        public static TransferToRouteResult TransferToAction(this Controller c, string actionName)
+        {
+            
+            return TransferToAction(c, actionName, null, null);
+        }
+
+        /// <summary>
+        /// Transfers to action.
+        /// </summary>
+        /// <param name="c">The c.</param>
+        /// <param name="actionName">Name of the action.</param>
+        /// <param name="controllerName">Name of the controller.</param>
+        /// <returns></returns>
+        public static TransferToRouteResult TransferToAction(this Controller c, string actionName, string controllerName)
+        {
+            return TransferToAction(c, actionName, controllerName, null);
+        }
+
+        /// <summary>
+        /// Transfers to action.
+        /// </summary>
+        /// <param name="c">The c.</param>
+        /// <param name="actionName">Name of the action.</param>
+        /// <param name="controllerName">Name of the controller.</param>
+        /// <param name="routeValues">The route values.</param>
+        /// <returns></returns>
+        public static TransferToRouteResult TransferToAction(this Controller c, string actionName, string controllerName, RouteValueDictionary routeValues)
+        {
+            Checker.Parameter(!string.IsNullOrWhiteSpace(actionName), "action name can not be empty or null");
+
+            if (routeValues == null)
+                routeValues = c.RouteData.Values;
+
+            if (!routeValues.ContainsKey("action"))
+                routeValues.Add("action", actionName);
+            else
+                routeValues["action"] = actionName;
+
+            if (!string.IsNullOrWhiteSpace(controllerName))
+            {
+                if (!routeValues.ContainsKey("controller"))
+                    routeValues.Add("controller", controllerName);
+                else
+                    routeValues["controller"] = controllerName;
+            }
+
+            return new TransferToRouteResult(routeValues);
         }
     }
 }

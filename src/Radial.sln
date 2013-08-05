@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Web.Mvc4", "Radial.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Test.Mvc4", "Radial.Test.Mvc4\Radial.Test.Mvc4.csproj", "{2004E387-58C5-4907-BD2C-9C17E73A58BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Test.Mvc3", "Radial.Test.Mvc3\Radial.Test.Mvc3.csproj", "{BE174D38-4DBB-4D5C-99F0-647091906A48}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -159,6 +161,16 @@ Global
 		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Release|x86.ActiveCfg = Release|Any CPU
+		{BE174D38-4DBB-4D5C-99F0-647091906A48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE174D38-4DBB-4D5C-99F0-647091906A48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE174D38-4DBB-4D5C-99F0-647091906A48}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BE174D38-4DBB-4D5C-99F0-647091906A48}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BE174D38-4DBB-4D5C-99F0-647091906A48}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BE174D38-4DBB-4D5C-99F0-647091906A48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE174D38-4DBB-4D5C-99F0-647091906A48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE174D38-4DBB-4D5C-99F0-647091906A48}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BE174D38-4DBB-4D5C-99F0-647091906A48}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BE174D38-4DBB-4D5C-99F0-647091906A48}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -170,6 +182,7 @@ Global
 		{488FAE42-3405-4563-958B-A15C2D80660B} = {3AFB6471-9556-4901-9777-3911BE99F7FD}
 		{4A4FCCD1-570A-457D-B49E-7AA8E6F58383} = {3AFB6471-9556-4901-9777-3911BE99F7FD}
 		{2004E387-58C5-4907-BD2C-9C17E73A58BD} = {3AFB6471-9556-4901-9777-3911BE99F7FD}
+		{BE174D38-4DBB-4D5C-99F0-647091906A48} = {3AFB6471-9556-4901-9777-3911BE99F7FD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35

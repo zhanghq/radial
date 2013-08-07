@@ -724,36 +724,57 @@ namespace Radial.Web
         /// <summary>
         /// Get the client IPv4 address.
         /// </summary>
-        /// <returns>If no error occurs return client IPv4 address, otherwise return string.Empty.</returns>
-        public static string GetClientIPv4Address()
+        /// <param name="multiValueChooseLast">if set to <c>true</c> will choose last one if there are multiple values in specified http header, otherwise choose the first one.</param>
+        /// <returns>
+        /// If no error occurs return client IPv4 address.
+        /// </returns>
+        public static string GetClientIPv4Address(bool multiValueChooseLast = false)
         {
-            string userHostAddress = CurrentContext.Request.UserHostAddress;
+            IPAddress userHostIpAddressObj = null;
 
-            if (!string.IsNullOrWhiteSpace(CurrentContext.Request.ServerVariables["HTTP_VIA"]))
-                userHostAddress = CurrentContext.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            string httpRealIpHeaderName = ConfigurationManager.AppSettings["real-ip-header"];
 
-            string ipv4 = string.Empty;
-
-            if (!string.IsNullOrWhiteSpace(userHostAddress))
+            if (!string.IsNullOrWhiteSpace(httpRealIpHeaderName))
             {
-                //get first one
-                userHostAddress = userHostAddress.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)[0];
+                string headerIp = CurrentContext.Request.Headers[httpRealIpHeaderName];
 
-                IPAddress userHostIpAddressObj = null;
-                if (IPAddress.TryParse(userHostAddress, out userHostIpAddressObj))
+                Checker.Requires(!string.IsNullOrWhiteSpace(headerIp), "unable to find any characters from the http header: {0}",
+                    httpRealIpHeaderName);
+
+                string[] realips = headerIp.Split(new char[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                string realip = multiValueChooseLast ? realips.LastOrDefault() : realips.FirstOrDefault();
+
+                Checker.Requires(!string.IsNullOrWhiteSpace(realip), "the chosen the IP string is empty or null");
+
+                userHostIpAddressObj = IPAddress.Parse(realip);
+            }
+            else
+                userHostIpAddressObj = IPAddress.Parse(CurrentContext.Request.UserHostAddress);
+
+            //check if is ipv4
+            if (userHostIpAddressObj.AddressFamily != System.Net.Sockets.AddressFamily.InterNetwork)
+            {
+                try
                 {
+                    //ipv6 address only works local machine
                     foreach (IPAddress ipa in Dns.GetHostEntry(userHostIpAddressObj).AddressList)
                     {
                         if (ipa.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                         {
-                            ipv4 = ipa.ToString();
+                            userHostIpAddressObj = ipa;
                             break;
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    throw new NotSupportedException(string.Format("failed to obtain an IPv4 address from specified location: {0}",
+                        userHostIpAddressObj.ToString()), ex);
+                }
             }
 
-            return ipv4;
+            return userHostIpAddressObj.ToString();
         }
     }
 }

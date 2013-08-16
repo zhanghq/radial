@@ -1,0 +1,833 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HelpKI>
+
+  <HelpKINode Title="Accept property" Url="html/6177b957-5333-abbb-6ed8-4fd07d146913.htm" />
+  <HelpKINode Title="AddListener method" Url="html/22d7df6f-695e-8384-b589-759082eeb846.htm" />
+  <HelpKINode Title="AddParser method" Url="html/1088107e-d9ee-ae45-4201-731e1d96ed8e.htm" />
+  <HelpKINode Title="Algorithm property" Url="html/a4967620-58a4-c745-ec0c-5e0703e0e00b.htm" />
+  <HelpKINode Title="AllFiles enumeration member" Url="html/b9fc31fc-a188-f102-a9a8-f83ef65f0d5f.htm" />
+  <HelpKINode Title="ANY enumeration member" Url="html/717523ab-ece3-4b29-16c3-2fbb16c40314.htm" />
+  <HelpKINode Title="ASCII enumeration member" Url="html/bc53eb48-fa9e-4593-34ba-faf8d650361a.htm" />
+  <HelpKINode Title="Authenticate method" Url="html/a6bfd1a3-23e4-2afd-1261-cb5bf7d0fdcb.htm" />
+  <HelpKINode Title="AutoActive enumeration member" Url="html/53d05e63-1f71-45d2-a303-926442958a47.htm" />
+  <HelpKINode Title="AutoPassive enumeration member" Url="html/53d05e63-1f71-45d2-a303-926442958a47.htm" />
+  <HelpKINode Title="BaseStream property" Url="html/bf58bbb8-ece4-3653-b95b-5b74404a56b7.htm" />
+  <HelpKINode Title="BeginConnect method" Url="html/d9996387-e034-5d6c-06b0-47c0e982d6f9.htm" />
+  <HelpKINode Title="BeginConnect method" Url="html/f7e09d73-16ce-4914-2407-7307270e99a6.htm" />
+  <HelpKINode Title="BeginCreateDirectory method" Url="html/ad7f2015-e27e-8f05-adb9-5a2c59612636.htm" />
+  <HelpKINode Title="BeginCreateDirectory method" Url="html/fabc5475-09f4-702f-f84b-2502d6f8a04b.htm" />
+  <HelpKINode Title="BeginDeleteDirectory method" Url="html/125ddc26-f29b-9db8-12e5-2c42ae96a049.htm" />
+  <HelpKINode Title="BeginDeleteDirectory method" Url="html/d7aaada4-c30d-ca01-cafe-140e0d12607e.htm" />
+  <HelpKINode Title="BeginDeleteFile method" Url="html/1bfe8712-e6e4-8e1f-3016-9678311daa8d.htm" />
+  <HelpKINode Title="BeginDeleteFile method" Url="html/59504cea-e75c-4054-f8b0-48801f20844a.htm" />
+  <HelpKINode Title="BeginDereferenceLink method" Url="html/28a1bb31-154e-a0a2-372e-f1f2ecf97a62.htm" />
+  <HelpKINode Title="BeginDirectoryExists method" Url="html/abc89d33-7760-acfa-ba1a-e221483add42.htm" />
+  <HelpKINode Title="BeginDirectoryExists method" Url="html/f6171a82-c735-4eb1-0de8-eb7f1d540405.htm" />
+  <HelpKINode Title="BeginDisconnect method" Url="html/d175eeeb-9d1f-963d-78a3-89a031b3f31d.htm" />
+  <HelpKINode Title="BeginDisconnect method" Url="html/ddf79d70-2a22-ae92-8fbf-deff16e909f2.htm" />
+  <HelpKINode Title="BeginExecute method" Url="html/4372eb41-3adf-4c9e-f3cf-ae91ba40f7a6.htm" />
+  <HelpKINode Title="BeginExecute method" Url="html/e393dede-41b3-e2cc-df65-c2ad0468fcd7.htm" />
+  <HelpKINode Title="BeginFileExists method" Url="html/0e203068-bdb5-d7cb-8334-a56bb7abea94.htm" />
+  <HelpKINode Title="BeginFileExists method" Url="html/d55db9a0-7a81-f487-e00b-308af04065dc.htm" />
+  <HelpKINode Title="BeginGetChecksum method" Url="html/0d69f90b-b5a7-0408-8f61-2d53c05c7749.htm" />
+  <HelpKINode Title="BeginGetFileSize method" Url="html/7cf34ae9-730a-5f0a-5650-54098352e138.htm" />
+  <HelpKINode Title="BeginGetFileSize method" Url="html/b80ffd91-27bf-28f0-9018-b81ff7023119.htm" />
+  <HelpKINode Title="BeginGetHash method" Url="html/42c43a25-0d52-5a11-5d45-2630c6e43006.htm" />
+  <HelpKINode Title="BeginGetHash method" Url="html/74273cae-eac4-d3c0-b52d-ecc58b36c953.htm" />
+  <HelpKINode Title="BeginGetHashAlgorithm method" Url="html/42bbb919-a4bf-776f-0ac4-e601d573dece.htm" />
+  <HelpKINode Title="BeginGetHashAlgorithm method" Url="html/6773c36c-b173-259c-58c5-11fe646598f3.htm" />
+  <HelpKINode Title="BeginGetListing method" Url="html/b73f6523-4b12-9160-8b08-fc300526db07.htm" />
+  <HelpKINode Title="BeginGetListing method" Url="html/f72c1839-672e-d9bd-c784-68fd8ade2cb4.htm" />
+  <HelpKINode Title="BeginGetMD5 method" Url="html/80349e53-2622-8dbc-90a8-41390bf7c6d8.htm" />
+  <HelpKINode Title="BeginGetModifiedTime method" Url="html/69863daf-1f42-8657-e4d8-de91e5b5c76b.htm" />
+  <HelpKINode Title="BeginGetModifiedTime method" Url="html/f70b253c-9984-5353-9b0f-113c4b42a08d.htm" />
+  <HelpKINode Title="BeginGetNameListing method" Url="html/e798ebaa-c1e0-bec6-014a-84a39de413a3.htm" />
+  <HelpKINode Title="BeginGetNameListing method" Url="html/f07a91c1-72b5-424b-8380-bb2f337052ff.htm" />
+  <HelpKINode Title="BeginGetWorkingDirectory method" Url="html/70964141-e55b-ec3f-841b-d430b835313e.htm" />
+  <HelpKINode Title="BeginGetWorkingDirectory method" Url="html/81ff4e87-ca31-1cf4-5783-b22bf8284116.htm" />
+  <HelpKINode Title="BeginGetXCRC method" Url="html/c0c9ac58-7989-3a9d-ff45-27f9214db1b2.htm" />
+  <HelpKINode Title="BeginGetXMD5 method" Url="html/170ef450-b310-bb8f-b265-8fca67510fe6.htm" />
+  <HelpKINode Title="BeginGetXSHA1 method" Url="html/9bb07f94-ab7a-633b-79d9-76210f94ba35.htm" />
+  <HelpKINode Title="BeginGetXSHA256 method" Url="html/db1ab6d4-9b17-0745-6c04-04251682daa9.htm" />
+  <HelpKINode Title="BeginGetXSHA512 method" Url="html/a21d56f9-5ade-9075-75e0-13584f5c38cd.htm" />
+  <HelpKINode Title="BeginOpenAppend method" Url="html/0b0104c1-2a6b-9b0b-a1db-eaf53eae882e.htm" />
+  <HelpKINode Title="BeginOpenAppend method" Url="html/24603205-97ec-b180-0e31-3bffd7c01225.htm" />
+  <HelpKINode Title="BeginOpenRead method" Url="html/5c78514f-f2d6-3a9f-c62f-64abb935859e.htm" />
+  <HelpKINode Title="BeginOpenRead method" Url="html/6aa7fc00-a078-bc01-b3cf-c7d6460850a1.htm" />
+  <HelpKINode Title="BeginOpenWrite method" Url="html/2deeaf79-284e-b5c5-bdb8-33e54a00b40d.htm" />
+  <HelpKINode Title="BeginOpenWrite method" Url="html/6c9ecc0f-52f3-052d-092d-2d052cb099aa.htm" />
+  <HelpKINode Title="BeginRename method" Url="html/2b5a05b1-186c-514f-adfe-a79b21f18201.htm" />
+  <HelpKINode Title="BeginRename method" Url="html/e8c24999-b619-f0a0-4070-54cbdcfd3083.htm" />
+  <HelpKINode Title="BeginSetDataType method" Url="html/9ca7a07e-c24a-f56f-6d88-47bac11fba2e.htm" />
+  <HelpKINode Title="BeginSetDataType method" Url="html/b355cdea-ec08-4dd0-9416-22918b75ac66.htm" />
+  <HelpKINode Title="BeginSetHashAlgorithm method" Url="html/43e54592-d863-378a-6d94-caa3bbdab0b7.htm" />
+  <HelpKINode Title="BeginSetHashAlgorithm method" Url="html/fbad4be1-1812-4500-a8c9-198d20b2a96d.htm" />
+  <HelpKINode Title="BeginSetWorkingDirectory method" Url="html/ae157435-78c0-9eda-2392-a8300f27cab9.htm" />
+  <HelpKINode Title="BeginSetWorkingDirectory method" Url="html/e814e253-8282-5b47-c52e-b29aa0e88ffa.htm" />
+  <HelpKINode Title="Binary enumeration member" Url="html/bc53eb48-fa9e-4593-34ba-faf8d650361a.htm" />
+  <HelpKINode Title="Capabilities property" Url="html/7c3d3b59-96b7-59d8-8503-8e692ab870ae.htm" />
+  <HelpKINode Title="Capabilities property" Url="html/e0929826-cfa1-21d2-b711-04071ca8624a.htm" />
+  <HelpKINode Title="Certificate property" Url="html/e491eee6-e057-f85c-414a-053ee35fa586.htm" />
+  <HelpKINode Title="Chain property" Url="html/d54d437c-ccfc-dfff-9055-7924daabfebe.htm" />
+  <HelpKINode Title="ChecksumExtension class" Url="html/d8c0a67d-f3f2-b77a-6d7a-40d5e671f1d8.htm" />
+  <HelpKINode Title="ChecksumExtension class" Url="html/dbd65344-18ba-851e-a8fd-fc002c09606a.htm" />
+  <HelpKINode Title="ChecksumExtension class">
+    <HelpKINode Title="about ChecksumExtension class" Url="html/d8c0a67d-f3f2-b77a-6d7a-40d5e671f1d8.htm" />
+    <HelpKINode Title="all members" Url="html/dbd65344-18ba-851e-a8fd-fc002c09606a.htm" />
+    <HelpKINode Title="methods" Url="html/f6e75b4b-2ffe-0a42-6b2e-0dd4e2e209c7.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ChecksumExtension.BeginGetChecksum method" Url="html/0d69f90b-b5a7-0408-8f61-2d53c05c7749.htm" />
+  <HelpKINode Title="ChecksumExtension.EndGetChecksum method" Url="html/b9f8a076-062f-cebc-61d2-5829e10e3e86.htm" />
+  <HelpKINode Title="ChecksumExtension.GetChecksum method" Url="html/68a58602-1c65-2ea3-0fcf-86aab1deae4b.htm" />
+  <HelpKINode Title="ClearParsers method" Url="html/ce84e953-965d-1421-48ae-316b13daba7d.htm" />
+  <HelpKINode Title="ClientCertificates property" Url="html/2cf408dc-36e4-2390-5335-82182b1b5cf2.htm" />
+  <HelpKINode Title="ClientCertificates property" Url="html/c6dc9e97-db68-2d57-d264-f08edc801dc4.htm" />
+  <HelpKINode Title="Code property" Url="html/2fb099d0-05a3-c2bd-1d64-d50ff39d5949.htm" />
+  <HelpKINode Title="Code property" Url="html/a687cf11-baf0-073c-6677-b130313e505b.htm" />
+  <HelpKINode Title="CompletionCode property" Url="html/2ddd2c8a-2cc0-a762-c138-40a004a457a9.htm" />
+  <HelpKINode Title="Connect method" Url="html/93acc19b-0e05-e72b-5fe9-46d79698fc4f.htm" />
+  <HelpKINode Title="Connect method" Url="html/faab9f61-ba7e-33cc-51c6-97b3370ccc59.htm" />
+  <HelpKINode Title="ConnectTimeout property" Url="html/59059e0c-aed4-3c88-4aaf-dfdb4b41b994.htm" />
+  <HelpKINode Title="ConnectTimeout property" Url="html/d2e458dc-5849-bf34-8b1a-626e66458721.htm" />
+  <HelpKINode Title="CRC enumeration member" Url="html/afffedd1-81cb-538c-a35c-21a6b9653964.htm" />
+  <HelpKINode Title="Created property" Url="html/6b039071-ecae-c5eb-8f4a-5aafec888126.htm" />
+  <HelpKINode Title="Created property" Url="html/fbfcf33b-d39e-5ff0-cd2a-84d61846eabe.htm" />
+  <HelpKINode Title="CreateDirectory method" Url="html/9b4be67d-c3c0-cf2f-916c-8401a71ee25f.htm" />
+  <HelpKINode Title="CreateDirectory method" Url="html/a2357a9c-1882-792e-4e7d-4e2ca0d244e3.htm" />
+  <HelpKINode Title="Credentials property" Url="html/44445e00-abce-c02a-7343-7b47e1287fe5.htm" />
+  <HelpKINode Title="Credentials property" Url="html/4e20b69c-9887-76b9-4c9c-db06818c462e.htm" />
+  <HelpKINode Title="DataConnectionConnectTimeout property" Url="html/04c93066-3f01-f544-1b3e-6f473437e10d.htm" />
+  <HelpKINode Title="DataConnectionConnectTimeout property" Url="html/86f4b7c9-611e-42fd-ddfc-7a62156d64fc.htm" />
+  <HelpKINode Title="DataConnectionEncryption property" Url="html/4b14b605-411c-0737-bb57-252fd57b406b.htm" />
+  <HelpKINode Title="DataConnectionEncryption property" Url="html/fae5f7ae-1cf3-e168-cc36-a35c6440e214.htm" />
+  <HelpKINode Title="DataConnectionReadTimeout property" Url="html/82bb150a-46e5-d3bb-ad93-655ad94aa31e.htm" />
+  <HelpKINode Title="DataConnectionReadTimeout property" Url="html/ed83cc19-e9c3-8ee2-9cd9-4dc34aa0b9da.htm" />
+  <HelpKINode Title="DataConnectionType property" Url="html/89730cd0-72a7-3910-818e-faa3b7fdfc3f.htm" />
+  <HelpKINode Title="DataConnectionType property" Url="html/911a5d66-8435-5aa9-a7e4-f43b4d23ed64.htm" />
+  <HelpKINode Title="DeleteDirectory method" Url="html/6b841490-6761-69ea-8d0a-36e5c4f2526e.htm" />
+  <HelpKINode Title="DeleteDirectory method" Url="html/fb356585-feb5-c350-9e93-48fc4ba73e4c.htm" />
+  <HelpKINode Title="DeleteFile method" Url="html/6e2821e8-d373-e2e7-ef1e-3db562416e57.htm" />
+  <HelpKINode Title="DeleteFile method" Url="html/b56c359c-e3fd-a043-2531-adfec6e43a81.htm" />
+  <HelpKINode Title="DereferenceLink method" Url="html/30210ece-2435-b9c8-18b3-a944871ed089.htm" />
+  <HelpKINode Title="DerefLinks enumeration member" Url="html/b9fc31fc-a188-f102-a9a8-f83ef65f0d5f.htm" />
+  <HelpKINode Title="Directory enumeration member" Url="html/78e538e4-cf96-e2bb-f17a-2477daba6b81.htm" />
+  <HelpKINode Title="DirectoryExists method" Url="html/3414c411-fb6c-892c-bb12-da7ef3017ac8.htm" />
+  <HelpKINode Title="DirectoryExists method" Url="html/9cf0e71e-44e7-710c-aeae-0b4514c5a2eb.htm" />
+  <HelpKINode Title="DisableUTF8 method" Url="html/a04b4e5c-35d3-f9b2-8d93-b61cdc9b2473.htm" />
+  <HelpKINode Title="Disconnect method" Url="html/3d215ac9-3597-d1bc-1901-9fae08d99208.htm" />
+  <HelpKINode Title="Disconnect method" Url="html/b39757f4-2d72-457e-3ef7-377fc72bcdd9.htm" />
+  <HelpKINode Title="Dispose method" Url="html/33a546c8-4961-fe9f-cc7f-c861d764b91f.htm" />
+  <HelpKINode Title="EnableThreadSafeDataConnections property" Url="html/0a6cbc96-d891-7c3a-813e-7c2aa0885520.htm" />
+  <HelpKINode Title="EnableThreadSafeDataConnections property" Url="html/6db5df38-c2b9-8f94-6c5d-5bc4dddf5d1f.htm" />
+  <HelpKINode Title="Encoding property" Url="html/3675061e-d8ee-b31d-07d9-9933a3221252.htm" />
+  <HelpKINode Title="Encoding property" Url="html/9a7d8075-e435-727c-e0ba-8b7f2cba381d.htm" />
+  <HelpKINode Title="EncryptionMode property" Url="html/ad058fba-3ecf-3834-017f-926e09ed1e4b.htm" />
+  <HelpKINode Title="EncryptionMode property" Url="html/ecc0c91c-9b1d-8bc9-a864-1d132a22a4a1.htm" />
+  <HelpKINode Title="EndConnect method" Url="html/266448a5-1728-54bc-255c-4b3f33e85717.htm" />
+  <HelpKINode Title="EndConnect method" Url="html/30083c44-db6b-ff29-79c1-bd5552f8be56.htm" />
+  <HelpKINode Title="EndCreateDirectory method" Url="html/07f556df-d1f5-ee4e-d99c-9e3bc22df46b.htm" />
+  <HelpKINode Title="EndCreateDirectory method" Url="html/516a3f96-44a2-1e45-9190-1868a73accb1.htm" />
+  <HelpKINode Title="EndDeleteDirectory method" Url="html/9239c4e0-62d7-f5e4-ca42-8ceb254aa41b.htm" />
+  <HelpKINode Title="EndDeleteDirectory method" Url="html/bbb3873a-d4a4-49a7-9150-5ebe7fd654da.htm" />
+  <HelpKINode Title="EndDeleteFile method" Url="html/f475c707-cb38-6a5c-192a-9302d8105d0a.htm" />
+  <HelpKINode Title="EndDeleteFile method" Url="html/f667d738-f54c-651e-c9d2-6ff7e7d74d44.htm" />
+  <HelpKINode Title="EndDereferenceLink method" Url="html/704e48d2-fa8f-f283-a1af-bd7b0e6a62b0.htm" />
+  <HelpKINode Title="EndDirectoryExists method" Url="html/4883e3f0-d555-9632-62d5-f9e36da47664.htm" />
+  <HelpKINode Title="EndDirectoryExists method" Url="html/eabd6b1c-0e9e-2d7d-1e3f-23e09f394184.htm" />
+  <HelpKINode Title="EndDisconnect method" Url="html/1af5d778-169f-624c-c19c-ceb98271d45e.htm" />
+  <HelpKINode Title="EndDisconnect method" Url="html/4ecbf454-a6f6-6ab3-d2df-5c04da51da0d.htm" />
+  <HelpKINode Title="EndExecute method" Url="html/04fbd4c3-a9d9-00ff-94c8-8f3887db9553.htm" />
+  <HelpKINode Title="EndExecute method" Url="html/9ea4b48a-41f1-29ce-fa51-13890ef76fcf.htm" />
+  <HelpKINode Title="EndFileExists method" Url="html/453df42c-880a-46a3-bcb4-5c49995d45bb.htm" />
+  <HelpKINode Title="EndFileExists method" Url="html/ca869ede-3547-983c-ca04-ef132c9444f7.htm" />
+  <HelpKINode Title="EndGetChecksum method" Url="html/b9f8a076-062f-cebc-61d2-5829e10e3e86.htm" />
+  <HelpKINode Title="EndGetFileSize method" Url="html/8b22e9bb-0332-5536-80a1-877239456b2e.htm" />
+  <HelpKINode Title="EndGetFileSize method" Url="html/fa2f7453-5440-d5b3-3011-184fac0fbeb3.htm" />
+  <HelpKINode Title="EndGetHash method" Url="html/534e4ac6-9f46-e217-22d8-22dc91875854.htm" />
+  <HelpKINode Title="EndGetHash method" Url="html/8263204c-6941-a31a-e4cd-6d4efd04d834.htm" />
+  <HelpKINode Title="EndGetHashAlgorithm method" Url="html/96f187b5-9a65-ea6e-2c96-f6d7f1796fda.htm" />
+  <HelpKINode Title="EndGetHashAlgorithm method" Url="html/e0c708fb-0d63-2179-07cc-cb1238b57b25.htm" />
+  <HelpKINode Title="EndGetListing method" Url="html/7f8b28db-53dd-65c3-2905-37a12a2ec288.htm" />
+  <HelpKINode Title="EndGetListing method" Url="html/fc2f7c79-703f-d964-b5a1-16588e7a55e5.htm" />
+  <HelpKINode Title="EndGetMD5 method" Url="html/1dab3ccf-8810-4d9d-4764-5a4a19246f4f.htm" />
+  <HelpKINode Title="EndGetModifiedTime method" Url="html/21379fc1-fd02-5951-4724-32c963226e0f.htm" />
+  <HelpKINode Title="EndGetModifiedTime method" Url="html/25cb63a3-c44a-5f1b-2436-0c6f1c23d852.htm" />
+  <HelpKINode Title="EndGetNameListing method" Url="html/89641fb4-50d2-3460-6054-fb1906a0e478.htm" />
+  <HelpKINode Title="EndGetNameListing method" Url="html/e550c171-511f-3f55-74a1-216f0922e766.htm" />
+  <HelpKINode Title="EndGetWorkingDirectory method" Url="html/2f3c9975-10d7-f8f9-cfa3-bc63c1b4c250.htm" />
+  <HelpKINode Title="EndGetWorkingDirectory method" Url="html/a40f7c31-18a4-1ff3-cc57-3908f53fe08d.htm" />
+  <HelpKINode Title="EndGetXCRC method" Url="html/e6474a16-cdc5-493d-2d94-fd08d7587b3a.htm" />
+  <HelpKINode Title="EndGetXMD5 method" Url="html/df8ae70f-1725-35d9-b6f3-94d2c777fb47.htm" />
+  <HelpKINode Title="EndGetXSHA1 method" Url="html/54e2c099-6d0d-e433-a698-6c77b509e989.htm" />
+  <HelpKINode Title="EndGetXSHA256 method" Url="html/2742f35d-51ad-19a4-4e9a-3ec41d71efb6.htm" />
+  <HelpKINode Title="EndGetXSHA512 method" Url="html/b197b621-ec17-6263-04cd-eb6c4c49e8eb.htm" />
+  <HelpKINode Title="EndOpenAppend method" Url="html/7ab77b29-1193-fdf6-c2cb-aa8a7affa82b.htm" />
+  <HelpKINode Title="EndOpenAppend method" Url="html/f0659dd6-2755-9604-b0e8-9aadb92a99e3.htm" />
+  <HelpKINode Title="EndOpenRead method" Url="html/2062ed61-f951-7bbb-f8d6-0f116ccc6d08.htm" />
+  <HelpKINode Title="EndOpenRead method" Url="html/764a6179-d99e-9f17-0144-01ed74f50d1a.htm" />
+  <HelpKINode Title="EndOpenWrite method" Url="html/971a23af-44bb-d979-ccc7-8344c53bbd7b.htm" />
+  <HelpKINode Title="EndOpenWrite method" Url="html/eeeeca88-3529-7cca-27e6-85ed069537b2.htm" />
+  <HelpKINode Title="EndRename method" Url="html/0482ed7d-9990-35d0-e5e0-e8603c19db7f.htm" />
+  <HelpKINode Title="EndRename method" Url="html/dc481ab4-015c-3a40-45a6-cd57271a84a5.htm" />
+  <HelpKINode Title="EndSetDataType method" Url="html/7783fcd8-3b92-8727-b49a-5520680c7067.htm" />
+  <HelpKINode Title="EndSetDataType method" Url="html/cc078522-b4a9-a8f3-8415-f896cb484063.htm" />
+  <HelpKINode Title="EndSetHashAlgorithm method" Url="html/60ca75bd-dfe6-1236-d378-3a37d399e9dd.htm" />
+  <HelpKINode Title="EndSetHashAlgorithm method" Url="html/9c5688a6-b3cd-14ec-a2af-cc53d49191c3.htm" />
+  <HelpKINode Title="EndSetWorkingDirectory method" Url="html/3ec08924-e118-6d76-2c29-f43d5898e52a.htm" />
+  <HelpKINode Title="EndSetWorkingDirectory method" Url="html/e37cd8b8-fea1-8679-0c1a-47424f857320.htm" />
+  <HelpKINode Title="EPRT enumeration member" Url="html/53d05e63-1f71-45d2-a303-926442958a47.htm" />
+  <HelpKINode Title="EPSV enumeration member" Url="html/53d05e63-1f71-45d2-a303-926442958a47.htm" />
+  <HelpKINode Title="Execute enumeration member" Url="html/229af06c-14fd-1d8c-ffa3-8e08f3c7efed.htm" />
+  <HelpKINode Title="Execute method" Url="html/30e9dd5f-b427-69da-5d80-7f04554c464e.htm" />
+  <HelpKINode Title="Execute method" Url="html/dbb66465-c31b-551c-14c9-0b6abbce438f.htm" />
+  <HelpKINode Title="Explicit enumeration member" Url="html/0618d916-49ad-0bd3-f6d1-5e992effa11f.htm" />
+  <HelpKINode Title="File enumeration member" Url="html/78e538e4-cf96-e2bb-f17a-2477daba6b81.htm" />
+  <HelpKINode Title="FileExists method" Url="html/160b1df1-f78c-b67d-1656-139776e69871.htm" />
+  <HelpKINode Title="FileExists method" Url="html/bfe37974-55c6-2982-47b2-6adc395a48f1.htm" />
+  <HelpKINode Title="Finalize method" Url="html/0530ce02-c359-ef03-df66-8302aa8a7413.htm" />
+  <HelpKINode Title="FlushOnWrite property" Url="html/fdcc60ec-92dc-badc-a15c-9501cad0f0c4.htm" />
+  <HelpKINode Title="ForceList enumeration member" Url="html/b9fc31fc-a188-f102-a9a8-f83ef65f0d5f.htm" />
+  <HelpKINode Title="ForceNameList enumeration member" Url="html/b9fc31fc-a188-f102-a9a8-f83ef65f0d5f.htm" />
+  <HelpKINode Title="FtpCapability enumeration" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="FtpClient class" Url="html/72e7ffd6-c16e-15e4-fce9-a7c6d4373fec.htm" />
+  <HelpKINode Title="FtpClient class" Url="html/ab482cbc-b370-e8b4-07ca-82fe6be954c6.htm" />
+  <HelpKINode Title="FtpClient class">
+    <HelpKINode Title="about FtpClient class" Url="html/ab482cbc-b370-e8b4-07ca-82fe6be954c6.htm" />
+    <HelpKINode Title="all members" Url="html/72e7ffd6-c16e-15e4-fce9-a7c6d4373fec.htm" />
+    <HelpKINode Title="constructor" Url="html/4a86228c-43f8-75d5-041b-65294362a820.htm" />
+    <HelpKINode Title="events" Url="html/84efaaef-f4d9-00ac-03bf-7289be2595d8.htm" />
+    <HelpKINode Title="methods" Url="html/0997d76c-72ec-e072-a264-80d0c45dd6da.htm" />
+    <HelpKINode Title="properties" Url="html/6b5b8400-b05e-0dcb-c925-190e94c5e77a.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FtpClient.Authenticate method" Url="html/a6bfd1a3-23e4-2afd-1261-cb5bf7d0fdcb.htm" />
+  <HelpKINode Title="FtpClient.BaseStream property" Url="html/bf58bbb8-ece4-3653-b95b-5b74404a56b7.htm" />
+  <HelpKINode Title="FtpClient.BeginConnect method" Url="html/f7e09d73-16ce-4914-2407-7307270e99a6.htm" />
+  <HelpKINode Title="FtpClient.BeginCreateDirectory method" Url="html/ad7f2015-e27e-8f05-adb9-5a2c59612636.htm" />
+  <HelpKINode Title="FtpClient.BeginDeleteDirectory method" Url="html/d7aaada4-c30d-ca01-cafe-140e0d12607e.htm" />
+  <HelpKINode Title="FtpClient.BeginDeleteFile method" Url="html/59504cea-e75c-4054-f8b0-48801f20844a.htm" />
+  <HelpKINode Title="FtpClient.BeginDereferenceLink method" Url="html/28a1bb31-154e-a0a2-372e-f1f2ecf97a62.htm" />
+  <HelpKINode Title="FtpClient.BeginDirectoryExists method" Url="html/abc89d33-7760-acfa-ba1a-e221483add42.htm" />
+  <HelpKINode Title="FtpClient.BeginDisconnect method" Url="html/d175eeeb-9d1f-963d-78a3-89a031b3f31d.htm" />
+  <HelpKINode Title="FtpClient.BeginExecute method" Url="html/4372eb41-3adf-4c9e-f3cf-ae91ba40f7a6.htm" />
+  <HelpKINode Title="FtpClient.BeginFileExists method" Url="html/0e203068-bdb5-d7cb-8334-a56bb7abea94.htm" />
+  <HelpKINode Title="FtpClient.BeginGetFileSize method" Url="html/b80ffd91-27bf-28f0-9018-b81ff7023119.htm" />
+  <HelpKINode Title="FtpClient.BeginGetHash method" Url="html/74273cae-eac4-d3c0-b52d-ecc58b36c953.htm" />
+  <HelpKINode Title="FtpClient.BeginGetHashAlgorithm method" Url="html/42bbb919-a4bf-776f-0ac4-e601d573dece.htm" />
+  <HelpKINode Title="FtpClient.BeginGetListing method" Url="html/b73f6523-4b12-9160-8b08-fc300526db07.htm" />
+  <HelpKINode Title="FtpClient.BeginGetModifiedTime method" Url="html/f70b253c-9984-5353-9b0f-113c4b42a08d.htm" />
+  <HelpKINode Title="FtpClient.BeginGetNameListing method" Url="html/e798ebaa-c1e0-bec6-014a-84a39de413a3.htm" />
+  <HelpKINode Title="FtpClient.BeginGetWorkingDirectory method" Url="html/70964141-e55b-ec3f-841b-d430b835313e.htm" />
+  <HelpKINode Title="FtpClient.BeginOpenAppend method" Url="html/0b0104c1-2a6b-9b0b-a1db-eaf53eae882e.htm" />
+  <HelpKINode Title="FtpClient.BeginOpenRead method" Url="html/5c78514f-f2d6-3a9f-c62f-64abb935859e.htm" />
+  <HelpKINode Title="FtpClient.BeginOpenWrite method" Url="html/2deeaf79-284e-b5c5-bdb8-33e54a00b40d.htm" />
+  <HelpKINode Title="FtpClient.BeginRename method" Url="html/2b5a05b1-186c-514f-adfe-a79b21f18201.htm" />
+  <HelpKINode Title="FtpClient.BeginSetDataType method" Url="html/9ca7a07e-c24a-f56f-6d88-47bac11fba2e.htm" />
+  <HelpKINode Title="FtpClient.BeginSetHashAlgorithm method" Url="html/43e54592-d863-378a-6d94-caa3bbdab0b7.htm" />
+  <HelpKINode Title="FtpClient.BeginSetWorkingDirectory method" Url="html/e814e253-8282-5b47-c52e-b29aa0e88ffa.htm" />
+  <HelpKINode Title="FtpClient.Capabilities property" Url="html/e0929826-cfa1-21d2-b711-04071ca8624a.htm" />
+  <HelpKINode Title="FtpClient.ClientCertificates property" Url="html/c6dc9e97-db68-2d57-d264-f08edc801dc4.htm" />
+  <HelpKINode Title="FtpClient.Connect method" Url="html/93acc19b-0e05-e72b-5fe9-46d79698fc4f.htm" />
+  <HelpKINode Title="FtpClient.ConnectTimeout property" Url="html/d2e458dc-5849-bf34-8b1a-626e66458721.htm" />
+  <HelpKINode Title="FtpClient.CreateDirectory method" Url="html/9b4be67d-c3c0-cf2f-916c-8401a71ee25f.htm" />
+  <HelpKINode Title="FtpClient.Credentials property" Url="html/4e20b69c-9887-76b9-4c9c-db06818c462e.htm" />
+  <HelpKINode Title="FtpClient.DataConnectionConnectTimeout property" Url="html/04c93066-3f01-f544-1b3e-6f473437e10d.htm" />
+  <HelpKINode Title="FtpClient.DataConnectionEncryption property" Url="html/4b14b605-411c-0737-bb57-252fd57b406b.htm" />
+  <HelpKINode Title="FtpClient.DataConnectionReadTimeout property" Url="html/82bb150a-46e5-d3bb-ad93-655ad94aa31e.htm" />
+  <HelpKINode Title="FtpClient.DataConnectionType property" Url="html/89730cd0-72a7-3910-818e-faa3b7fdfc3f.htm" />
+  <HelpKINode Title="FtpClient.DeleteDirectory method" Url="html/fb356585-feb5-c350-9e93-48fc4ba73e4c.htm" />
+  <HelpKINode Title="FtpClient.DeleteFile method" Url="html/b56c359c-e3fd-a043-2531-adfec6e43a81.htm" />
+  <HelpKINode Title="FtpClient.DereferenceLink method" Url="html/30210ece-2435-b9c8-18b3-a944871ed089.htm" />
+  <HelpKINode Title="FtpClient.DirectoryExists method" Url="html/9cf0e71e-44e7-710c-aeae-0b4514c5a2eb.htm" />
+  <HelpKINode Title="FtpClient.DisableUTF8 method" Url="html/a04b4e5c-35d3-f9b2-8d93-b61cdc9b2473.htm" />
+  <HelpKINode Title="FtpClient.Disconnect method" Url="html/3d215ac9-3597-d1bc-1901-9fae08d99208.htm" />
+  <HelpKINode Title="FtpClient.Dispose method" Url="html/33a546c8-4961-fe9f-cc7f-c861d764b91f.htm" />
+  <HelpKINode Title="FtpClient.EnableThreadSafeDataConnections property" Url="html/6db5df38-c2b9-8f94-6c5d-5bc4dddf5d1f.htm" />
+  <HelpKINode Title="FtpClient.Encoding property" Url="html/9a7d8075-e435-727c-e0ba-8b7f2cba381d.htm" />
+  <HelpKINode Title="FtpClient.EncryptionMode property" Url="html/ecc0c91c-9b1d-8bc9-a864-1d132a22a4a1.htm" />
+  <HelpKINode Title="FtpClient.EndConnect method" Url="html/266448a5-1728-54bc-255c-4b3f33e85717.htm" />
+  <HelpKINode Title="FtpClient.EndCreateDirectory method" Url="html/516a3f96-44a2-1e45-9190-1868a73accb1.htm" />
+  <HelpKINode Title="FtpClient.EndDeleteDirectory method" Url="html/bbb3873a-d4a4-49a7-9150-5ebe7fd654da.htm" />
+  <HelpKINode Title="FtpClient.EndDeleteFile method" Url="html/f667d738-f54c-651e-c9d2-6ff7e7d74d44.htm" />
+  <HelpKINode Title="FtpClient.EndDereferenceLink method" Url="html/704e48d2-fa8f-f283-a1af-bd7b0e6a62b0.htm" />
+  <HelpKINode Title="FtpClient.EndDirectoryExists method" Url="html/4883e3f0-d555-9632-62d5-f9e36da47664.htm" />
+  <HelpKINode Title="FtpClient.EndDisconnect method" Url="html/1af5d778-169f-624c-c19c-ceb98271d45e.htm" />
+  <HelpKINode Title="FtpClient.EndExecute method" Url="html/04fbd4c3-a9d9-00ff-94c8-8f3887db9553.htm" />
+  <HelpKINode Title="FtpClient.EndFileExists method" Url="html/ca869ede-3547-983c-ca04-ef132c9444f7.htm" />
+  <HelpKINode Title="FtpClient.EndGetFileSize method" Url="html/8b22e9bb-0332-5536-80a1-877239456b2e.htm" />
+  <HelpKINode Title="FtpClient.EndGetHash method" Url="html/534e4ac6-9f46-e217-22d8-22dc91875854.htm" />
+  <HelpKINode Title="FtpClient.EndGetHashAlgorithm method" Url="html/e0c708fb-0d63-2179-07cc-cb1238b57b25.htm" />
+  <HelpKINode Title="FtpClient.EndGetListing method" Url="html/fc2f7c79-703f-d964-b5a1-16588e7a55e5.htm" />
+  <HelpKINode Title="FtpClient.EndGetModifiedTime method" Url="html/21379fc1-fd02-5951-4724-32c963226e0f.htm" />
+  <HelpKINode Title="FtpClient.EndGetNameListing method" Url="html/89641fb4-50d2-3460-6054-fb1906a0e478.htm" />
+  <HelpKINode Title="FtpClient.EndGetWorkingDirectory method" Url="html/a40f7c31-18a4-1ff3-cc57-3908f53fe08d.htm" />
+  <HelpKINode Title="FtpClient.EndOpenAppend method" Url="html/7ab77b29-1193-fdf6-c2cb-aa8a7affa82b.htm" />
+  <HelpKINode Title="FtpClient.EndOpenRead method" Url="html/2062ed61-f951-7bbb-f8d6-0f116ccc6d08.htm" />
+  <HelpKINode Title="FtpClient.EndOpenWrite method" Url="html/971a23af-44bb-d979-ccc7-8344c53bbd7b.htm" />
+  <HelpKINode Title="FtpClient.EndRename method" Url="html/0482ed7d-9990-35d0-e5e0-e8603c19db7f.htm" />
+  <HelpKINode Title="FtpClient.EndSetDataType method" Url="html/7783fcd8-3b92-8727-b49a-5520680c7067.htm" />
+  <HelpKINode Title="FtpClient.EndSetHashAlgorithm method" Url="html/9c5688a6-b3cd-14ec-a2af-cc53d49191c3.htm" />
+  <HelpKINode Title="FtpClient.EndSetWorkingDirectory method" Url="html/e37cd8b8-fea1-8679-0c1a-47424f857320.htm" />
+  <HelpKINode Title="FtpClient.Execute method" Url="html/dbb66465-c31b-551c-14c9-0b6abbce438f.htm" />
+  <HelpKINode Title="FtpClient.FileExists method" Url="html/160b1df1-f78c-b67d-1656-139776e69871.htm" />
+  <HelpKINode Title="FtpClient.Finalize method" Url="html/0530ce02-c359-ef03-df66-8302aa8a7413.htm" />
+  <HelpKINode Title="FtpClient.FtpClient constructor" Url="html/4a86228c-43f8-75d5-041b-65294362a820.htm" />
+  <HelpKINode Title="FtpClient.GetAsyncDelegate(Of T) method" Url="html/602d6099-a688-2b8b-ea4d-7be8bbfa3cd3.htm" />
+  <HelpKINode Title="FtpClient.GetAsyncDelegate&lt;T&gt; method" Url="html/602d6099-a688-2b8b-ea4d-7be8bbfa3cd3.htm" />
+  <HelpKINode Title="FtpClient.GetFeatures method" Url="html/472bd845-c406-04e0-4a70-122292387cb7.htm" />
+  <HelpKINode Title="FtpClient.GetFileSize method" Url="html/37393598-79e9-1ca2-f917-a5c8470827f4.htm" />
+  <HelpKINode Title="FtpClient.GetHash method" Url="html/756f3e27-3aaf-26ea-2a05-0f91584a9a2e.htm" />
+  <HelpKINode Title="FtpClient.GetHashAlgorithm method" Url="html/49dd7d71-2a78-272a-c20a-7d3c54c267a3.htm" />
+  <HelpKINode Title="FtpClient.GetListing method" Url="html/8a1c161b-8473-f96e-0dda-2c057e67e6b5.htm" />
+  <HelpKINode Title="FtpClient.GetModifiedTime method" Url="html/1fa8cccd-fb0b-1eff-bbaf-48aa006f015d.htm" />
+  <HelpKINode Title="FtpClient.GetNameListing method" Url="html/8fc71693-236b-61a6-778f-3b265b79e3be.htm" />
+  <HelpKINode Title="FtpClient.GetWorkingDirectory method" Url="html/6c94f63b-49da-84a5-95da-f18b679cb0fc.htm" />
+  <HelpKINode Title="FtpClient.HasFeature method" Url="html/06675849-b2ef-64f6-bffb-05196efa13e4.htm" />
+  <HelpKINode Title="FtpClient.HashAlgorithms property" Url="html/7594fac0-08c3-0a6e-bad4-5904e35c8f36.htm" />
+  <HelpKINode Title="FtpClient.Host property" Url="html/67bcbc16-a0bb-aa8c-24b6-08ab80a3464e.htm" />
+  <HelpKINode Title="FtpClient.InternetProtocolVersions property" Url="html/69d1cd6c-74d0-d09b-559d-6ff330878666.htm" />
+  <HelpKINode Title="FtpClient.IsConnected property" Url="html/15531155-40cf-abad-80e2-ff0856cfce10.htm" />
+  <HelpKINode Title="FtpClient.IsDisposed property" Url="html/daa3dc77-a242-fbd9-4e52-eb741c0df93c.htm" />
+  <HelpKINode Title="FtpClient.MaximumDereferenceCount property" Url="html/7da7d425-eadc-509b-2a13-87a3aa22f487.htm" />
+  <HelpKINode Title="FtpClient.OpenAppend method" Url="html/1864c1f7-1036-d9d7-76c2-2d20275cd517.htm" />
+  <HelpKINode Title="FtpClient.OpenRead method" Url="html/fa0bef50-6a11-93aa-fb42-f516fb8df327.htm" />
+  <HelpKINode Title="FtpClient.OpenWrite method" Url="html/c50fdb36-57e6-0dd3-929b-4dc98a60e092.htm" />
+  <HelpKINode Title="FtpClient.Port property" Url="html/20fa54be-2f46-d65c-3339-32f54a881137.htm" />
+  <HelpKINode Title="FtpClient.ReadTimeout property" Url="html/a4560107-d936-51df-7377-2eefed73be53.htm" />
+  <HelpKINode Title="FtpClient.Rename method" Url="html/8f50cfc0-8458-db6f-936f-17152d6f4bb8.htm" />
+  <HelpKINode Title="FtpClient.SetDataType method" Url="html/d3934946-e550-d68f-16c7-db07e5e18c53.htm" />
+  <HelpKINode Title="FtpClient.SetHashAlgorithm method" Url="html/95270171-81a9-0736-4658-4d75d9f990e9.htm" />
+  <HelpKINode Title="FtpClient.SetWorkingDirectory method" Url="html/d0b7c4e5-6a03-27a9-1efe-b4f1d7dc4585.htm" />
+  <HelpKINode Title="FtpClient.SocketKeepAlive property" Url="html/fd34ac5f-d8eb-c1c6-be40-c11e725cd1ff.htm" />
+  <HelpKINode Title="FtpClient.SocketPollInterval property" Url="html/61584ffa-26de-c3c5-4868-f1da7a96565d.htm" />
+  <HelpKINode Title="FtpClient.SystemType property" Url="html/24492795-7005-323a-15b3-77f86317202f.htm" />
+  <HelpKINode Title="FtpClient.ValidateCertificate event" Url="html/bf49b8aa-e896-37b7-dbc7-b1baadade665.htm" />
+  <HelpKINode Title="FtpCommandException class" Url="html/35a1d1af-ecfe-1df3-11de-7736da6ffc00.htm" />
+  <HelpKINode Title="FtpCommandException class" Url="html/a3971d99-842b-f1a4-7e97-fbdab8494a61.htm" />
+  <HelpKINode Title="FtpCommandException class">
+    <HelpKINode Title="about FtpCommandException class" Url="html/35a1d1af-ecfe-1df3-11de-7736da6ffc00.htm" />
+    <HelpKINode Title="all members" Url="html/a3971d99-842b-f1a4-7e97-fbdab8494a61.htm" />
+    <HelpKINode Title="constructor" Url="html/f4b49afc-b6cf-80d8-55ce-4529b62a69cf.htm" />
+    <HelpKINode Title="events" Url="html/a108ae75-167a-fda3-2648-8658e4e3f7ce.htm" />
+    <HelpKINode Title="methods" Url="html/42f339ae-75db-c432-54d3-36714256bc79.htm" />
+    <HelpKINode Title="properties" Url="html/e8e8191d-7ea5-ca88-e5b1-ad71db7fa572.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FtpCommandException.CompletionCode property" Url="html/2ddd2c8a-2cc0-a762-c138-40a004a457a9.htm" />
+  <HelpKINode Title="FtpCommandException.FtpCommandException constructor" Url="html/f4b49afc-b6cf-80d8-55ce-4529b62a69cf.htm" />
+  <HelpKINode Title="FtpCommandException.ResponseType property" Url="html/f18e97fd-343e-fa83-de65-ae58d0a992fc.htm" />
+  <HelpKINode Title="FtpDataConnectionType enumeration" Url="html/53d05e63-1f71-45d2-a303-926442958a47.htm" />
+  <HelpKINode Title="FtpDataType enumeration" Url="html/bc53eb48-fa9e-4593-34ba-faf8d650361a.htm" />
+  <HelpKINode Title="FtpEncryptionMode enumeration" Url="html/0618d916-49ad-0bd3-f6d1-5e992effa11f.htm" />
+  <HelpKINode Title="FtpException class" Url="html/5280557b-774c-34c5-9a36-b6d31ec23df1.htm" />
+  <HelpKINode Title="FtpException class" Url="html/85c01980-12bf-7e90-8e70-76a7aacaeece.htm" />
+  <HelpKINode Title="FtpException class">
+    <HelpKINode Title="about FtpException class" Url="html/5280557b-774c-34c5-9a36-b6d31ec23df1.htm" />
+    <HelpKINode Title="all members" Url="html/85c01980-12bf-7e90-8e70-76a7aacaeece.htm" />
+    <HelpKINode Title="constructor" Url="html/5d8bbe46-3fe3-a750-13c9-cf23521ad51e.htm" />
+    <HelpKINode Title="events" Url="html/3e22f444-e8da-4637-47b3-4f9b88f6bf80.htm" />
+    <HelpKINode Title="methods" Url="html/f8b97581-4019-5226-6313-dc0618c0b91a.htm" />
+    <HelpKINode Title="properties" Url="html/698ad7cc-3c5d-b619-95c0-e2008417a24c.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FtpException.FtpException constructor" Url="html/5d8bbe46-3fe3-a750-13c9-cf23521ad51e.htm" />
+  <HelpKINode Title="FtpExtensions class" Url="html/256bafd4-353d-ced0-4e7f-db924324765a.htm" />
+  <HelpKINode Title="FtpExtensions class" Url="html/8474fa3d-b79d-f5b9-8217-e8e8de6c5eb3.htm" />
+  <HelpKINode Title="FtpExtensions class">
+    <HelpKINode Title="about FtpExtensions class" Url="html/8474fa3d-b79d-f5b9-8217-e8e8de6c5eb3.htm" />
+    <HelpKINode Title="all members" Url="html/256bafd4-353d-ced0-4e7f-db924324765a.htm" />
+    <HelpKINode Title="methods" Url="html/f6a60fbc-c8b2-6c36-009f-9c502b09c316.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FtpExtensions.GetFtpDate method" Url="html/6f7efe3f-003a-da28-3f6e-a8b356be876f.htm" />
+  <HelpKINode Title="FtpExtensions.GetFtpDirectoryName method" Url="html/bf6031f4-069c-6109-c16c-3ca01066e23e.htm" />
+  <HelpKINode Title="FtpExtensions.GetFtpFileName method" Url="html/704f8f24-7d4e-c364-c582-598c4c20593b.htm" />
+  <HelpKINode Title="FtpExtensions.GetFtpPath method" Url="html/d192c70c-4b21-895b-79a7-8772b4560cd2.htm" />
+  <HelpKINode Title="FtpFileSystemObjectType enumeration" Url="html/78e538e4-cf96-e2bb-f17a-2477daba6b81.htm" />
+  <HelpKINode Title="FtpHash class" Url="html/2cf2533b-74e7-badf-6953-15d08d9b0eba.htm" />
+  <HelpKINode Title="FtpHash class" Url="html/e6bc3ed1-3811-854a-4f2d-464dd93c13c5.htm" />
+  <HelpKINode Title="FtpHash class">
+    <HelpKINode Title="about FtpHash class" Url="html/e6bc3ed1-3811-854a-4f2d-464dd93c13c5.htm" />
+    <HelpKINode Title="all members" Url="html/2cf2533b-74e7-badf-6953-15d08d9b0eba.htm" />
+    <HelpKINode Title="methods" Url="html/546b94fa-ca73-969a-4072-741c063433f9.htm" />
+    <HelpKINode Title="properties" Url="html/43fb185e-17d7-5280-f8ce-83792cfc8442.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FtpHash.Algorithm property" Url="html/a4967620-58a4-c745-ec0c-5e0703e0e00b.htm" />
+  <HelpKINode Title="FtpHash.IsValid property" Url="html/5c72dce3-a6bb-d721-101c-7ec8afae2802.htm" />
+  <HelpKINode Title="FtpHash.Value property" Url="html/469551c2-2be7-bd9a-2f43-35d45f4a2ebf.htm" />
+  <HelpKINode Title="FtpHash.Verify method" Url="html/0bf6610b-75b0-f0d2-84d5-c5eddf614ca8.htm" />
+  <HelpKINode Title="FtpHashAlgorithm enumeration" Url="html/afffedd1-81cb-538c-a35c-21a6b9653964.htm" />
+  <HelpKINode Title="FtpIpVersion enumeration" Url="html/717523ab-ece3-4b29-16c3-2fbb16c40314.htm" />
+  <HelpKINode Title="FtpListItem class" Url="html/36afdb8d-3d58-7f6d-1229-bea408e9822b.htm" />
+  <HelpKINode Title="FtpListItem class" Url="html/bb18148e-9f0a-d09a-fd19-8ec5929cab62.htm" />
+  <HelpKINode Title="FtpListItem class">
+    <HelpKINode Title="about FtpListItem class" Url="html/36afdb8d-3d58-7f6d-1229-bea408e9822b.htm" />
+    <HelpKINode Title="all members" Url="html/bb18148e-9f0a-d09a-fd19-8ec5929cab62.htm" />
+    <HelpKINode Title="constructor" Url="html/43553528-bf02-f1be-596e-cf402f46236a.htm" />
+    <HelpKINode Title="methods" Url="html/e50e7ad4-8d68-9c16-897b-ec7de27c073d.htm" />
+    <HelpKINode Title="properties" Url="html/f16d9425-0f7f-4da5-3538-fc8529761da4.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FtpListItem.AddParser method" Url="html/1088107e-d9ee-ae45-4201-731e1d96ed8e.htm" />
+  <HelpKINode Title="FtpListItem.ClearParsers method" Url="html/ce84e953-965d-1421-48ae-316b13daba7d.htm" />
+  <HelpKINode Title="FtpListItem.Created property" Url="html/fbfcf33b-d39e-5ff0-cd2a-84d61846eabe.htm" />
+  <HelpKINode Title="FtpListItem.FtpListItem constructor" Url="html/43553528-bf02-f1be-596e-cf402f46236a.htm" />
+  <HelpKINode Title="FtpListItem.FullName property" Url="html/add4d1af-766b-24e8-6468-aa4a5a49ac37.htm" />
+  <HelpKINode Title="FtpListItem.GroupPermissions property" Url="html/71c4cc1e-abd3-73c0-dd54-1c440f7fd304.htm" />
+  <HelpKINode Title="FtpListItem.Input property" Url="html/4fbbfa14-1c2e-bc39-0cfb-a3443670bd1b.htm" />
+  <HelpKINode Title="FtpListItem.LinkObject property" Url="html/08feba86-41ee-b98d-7f44-1dfcba8c0560.htm" />
+  <HelpKINode Title="FtpListItem.LinkTarget property" Url="html/d67745fd-5a38-11d1-91da-cc4e5e4bfa46.htm" />
+  <HelpKINode Title="FtpListItem.Modified property" Url="html/4a1d9db5-68ec-f8b7-c96c-6bcee9a517f5.htm" />
+  <HelpKINode Title="FtpListItem.Name property" Url="html/2485dd82-6b3e-1530-4207-ed78470ca1d2.htm" />
+  <HelpKINode Title="FtpListItem.OthersPermissions property" Url="html/a35b4ecd-7dc0-11f4-5bd3-d3d402d0ab90.htm" />
+  <HelpKINode Title="FtpListItem.OwnerPermissions property" Url="html/f48ba52e-87ed-314f-c5fa-968b8f22738c.htm" />
+  <HelpKINode Title="FtpListItem.Parse method" Url="html/bcdf8472-32e2-257a-696f-96677bac43aa.htm" />
+  <HelpKINode Title="FtpListItem.Parser delegate" Url="html/aee3731b-d1a9-d75f-612e-add7b8cb97b9.htm" />
+  <HelpKINode Title="FtpListItem.RemoveParser method" Url="html/4e0af850-6a7b-a8aa-d9d3-16c786882a86.htm" />
+  <HelpKINode Title="FtpListItem.Size property" Url="html/daa8ba63-195a-a641-1b7a-7d79a2678559.htm" />
+  <HelpKINode Title="FtpListItem.SpecialPermissions property" Url="html/c63e4d83-4cd6-1c4e-3702-4f653d8f76e0.htm" />
+  <HelpKINode Title="FtpListItem.ToString method" Url="html/5b7e0c56-3076-7fdf-c95f-6ef619aa6518.htm" />
+  <HelpKINode Title="FtpListItem.Type property" Url="html/e8c52609-5bd2-e8d1-dd96-f5ba663b75b0.htm" />
+  <HelpKINode Title="FtpListOption enumeration" Url="html/b9fc31fc-a188-f102-a9a8-f83ef65f0d5f.htm" />
+  <HelpKINode Title="FtpPermission enumeration" Url="html/229af06c-14fd-1d8c-ffa3-8e08f3c7efed.htm" />
+  <HelpKINode Title="FtpReply structure" Url="html/7c56938d-1b8b-152c-fe59-6cd7c94a86da.htm" />
+  <HelpKINode Title="FtpReply structure" Url="html/850cfe3e-94bd-e991-6345-5436fc50c9d5.htm" />
+  <HelpKINode Title="FtpReply structure">
+    <HelpKINode Title="about FtpReply structure" Url="html/7c56938d-1b8b-152c-fe59-6cd7c94a86da.htm" />
+    <HelpKINode Title="all members" Url="html/850cfe3e-94bd-e991-6345-5436fc50c9d5.htm" />
+    <HelpKINode Title="methods" Url="html/2c9353b0-8f46-4a07-8df0-cc935b1c0922.htm" />
+    <HelpKINode Title="properties" Url="html/5f92e27d-8986-9a42-2167-779a67608fe8.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FtpReply.Code property" Url="html/2fb099d0-05a3-c2bd-1d64-d50ff39d5949.htm" />
+  <HelpKINode Title="FtpReply.InfoMessages property" Url="html/27aa8f3f-898f-fd95-df01-8081251bc539.htm" />
+  <HelpKINode Title="FtpReply.Message property" Url="html/686639b0-45c5-017a-233d-64b6efbd2220.htm" />
+  <HelpKINode Title="FtpReply.Success property" Url="html/df92880f-ff0b-614d-407c-b38c8ca08045.htm" />
+  <HelpKINode Title="FtpReply.Type property" Url="html/0fa3c4b0-cd29-3705-a26c-02a98cdc208a.htm" />
+  <HelpKINode Title="FtpResponseType enumeration" Url="html/69f43f94-7367-8c41-374b-700fd5d23a6a.htm" />
+  <HelpKINode Title="FtpSecrutiyNotAvailableException class" Url="html/43e15877-f9d7-0b38-c49d-8193746c598b.htm" />
+  <HelpKINode Title="FtpSecrutiyNotAvailableException class" Url="html/d19c33e5-64fe-0358-2632-eecc3644793e.htm" />
+  <HelpKINode Title="FtpSecrutiyNotAvailableException class">
+    <HelpKINode Title="about FtpSecrutiyNotAvailableException class" Url="html/d19c33e5-64fe-0358-2632-eecc3644793e.htm" />
+    <HelpKINode Title="all members" Url="html/43e15877-f9d7-0b38-c49d-8193746c598b.htm" />
+    <HelpKINode Title="constructor" Url="html/8b1d6923-bd4d-d6e4-b6ac-64578562c915.htm" />
+    <HelpKINode Title="events" Url="html/ef47917f-44e9-d60b-db1d-2638d071e48f.htm" />
+    <HelpKINode Title="methods" Url="html/a037765f-5c31-5fc8-3e65-9722f7d8c0d6.htm" />
+    <HelpKINode Title="properties" Url="html/b0f71554-b09d-46fb-3c52-a013f4800449.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FtpSecrutiyNotAvailableException.FtpSecrutiyNotAvailableException constructor" Url="html/8b1d6923-bd4d-d6e4-b6ac-64578562c915.htm" />
+  <HelpKINode Title="FtpSpecialPermissions enumeration" Url="html/1381ab72-c51c-41be-47a5-d1d4bb6dd43e.htm" />
+  <HelpKINode Title="FtpSslValidation delegate" Url="html/e7f46e4a-bd65-88b1-2720-38c05801431a.htm" />
+  <HelpKINode Title="FtpSslValidationEventArgs class" Url="html/88fbbb38-3ed3-53f0-978d-8e9418eb7f07.htm" />
+  <HelpKINode Title="FtpSslValidationEventArgs class" Url="html/c29d622d-d4a2-1681-fd2b-14da925f4a3f.htm" />
+  <HelpKINode Title="FtpSslValidationEventArgs class">
+    <HelpKINode Title="about FtpSslValidationEventArgs class" Url="html/c29d622d-d4a2-1681-fd2b-14da925f4a3f.htm" />
+    <HelpKINode Title="all members" Url="html/88fbbb38-3ed3-53f0-978d-8e9418eb7f07.htm" />
+    <HelpKINode Title="constructor" Url="html/f487a730-5164-96f1-6253-683205bb6fd0.htm" />
+    <HelpKINode Title="methods" Url="html/6fb6c0f4-97ad-eca4-0f02-9f6acee84130.htm" />
+    <HelpKINode Title="properties" Url="html/4a4c5f95-1a83-e896-1f93-bee3fb2cea13.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FtpSslValidationEventArgs.Accept property" Url="html/6177b957-5333-abbb-6ed8-4fd07d146913.htm" />
+  <HelpKINode Title="FtpSslValidationEventArgs.Certificate property" Url="html/e491eee6-e057-f85c-414a-053ee35fa586.htm" />
+  <HelpKINode Title="FtpSslValidationEventArgs.Chain property" Url="html/d54d437c-ccfc-dfff-9055-7924daabfebe.htm" />
+  <HelpKINode Title="FtpSslValidationEventArgs.FtpSslValidationEventArgs constructor" Url="html/f487a730-5164-96f1-6253-683205bb6fd0.htm" />
+  <HelpKINode Title="FtpSslValidationEventArgs.PolicyErrors property" Url="html/a3a47f41-5166-cb1d-fedd-6e5b1a282b20.htm" />
+  <HelpKINode Title="FtpTrace class" Url="html/8ce798d1-1f00-bb99-553e-7defd6786e8d.htm" />
+  <HelpKINode Title="FtpTrace class" Url="html/fef9a8eb-582d-27f8-aba8-a1def002b796.htm" />
+  <HelpKINode Title="FtpTrace class">
+    <HelpKINode Title="about FtpTrace class" Url="html/fef9a8eb-582d-27f8-aba8-a1def002b796.htm" />
+    <HelpKINode Title="all members" Url="html/8ce798d1-1f00-bb99-553e-7defd6786e8d.htm" />
+    <HelpKINode Title="methods" Url="html/0bf3d702-9cd3-bf08-05df-a9f5c7358286.htm" />
+    <HelpKINode Title="properties" Url="html/51a0960d-4274-fd83-5748-7d144018fdad.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FtpTrace.AddListener method" Url="html/22d7df6f-695e-8384-b589-759082eeb846.htm" />
+  <HelpKINode Title="FtpTrace.FlushOnWrite property" Url="html/fdcc60ec-92dc-badc-a15c-9501cad0f0c4.htm" />
+  <HelpKINode Title="FtpTrace.RemoveListener method" Url="html/2007574c-bd69-8993-604c-e5f836146e66.htm" />
+  <HelpKINode Title="FtpTrace.Write method" Url="html/01f16f36-1f5b-a7ad-7c98-20f58f1e51ac.htm" />
+  <HelpKINode Title="FtpTrace.WriteLine method" Url="html/6f346b8f-5985-2b10-bf1b-24d563fb3d02.htm" />
+  <HelpKINode Title="FullName property" Url="html/add4d1af-766b-24e8-6468-aa4a5a49ac37.htm" />
+  <HelpKINode Title="FullName property" Url="html/faf57035-75ff-5a37-5c56-ae14dfe98ff0.htm" />
+  <HelpKINode Title="GetAsyncDelegate(Of T) method" Url="html/602d6099-a688-2b8b-ea4d-7be8bbfa3cd3.htm" />
+  <HelpKINode Title="GetAsyncDelegate&lt;T&gt; method" Url="html/602d6099-a688-2b8b-ea4d-7be8bbfa3cd3.htm" />
+  <HelpKINode Title="GetChecksum method" Url="html/68a58602-1c65-2ea3-0fcf-86aab1deae4b.htm" />
+  <HelpKINode Title="GetFeatures method" Url="html/472bd845-c406-04e0-4a70-122292387cb7.htm" />
+  <HelpKINode Title="GetFileSize method" Url="html/37393598-79e9-1ca2-f917-a5c8470827f4.htm" />
+  <HelpKINode Title="GetFileSize method" Url="html/ddea4654-501a-a4d1-16b2-f64d47c5cfed.htm" />
+  <HelpKINode Title="GetFtpDate method" Url="html/6f7efe3f-003a-da28-3f6e-a8b356be876f.htm" />
+  <HelpKINode Title="GetFtpDirectoryName method" Url="html/bf6031f4-069c-6109-c16c-3ca01066e23e.htm" />
+  <HelpKINode Title="GetFtpFileName method" Url="html/704f8f24-7d4e-c364-c582-598c4c20593b.htm" />
+  <HelpKINode Title="GetFtpPath method" Url="html/d192c70c-4b21-895b-79a7-8772b4560cd2.htm" />
+  <HelpKINode Title="GetHash method" Url="html/756f3e27-3aaf-26ea-2a05-0f91584a9a2e.htm" />
+  <HelpKINode Title="GetHash method" Url="html/b9a0b8b3-d354-057d-17e6-657eabb6d3f2.htm" />
+  <HelpKINode Title="GetHashAlgorithm method" Url="html/49dd7d71-2a78-272a-c20a-7d3c54c267a3.htm" />
+  <HelpKINode Title="GetHashAlgorithm method" Url="html/8f24e3a0-7072-9c59-e96f-10b5356aaf7a.htm" />
+  <HelpKINode Title="GetListing method" Url="html/1e729c4b-8f0a-91f3-9c83-677596e035e4.htm" />
+  <HelpKINode Title="GetListing method" Url="html/8a1c161b-8473-f96e-0dda-2c057e67e6b5.htm" />
+  <HelpKINode Title="GetMD5 method" Url="html/d817cf90-bf68-3edf-dbf1-28b9d205694d.htm" />
+  <HelpKINode Title="GetModifiedTime method" Url="html/1fa8cccd-fb0b-1eff-bbaf-48aa006f015d.htm" />
+  <HelpKINode Title="GetModifiedTime method" Url="html/ea443193-8fb1-76d2-3d4f-352a039ee574.htm" />
+  <HelpKINode Title="GetNameListing method" Url="html/8fc71693-236b-61a6-778f-3b265b79e3be.htm" />
+  <HelpKINode Title="GetNameListing method" Url="html/abb614b3-e557-3962-9160-53e8bb8b2749.htm" />
+  <HelpKINode Title="GetWorkingDirectory method" Url="html/6c94f63b-49da-84a5-95da-f18b679cb0fc.htm" />
+  <HelpKINode Title="GetWorkingDirectory method" Url="html/7ca91665-719d-8703-9338-345342dec6a2.htm" />
+  <HelpKINode Title="GetXCRC method" Url="html/334de936-43aa-5ae9-390f-fe0d38380be5.htm" />
+  <HelpKINode Title="GetXMD5 method" Url="html/4298e5b5-fbd4-b84d-c1f7-074e509f6539.htm" />
+  <HelpKINode Title="GetXSHA1 method" Url="html/58077206-2b7d-39a0-d681-d5a1829cfddd.htm" />
+  <HelpKINode Title="GetXSHA256 method" Url="html/d27a762d-a729-3207-96ee-3b63390ea38a.htm" />
+  <HelpKINode Title="GetXSHA512 method" Url="html/c3f1b211-5cc9-5979-3e32-abfeebba5833.htm" />
+  <HelpKINode Title="GroupPermissions property" Url="html/71c4cc1e-abd3-73c0-dd54-1c440f7fd304.htm" />
+  <HelpKINode Title="GroupPermissions property" Url="html/a7c6be0d-1985-1036-483a-4ddc45207311.htm" />
+  <HelpKINode Title="HasFeature method" Url="html/06675849-b2ef-64f6-bffb-05196efa13e4.htm" />
+  <HelpKINode Title="HASH enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="HashAlgorithms property" Url="html/7594fac0-08c3-0a6e-bad4-5904e35c8f36.htm" />
+  <HelpKINode Title="Host property" Url="html/1dedc373-0da2-ceb6-bd56-fc5ac43b3af5.htm" />
+  <HelpKINode Title="Host property" Url="html/67bcbc16-a0bb-aa8c-24b6-08ab80a3464e.htm" />
+  <HelpKINode Title="IFtpClient interface" Url="html/d6196682-e943-8366-edde-9b744afbc9d3.htm" />
+  <HelpKINode Title="IFtpClient interface" Url="html/e8f97041-926d-bea6-3d54-e53c327bdd06.htm" />
+  <HelpKINode Title="IFtpClient interface">
+    <HelpKINode Title="about IFtpClient interface" Url="html/e8f97041-926d-bea6-3d54-e53c327bdd06.htm" />
+    <HelpKINode Title="all members" Url="html/d6196682-e943-8366-edde-9b744afbc9d3.htm" />
+    <HelpKINode Title="events" Url="html/0bb7373d-23b1-715f-a5fc-197e74efff43.htm" />
+    <HelpKINode Title="methods" Url="html/f9464bce-2cbf-524e-cc87-3126f8bb6dbe.htm" />
+    <HelpKINode Title="properties" Url="html/a7b3d6fd-ba5e-8d2c-d6c2-97d32150e5a3.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IFtpClient.BeginConnect method" Url="html/d9996387-e034-5d6c-06b0-47c0e982d6f9.htm" />
+  <HelpKINode Title="IFtpClient.BeginCreateDirectory method" Url="html/fabc5475-09f4-702f-f84b-2502d6f8a04b.htm" />
+  <HelpKINode Title="IFtpClient.BeginDeleteDirectory method" Url="html/125ddc26-f29b-9db8-12e5-2c42ae96a049.htm" />
+  <HelpKINode Title="IFtpClient.BeginDeleteFile method" Url="html/1bfe8712-e6e4-8e1f-3016-9678311daa8d.htm" />
+  <HelpKINode Title="IFtpClient.BeginDirectoryExists method" Url="html/f6171a82-c735-4eb1-0de8-eb7f1d540405.htm" />
+  <HelpKINode Title="IFtpClient.BeginDisconnect method" Url="html/ddf79d70-2a22-ae92-8fbf-deff16e909f2.htm" />
+  <HelpKINode Title="IFtpClient.BeginExecute method" Url="html/e393dede-41b3-e2cc-df65-c2ad0468fcd7.htm" />
+  <HelpKINode Title="IFtpClient.BeginFileExists method" Url="html/d55db9a0-7a81-f487-e00b-308af04065dc.htm" />
+  <HelpKINode Title="IFtpClient.BeginGetFileSize method" Url="html/7cf34ae9-730a-5f0a-5650-54098352e138.htm" />
+  <HelpKINode Title="IFtpClient.BeginGetHash method" Url="html/42c43a25-0d52-5a11-5d45-2630c6e43006.htm" />
+  <HelpKINode Title="IFtpClient.BeginGetHashAlgorithm method" Url="html/6773c36c-b173-259c-58c5-11fe646598f3.htm" />
+  <HelpKINode Title="IFtpClient.BeginGetListing method" Url="html/f72c1839-672e-d9bd-c784-68fd8ade2cb4.htm" />
+  <HelpKINode Title="IFtpClient.BeginGetModifiedTime method" Url="html/69863daf-1f42-8657-e4d8-de91e5b5c76b.htm" />
+  <HelpKINode Title="IFtpClient.BeginGetNameListing method" Url="html/f07a91c1-72b5-424b-8380-bb2f337052ff.htm" />
+  <HelpKINode Title="IFtpClient.BeginGetWorkingDirectory method" Url="html/81ff4e87-ca31-1cf4-5783-b22bf8284116.htm" />
+  <HelpKINode Title="IFtpClient.BeginOpenAppend method" Url="html/24603205-97ec-b180-0e31-3bffd7c01225.htm" />
+  <HelpKINode Title="IFtpClient.BeginOpenRead method" Url="html/6aa7fc00-a078-bc01-b3cf-c7d6460850a1.htm" />
+  <HelpKINode Title="IFtpClient.BeginOpenWrite method" Url="html/6c9ecc0f-52f3-052d-092d-2d052cb099aa.htm" />
+  <HelpKINode Title="IFtpClient.BeginRename method" Url="html/e8c24999-b619-f0a0-4070-54cbdcfd3083.htm" />
+  <HelpKINode Title="IFtpClient.BeginSetDataType method" Url="html/b355cdea-ec08-4dd0-9416-22918b75ac66.htm" />
+  <HelpKINode Title="IFtpClient.BeginSetHashAlgorithm method" Url="html/fbad4be1-1812-4500-a8c9-198d20b2a96d.htm" />
+  <HelpKINode Title="IFtpClient.BeginSetWorkingDirectory method" Url="html/ae157435-78c0-9eda-2392-a8300f27cab9.htm" />
+  <HelpKINode Title="IFtpClient.Capabilities property" Url="html/7c3d3b59-96b7-59d8-8503-8e692ab870ae.htm" />
+  <HelpKINode Title="IFtpClient.ClientCertificates property" Url="html/2cf408dc-36e4-2390-5335-82182b1b5cf2.htm" />
+  <HelpKINode Title="IFtpClient.Connect method" Url="html/faab9f61-ba7e-33cc-51c6-97b3370ccc59.htm" />
+  <HelpKINode Title="IFtpClient.ConnectTimeout property" Url="html/59059e0c-aed4-3c88-4aaf-dfdb4b41b994.htm" />
+  <HelpKINode Title="IFtpClient.CreateDirectory method" Url="html/a2357a9c-1882-792e-4e7d-4e2ca0d244e3.htm" />
+  <HelpKINode Title="IFtpClient.Credentials property" Url="html/44445e00-abce-c02a-7343-7b47e1287fe5.htm" />
+  <HelpKINode Title="IFtpClient.DataConnectionConnectTimeout property" Url="html/86f4b7c9-611e-42fd-ddfc-7a62156d64fc.htm" />
+  <HelpKINode Title="IFtpClient.DataConnectionEncryption property" Url="html/fae5f7ae-1cf3-e168-cc36-a35c6440e214.htm" />
+  <HelpKINode Title="IFtpClient.DataConnectionReadTimeout property" Url="html/ed83cc19-e9c3-8ee2-9cd9-4dc34aa0b9da.htm" />
+  <HelpKINode Title="IFtpClient.DataConnectionType property" Url="html/911a5d66-8435-5aa9-a7e4-f43b4d23ed64.htm" />
+  <HelpKINode Title="IFtpClient.DeleteDirectory method" Url="html/6b841490-6761-69ea-8d0a-36e5c4f2526e.htm" />
+  <HelpKINode Title="IFtpClient.DeleteFile method" Url="html/6e2821e8-d373-e2e7-ef1e-3db562416e57.htm" />
+  <HelpKINode Title="IFtpClient.DirectoryExists method" Url="html/3414c411-fb6c-892c-bb12-da7ef3017ac8.htm" />
+  <HelpKINode Title="IFtpClient.Disconnect method" Url="html/b39757f4-2d72-457e-3ef7-377fc72bcdd9.htm" />
+  <HelpKINode Title="IFtpClient.EnableThreadSafeDataConnections property" Url="html/0a6cbc96-d891-7c3a-813e-7c2aa0885520.htm" />
+  <HelpKINode Title="IFtpClient.Encoding property" Url="html/3675061e-d8ee-b31d-07d9-9933a3221252.htm" />
+  <HelpKINode Title="IFtpClient.EncryptionMode property" Url="html/ad058fba-3ecf-3834-017f-926e09ed1e4b.htm" />
+  <HelpKINode Title="IFtpClient.EndConnect method" Url="html/30083c44-db6b-ff29-79c1-bd5552f8be56.htm" />
+  <HelpKINode Title="IFtpClient.EndCreateDirectory method" Url="html/07f556df-d1f5-ee4e-d99c-9e3bc22df46b.htm" />
+  <HelpKINode Title="IFtpClient.EndDeleteDirectory method" Url="html/9239c4e0-62d7-f5e4-ca42-8ceb254aa41b.htm" />
+  <HelpKINode Title="IFtpClient.EndDeleteFile method" Url="html/f475c707-cb38-6a5c-192a-9302d8105d0a.htm" />
+  <HelpKINode Title="IFtpClient.EndDirectoryExists method" Url="html/eabd6b1c-0e9e-2d7d-1e3f-23e09f394184.htm" />
+  <HelpKINode Title="IFtpClient.EndDisconnect method" Url="html/4ecbf454-a6f6-6ab3-d2df-5c04da51da0d.htm" />
+  <HelpKINode Title="IFtpClient.EndExecute method" Url="html/9ea4b48a-41f1-29ce-fa51-13890ef76fcf.htm" />
+  <HelpKINode Title="IFtpClient.EndFileExists method" Url="html/453df42c-880a-46a3-bcb4-5c49995d45bb.htm" />
+  <HelpKINode Title="IFtpClient.EndGetFileSize method" Url="html/fa2f7453-5440-d5b3-3011-184fac0fbeb3.htm" />
+  <HelpKINode Title="IFtpClient.EndGetHash method" Url="html/8263204c-6941-a31a-e4cd-6d4efd04d834.htm" />
+  <HelpKINode Title="IFtpClient.EndGetHashAlgorithm method" Url="html/96f187b5-9a65-ea6e-2c96-f6d7f1796fda.htm" />
+  <HelpKINode Title="IFtpClient.EndGetListing method" Url="html/7f8b28db-53dd-65c3-2905-37a12a2ec288.htm" />
+  <HelpKINode Title="IFtpClient.EndGetModifiedTime method" Url="html/25cb63a3-c44a-5f1b-2436-0c6f1c23d852.htm" />
+  <HelpKINode Title="IFtpClient.EndGetNameListing method" Url="html/e550c171-511f-3f55-74a1-216f0922e766.htm" />
+  <HelpKINode Title="IFtpClient.EndGetWorkingDirectory method" Url="html/2f3c9975-10d7-f8f9-cfa3-bc63c1b4c250.htm" />
+  <HelpKINode Title="IFtpClient.EndOpenAppend method" Url="html/f0659dd6-2755-9604-b0e8-9aadb92a99e3.htm" />
+  <HelpKINode Title="IFtpClient.EndOpenRead method" Url="html/764a6179-d99e-9f17-0144-01ed74f50d1a.htm" />
+  <HelpKINode Title="IFtpClient.EndOpenWrite method" Url="html/eeeeca88-3529-7cca-27e6-85ed069537b2.htm" />
+  <HelpKINode Title="IFtpClient.EndRename method" Url="html/dc481ab4-015c-3a40-45a6-cd57271a84a5.htm" />
+  <HelpKINode Title="IFtpClient.EndSetDataType method" Url="html/cc078522-b4a9-a8f3-8415-f896cb484063.htm" />
+  <HelpKINode Title="IFtpClient.EndSetHashAlgorithm method" Url="html/60ca75bd-dfe6-1236-d378-3a37d399e9dd.htm" />
+  <HelpKINode Title="IFtpClient.EndSetWorkingDirectory method" Url="html/3ec08924-e118-6d76-2c29-f43d5898e52a.htm" />
+  <HelpKINode Title="IFtpClient.Execute method" Url="html/30e9dd5f-b427-69da-5d80-7f04554c464e.htm" />
+  <HelpKINode Title="IFtpClient.FileExists method" Url="html/bfe37974-55c6-2982-47b2-6adc395a48f1.htm" />
+  <HelpKINode Title="IFtpClient.GetFileSize method" Url="html/ddea4654-501a-a4d1-16b2-f64d47c5cfed.htm" />
+  <HelpKINode Title="IFtpClient.GetHash method" Url="html/b9a0b8b3-d354-057d-17e6-657eabb6d3f2.htm" />
+  <HelpKINode Title="IFtpClient.GetHashAlgorithm method" Url="html/8f24e3a0-7072-9c59-e96f-10b5356aaf7a.htm" />
+  <HelpKINode Title="IFtpClient.GetListing method" Url="html/1e729c4b-8f0a-91f3-9c83-677596e035e4.htm" />
+  <HelpKINode Title="IFtpClient.GetModifiedTime method" Url="html/ea443193-8fb1-76d2-3d4f-352a039ee574.htm" />
+  <HelpKINode Title="IFtpClient.GetNameListing method" Url="html/abb614b3-e557-3962-9160-53e8bb8b2749.htm" />
+  <HelpKINode Title="IFtpClient.GetWorkingDirectory method" Url="html/7ca91665-719d-8703-9338-345342dec6a2.htm" />
+  <HelpKINode Title="IFtpClient.Host property" Url="html/1dedc373-0da2-ceb6-bd56-fc5ac43b3af5.htm" />
+  <HelpKINode Title="IFtpClient.IsConnected property" Url="html/948e2c23-0d8e-4cf9-1574-7a7ab4a87ff6.htm" />
+  <HelpKINode Title="IFtpClient.OpenAppend method" Url="html/8c2d54d9-476e-feec-f26b-50704f0692d0.htm" />
+  <HelpKINode Title="IFtpClient.OpenRead method" Url="html/dc20535f-79e7-b641-a70f-05aa705a5726.htm" />
+  <HelpKINode Title="IFtpClient.OpenWrite method" Url="html/d1ca5382-31be-6ec4-e5f5-0107eecef13d.htm" />
+  <HelpKINode Title="IFtpClient.Port property" Url="html/f364d42d-e58f-82b8-55e5-a11656ef36c7.htm" />
+  <HelpKINode Title="IFtpClient.ReadTimeout property" Url="html/fd2f890c-096c-bc18-fd5c-e8ee8d630329.htm" />
+  <HelpKINode Title="IFtpClient.Rename method" Url="html/7f659b41-4a5a-a725-064b-2440c55ace92.htm" />
+  <HelpKINode Title="IFtpClient.SetDataType method" Url="html/adf6ed9e-131f-bb02-f0af-fbdc52b89b54.htm" />
+  <HelpKINode Title="IFtpClient.SetHashAlgorithm method" Url="html/11a6c497-16e3-0253-73bf-b9f164f36d0d.htm" />
+  <HelpKINode Title="IFtpClient.SetWorkingDirectory method" Url="html/7414b9da-76f2-5cd8-12f5-e6dd7a8b9b92.htm" />
+  <HelpKINode Title="IFtpClient.SocketKeepAlive property" Url="html/b1ce28de-e5ff-95d4-7eaa-7685af9bd40e.htm" />
+  <HelpKINode Title="IFtpClient.SocketPollInterval property" Url="html/4aa78b82-9920-0658-f3b6-f15f3d666a05.htm" />
+  <HelpKINode Title="IFtpClient.SystemType property" Url="html/a943b7be-4427-4b00-40d2-4ed637819fab.htm" />
+  <HelpKINode Title="IFtpClient.ValidateCertificate event" Url="html/dd0c0d5d-006d-169c-b619-0b216093bb26.htm" />
+  <HelpKINode Title="IFtpListItem interface" Url="html/238c8d24-c170-1093-2d19-0f506bb2330a.htm" />
+  <HelpKINode Title="IFtpListItem interface" Url="html/9089620d-a36d-b162-718b-ccd1a8405dea.htm" />
+  <HelpKINode Title="IFtpListItem interface">
+    <HelpKINode Title="about IFtpListItem interface" Url="html/9089620d-a36d-b162-718b-ccd1a8405dea.htm" />
+    <HelpKINode Title="all members" Url="html/238c8d24-c170-1093-2d19-0f506bb2330a.htm" />
+    <HelpKINode Title="properties" Url="html/ad16c9f1-1716-45d2-13ed-ac0ed669726e.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IFtpListItem.Created property" Url="html/6b039071-ecae-c5eb-8f4a-5aafec888126.htm" />
+  <HelpKINode Title="IFtpListItem.FullName property" Url="html/faf57035-75ff-5a37-5c56-ae14dfe98ff0.htm" />
+  <HelpKINode Title="IFtpListItem.GroupPermissions property" Url="html/a7c6be0d-1985-1036-483a-4ddc45207311.htm" />
+  <HelpKINode Title="IFtpListItem.Input property" Url="html/6dfc9285-287b-1cb0-7e23-c1dbe5f6e1fc.htm" />
+  <HelpKINode Title="IFtpListItem.Modified property" Url="html/f872af22-d581-7e67-45db-62f624481a06.htm" />
+  <HelpKINode Title="IFtpListItem.Name property" Url="html/d7350e75-b667-92ac-0f16-bf4938ae0555.htm" />
+  <HelpKINode Title="IFtpListItem.OthersPermissions property" Url="html/6beeee27-8e18-dfe5-5d00-4f5befedc818.htm" />
+  <HelpKINode Title="IFtpListItem.OwnerPermissions property" Url="html/7f59d9e5-739a-c3cf-d586-f160be5e35eb.htm" />
+  <HelpKINode Title="IFtpListItem.Size property" Url="html/4aa5d76b-3861-daba-edd9-94cf5a49c884.htm" />
+  <HelpKINode Title="IFtpListItem.SpecialPermissions property" Url="html/e654e0ef-b5d7-ed08-6287-99427b36afb0.htm" />
+  <HelpKINode Title="IFtpListItem.Type property" Url="html/107be136-2d86-58e3-f1df-438fb3fdb0b5.htm" />
+  <HelpKINode Title="IFtpReply interface" Url="html/60c4dabb-375c-b2b3-e954-7c389dc18926.htm" />
+  <HelpKINode Title="IFtpReply interface" Url="html/640dca2d-a2ba-b36f-6243-65d2c2e5e80d.htm" />
+  <HelpKINode Title="IFtpReply interface">
+    <HelpKINode Title="about IFtpReply interface" Url="html/60c4dabb-375c-b2b3-e954-7c389dc18926.htm" />
+    <HelpKINode Title="all members" Url="html/640dca2d-a2ba-b36f-6243-65d2c2e5e80d.htm" />
+    <HelpKINode Title="properties" Url="html/e258cc45-77bd-47cf-462e-f5afd72b58df.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IFtpReply.Code property" Url="html/a687cf11-baf0-073c-6677-b130313e505b.htm" />
+  <HelpKINode Title="IFtpReply.InfoMessages property" Url="html/bf693481-8a3e-4e34-8a83-99c3329ebc94.htm" />
+  <HelpKINode Title="IFtpReply.Message property" Url="html/4d03919d-0e75-c8b2-a1cb-58576e63b084.htm" />
+  <HelpKINode Title="IFtpReply.Success property" Url="html/e1a9afb9-9fb5-bf99-8af6-c5fd8b91f30c.htm" />
+  <HelpKINode Title="IFtpReply.Type property" Url="html/ebca6d8b-b565-7c67-5bb4-77718cec6e7d.htm" />
+  <HelpKINode Title="Implicit enumeration member" Url="html/0618d916-49ad-0bd3-f6d1-5e992effa11f.htm" />
+  <HelpKINode Title="InfoMessages property" Url="html/27aa8f3f-898f-fd95-df01-8081251bc539.htm" />
+  <HelpKINode Title="InfoMessages property" Url="html/bf693481-8a3e-4e34-8a83-99c3329ebc94.htm" />
+  <HelpKINode Title="Input property" Url="html/4fbbfa14-1c2e-bc39-0cfb-a3443670bd1b.htm" />
+  <HelpKINode Title="Input property" Url="html/6dfc9285-287b-1cb0-7e23-c1dbe5f6e1fc.htm" />
+  <HelpKINode Title="InternetProtocolVersions property" Url="html/69d1cd6c-74d0-d09b-559d-6ff330878666.htm" />
+  <HelpKINode Title="IPv4 enumeration member" Url="html/717523ab-ece3-4b29-16c3-2fbb16c40314.htm" />
+  <HelpKINode Title="IPv6 enumeration member" Url="html/717523ab-ece3-4b29-16c3-2fbb16c40314.htm" />
+  <HelpKINode Title="IsConnected property" Url="html/15531155-40cf-abad-80e2-ff0856cfce10.htm" />
+  <HelpKINode Title="IsConnected property" Url="html/948e2c23-0d8e-4cf9-1574-7a7ab4a87ff6.htm" />
+  <HelpKINode Title="IsDisposed property" Url="html/daa3dc77-a242-fbd9-4e52-eb741c0df93c.htm" />
+  <HelpKINode Title="IsValid property" Url="html/5c72dce3-a6bb-d721-101c-7ec8afae2802.htm" />
+  <HelpKINode Title="Link enumeration member" Url="html/78e538e4-cf96-e2bb-f17a-2477daba6b81.htm" />
+  <HelpKINode Title="LinkObject property" Url="html/08feba86-41ee-b98d-7f44-1dfcba8c0560.htm" />
+  <HelpKINode Title="LinkTarget property" Url="html/d67745fd-5a38-11d1-91da-cc4e5e4bfa46.htm" />
+  <HelpKINode Title="MaximumDereferenceCount property" Url="html/7da7d425-eadc-509b-2a13-87a3aa22f487.htm" />
+  <HelpKINode Title="MD5 class" Url="html/0d2aaf60-5c7d-b44d-0f70-977ba8db7f04.htm" />
+  <HelpKINode Title="MD5 class" Url="html/97e8cdb2-f1da-d089-9b4f-23a74646f1f3.htm" />
+  <HelpKINode Title="MD5 class">
+    <HelpKINode Title="about MD5 class" Url="html/0d2aaf60-5c7d-b44d-0f70-977ba8db7f04.htm" />
+    <HelpKINode Title="all members" Url="html/97e8cdb2-f1da-d089-9b4f-23a74646f1f3.htm" />
+    <HelpKINode Title="methods" Url="html/cb333814-772f-cbba-edc5-d99be69a62a6.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MD5 enumeration member" Url="html/afffedd1-81cb-538c-a35c-21a6b9653964.htm" />
+  <HelpKINode Title="MD5 enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="MD5.BeginGetMD5 method" Url="html/80349e53-2622-8dbc-90a8-41390bf7c6d8.htm" />
+  <HelpKINode Title="MD5.EndGetMD5 method" Url="html/1dab3ccf-8810-4d9d-4764-5a4a19246f4f.htm" />
+  <HelpKINode Title="MD5.GetMD5 method" Url="html/d817cf90-bf68-3edf-dbf1-28b9d205694d.htm" />
+  <HelpKINode Title="MDTM enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="Message property" Url="html/4d03919d-0e75-c8b2-a1cb-58576e63b084.htm" />
+  <HelpKINode Title="Message property" Url="html/686639b0-45c5-017a-233d-64b6efbd2220.htm" />
+  <HelpKINode Title="MFCT enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="MFF enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="MFMT enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="MLSD enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="Modified property" Url="html/4a1d9db5-68ec-f8b7-c96c-6bcee9a517f5.htm" />
+  <HelpKINode Title="Modified property" Url="html/f872af22-d581-7e67-45db-62f624481a06.htm" />
+  <HelpKINode Title="Modify enumeration member" Url="html/b9fc31fc-a188-f102-a9a8-f83ef65f0d5f.htm" />
+  <HelpKINode Title="Name property" Url="html/2485dd82-6b3e-1530-4207-ed78470ca1d2.htm" />
+  <HelpKINode Title="Name property" Url="html/d7350e75-b667-92ac-0f16-bf4938ae0555.htm" />
+  <HelpKINode Title="NameList enumeration member" Url="html/b9fc31fc-a188-f102-a9a8-f83ef65f0d5f.htm" />
+  <HelpKINode Title="NONE enumeration member" Url="html/afffedd1-81cb-538c-a35c-21a6b9653964.htm" />
+  <HelpKINode Title="None enumeration member" Url="html/1381ab72-c51c-41be-47a5-d1d4bb6dd43e.htm" />
+  <HelpKINode Title="None enumeration member" Url="html/69f43f94-7367-8c41-374b-700fd5d23a6a.htm" />
+  <HelpKINode Title="None enumeration member" Url="html/229af06c-14fd-1d8c-ffa3-8e08f3c7efed.htm" />
+  <HelpKINode Title="NONE enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="None enumeration member" Url="html/0618d916-49ad-0bd3-f6d1-5e992effa11f.htm" />
+  <HelpKINode Title="OpenAppend method" Url="html/1864c1f7-1036-d9d7-76c2-2d20275cd517.htm" />
+  <HelpKINode Title="OpenAppend method" Url="html/8c2d54d9-476e-feec-f26b-50704f0692d0.htm" />
+  <HelpKINode Title="OpenRead method" Url="html/dc20535f-79e7-b641-a70f-05aa705a5726.htm" />
+  <HelpKINode Title="OpenRead method" Url="html/fa0bef50-6a11-93aa-fb42-f516fb8df327.htm" />
+  <HelpKINode Title="OpenWrite method" Url="html/c50fdb36-57e6-0dd3-929b-4dc98a60e092.htm" />
+  <HelpKINode Title="OpenWrite method" Url="html/d1ca5382-31be-6ec4-e5f5-0107eecef13d.htm" />
+  <HelpKINode Title="OthersPermissions property" Url="html/6beeee27-8e18-dfe5-5d00-4f5befedc818.htm" />
+  <HelpKINode Title="OthersPermissions property" Url="html/a35b4ecd-7dc0-11f4-5bd3-d3d402d0ab90.htm" />
+  <HelpKINode Title="OwnerPermissions property" Url="html/7f59d9e5-739a-c3cf-d586-f160be5e35eb.htm" />
+  <HelpKINode Title="OwnerPermissions property" Url="html/f48ba52e-87ed-314f-c5fa-968b8f22738c.htm" />
+  <HelpKINode Title="Parse method" Url="html/bcdf8472-32e2-257a-696f-96677bac43aa.htm" />
+  <HelpKINode Title="PASV enumeration member" Url="html/53d05e63-1f71-45d2-a303-926442958a47.htm" />
+  <HelpKINode Title="PASVEX enumeration member" Url="html/53d05e63-1f71-45d2-a303-926442958a47.htm" />
+  <HelpKINode Title="PermanentNegativeCompletion enumeration member" Url="html/69f43f94-7367-8c41-374b-700fd5d23a6a.htm" />
+  <HelpKINode Title="PolicyErrors property" Url="html/a3a47f41-5166-cb1d-fedd-6e5b1a282b20.htm" />
+  <HelpKINode Title="PORT enumeration member" Url="html/53d05e63-1f71-45d2-a303-926442958a47.htm" />
+  <HelpKINode Title="Port property" Url="html/20fa54be-2f46-d65c-3339-32f54a881137.htm" />
+  <HelpKINode Title="Port property" Url="html/f364d42d-e58f-82b8-55e5-a11656ef36c7.htm" />
+  <HelpKINode Title="PositiveCompletion enumeration member" Url="html/69f43f94-7367-8c41-374b-700fd5d23a6a.htm" />
+  <HelpKINode Title="PositiveIntermediate enumeration member" Url="html/69f43f94-7367-8c41-374b-700fd5d23a6a.htm" />
+  <HelpKINode Title="PositivePreliminary enumeration member" Url="html/69f43f94-7367-8c41-374b-700fd5d23a6a.htm" />
+  <HelpKINode Title="PRET enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="Read enumeration member" Url="html/229af06c-14fd-1d8c-ffa3-8e08f3c7efed.htm" />
+  <HelpKINode Title="ReadTimeout property" Url="html/a4560107-d936-51df-7377-2eefed73be53.htm" />
+  <HelpKINode Title="ReadTimeout property" Url="html/fd2f890c-096c-bc18-fd5c-e8ee8d630329.htm" />
+  <HelpKINode Title="RemoveListener method" Url="html/2007574c-bd69-8993-604c-e5f836146e66.htm" />
+  <HelpKINode Title="RemoveParser method" Url="html/4e0af850-6a7b-a8aa-d9d3-16c786882a86.htm" />
+  <HelpKINode Title="Rename method" Url="html/7f659b41-4a5a-a725-064b-2440c55ace92.htm" />
+  <HelpKINode Title="Rename method" Url="html/8f50cfc0-8458-db6f-936f-17152d6f4bb8.htm" />
+  <HelpKINode Title="ResponseType property" Url="html/f18e97fd-343e-fa83-de65-ae58d0a992fc.htm" />
+  <HelpKINode Title="REST enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="SetDataType method" Url="html/adf6ed9e-131f-bb02-f0af-fbdc52b89b54.htm" />
+  <HelpKINode Title="SetDataType method" Url="html/d3934946-e550-d68f-16c7-db07e5e18c53.htm" />
+  <HelpKINode Title="SetGroupID enumeration member" Url="html/1381ab72-c51c-41be-47a5-d1d4bb6dd43e.htm" />
+  <HelpKINode Title="SetHashAlgorithm method" Url="html/11a6c497-16e3-0253-73bf-b9f164f36d0d.htm" />
+  <HelpKINode Title="SetHashAlgorithm method" Url="html/95270171-81a9-0736-4658-4d75d9f990e9.htm" />
+  <HelpKINode Title="SetUserID enumeration member" Url="html/1381ab72-c51c-41be-47a5-d1d4bb6dd43e.htm" />
+  <HelpKINode Title="SetWorkingDirectory method" Url="html/7414b9da-76f2-5cd8-12f5-e6dd7a8b9b92.htm" />
+  <HelpKINode Title="SetWorkingDirectory method" Url="html/d0b7c4e5-6a03-27a9-1efe-b4f1d7dc4585.htm" />
+  <HelpKINode Title="SHA1 enumeration member" Url="html/afffedd1-81cb-538c-a35c-21a6b9653964.htm" />
+  <HelpKINode Title="SHA256 enumeration member" Url="html/afffedd1-81cb-538c-a35c-21a6b9653964.htm" />
+  <HelpKINode Title="SHA512 enumeration member" Url="html/afffedd1-81cb-538c-a35c-21a6b9653964.htm" />
+  <HelpKINode Title="Size enumeration member" Url="html/b9fc31fc-a188-f102-a9a8-f83ef65f0d5f.htm" />
+  <HelpKINode Title="SIZE enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="Size property" Url="html/4aa5d76b-3861-daba-edd9-94cf5a49c884.htm" />
+  <HelpKINode Title="Size property" Url="html/daa8ba63-195a-a641-1b7a-7d79a2678559.htm" />
+  <HelpKINode Title="SizeModify enumeration member" Url="html/b9fc31fc-a188-f102-a9a8-f83ef65f0d5f.htm" />
+  <HelpKINode Title="SocketKeepAlive property" Url="html/b1ce28de-e5ff-95d4-7eaa-7685af9bd40e.htm" />
+  <HelpKINode Title="SocketKeepAlive property" Url="html/fd34ac5f-d8eb-c1c6-be40-c11e725cd1ff.htm" />
+  <HelpKINode Title="SocketPollInterval property" Url="html/4aa78b82-9920-0658-f3b6-f15f3d666a05.htm" />
+  <HelpKINode Title="SocketPollInterval property" Url="html/61584ffa-26de-c3c5-4868-f1da7a96565d.htm" />
+  <HelpKINode Title="SpecialPermissions property" Url="html/c63e4d83-4cd6-1c4e-3702-4f653d8f76e0.htm" />
+  <HelpKINode Title="SpecialPermissions property" Url="html/e654e0ef-b5d7-ed08-6287-99427b36afb0.htm" />
+  <HelpKINode Title="STAT enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="Sticky enumeration member" Url="html/1381ab72-c51c-41be-47a5-d1d4bb6dd43e.htm" />
+  <HelpKINode Title="Success property" Url="html/df92880f-ff0b-614d-407c-b38c8ca08045.htm" />
+  <HelpKINode Title="Success property" Url="html/e1a9afb9-9fb5-bf99-8af6-c5fd8b91f30c.htm" />
+  <HelpKINode Title="System.Net.FtpClient namespace" Url="html/906f6efd-bcfa-d32c-3d73-4b092905ef85.htm" />
+  <HelpKINode Title="System.Net.FtpClient.Extensions namespace" Url="html/5bf4cfb8-b52e-3533-23da-a4bc521fd047.htm" />
+  <HelpKINode Title="System.Net.FtpClient.Extensions.ChecksumExtension class" Url="html/d8c0a67d-f3f2-b77a-6d7a-40d5e671f1d8.htm" />
+  <HelpKINode Title="System.Net.FtpClient.Extensions.ChecksumExtension class" Url="html/dbd65344-18ba-851e-a8fd-fc002c09606a.htm" />
+  <HelpKINode Title="System.Net.FtpClient.Extensions.MD5 class" Url="html/0d2aaf60-5c7d-b44d-0f70-977ba8db7f04.htm" />
+  <HelpKINode Title="System.Net.FtpClient.Extensions.MD5 class" Url="html/97e8cdb2-f1da-d089-9b4f-23a74646f1f3.htm" />
+  <HelpKINode Title="System.Net.FtpClient.Extensions.XCRC class" Url="html/0cb5f1f4-af47-3ecc-02ef-fa53a394ab39.htm" />
+  <HelpKINode Title="System.Net.FtpClient.Extensions.XCRC class" Url="html/73317ebd-a903-d215-c9c0-1f9d247765f2.htm" />
+  <HelpKINode Title="System.Net.FtpClient.Extensions.XMD5 class" Url="html/90695c86-283b-bcfb-cc00-7dbb56b03791.htm" />
+  <HelpKINode Title="System.Net.FtpClient.Extensions.XMD5 class" Url="html/d9939eac-b5a4-442a-0525-1da52d2ba498.htm" />
+  <HelpKINode Title="System.Net.FtpClient.Extensions.XSHA1 class" Url="html/6d568536-04a9-ce5d-699c-d1fe71b86014.htm" />
+  <HelpKINode Title="System.Net.FtpClient.Extensions.XSHA1 class" Url="html/b8768145-addc-b1b7-961c-a199227447a6.htm" />
+  <HelpKINode Title="System.Net.FtpClient.Extensions.XSHA256 class" Url="html/d888e821-baf1-f179-6a28-fa67dc1c896b.htm" />
+  <HelpKINode Title="System.Net.FtpClient.Extensions.XSHA256 class" Url="html/dec66f0f-c9e3-f28d-7a7f-c50e10591276.htm" />
+  <HelpKINode Title="System.Net.FtpClient.Extensions.XSHA512 class" Url="html/421329ab-dc58-76e1-9d6e-9eeef396748e.htm" />
+  <HelpKINode Title="System.Net.FtpClient.Extensions.XSHA512 class" Url="html/f7aeec36-2870-7c59-3fec-8b405e1bbe8c.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpCapability enumeration" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpClient class" Url="html/72e7ffd6-c16e-15e4-fce9-a7c6d4373fec.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpClient class" Url="html/ab482cbc-b370-e8b4-07ca-82fe6be954c6.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpCommandException class" Url="html/35a1d1af-ecfe-1df3-11de-7736da6ffc00.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpCommandException class" Url="html/a3971d99-842b-f1a4-7e97-fbdab8494a61.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpDataConnectionType enumeration" Url="html/53d05e63-1f71-45d2-a303-926442958a47.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpDataType enumeration" Url="html/bc53eb48-fa9e-4593-34ba-faf8d650361a.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpEncryptionMode enumeration" Url="html/0618d916-49ad-0bd3-f6d1-5e992effa11f.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpException class" Url="html/5280557b-774c-34c5-9a36-b6d31ec23df1.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpException class" Url="html/85c01980-12bf-7e90-8e70-76a7aacaeece.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpExtensions class" Url="html/256bafd4-353d-ced0-4e7f-db924324765a.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpExtensions class" Url="html/8474fa3d-b79d-f5b9-8217-e8e8de6c5eb3.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpFileSystemObjectType enumeration" Url="html/78e538e4-cf96-e2bb-f17a-2477daba6b81.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpHash class" Url="html/2cf2533b-74e7-badf-6953-15d08d9b0eba.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpHash class" Url="html/e6bc3ed1-3811-854a-4f2d-464dd93c13c5.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpHashAlgorithm enumeration" Url="html/afffedd1-81cb-538c-a35c-21a6b9653964.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpIpVersion enumeration" Url="html/717523ab-ece3-4b29-16c3-2fbb16c40314.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpListItem class" Url="html/36afdb8d-3d58-7f6d-1229-bea408e9822b.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpListItem class" Url="html/bb18148e-9f0a-d09a-fd19-8ec5929cab62.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpListItem.Parser delegate" Url="html/aee3731b-d1a9-d75f-612e-add7b8cb97b9.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpListOption enumeration" Url="html/b9fc31fc-a188-f102-a9a8-f83ef65f0d5f.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpPermission enumeration" Url="html/229af06c-14fd-1d8c-ffa3-8e08f3c7efed.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpReply structure" Url="html/7c56938d-1b8b-152c-fe59-6cd7c94a86da.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpReply structure" Url="html/850cfe3e-94bd-e991-6345-5436fc50c9d5.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpResponseType enumeration" Url="html/69f43f94-7367-8c41-374b-700fd5d23a6a.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpSecrutiyNotAvailableException class" Url="html/43e15877-f9d7-0b38-c49d-8193746c598b.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpSecrutiyNotAvailableException class" Url="html/d19c33e5-64fe-0358-2632-eecc3644793e.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpSpecialPermissions enumeration" Url="html/1381ab72-c51c-41be-47a5-d1d4bb6dd43e.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpSslValidation delegate" Url="html/e7f46e4a-bd65-88b1-2720-38c05801431a.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpSslValidationEventArgs class" Url="html/88fbbb38-3ed3-53f0-978d-8e9418eb7f07.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpSslValidationEventArgs class" Url="html/c29d622d-d4a2-1681-fd2b-14da925f4a3f.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpTrace class" Url="html/8ce798d1-1f00-bb99-553e-7defd6786e8d.htm" />
+  <HelpKINode Title="System.Net.FtpClient.FtpTrace class" Url="html/fef9a8eb-582d-27f8-aba8-a1def002b796.htm" />
+  <HelpKINode Title="System.Net.FtpClient.IFtpClient interface" Url="html/d6196682-e943-8366-edde-9b744afbc9d3.htm" />
+  <HelpKINode Title="System.Net.FtpClient.IFtpClient interface" Url="html/e8f97041-926d-bea6-3d54-e53c327bdd06.htm" />
+  <HelpKINode Title="System.Net.FtpClient.IFtpListItem interface" Url="html/238c8d24-c170-1093-2d19-0f506bb2330a.htm" />
+  <HelpKINode Title="System.Net.FtpClient.IFtpListItem interface" Url="html/9089620d-a36d-b162-718b-ccd1a8405dea.htm" />
+  <HelpKINode Title="System.Net.FtpClient.IFtpReply interface" Url="html/60c4dabb-375c-b2b3-e954-7c389dc18926.htm" />
+  <HelpKINode Title="System.Net.FtpClient.IFtpReply interface" Url="html/640dca2d-a2ba-b36f-6243-65d2c2e5e80d.htm" />
+  <HelpKINode Title="SystemType property" Url="html/24492795-7005-323a-15b3-77f86317202f.htm" />
+  <HelpKINode Title="SystemType property" Url="html/a943b7be-4427-4b00-40d2-4ed637819fab.htm" />
+  <HelpKINode Title="ToString method" Url="html/5b7e0c56-3076-7fdf-c95f-6ef619aa6518.htm" />
+  <HelpKINode Title="TransientNegativeCompletion enumeration member" Url="html/69f43f94-7367-8c41-374b-700fd5d23a6a.htm" />
+  <HelpKINode Title="Type property" Url="html/0fa3c4b0-cd29-3705-a26c-02a98cdc208a.htm" />
+  <HelpKINode Title="Type property" Url="html/107be136-2d86-58e3-f1df-438fb3fdb0b5.htm" />
+  <HelpKINode Title="Type property" Url="html/e8c52609-5bd2-e8d1-dd96-f5ba663b75b0.htm" />
+  <HelpKINode Title="Type property" Url="html/ebca6d8b-b565-7c67-5bb4-77718cec6e7d.htm" />
+  <HelpKINode Title="UTF8 enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="ValidateCertificate event" Url="html/bf49b8aa-e896-37b7-dbc7-b1baadade665.htm" />
+  <HelpKINode Title="ValidateCertificate event" Url="html/dd0c0d5d-006d-169c-b619-0b216093bb26.htm" />
+  <HelpKINode Title="Value property" Url="html/469551c2-2be7-bd9a-2f43-35d45f4a2ebf.htm" />
+  <HelpKINode Title="Verify method" Url="html/0bf6610b-75b0-f0d2-84d5-c5eddf614ca8.htm" />
+  <HelpKINode Title="Write enumeration member" Url="html/229af06c-14fd-1d8c-ffa3-8e08f3c7efed.htm" />
+  <HelpKINode Title="Write method" Url="html/01f16f36-1f5b-a7ad-7c98-20f58f1e51ac.htm" />
+  <HelpKINode Title="WriteLine method" Url="html/6f346b8f-5985-2b10-bf1b-24d563fb3d02.htm" />
+  <HelpKINode Title="XCRC class" Url="html/0cb5f1f4-af47-3ecc-02ef-fa53a394ab39.htm" />
+  <HelpKINode Title="XCRC class" Url="html/73317ebd-a903-d215-c9c0-1f9d247765f2.htm" />
+  <HelpKINode Title="XCRC class">
+    <HelpKINode Title="about XCRC class" Url="html/0cb5f1f4-af47-3ecc-02ef-fa53a394ab39.htm" />
+    <HelpKINode Title="all members" Url="html/73317ebd-a903-d215-c9c0-1f9d247765f2.htm" />
+    <HelpKINode Title="methods" Url="html/7bc8b2c8-dc4d-4185-3c9e-553f82749113.htm" />
+  </HelpKINode>
+  <HelpKINode Title="XCRC enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="XCRC.BeginGetXCRC method" Url="html/c0c9ac58-7989-3a9d-ff45-27f9214db1b2.htm" />
+  <HelpKINode Title="XCRC.EndGetXCRC method" Url="html/e6474a16-cdc5-493d-2d94-fd08d7587b3a.htm" />
+  <HelpKINode Title="XCRC.GetXCRC method" Url="html/334de936-43aa-5ae9-390f-fe0d38380be5.htm" />
+  <HelpKINode Title="XMD5 class" Url="html/90695c86-283b-bcfb-cc00-7dbb56b03791.htm" />
+  <HelpKINode Title="XMD5 class" Url="html/d9939eac-b5a4-442a-0525-1da52d2ba498.htm" />
+  <HelpKINode Title="XMD5 class">
+    <HelpKINode Title="about XMD5 class" Url="html/90695c86-283b-bcfb-cc00-7dbb56b03791.htm" />
+    <HelpKINode Title="all members" Url="html/d9939eac-b5a4-442a-0525-1da52d2ba498.htm" />
+    <HelpKINode Title="methods" Url="html/aa05d1a0-524b-4887-197d-e4f0341477f1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="XMD5 enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="XMD5.BeginGetXMD5 method" Url="html/170ef450-b310-bb8f-b265-8fca67510fe6.htm" />
+  <HelpKINode Title="XMD5.EndGetXMD5 method" Url="html/df8ae70f-1725-35d9-b6f3-94d2c777fb47.htm" />
+  <HelpKINode Title="XMD5.GetXMD5 method" Url="html/4298e5b5-fbd4-b84d-c1f7-074e509f6539.htm" />
+  <HelpKINode Title="XSHA1 class" Url="html/6d568536-04a9-ce5d-699c-d1fe71b86014.htm" />
+  <HelpKINode Title="XSHA1 class" Url="html/b8768145-addc-b1b7-961c-a199227447a6.htm" />
+  <HelpKINode Title="XSHA1 class">
+    <HelpKINode Title="about XSHA1 class" Url="html/6d568536-04a9-ce5d-699c-d1fe71b86014.htm" />
+    <HelpKINode Title="all members" Url="html/b8768145-addc-b1b7-961c-a199227447a6.htm" />
+    <HelpKINode Title="methods" Url="html/956eb872-b1d0-3144-f9e1-ef12fbdaae15.htm" />
+  </HelpKINode>
+  <HelpKINode Title="XSHA1 enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="XSHA1.BeginGetXSHA1 method" Url="html/9bb07f94-ab7a-633b-79d9-76210f94ba35.htm" />
+  <HelpKINode Title="XSHA1.EndGetXSHA1 method" Url="html/54e2c099-6d0d-e433-a698-6c77b509e989.htm" />
+  <HelpKINode Title="XSHA1.GetXSHA1 method" Url="html/58077206-2b7d-39a0-d681-d5a1829cfddd.htm" />
+  <HelpKINode Title="XSHA256 class" Url="html/d888e821-baf1-f179-6a28-fa67dc1c896b.htm" />
+  <HelpKINode Title="XSHA256 class" Url="html/dec66f0f-c9e3-f28d-7a7f-c50e10591276.htm" />
+  <HelpKINode Title="XSHA256 class">
+    <HelpKINode Title="about XSHA256 class" Url="html/dec66f0f-c9e3-f28d-7a7f-c50e10591276.htm" />
+    <HelpKINode Title="all members" Url="html/d888e821-baf1-f179-6a28-fa67dc1c896b.htm" />
+    <HelpKINode Title="methods" Url="html/d5ce6af0-23a5-832c-c020-c7b20efbee6b.htm" />
+  </HelpKINode>
+  <HelpKINode Title="XSHA256 enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="XSHA256.BeginGetXSHA256 method" Url="html/db1ab6d4-9b17-0745-6c04-04251682daa9.htm" />
+  <HelpKINode Title="XSHA256.EndGetXSHA256 method" Url="html/2742f35d-51ad-19a4-4e9a-3ec41d71efb6.htm" />
+  <HelpKINode Title="XSHA256.GetXSHA256 method" Url="html/d27a762d-a729-3207-96ee-3b63390ea38a.htm" />
+  <HelpKINode Title="XSHA512 class" Url="html/421329ab-dc58-76e1-9d6e-9eeef396748e.htm" />
+  <HelpKINode Title="XSHA512 class" Url="html/f7aeec36-2870-7c59-3fec-8b405e1bbe8c.htm" />
+  <HelpKINode Title="XSHA512 class">
+    <HelpKINode Title="about XSHA512 class" Url="html/f7aeec36-2870-7c59-3fec-8b405e1bbe8c.htm" />
+    <HelpKINode Title="all members" Url="html/421329ab-dc58-76e1-9d6e-9eeef396748e.htm" />
+    <HelpKINode Title="methods" Url="html/28cc9547-cbce-6170-f6ac-f82f47e7fb78.htm" />
+  </HelpKINode>
+  <HelpKINode Title="XSHA512 enumeration member" Url="html/c5082d6e-41c0-a2b8-8553-d73ad5fee912.htm" />
+  <HelpKINode Title="XSHA512.BeginGetXSHA512 method" Url="html/a21d56f9-5ade-9075-75e0-13584f5c38cd.htm" />
+  <HelpKINode Title="XSHA512.EndGetXSHA512 method" Url="html/b197b621-ec17-6263-04cd-eb6c4c49e8eb.htm" />
+  <HelpKINode Title="XSHA512.GetXSHA512 method" Url="html/c3f1b211-5cc9-5979-3e32-abfeebba5833.htm" />
+</HelpKI>

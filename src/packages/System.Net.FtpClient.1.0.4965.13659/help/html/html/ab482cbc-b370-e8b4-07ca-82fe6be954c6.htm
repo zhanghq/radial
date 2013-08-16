@@ -1,0 +1,423 @@
+﻿<html xmlns:MSHelp="http://msdn.microsoft.com/mshelp" xmlns:mshelp="http://msdn.microsoft.com/mshelp" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:msxsl="urn:schemas-microsoft-com:xslt"><head><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8" /><META NAME="save" CONTENT="history" /><title>FtpClient Class</title><meta name="Language" content="en-us" /><meta name="System.Keywords" content="FtpClient class" /><meta name="System.Keywords" content="System.Net.FtpClient.FtpClient class" /><meta name="System.Keywords" content="FtpClient class, about FtpClient class" /><meta name="Microsoft.Help.F1" content="System.Net.FtpClient.FtpClient" /><meta name="Microsoft.Help.Id" content="T:System.Net.FtpClient.FtpClient" /><meta name="Description" content="FTP Control Connection. Speaks the FTP protocol with the server and provides facilities for performing basic transactions." /><meta name="Microsoft.Help.ContentType" content="Reference" /><link rel="stylesheet" type="text/css" href="../styles/Presentation.css" /><script type="text/javascript" src="../scripts/EventUtilities.js"> </script><script type="text/javascript" src="../scripts/SplitScreen.js"> </script><script type="text/javascript" src="../scripts/Dropdown.js"> </script><script type="text/javascript" src="../scripts/script_manifold.js"> </script><script type="text/javascript" src="../scripts/script_feedBack.js"> </script><script type="text/javascript" src="../scripts/CheckboxMenu.js"> </script><script type="text/javascript" src="../scripts/CommonUtilities.js"> </script><meta name="container" content="System.Net.FtpClient" /><meta name="file" content="ab482cbc-b370-e8b4-07ca-82fe6be954c6" /><meta name="guid" content="ab482cbc-b370-e8b4-07ca-82fe6be954c6" /><link type="text/css" rel="stylesheet" href="../styles/highlight.css" /><script type="text/javascript" src="../scripts/highlight.js"> </script></head><body><input type="hidden" id="userDataCache" class="userDataStyle" /><input type="hidden" id="hiddenScrollOffset" /><img id="collapseImage" style="display:none; height:0; width:0;" src="../icons/collapse_all.gif" alt="Collapse image" title="Collapse image" /><img id="expandImage" style="display:none; height:0; width:0;" src="../icons/expand_all.gif" alt="Expand Image" title="Expand Image" /><img id="collapseAllImage" style="display:none; height:0; width:0;" src="../icons/collapse_all.gif" /><img id="expandAllImage" style="display:none; height:0; width:0;" src="../icons/expand_all.gif" /><img id="dropDownImage" style="display:none; height:0; width:0;" src="../icons/dropdown.gif" /><img id="dropDownHoverImage" style="display:none; height:0; width:0;" src="../icons/dropdownHover.gif" /><img id="copyImage" style="display:none; height:0; width:0;" src="../icons/copycode.gif" alt="Copy image" title="Copy image" /><img id="copyHoverImage" style="display:none; height:0; width:0;" src="../icons/copycodeHighlight.gif" alt="CopyHover image" title="CopyHover image" /><div id="header"><table id="topTable" cellspacing="0" cellpadding="0"><tr><td><span onclick="ExpandCollapseAll(toggleAllImage)" style="cursor:default;" onkeypress="ExpandCollapseAll_CheckKey(toggleAllImage, event)" tabindex="0"><img ID="toggleAllImage" class="toggleAll" src="../icons/collapse_all.gif" /> <label id="collapseAllLabel" for="toggleAllImage" style="display: none;">Collapse All</label><label id="expandAllLabel" for="toggleAllImage" style="display: none;">Expand All</label> </span><span>    </span><span id="devlangsDropdown" class="filter" tabindex="0"><img id="devlangsDropdownImage" src="../icons/dropdown.gif" /> <label id="devlangsMenuAllLabel" for="devlangsDropdownImage" style="display: none;"><nobr>Code: All </nobr></label><label id="devlangsMenuMultipleLabel" for="devlangsDropdownImage" style="display: none;"><nobr>Code: Multiple </nobr></label><label id="devlangsMenuCSharpLabel" for="devlangsDropdownImage" style="display: none;"><nobr>Code: C# </nobr></label><label id="devlangsMenuVisualBasicLabel" for="devlangsDropdownImage" style="display: none;"><nobr>Code: Visual Basic </nobr></label><label id="devlangsMenuManagedCPlusPlusLabel" for="devlangsDropdownImage" style="display: none;"><nobr>Code: Visual C++ </nobr></label></span></td></tr></table><div id="devlangsMenu"><input id="CSharpCheckbox" type="checkbox" data="CSharp,cs,'persist'" value="on" onClick="SetLanguage(this)" /><label class="checkboxLabel" for="CSharpCheckbox">C#</label><br /><input id="VisualBasicCheckbox" type="checkbox" data="VisualBasic,vb,'persist'" value="on" onClick="SetLanguage(this)" /><label class="checkboxLabel" for="VisualBasicCheckbox">Visual Basic</label><br /><input id="ManagedCPlusPlusCheckbox" type="checkbox" data="ManagedCPlusPlus,cpp,'persist'" value="on" onClick="SetLanguage(this)" /><label class="checkboxLabel" for="ManagedCPlusPlusCheckbox">Visual C++</label><br /></div><table id="bottomTable" cellpadding="0" cellspacing="0"><tr id="headerTableRow1"><td align="left"><span id="runningHeaderText">System.Net.FtpClient</span></td></tr><tr id="headerTableRow2"><td align="left"><span id="nsrTitle">FtpClient Class</span></td></tr><tr id="headerTableRow3"><td align="left"><a href="72e7ffd6-c16e-15e4-fce9-a7c6d4373fec.htm">Members</a> <a href="#exampleToggle" onclick="OpenSection(exampleToggle)">Example</a> <a href="#seeAlsoToggle" onclick="OpenSection(seeAlsoToggle)">See Also</a> <span id="headfeedbackarea" class="feedbackhead"><a href="#" onclick="javascript:SubmitFeedback('jptrosclair@gmail.com','System.Net.FtpClient','','','','%0\dYour%20feedback%20is%20used%20to%20improve%20the%20documentation%20and%20the%20product.%20Your%20e-mail%20address%20will%20not%20be%20used%20for%20any%20other%20purpose%20and%20is%20disposed%20of%20after%20the%20issue%20you%20report%20is%20resolved.%20%20While%20working%20to%20resolve%20the%20issue%20that%20you%20report,%20you%20may%20be%20contacted%20via%20e-mail%20to%20get%20further%20details%20or%20clarification%20on%20the%20feedback%20you%20sent.%20After%20the%20issue%20you%20report%20has%20been%20addressed,%20you%20may%20receive%20an%20e-mail%20to%20let%20you%20know%20that%20your%20feedback%20has%20been%20addressed.%0\A%0\d','Customer%20Feedback'); return false;">Send Feedback</a></span></td></tr></table><table id="gradientTable"><tr><td class="nsrBottom" id="headerBottom"><img id="headerBottomImage" style="display: none;" src="../icons/gradient.gif" /></td></tr></table></div><div id="mainSection"><div id="mainBody"><div id="allHistory" class="saveHistory" onsave="saveAll()" onload="loadAll()" /><span style="color: DarkGray"></span><div class="summary">
+            FTP Control Connection. Speaks the FTP protocol with the server and
+            provides facilities for performing basic transactions.
+            
+            Debugging problems with FTP transactions is much easier to do when
+            you can see exactly what is sent to the server and the reply 
+            System.Net.FtpClient gets in return. Please review the Debug example
+            below for information on how to add TraceListeners for capturing
+            the convorsation between System.Net.FtpClient and the server.
+            </div><p /><b>Namespace:</b> <a href="906f6efd-bcfa-d32c-3d73-4b092905ef85.htm">System.Net.FtpClient</a><br /><b>Assembly:</b> <span sdata="assembly">System.Net.FtpClient</span> (in System.Net.FtpClient.dll) Version: 1.0.4965.13659<h1 class="heading"><span onclick="ExpandCollapse(syntaxToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(syntaxToggle, event)" tabindex="0"><img id="syntaxToggle" class="toggle" name="toggleSwitch" src="../icons/collapse_all.gif" />Syntax</span></h1><div id="syntaxSection" class="section" name="collapseableSection" style=""><div id="syntaxCodeBlocks" class="code"><span codeLanguage="CSharp"><table><tr><th>C#</th></tr><tr><td><pre xml:space="preserve"><span class="keyword">public</span> <span class="keyword">class</span> <span class="identifier">FtpClient</span> : <a href="http://msdn2.microsoft.com/en-us/library/aax125c9" target="_blank">IDisposable</a>, <a href="e8f97041-926d-bea6-3d54-e53c327bdd06.htm">IFtpClient</a></pre></td></tr></table></span><span codeLanguage="VisualBasicDeclaration"><table><tr><th>Visual Basic</th></tr><tr><td><pre xml:space="preserve"><span class="keyword">Public</span> <span class="keyword">Class</span> <span class="identifier">FtpClient</span> _
+	<span class="keyword">Implements</span> <a href="http://msdn2.microsoft.com/en-us/library/aax125c9" target="_blank">IDisposable</a>, <a href="e8f97041-926d-bea6-3d54-e53c327bdd06.htm">IFtpClient</a></pre></td></tr></table></span><span codeLanguage="ManagedCPlusPlus"><table><tr><th>Visual C++</th></tr><tr><td><pre xml:space="preserve"><span class="keyword">public</span> <span class="keyword">ref class</span> <span class="identifier">FtpClient</span> : <a href="http://msdn2.microsoft.com/en-us/library/aax125c9" target="_blank">IDisposable</a>, 
+	<a href="e8f97041-926d-bea6-3d54-e53c327bdd06.htm">IFtpClient</a></pre></td></tr></table></span></div></div><h1 class="heading"><span onclick="ExpandCollapse(exampleToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(exampleToggle, event)" tabindex="0"><img id="exampleToggle" class="toggle" name="toggleSwitch" src="../icons/collapse_all.gif" />Examples</span></h1><div id="exampleSection" class="section" name="collapseableSection" style="">The following example illustrates how to assist in debugging
+            System.Net.FtpClient by getting a transaction log from the server.
+            <div class="code"><span codeLanguage="CSharp"><table width="100%" cellspacing="0" cellpadding="0"><tr><th>C# </th><th><span class="copyCode" onclick="CopyCode(this)" onkeypress="CopyCode_CheckKey(this, event)" onmouseover="ChangeCopyCodeIcon(this)" onmouseout="ChangeCopyCodeIcon(this)" tabindex="0"><img class="copyCodeImage" name="ccImage" align="absmiddle" alt="Copy image" title="Copy image" src="../icons/copycode.gif" />Copy</span></th></tr><tr><td colspan="2"><pre xml:space="preserve"><span class="highlight-keyword">using</span> System;
+<span class="highlight-keyword">using</span> System.Diagnostics;
+<span class="highlight-keyword">using</span> System.Net.FtpClient;
+
+<span class="highlight-keyword">namespace</span> Examples {
+    <span class="highlight-comment">/// &lt;summary&gt;</span>
+    <span class="highlight-comment">/// Example for logging server transactions for use in debugging problems. If DEBUG</span>
+    <span class="highlight-comment">/// is defined this information is logged via System.Diagnostics.Debug.Write() as well </span>
+    <span class="highlight-comment">/// so you'll the same information in your Visual Studio Output window</span>
+    <span class="highlight-comment">/// &lt;/summary&gt;</span>
+    <span class="highlight-keyword">public</span> <span class="highlight-keyword">static</span> <span class="highlight-keyword">class</span> DebugExample {
+        <span class="highlight-comment">/// &lt;summary&gt;</span>
+        <span class="highlight-comment">/// Log to a console window</span>
+        <span class="highlight-comment">/// &lt;/summary&gt;</span>
+        <span class="highlight-keyword">static</span> <span class="highlight-keyword">void</span> LogToConsole() {
+            FtpTrace.AddListener(<span class="highlight-keyword">new</span> ConsoleTraceListener());
+
+            <span class="highlight-comment">// now use System.Net.FtpCLient as usual and the server transactions</span>
+            <span class="highlight-comment">// will be written to the Console window.</span>
+        }
+
+        <span class="highlight-comment">/// &lt;summary&gt;</span>
+        <span class="highlight-comment">/// Log to a text file</span>
+        <span class="highlight-comment">/// &lt;/summary&gt;</span>
+        <span class="highlight-keyword">static</span> <span class="highlight-keyword">void</span> LogToFile() {
+            FtpTrace.AddListener(<span class="highlight-keyword">new</span> TextWriterTraceListener(<span class="highlight-literal">"log_file.txt"</span>));
+
+            <span class="highlight-comment">// now use System.Net.FtpCLient as usual and the server transactions</span>
+            <span class="highlight-comment">// will be written to the specified log file.</span>
+        }
+
+        <span class="highlight-comment">/// &lt;summary&gt;</span>
+        <span class="highlight-comment">/// Custom trace listener class that can log the transaction</span>
+        <span class="highlight-comment">/// however you want.</span>
+        <span class="highlight-comment">/// &lt;/summary&gt;</span>
+        <span class="highlight-keyword">class</span> CustomTraceListener : TraceListener {
+            <span class="highlight-keyword">public</span> <span class="highlight-keyword">override</span> <span class="highlight-keyword">void</span> Write(<span class="highlight-keyword">string</span> message) {
+                Console.Write(message);
+            }
+
+            <span class="highlight-keyword">public</span> <span class="highlight-keyword">override</span> <span class="highlight-keyword">void</span> WriteLine(<span class="highlight-keyword">string</span> message) {
+                Console.WriteLine(message);
+            }
+        }
+
+        <span class="highlight-comment">/// &lt;summary&gt;</span>
+        <span class="highlight-comment">/// Log to a custom TraceListener</span>
+        <span class="highlight-comment">/// &lt;/summary&gt;</span>
+        <span class="highlight-keyword">static</span> <span class="highlight-keyword">void</span> LogToCustomListener() {
+            FtpTrace.AddListener(<span class="highlight-keyword">new</span> CustomTraceListener());
+        }
+    }
+}</pre></td></tr></table></span></div></div><h1 class="heading"><span onclick="ExpandCollapse(exampleToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(exampleToggle, event)" tabindex="0"><img id="exampleToggle" class="toggle" name="toggleSwitch" src="../icons/collapse_all.gif" />Examples</span></h1><div id="exampleSection" class="section" name="collapseableSection" style="">The following example demonstrates adding a custom file
+            listing parser in the event that you encounter a list format
+            not already supported.
+            <div class="code"><span codeLanguage="CSharp"><table width="100%" cellspacing="0" cellpadding="0"><tr><th>C# </th><th><span class="copyCode" onclick="CopyCode(this)" onkeypress="CopyCode_CheckKey(this, event)" onmouseover="ChangeCopyCodeIcon(this)" onmouseout="ChangeCopyCodeIcon(this)" tabindex="0"><img class="copyCodeImage" name="ccImage" align="absmiddle" alt="Copy image" title="Copy image" src="../icons/copycode.gif" />Copy</span></th></tr><tr><td colspan="2"><pre xml:space="preserve"><span class="highlight-keyword">using</span> System;
+<span class="highlight-keyword">using</span> System.Text.RegularExpressions;
+<span class="highlight-keyword">using</span> System.Net.FtpClient;
+<span class="highlight-keyword">using</span> System.Globalization;
+
+<span class="highlight-keyword">namespace</span> Examples {
+    <span class="highlight-comment">/// &lt;summary&gt;</span>
+    <span class="highlight-comment">/// This is an example a FTP file listing parser. This code in the example</span>
+    <span class="highlight-comment">/// is currently used to parse UNIX style long listings and serves as an</span>
+    <span class="highlight-comment">/// example for adding your own parser.</span>
+    <span class="highlight-comment">/// &lt;/summary&gt;</span>
+    <span class="highlight-keyword">class</span> CustomParser {
+        <span class="highlight-comment">/// &lt;summary&gt;</span>
+        <span class="highlight-comment">/// Adds a custom file listing parser</span>
+        <span class="highlight-comment">/// &lt;/summary&gt;</span>
+        <span class="highlight-keyword">public</span> <span class="highlight-keyword">static</span> <span class="highlight-keyword">void</span> AddCustomParser() {
+            FtpListItem.AddParser(<span class="highlight-keyword">new</span> FtpListItem.Parser(ParseUnixList));
+        }
+
+        <span class="highlight-comment">/// &lt;summary&gt;</span>
+        <span class="highlight-comment">/// Parses LIST format listings</span>
+        <span class="highlight-comment">/// &lt;/summary&gt;</span>
+        <span class="highlight-comment">/// &lt;param name="buf"&gt;A line from the listing&lt;/param&gt;</span>
+        <span class="highlight-comment">/// &lt;param name="capabilities"&gt;Server capabilities&lt;/param&gt;</span>
+        <span class="highlight-comment">/// &lt;returns&gt;FtpListItem if the item is able to be parsed&lt;/returns&gt;</span>
+        <span class="highlight-keyword">static</span> FtpListItem ParseUnixList(<span class="highlight-keyword">string</span> buf, FtpCapability capabilities) {
+            FtpListItem item = <span class="highlight-keyword">new</span> FtpListItem();
+            Match m = <span class="highlight-keyword">null</span>;
+            <span class="highlight-keyword">string</span> regex =
+                <span class="highlight-literal">@"(?&lt;permissions&gt;[\w-]{10})\s+"</span> +
+                <span class="highlight-literal">@"(?&lt;objectcount&gt;\d+)\s+"</span> +
+                <span class="highlight-literal">@"(?&lt;user&gt;[\w\d]+)\s+"</span> +
+                <span class="highlight-literal">@"(?&lt;group&gt;[\w\d]+)\s+"</span> +
+                <span class="highlight-literal">@"(?&lt;size&gt;\d+)\s+"</span> +
+                <span class="highlight-literal">@"(?&lt;modify&gt;\w+\s+\d+\s+\d+:\d+|\w+\s+\d+\s+\d+)\s+"</span> +
+                <span class="highlight-literal">@"(?&lt;name&gt;.*)$"</span>;
+
+            <span class="highlight-keyword">if</span> (!(m = Regex.Match(buf, regex, RegexOptions.IgnoreCase)).Success)
+                <span class="highlight-keyword">return</span> <span class="highlight-keyword">null</span>;
+
+            <span class="highlight-keyword">if</span> (m.Groups[<span class="highlight-literal">"permissions"</span>].Value.StartsWith(<span class="highlight-literal">"d"</span>))
+                item.Type = FtpFileSystemObjectType.Directory;
+            <span class="highlight-keyword">else</span> <span class="highlight-keyword">if</span> (m.Groups[<span class="highlight-literal">"permissions"</span>].Value.StartsWith(<span class="highlight-literal">"-"</span>))
+                item.Type = FtpFileSystemObjectType.File;
+            <span class="highlight-keyword">else</span>
+                <span class="highlight-keyword">return</span> <span class="highlight-keyword">null</span>;
+
+            <span class="highlight-comment">// if we can't determine a file name then</span>
+            <span class="highlight-comment">// we are not considering this a successful parsing operation.</span>
+            <span class="highlight-keyword">if</span> (m.Groups[<span class="highlight-literal">"name"</span>].Value.Length &lt; <span class="highlight-number">1</span>)
+                <span class="highlight-keyword">return</span> <span class="highlight-keyword">null</span>;
+            item.Name = m.Groups[<span class="highlight-literal">"name"</span>].Value;
+
+            <span class="highlight-keyword">if</span> (item.Type == FtpFileSystemObjectType.Directory &amp;&amp; (item.Name == <span class="highlight-literal">"."</span> || item.Name == <span class="highlight-literal">".."</span>))
+                <span class="highlight-keyword">return</span> <span class="highlight-keyword">null</span>;
+
+            <span class="highlight-comment">////</span>
+            <span class="highlight-comment">// Ignore the Modify times sent in LIST format for files</span>
+            <span class="highlight-comment">// when the server has support for the MDTM command</span>
+            <span class="highlight-comment">// because they will never be as accurate as what can be had </span>
+            <span class="highlight-comment">// by using the MDTM command. MDTM does not work on directories</span>
+            <span class="highlight-comment">// so if a modify time was parsed from the listing we will try</span>
+            <span class="highlight-comment">// to convert it to a DateTime object and use it for directories.</span>
+            <span class="highlight-comment">////</span>
+            <span class="highlight-keyword">if</span> ((!capabilities.HasFlag(FtpCapability.MDTM) || item.Type == FtpFileSystemObjectType.Directory) &amp;&amp; m.Groups[<span class="highlight-literal">"modify"</span>].Value.Length &gt; <span class="highlight-number">0</span>)
+                item.Modified = m.Groups[<span class="highlight-literal">"modify"</span>].Value.GetFtpDate(DateTimeStyles.AssumeUniversal);
+
+            <span class="highlight-keyword">if</span> (m.Groups[<span class="highlight-literal">"size"</span>].Value.Length &gt; <span class="highlight-number">0</span>) {
+                <span class="highlight-keyword">long</span> size;
+
+                <span class="highlight-keyword">if</span> (<span class="highlight-keyword">long</span>.TryParse(m.Groups[<span class="highlight-literal">"size"</span>].Value, <span class="highlight-keyword">out</span> size))
+                    item.Size = size;
+            }
+
+            <span class="highlight-keyword">if</span> (m.Groups[<span class="highlight-literal">"permissions"</span>].Value.Length &gt; <span class="highlight-number">0</span>) {
+                Match perms = Regex.Match(m.Groups[<span class="highlight-literal">"permissions"</span>].Value,
+                    <span class="highlight-literal">@"[\w-]{1}(?&lt;owner&gt;[\w-]{3})(?&lt;group&gt;[\w-]{3})(?&lt;others&gt;[\w-]{3})"</span>,
+                    RegexOptions.IgnoreCase);
+
+                <span class="highlight-keyword">if</span> (perms.Success) {
+                    <span class="highlight-keyword">if</span> (perms.Groups[<span class="highlight-literal">"owner"</span>].Value.Length == <span class="highlight-number">3</span>) {
+                        <span class="highlight-keyword">if</span> (perms.Groups[<span class="highlight-literal">"owner"</span>].Value[<span class="highlight-number">0</span>] == <span class="highlight-literal">'r'</span>)
+                            item.OwnerPermissions |= FtpPermission.Read;
+                        <span class="highlight-keyword">if</span> (perms.Groups[<span class="highlight-literal">"owner"</span>].Value[<span class="highlight-number">1</span>] == <span class="highlight-literal">'w'</span>)
+                            item.OwnerPermissions |= FtpPermission.Write;
+                        <span class="highlight-keyword">if</span> (perms.Groups[<span class="highlight-literal">"owner"</span>].Value[<span class="highlight-number">2</span>] == <span class="highlight-literal">'x'</span> || perms.Groups[<span class="highlight-literal">"owner"</span>].Value[<span class="highlight-number">2</span>] == <span class="highlight-literal">'s'</span>)
+                            item.OwnerPermissions |= FtpPermission.Execute;
+                        <span class="highlight-keyword">if</span> (perms.Groups[<span class="highlight-literal">"owner"</span>].Value[<span class="highlight-number">2</span>] == <span class="highlight-literal">'s'</span> || perms.Groups[<span class="highlight-literal">"owner"</span>].Value[<span class="highlight-number">2</span>] == <span class="highlight-literal">'S'</span>)
+                            item.SpecialPermissions |= FtpSpecialPermissions.SetUserID;
+                    }
+
+                    <span class="highlight-keyword">if</span> (perms.Groups[<span class="highlight-literal">"group"</span>].Value.Length == <span class="highlight-number">3</span>) {
+                        <span class="highlight-keyword">if</span> (perms.Groups[<span class="highlight-literal">"group"</span>].Value[<span class="highlight-number">0</span>] == <span class="highlight-literal">'r'</span>)
+                            item.GroupPermissions |= FtpPermission.Read;
+                        <span class="highlight-keyword">if</span> (perms.Groups[<span class="highlight-literal">"group"</span>].Value[<span class="highlight-number">1</span>] == <span class="highlight-literal">'w'</span>)
+                            item.GroupPermissions |= FtpPermission.Write;
+                        <span class="highlight-keyword">if</span> (perms.Groups[<span class="highlight-literal">"group"</span>].Value[<span class="highlight-number">2</span>] == <span class="highlight-literal">'x'</span> || perms.Groups[<span class="highlight-literal">"group"</span>].Value[<span class="highlight-number">2</span>] == <span class="highlight-literal">'s'</span>)
+                            item.GroupPermissions |= FtpPermission.Execute;
+                        <span class="highlight-keyword">if</span> (perms.Groups[<span class="highlight-literal">"group"</span>].Value[<span class="highlight-number">2</span>] == <span class="highlight-literal">'s'</span> || perms.Groups[<span class="highlight-literal">"group"</span>].Value[<span class="highlight-number">2</span>] == <span class="highlight-literal">'S'</span>)
+                            item.SpecialPermissions |= FtpSpecialPermissions.SetGroupID;
+                    }
+
+                    <span class="highlight-keyword">if</span> (perms.Groups[<span class="highlight-literal">"others"</span>].Value.Length == <span class="highlight-number">3</span>) {
+                        <span class="highlight-keyword">if</span> (perms.Groups[<span class="highlight-literal">"others"</span>].Value[<span class="highlight-number">0</span>] == <span class="highlight-literal">'r'</span>)
+                            item.OthersPermissions |= FtpPermission.Read;
+                        <span class="highlight-keyword">if</span> (perms.Groups[<span class="highlight-literal">"others"</span>].Value[<span class="highlight-number">1</span>] == <span class="highlight-literal">'w'</span>)
+                            item.OthersPermissions |= FtpPermission.Write;
+                        <span class="highlight-keyword">if</span> (perms.Groups[<span class="highlight-literal">"others"</span>].Value[<span class="highlight-number">2</span>] == <span class="highlight-literal">'x'</span> || perms.Groups[<span class="highlight-literal">"others"</span>].Value[<span class="highlight-number">2</span>] == <span class="highlight-literal">'t'</span>)
+                            item.OthersPermissions |= FtpPermission.Execute;
+                        <span class="highlight-keyword">if</span> (perms.Groups[<span class="highlight-literal">"others"</span>].Value[<span class="highlight-number">2</span>] == <span class="highlight-literal">'t'</span> || perms.Groups[<span class="highlight-literal">"others"</span>].Value[<span class="highlight-number">2</span>] == <span class="highlight-literal">'T'</span>)
+                            item.SpecialPermissions |= FtpSpecialPermissions.Sticky;
+                    }
+                }
+            }
+
+            <span class="highlight-keyword">return</span> item;
+        }
+    }
+}</pre></td></tr></table></span></div></div><h1 class="heading"><span onclick="ExpandCollapse(exampleToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(exampleToggle, event)" tabindex="0"><img id="exampleToggle" class="toggle" name="toggleSwitch" src="../icons/collapse_all.gif" />Examples</span></h1><div id="exampleSection" class="section" name="collapseableSection" style="">The following example demonstrates how to validate
+            a SSL certificate when using SSL/TLS.
+            <div class="code"><span codeLanguage="CSharp"><table width="100%" cellspacing="0" cellpadding="0"><tr><th>C# </th><th><span class="copyCode" onclick="CopyCode(this)" onkeypress="CopyCode_CheckKey(this, event)" onmouseover="ChangeCopyCodeIcon(this)" onmouseout="ChangeCopyCodeIcon(this)" tabindex="0"><img class="copyCodeImage" name="ccImage" align="absmiddle" alt="Copy image" title="Copy image" src="../icons/copycode.gif" />Copy</span></th></tr><tr><td colspan="2"><pre xml:space="preserve"><span class="highlight-keyword">using</span> System;
+<span class="highlight-keyword">using</span> System.Net;
+<span class="highlight-keyword">using</span> System.Net.FtpClient;
+
+<span class="highlight-keyword">namespace</span> Examples {
+    <span class="highlight-keyword">public</span> <span class="highlight-keyword">static</span> <span class="highlight-keyword">class</span> ValidateCertificateExample {
+        <span class="highlight-keyword">public</span> <span class="highlight-keyword">static</span> <span class="highlight-keyword">void</span> ValidateCertificate() {
+            <span class="highlight-keyword">using</span> (FtpClient conn = <span class="highlight-keyword">new</span> FtpClient()) {
+                conn.Host = <span class="highlight-literal">"localhost"</span>;
+                conn.Credentials = <span class="highlight-keyword">new</span> NetworkCredential(<span class="highlight-literal">"ftptest"</span>, <span class="highlight-literal">"ftptest"</span>);
+                conn.EncryptionMode = FtpEncryptionMode.Explicit;
+                conn.ValidateCertificate += <span class="highlight-keyword">new</span> FtpSslValidation(OnValidateCertificate);
+                conn.Connect();
+            }
+        }
+
+        <span class="highlight-keyword">static</span> <span class="highlight-keyword">void</span> OnValidateCertificate(FtpClient control, FtpSslValidationEventArgs e) {
+            <span class="highlight-keyword">if</span> (e.PolicyErrors != System.Net.Security.SslPolicyErrors.None) {
+                <span class="highlight-comment">// invalid cert, do you want to accept it?</span>
+                <span class="highlight-comment">// e.Accept = true;</span>
+            }
+        }
+    }
+}</pre></td></tr></table></span></div></div><h1 class="heading"><span onclick="ExpandCollapse(exampleToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(exampleToggle, event)" tabindex="0"><img id="exampleToggle" class="toggle" name="toggleSwitch" src="../icons/collapse_all.gif" />Examples</span></h1><div id="exampleSection" class="section" name="collapseableSection" style="">The following example demonsrates how to download a file.
+            <div class="code"><span codeLanguage="CSharp"><table width="100%" cellspacing="0" cellpadding="0"><tr><th>C# </th><th><span class="copyCode" onclick="CopyCode(this)" onkeypress="CopyCode_CheckKey(this, event)" onmouseover="ChangeCopyCodeIcon(this)" onmouseout="ChangeCopyCodeIcon(this)" tabindex="0"><img class="copyCodeImage" name="ccImage" align="absmiddle" alt="Copy image" title="Copy image" src="../icons/copycode.gif" />Copy</span></th></tr><tr><td colspan="2"><pre xml:space="preserve"><span class="highlight-keyword">using</span> System;
+<span class="highlight-keyword">using</span> System.IO;
+<span class="highlight-keyword">using</span> System.Net;
+<span class="highlight-keyword">using</span> System.Net.FtpClient;
+
+<span class="highlight-keyword">namespace</span> Examples {
+    <span class="highlight-keyword">public</span> <span class="highlight-keyword">class</span> OpenReadExample {
+        <span class="highlight-keyword">public</span> <span class="highlight-keyword">static</span> <span class="highlight-keyword">void</span> OpenRead() {
+            <span class="highlight-keyword">using</span>(FtpClient conn = <span class="highlight-keyword">new</span> FtpClient()) {
+                conn.Host = <span class="highlight-literal">"localhost"</span>;
+                conn.Credentials = <span class="highlight-keyword">new</span> NetworkCredential(<span class="highlight-literal">"ftptest"</span>, <span class="highlight-literal">"ftptest"</span>);
+
+                <span class="highlight-keyword">using</span>(Stream istream = conn.OpenRead(<span class="highlight-literal">"/full/or/relative/path/to/file"</span>)) {
+                    <span class="highlight-keyword">try</span> {
+                        <span class="highlight-comment">// istream.Position is incremented accordingly to the reads you perform</span>
+                        <span class="highlight-comment">// istream.Length == file size if the server supports getting the file size</span>
+                        <span class="highlight-comment">// also note that file size for the same file can vary between ASCII and Binary</span>
+                        <span class="highlight-comment">// modes and some servers won't even give a file size for ASCII files! It is</span>
+                        <span class="highlight-comment">// recommended that you stick with Binary and worry about character encodings</span>
+                        <span class="highlight-comment">// on your end of the connection.</span>
+                    }
+                    <span class="highlight-keyword">finally</span> {
+                        Console.WriteLine();
+                        istream.Close();
+                    }
+                }
+            }
+        }
+    }
+}</pre></td></tr></table></span></div></div><h1 class="heading"><span onclick="ExpandCollapse(exampleToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(exampleToggle, event)" tabindex="0"><img id="exampleToggle" class="toggle" name="toggleSwitch" src="../icons/collapse_all.gif" />Examples</span></h1><div id="exampleSection" class="section" name="collapseableSection" style="">The following example demonstrates how to download a file
+            using a URI object.
+            <div class="code"><span codeLanguage="CSharp"><table width="100%" cellspacing="0" cellpadding="0"><tr><th>C# </th><th><span class="copyCode" onclick="CopyCode(this)" onkeypress="CopyCode_CheckKey(this, event)" onmouseover="ChangeCopyCodeIcon(this)" onmouseout="ChangeCopyCodeIcon(this)" tabindex="0"><img class="copyCodeImage" name="ccImage" align="absmiddle" alt="Copy image" title="Copy image" src="../icons/copycode.gif" />Copy</span></th></tr><tr><td colspan="2"><pre xml:space="preserve"><span class="highlight-keyword">using</span> System;
+<span class="highlight-keyword">using</span> System.IO;
+<span class="highlight-keyword">using</span> System.Net.FtpClient;
+
+<span class="highlight-keyword">namespace</span> Examples {
+    <span class="highlight-keyword">public</span> <span class="highlight-keyword">static</span> <span class="highlight-keyword">class</span> OpenReadURI {
+        <span class="highlight-keyword">public</span> <span class="highlight-keyword">static</span> <span class="highlight-keyword">void</span> OpenURI() {
+            <span class="highlight-keyword">using</span> (Stream s = FtpClient.OpenRead(<span class="highlight-keyword">new</span> Uri(<span class="highlight-literal">"ftp://server/path/file"</span>))) {
+                <span class="highlight-keyword">byte</span>[] buf = <span class="highlight-keyword">new</span> <span class="highlight-keyword">byte</span>[<span class="highlight-number">8192</span>];
+                <span class="highlight-keyword">int</span> read = <span class="highlight-number">0</span>;
+
+                <span class="highlight-keyword">try</span> {
+                    <span class="highlight-keyword">while</span> ((read = s.Read(buf, <span class="highlight-number">0</span>, buf.Length)) &gt; <span class="highlight-number">0</span>) {
+                        Console.Write(<span class="highlight-literal">"\r{0}/{1} {2:p}     "</span>,
+                            s.Position, s.Length,
+                            ((<span class="highlight-keyword">double</span>)s.Position / (<span class="highlight-keyword">double</span>)s.Length));
+                    }
+                }
+                <span class="highlight-keyword">finally</span> {
+                    Console.WriteLine();
+                    s.Close();
+                }
+            }
+        }
+    }
+}</pre></td></tr></table></span></div></div><h1 class="heading"><span onclick="ExpandCollapse(exampleToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(exampleToggle, event)" tabindex="0"><img id="exampleToggle" class="toggle" name="toggleSwitch" src="../icons/collapse_all.gif" />Examples</span></h1><div id="exampleSection" class="section" name="collapseableSection" style="">The following example demonstrates how to upload a file.
+            <div class="code"><span codeLanguage="CSharp"><table width="100%" cellspacing="0" cellpadding="0"><tr><th>C# </th><th><span class="copyCode" onclick="CopyCode(this)" onkeypress="CopyCode_CheckKey(this, event)" onmouseover="ChangeCopyCodeIcon(this)" onmouseout="ChangeCopyCodeIcon(this)" tabindex="0"><img class="copyCodeImage" name="ccImage" align="absmiddle" alt="Copy image" title="Copy image" src="../icons/copycode.gif" />Copy</span></th></tr><tr><td colspan="2"><pre xml:space="preserve"><span class="highlight-keyword">using</span> System;
+<span class="highlight-keyword">using</span> System.IO;
+<span class="highlight-keyword">using</span> System.Net;
+<span class="highlight-keyword">using</span> System.Net.FtpClient;
+
+<span class="highlight-keyword">namespace</span> Examples {
+    <span class="highlight-keyword">public</span> <span class="highlight-keyword">class</span> OpenWriteExample {
+        <span class="highlight-keyword">public</span> <span class="highlight-keyword">static</span> <span class="highlight-keyword">void</span> OpenWrite() {
+            <span class="highlight-keyword">using</span> (FtpClient conn = <span class="highlight-keyword">new</span> FtpClient()) {
+                conn.Host = <span class="highlight-literal">"localhost"</span>;
+                conn.Credentials = <span class="highlight-keyword">new</span> NetworkCredential(<span class="highlight-literal">"ftptest"</span>, <span class="highlight-literal">"ftptest"</span>);
+
+                <span class="highlight-keyword">using</span> (Stream ostream = conn.OpenWrite(<span class="highlight-literal">"/full/or/relative/path/to/file"</span>)) {
+                    <span class="highlight-keyword">try</span> {
+                        <span class="highlight-comment">// istream.Position is incremented accordingly to the writes you perform</span>
+                    }
+                    <span class="highlight-keyword">finally</span> {
+                        ostream.Close();
+                    }
+                }
+            }
+        }
+    }
+}</pre></td></tr></table></span></div></div><h1 class="heading"><span onclick="ExpandCollapse(exampleToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(exampleToggle, event)" tabindex="0"><img id="exampleToggle" class="toggle" name="toggleSwitch" src="../icons/collapse_all.gif" />Examples</span></h1><div id="exampleSection" class="section" name="collapseableSection" style="">The following example demonstrates how to upload a file
+            using a URI object.
+            <div class="code"><span codeLanguage="CSharp"><table width="100%" cellspacing="0" cellpadding="0"><tr><th>C# </th><th><span class="copyCode" onclick="CopyCode(this)" onkeypress="CopyCode_CheckKey(this, event)" onmouseover="ChangeCopyCodeIcon(this)" onmouseout="ChangeCopyCodeIcon(this)" tabindex="0"><img class="copyCodeImage" name="ccImage" align="absmiddle" alt="Copy image" title="Copy image" src="../icons/copycode.gif" />Copy</span></th></tr><tr><td colspan="2"><pre xml:space="preserve"><span class="highlight-keyword">using</span> System;
+<span class="highlight-keyword">using</span> System.IO;
+<span class="highlight-keyword">using</span> System.Net.FtpClient;
+
+<span class="highlight-keyword">namespace</span> Examples {
+    <span class="highlight-keyword">static</span> <span class="highlight-keyword">class</span> OpenWriteURI {
+        <span class="highlight-keyword">public</span> <span class="highlight-keyword">static</span> <span class="highlight-keyword">void</span> OpenURI() {
+            <span class="highlight-keyword">using</span> (Stream s = FtpClient.OpenWrite(<span class="highlight-keyword">new</span> Uri(<span class="highlight-literal">"ftp://server/path/file"</span>))) {
+                <span class="highlight-keyword">try</span> {
+                    <span class="highlight-comment">// write data to the file on the server</span>
+                }
+                <span class="highlight-keyword">finally</span> {
+                    s.Close();
+                }
+            }
+        }
+    }
+}</pre></td></tr></table></span></div></div><h1 class="heading"><span onclick="ExpandCollapse(exampleToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(exampleToggle, event)" tabindex="0"><img id="exampleToggle" class="toggle" name="toggleSwitch" src="../icons/collapse_all.gif" />Examples</span></h1><div id="exampleSection" class="section" name="collapseableSection" style="">The following example demonstrates how to append to a file.
+            <div class="code"><span codeLanguage="CSharp"><table width="100%" cellspacing="0" cellpadding="0"><tr><th>C# </th><th><span class="copyCode" onclick="CopyCode(this)" onkeypress="CopyCode_CheckKey(this, event)" onmouseover="ChangeCopyCodeIcon(this)" onmouseout="ChangeCopyCodeIcon(this)" tabindex="0"><img class="copyCodeImage" name="ccImage" align="absmiddle" alt="Copy image" title="Copy image" src="../icons/copycode.gif" />Copy</span></th></tr><tr><td colspan="2"><pre xml:space="preserve"><span class="highlight-keyword">using</span> System;
+<span class="highlight-keyword">using</span> System.IO;
+<span class="highlight-keyword">using</span> System.Net;
+<span class="highlight-keyword">using</span> System.Net.FtpClient;
+
+<span class="highlight-keyword">namespace</span> Examples {
+    <span class="highlight-keyword">public</span> <span class="highlight-keyword">class</span> OpenAppendExample {
+        <span class="highlight-keyword">public</span> <span class="highlight-keyword">static</span> <span class="highlight-keyword">void</span> OpenAppend() {
+            <span class="highlight-keyword">using</span> (FtpClient conn = <span class="highlight-keyword">new</span> FtpClient()) {
+                conn.Host = <span class="highlight-literal">"localhost"</span>;
+                conn.Credentials = <span class="highlight-keyword">new</span> NetworkCredential(<span class="highlight-literal">"ftptest"</span>, <span class="highlight-literal">"ftptest"</span>);
+
+                <span class="highlight-keyword">using</span> (Stream ostream = conn.OpenAppend(<span class="highlight-literal">"/full/or/relative/path/to/file"</span>)) {
+                    <span class="highlight-keyword">try</span> {
+                        <span class="highlight-comment">// be sure to seek your output stream to the appropriate location, i.e., istream.Position</span>
+                        <span class="highlight-comment">// istream.Position is incremented accordingly to the writes you perform</span>
+                        <span class="highlight-comment">// istream.Position == file size if the server supports getting the file size</span>
+                        <span class="highlight-comment">// also note that file size for the same file can vary between ASCII and Binary</span>
+                        <span class="highlight-comment">// modes and some servers won't even give a file size for ASCII files! It is</span>
+                        <span class="highlight-comment">// recommended that you stick with Binary and worry about character encodings</span>
+                        <span class="highlight-comment">// on your end of the connection.</span>
+                    }
+                    <span class="highlight-keyword">finally</span> {
+                        ostream.Close();
+                    }
+                }
+            }
+        }
+    }
+}</pre></td></tr></table></span></div></div><h1 class="heading"><span onclick="ExpandCollapse(exampleToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(exampleToggle, event)" tabindex="0"><img id="exampleToggle" class="toggle" name="toggleSwitch" src="../icons/collapse_all.gif" />Examples</span></h1><div id="exampleSection" class="section" name="collapseableSection" style="">The following example demonstrates how to append to a file
+            using a URI object.
+            <div class="code"><span codeLanguage="CSharp"><table width="100%" cellspacing="0" cellpadding="0"><tr><th>C# </th><th><span class="copyCode" onclick="CopyCode(this)" onkeypress="CopyCode_CheckKey(this, event)" onmouseover="ChangeCopyCodeIcon(this)" onmouseout="ChangeCopyCodeIcon(this)" tabindex="0"><img class="copyCodeImage" name="ccImage" align="absmiddle" alt="Copy image" title="Copy image" src="../icons/copycode.gif" />Copy</span></th></tr><tr><td colspan="2"><pre xml:space="preserve"><span class="highlight-keyword">using</span> System;
+<span class="highlight-keyword">using</span> System.IO;
+<span class="highlight-keyword">using</span> System.Net.FtpClient;
+
+<span class="highlight-keyword">namespace</span> Examples {
+    <span class="highlight-keyword">class</span> OpenAppendURI {
+        <span class="highlight-keyword">public</span> <span class="highlight-keyword">static</span> <span class="highlight-keyword">void</span> OpenURI() {
+            <span class="highlight-keyword">using</span> (Stream s = FtpClient.OpenAppend(<span class="highlight-keyword">new</span> Uri(<span class="highlight-literal">"ftp://server/path/file"</span>))) {
+                <span class="highlight-keyword">try</span> {
+                    <span class="highlight-comment">// write data to the file on the server</span>
+                }
+                <span class="highlight-keyword">finally</span> {
+                    s.Close();
+                }
+            }
+        }
+    }
+}</pre></td></tr></table></span></div></div><h1 class="heading"><span onclick="ExpandCollapse(exampleToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(exampleToggle, event)" tabindex="0"><img id="exampleToggle" class="toggle" name="toggleSwitch" src="../icons/collapse_all.gif" />Examples</span></h1><div id="exampleSection" class="section" name="collapseableSection" style="">The following example demonstrates how to get a file
+            listing from the server.
+            <div class="code"><span codeLanguage="CSharp"><table width="100%" cellspacing="0" cellpadding="0"><tr><th>C# </th><th><span class="copyCode" onclick="CopyCode(this)" onkeypress="CopyCode_CheckKey(this, event)" onmouseover="ChangeCopyCodeIcon(this)" onmouseout="ChangeCopyCodeIcon(this)" tabindex="0"><img class="copyCodeImage" name="ccImage" align="absmiddle" alt="Copy image" title="Copy image" src="../icons/copycode.gif" />Copy</span></th></tr><tr><td colspan="2"><pre xml:space="preserve"><span class="highlight-keyword">using</span> System;
+<span class="highlight-keyword">using</span> System.Net;
+<span class="highlight-keyword">using</span> System.Net.FtpClient;
+
+<span class="highlight-keyword">namespace</span> Examples {
+    <span class="highlight-keyword">static</span> <span class="highlight-keyword">class</span> GetListingExample {
+        <span class="highlight-keyword">public</span> <span class="highlight-keyword">static</span> <span class="highlight-keyword">void</span> GetListing() {
+            <span class="highlight-keyword">using</span> (FtpClient conn = <span class="highlight-keyword">new</span> FtpClient()) {
+                conn.Host = <span class="highlight-literal">"localhost"</span>;
+                conn.Credentials = <span class="highlight-keyword">new</span> NetworkCredential(<span class="highlight-literal">"ftptest"</span>, <span class="highlight-literal">"ftptest"</span>);
+
+                <span class="highlight-keyword">foreach</span> (FtpListItem item <span class="highlight-keyword">in</span> conn.GetListing(conn.GetWorkingDirectory(),
+                    FtpListOption.Modify | FtpListOption.Size)) {
+
+                    <span class="highlight-keyword">switch</span> (item.Type) {
+                        <span class="highlight-keyword">case</span> FtpFileSystemObjectType.Directory:
+                            <span class="highlight-keyword">break</span>;
+                        <span class="highlight-keyword">case</span> FtpFileSystemObjectType.File:
+                            <span class="highlight-keyword">break</span>;
+                        <span class="highlight-keyword">case</span> FtpFileSystemObjectType.Link:
+                            <span class="highlight-comment">// derefernece symbolic links</span>
+                            <span class="highlight-keyword">if</span> (item.LinkTarget != <span class="highlight-keyword">null</span>) {
+                                <span class="highlight-comment">// see the DereferenceLink() example</span>
+                                <span class="highlight-comment">// for more details about resolving links.</span>
+                                item.LinkObject = conn.DereferenceLink(item);
+
+                                <span class="highlight-keyword">if</span> (item.LinkObject != <span class="highlight-keyword">null</span>) {
+                                    <span class="highlight-comment">// switch (item.LinkObject.Type)...</span>
+                                }
+                            }
+                            <span class="highlight-keyword">break</span>;
+                    }
+                }
+
+                <span class="highlight-comment">// same example except automatically dereference symbolic links.</span>
+                <span class="highlight-comment">// see the DereferenceLink() example for more details about resolving links.</span>
+                <span class="highlight-keyword">foreach</span> (FtpListItem item <span class="highlight-keyword">in</span> conn.GetListing(conn.GetWorkingDirectory(),
+                    FtpListOption.Modify | FtpListOption.Size | FtpListOption.DerefLinks)) {
+
+                    <span class="highlight-keyword">switch</span> (item.Type) {
+                        <span class="highlight-keyword">case</span> FtpFileSystemObjectType.Directory:
+                            <span class="highlight-keyword">break</span>;
+                        <span class="highlight-keyword">case</span> FtpFileSystemObjectType.File:
+                            <span class="highlight-keyword">break</span>;
+                        <span class="highlight-keyword">case</span> FtpFileSystemObjectType.Link:
+                            <span class="highlight-keyword">if</span> (item.LinkObject != <span class="highlight-keyword">null</span>) {
+                                <span class="highlight-comment">// switch (item.LinkObject.Type)...</span>
+                            }
+                            <span class="highlight-keyword">break</span>;
+                    }
+                }
+            }
+        }
+    }
+}</pre></td></tr></table></span></div></div><h1 class="heading"><span onclick="ExpandCollapse(familyToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(familyToggle, event)" tabindex="0"><img id="familyToggle" class="toggle" name="toggleSwitch" src="../icons/collapse_all.gif" />Inheritance Hierarchy</span></h1><div id="familySection" class="section" name="collapseableSection" style=""><a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">System<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>Object</a><br />  <span class="selflink">System.Net.FtpClient<span class="languageSpecificText"><span class="cs">.</span><span class="vb">.</span><span class="cpp">::</span><span class="nu">.</span><span class="fs">.</span></span>FtpClient</span><br /></div><h1 class="heading"><span onclick="ExpandCollapse(seeAlsoToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(seeAlsoToggle, event)" tabindex="0"><img id="seeAlsoToggle" class="toggle" name="toggleSwitch" src="../icons/collapse_all.gif" />See Also</span></h1><div id="seeAlsoSection" class="section" name="collapseableSection" style=""><div class="seeAlsoStyle"><a href="72e7ffd6-c16e-15e4-fce9-a7c6d4373fec.htm">FtpClient Members</a></div><div class="seeAlsoStyle"><a href="906f6efd-bcfa-d32c-3d73-4b092905ef85.htm">System.Net.FtpClient Namespace</a></div></div></div><div id="footer"><div class="footerLine"><img width="100%" height="3px" src="../icons/footer.gif" alt="Footer image" title="Footer image" /></div><A NAME="feedback"></A><span id="fb" class="feedbackcss"></span><p />Send comments on this topic to
+        <a id="HT_MailLink" href="mailto:jptrosclair%40gmail.com?Subject=System.Net.FtpClient">J.P. Trosclair</a><script type="text/javascript">
+        var HT_mailLink = document.getElementById("HT_MailLink");
+        var HT_mailLinkText = HT_mailLink.innerHTML;
+        HT_mailLink.href += ": " + document.title;
+        HT_mailLink.innerHTML = HT_mailLinkText;
+        </script><p />Copyright J.P. Trosclair (c) 2013</div></div></body></html>

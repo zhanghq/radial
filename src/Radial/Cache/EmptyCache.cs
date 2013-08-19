@@ -6,77 +6,21 @@ using System.Text;
 namespace Radial.Cache
 {
     /// <summary>
-    /// The default ICache concret class with no cache implement
+    /// The default concret class with no cache implement
     /// </summary>
     public sealed class EmptyCache : ICache
     {
 
         /// <summary>
-        /// Set cache data.
-        /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <param name="value">The cache value.</param>
-        public void Set(string key, object value)
-        {
-
-        }
-
-
-        /// <summary>
-        /// Set cache data.
-        /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <param name="value">The cache value.</param>
-        /// <param name="ts">The cache holding time.</param>
-        public void Set(string key, object value, TimeSpan ts)
-        {
-
-        }
-
-
-        /// <summary>
         /// Retrieve cached data.
         /// </summary>
         /// <param name="key">The cache key(case insensitive).</param>
         /// <returns>
-        /// If there has matched data, return the cached object, otherwise return null.
+        /// If there has matched data, return the cached binary value, otherwise return null.
         /// </returns>
-        public object Get(string key)
+        public byte[] GetBinary(string key)
         {
             return null;
-        }
-
-        /// <summary>
-        /// Retrieve cached data.
-        /// </summary>
-        /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <returns>
-        /// If there has matched data, return the cached object, otherwise return null.
-        /// </returns>
-        public T Get<T>(string key)
-        {
-            return default(T);
-        }
-
-        /// <summary>
-        /// Retrieve cached data.
-        /// </summary>
-        /// <param name="keys">The cache keys(case insensitive).</param>
-        /// <returns>If there has matched data, return the cached objects, otherwise return an empty array.</returns>
-        public object[] Gets(string[] keys)
-        {
-            return new object[] { };
-        }
-        /// <summary>
-        /// Retrieve cached data.
-        /// </summary>
-        /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="keys">The cache keys(case insensitive).</param>
-        /// <returns>If there has matched data, return the cached objects, otherwise return an empty array.</returns>
-        public T[] Gets<T>(string[] keys)
-        {
-            return new T[] { };
         }
 
 
@@ -89,12 +33,14 @@ namespace Radial.Cache
         }
 
         /// <summary>
-        /// Clear cache.
+        /// Set cache data.
         /// </summary>
-        public void Clear()
+        /// <param name="key">The cache key(case insensitive).</param>
+        /// <param name="value">The cache value.</param>
+        /// <param name="cacheSeconds">The cache holding seconds.</param>
+        public void SetBinary(string key, byte[] value, int? cacheSeconds = null)
         {
         }
-
 
 
         /// <summary>
@@ -103,7 +49,22 @@ namespace Radial.Cache
         /// <param name="key">The cache key(case insensitive).</param>
         /// <param name="value">The cache value.</param>
         /// <param name="cacheSeconds">The cache holding seconds.</param>
-        public void Set(string key, object value, int cacheSeconds) { }
+        public void SetString(string key, string value, int? cacheSeconds = null)
+        {
+        }
+
+
+        /// <summary>
+        /// Retrieve cached data.
+        /// </summary>
+        /// <param name="key">The cache key(case insensitive).</param>
+        /// <returns>
+        /// If there has matched data, return the cached string value, otherwise return null.
+        /// </returns>
+        public string GetString(string key)
+        {
+            return null;
+        }
 
     }
 }

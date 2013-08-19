@@ -7,7 +7,7 @@ using Microsoft.Practices.Unity;
 namespace Radial.Cache
 {
     /// <summary>
-    /// The entrance static class of ICache instance.
+    /// The entrance static class of cache.
     /// </summary>
     public static class CacheStatic
     {
@@ -29,9 +29,21 @@ namespace Radial.Cache
         /// </summary>
         /// <param name="key">The cache key(case insensitive).</param>
         /// <param name="value">The cache value.</param>
-        public static void Set(string key, object value)
+        /// <param name="cacheSeconds">The cache holding seconds.</param>
+        public static void SetBinary(string key, byte[] value, int? cacheSeconds = null)
         {
-            Instance.Set(key, value);
+            Instance.SetBinary(key, value, cacheSeconds);
+        }
+
+
+        /// <summary>
+        /// Retrieve cached data.
+        /// </summary>
+        /// <param name="key">The cache key(case insensitive).</param>
+        /// <returns>If there has matched data, return the cached binary, otherwise return null.</returns>
+        public static byte[] GetBinary(string key)
+        {
+            return Instance.GetBinary(key);
         }
 
         /// <summary>
@@ -40,20 +52,9 @@ namespace Radial.Cache
         /// <param name="key">The cache key(case insensitive).</param>
         /// <param name="value">The cache value.</param>
         /// <param name="cacheSeconds">The cache holding seconds.</param>
-        public static void Set(string key, object value, int cacheSeconds)
+        public static void SetString(string key, string value, int? cacheSeconds = null)
         {
-            Instance.Set(key, value, cacheSeconds);
-        }
-
-        /// <summary>
-        /// Set cache data.
-        /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <param name="value">The cache value.</param>
-        /// <param name="ts">The cache holding time.</param>
-        public static void Set(string key, object value, TimeSpan ts)
-        {
-            Instance.Set(key, value, ts);
+            Instance.SetString(key, value, cacheSeconds);
         }
 
 
@@ -61,41 +62,12 @@ namespace Radial.Cache
         /// Retrieve cached data.
         /// </summary>
         /// <param name="key">The cache key(case insensitive).</param>
-        /// <returns>If there has matched data, return the cached object, otherwise return null.</returns>
-        public static object Get(string key)
+        /// <returns>If there has matched data, return the cached string, otherwise return null.</returns>
+        public static string GetString(string key)
         {
-            return Instance.Get(key);
-        }
-        /// <summary>
-        /// Retrieve cached data.
-        /// </summary>
-        /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <returns>If there has matched data, return the cached object, otherwise return null.</returns>
-        public static T Get<T>(string key)
-        {
-            return Instance.Get<T>(key);
+            return Instance.GetString(key);
         }
 
-        /// <summary>
-        /// Retrieve cached data.
-        /// </summary>
-        /// <param name="keys">The cache keys(case insensitive).</param>
-        /// <returns>If there has matched data, return the cached objects, otherwise return an empty array.</returns>
-        public static object[] Gets(string[] keys)
-        {
-            return Instance.Gets(keys);
-        }
-        /// <summary>
-        /// Retrieve cached data.
-        /// </summary>
-        /// <typeparam name="T">The type of cache value.</typeparam>
-        /// <param name="keys">The cache keys(case insensitive).</param>
-        /// <returns>If there has matched data, return the cached objects, otherwise return an empty array.</returns>
-        public static T[] Gets<T>(string[] keys)
-        {
-            return Instance.Gets<T>(keys);
-        }
 
         /// <summary>
         /// Remove cache key and its value.
@@ -104,13 +76,6 @@ namespace Radial.Cache
         public static void Remove(string key)
         {
             Instance.Remove(key);
-        }
-        /// <summary>
-        ///  Clear cache.
-        /// </summary>
-        public static void Clear()
-        {
-            Instance.Clear();
         }
     }
 }

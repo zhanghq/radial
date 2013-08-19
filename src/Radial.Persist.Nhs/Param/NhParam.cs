@@ -37,10 +37,10 @@ namespace Radial.Persist.Nhs.Param
         /// </summary>
         public NhParam()
         {
-            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["NhParamCacheKey"]))
-                CacheKey = ConfigurationManager.AppSettings["NhParamCacheKey"].Trim().ToLower();
-            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["NhParamStorageAlias"]))
-                StorageAlias = ConfigurationManager.AppSettings["NhParamStorageAlias"].Trim().ToLower();
+            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["NhParam.CacheKey"]))
+                CacheKey = ConfigurationManager.AppSettings["NhParam.CacheKey"].Trim().ToLower();
+            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["NhParam.StorageAlias"]))
+                StorageAlias = ConfigurationManager.AppSettings["NhParam.StorageAlias"].Trim().ToLower();
         }
 
         #region Database Helper
@@ -129,7 +129,7 @@ namespace Radial.Persist.Nhs.Param
             {
                 if (_itemObject == null)
                 {
-                    _itemObject = ParamItem.FromCacheString(CacheStatic.Get<string>(CacheKey));
+                    _itemObject = ParamItem.FromCacheString(CacheStatic.GetString(CacheKey));
 
                     //cache empty
                     if (_itemObject == null)
@@ -137,7 +137,7 @@ namespace Radial.Persist.Nhs.Param
                         _itemObject = ReadFromDatabase();
 
                         if (_itemObject != null)
-                            CacheStatic.Set(CacheKey, _itemObject.ToCacheString());
+                            CacheStatic.SetString(CacheKey, _itemObject.ToCacheString());
                     }
 
                     //database empty
@@ -180,7 +180,7 @@ namespace Radial.Persist.Nhs.Param
                 WriteToDatabase(_itemObject);
 
                 //set entity cache
-                CacheStatic.Set(CacheKey, _itemObject.ToCacheString());
+                CacheStatic.SetString(CacheKey, _itemObject.ToCacheString());
             }
         }
 

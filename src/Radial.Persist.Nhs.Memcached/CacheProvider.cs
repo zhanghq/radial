@@ -10,9 +10,9 @@ namespace Radial.Persist.Nhs.Memcached
     public class CacheProvider : ICacheProvider
     {
         static object SyncRoot = new object();
-        static IDictionary<string, ICache> S_Caches = new Dictionary<string, ICache>();
+        static IDictionary<string, ICache> Caches = new Dictionary<string, ICache>();
 
-        static IMemcachedClient S_MemcachedClient;
+        static IMemcachedClient MemcachedClient;
 
         /// <summary>
         /// Configure the cache
@@ -26,10 +26,10 @@ namespace Radial.Persist.Nhs.Memcached
             {
                 regionName = CacheClient.NormalizeRegionName(regionName, properties);
 
-                if (!S_Caches.ContainsKey(regionName))
-                    S_Caches.Add(regionName, new CacheClient(S_MemcachedClient, regionName, properties));
+                if (!Caches.ContainsKey(regionName))
+                    Caches.Add(regionName, new CacheClient(MemcachedClient, regionName, properties));
 
-                return S_Caches[regionName];
+                return Caches[regionName];
             }
         }
 
@@ -51,8 +51,8 @@ namespace Radial.Persist.Nhs.Memcached
         {
             lock (SyncRoot)
             {
-                if (S_MemcachedClient == null)
-                    S_MemcachedClient = new MemcachedClient();
+                if (MemcachedClient == null)
+                    MemcachedClient = new MemcachedClient();
             }
         }
 
@@ -62,6 +62,7 @@ namespace Radial.Persist.Nhs.Memcached
         /// </summary>
         public void Stop()
         {
+            MemcachedClient.Dispose();
         }
     }
 }

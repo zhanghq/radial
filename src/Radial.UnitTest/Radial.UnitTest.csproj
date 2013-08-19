@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CacheTest.cs" />
     <Compile Include="ExcelToolsTest.cs" />
     <Compile Include="FtpClientTest.cs" />
     <Compile Include="Persist\Nhs\RepositoryTest.cs" />
@@ -95,6 +96,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Config\log4net.config" />
     <None Include="Config\NHibernate.config" />
     <None Include="Config\XmlParam.config">

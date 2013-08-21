@@ -35,6 +35,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Enyim.Caching, Version=2.12.0.0, Culture=neutral, PublicKeyToken=cec98615db04012e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EnyimMemcached.2.12\lib\net35\Enyim.Caching.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -64,6 +68,8 @@
   <ItemGroup>
     <Compile Include="AppStartModule.cs" />
     <Compile Include="BasicRepository.cs" />
+    <Compile Include="Cache\Memcached\CacheClient.cs" />
+    <Compile Include="Cache\Memcached\CacheProvider.cs" />
     <Compile Include="ContextualUnitOfWork.cs" />
     <Compile Include="DefaultFactoryPoolInitializer.cs" />
     <Compile Include="HibernateEngine.cs" />

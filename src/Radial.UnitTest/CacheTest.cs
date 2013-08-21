@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
 using Radial.Cache;
 using System.IO;
+using Radial.Serialization;
 
 namespace Radial.UnitTest
 {
@@ -52,8 +53,11 @@ namespace Radial.UnitTest
             }
 
 
-            //CacheStatic.Set("test2", null, 100);
-            //Console.WriteLine(CacheStatic.Get("test2"));
+            CacheStatic.Set("test2", new Temp2 { Name = "sdfsd" }, 100);
+            Console.WriteLine(CacheStatic.Get("test2"));
+
+            CacheStatic.Set("test3",SerializeFormat.Json, 100);
+            Console.WriteLine(CacheStatic.Get("test3"));
         }
 
         //[Test]

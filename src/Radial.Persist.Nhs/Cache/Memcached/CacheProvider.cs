@@ -5,8 +5,11 @@ using System.Text;
 using Enyim.Caching;
 using NHibernate.Cache;
 
-namespace Radial.Persist.Nhs.Memcached
+namespace Radial.Persist.Nhs.Cache.Memcached
 {
+    /// <summary>
+    /// CacheProvider
+    /// </summary>
     public class CacheProvider : ICacheProvider
     {
         static object SyncRoot = new object();
@@ -24,8 +27,6 @@ namespace Radial.Persist.Nhs.Memcached
         {
             lock (SyncRoot)
             {
-                regionName = CacheClient.NormalizeRegionName(regionName, properties);
-
                 if (!Caches.ContainsKey(regionName))
                     Caches.Add(regionName, new CacheClient(MemcachedClient, regionName, properties));
 

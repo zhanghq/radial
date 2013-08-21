@@ -43,7 +43,10 @@ namespace Radial.Cache
             string valueString = null;
 
             if (Toolkits.TryConvertToString(value, out valueString))
+            {
                 Instance.SetString(key, valueString, cacheSeconds);
+                return;
+            }
 
             switch (serializeFormat)
             {

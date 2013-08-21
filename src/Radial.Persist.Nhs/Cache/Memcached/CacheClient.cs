@@ -6,40 +6,21 @@ using Enyim.Caching;
 using NHibernate;
 using NHibernate.Cache;
 
-namespace Radial.Persist.Nhs.Memcached
+namespace Radial.Persist.Nhs.Cache.Memcached
 {
+    /// <summary>
+    /// CacheClient
+    /// </summary>
     public class CacheClient : ICache
     {
         IMemcachedClient _enyimClient;
-
-        const string DefaultRegionName = "nmch";
 
         static readonly IInternalLogger Logger = LoggerProvider.LoggerFor(typeof(CacheClient));
 
         string _regionName;
         string _region_prefix;
-        int _default_expiration=300;
-        int _default_lock_timeout=0;
+        int _default_expiration=1200;
 
-
-        /// <summary>
-        /// Normalizes the name of the region.
-        /// </summary>
-        /// <param name="regionName">Name of the region.</param>
-        /// <param name="properties">The properties.</param>
-        /// <returns></returns>
-        public static string NormalizeRegionName(string regionName, IDictionary<string, string> properties)
-        {
-            if (string.IsNullOrWhiteSpace(regionName))
-            {
-                if (properties.ContainsKey("cache.default_region") && !string.IsNullOrWhiteSpace(properties["cache.default_region"]))
-                    return properties["cache.default_region"].Trim();
-                else
-                    return DefaultRegionName;
-            }
-
-            return regionName.Trim();
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheClient" /> class.
@@ -51,14 +32,12 @@ namespace Radial.Persist.Nhs.Memcached
         {
             _enyimClient = memClient;
 
-            _regionName = NormalizeRegionName(regionName, properties);
+            _regionName = regionName;
 
             if (properties.ContainsKey("cache.default_expiration") && !string.IsNullOrWhiteSpace(properties["cache.default_expiration"]))
                 int.TryParse(properties["cache.default_expiration"], out _default_expiration);
             if (properties.ContainsKey("cache.region_prefix") && !string.IsNullOrWhiteSpace(properties["cache.region_prefix"]))
                 _region_prefix = properties["cache.region_prefix"].Trim();
-            if (properties.ContainsKey("cache.default_lock_timeout") && !string.IsNullOrWhiteSpace(properties["cache.default_lock_timeout"]))
-                int.TryParse(properties["cache.default_lock_timeout"], out _default_lock_timeout);
 
         }
 
@@ -67,7 +46,7 @@ namespace Radial.Persist.Nhs.Memcached
         /// </summary>
         public void Clear()
         {
-            Logger.Debug("clear cache");
+            Logger.Debug("Clear memcached");
 
             _enyimClient.FlushAll();
         }
@@ -88,9 +67,12 @@ namespace Radial.Persist.Nhs.Memcached
         public object Get(object key)
         {
             string stringkey=BuildRealCacheKey(key);
-            Logger.DebugFormat("get from cache, key: {0}", stringkey);
 
-            return _enyimClient.Get(stringkey);
+            object obj= _enyimClient.Get(stringkey);
+
+            Logger.DebugFormat("Get from memcached, key: {0}, exists={1}", stringkey, obj == null ? "no" : "yes");
+
+            return obj;
         }
 
         /// <summary>
@@ -119,7 +101,7 @@ namespace Radial.Persist.Nhs.Memcached
             string stringkey = BuildRealCacheKey(key);
             TimeSpan ts = TimeSpan.FromSeconds(_default_expiration);
 
-            Logger.DebugFormat("put to cache, key: {0}, validFor: {1}", stringkey, ts.ToString());
+            Logger.DebugFormat("Set to memcached, key: {0}, validFor: {1}", stringkey, ts.ToString());
 
             _enyimClient.Store(Enyim.Caching.Memcached.StoreMode.Set, stringkey, value, ts);
         }
@@ -140,7 +122,7 @@ namespace Radial.Persist.Nhs.Memcached
         {
             string stringkey = BuildRealCacheKey(key);
 
-            Logger.DebugFormat("remove from cache, key: {0}", stringkey);
+            Logger.DebugFormat("Remove from memcached, key: {0}", stringkey);
 
             _enyimClient.Remove(stringkey);
         }
@@ -150,7 +132,7 @@ namespace Radial.Persist.Nhs.Memcached
         /// </summary>
         public int Timeout
         {
-            get { return _default_lock_timeout; }
+            get { return 0; }
         }
 
         /// <summary>
@@ -168,9 +150,6 @@ namespace Radial.Persist.Nhs.Memcached
         /// <returns></returns>
         private string BuildRealCacheKey(object key)
         {
-            if (key == null)
-                throw new ArgumentNullException("cache key can not be null");
-
             IList<string> plist = new List<string>();
 
             if (!string.IsNullOrWhiteSpace(_region_prefix))
@@ -178,7 +157,7 @@ namespace Radial.Persist.Nhs.Memcached
             if (!string.IsNullOrWhiteSpace(_regionName))
                 plist.Add(_regionName);
 
-            return string.Join("@", plist) + key.ToString();
+            return string.Join("#", plist) + "#" + key.ToString();
         }
     }
 }

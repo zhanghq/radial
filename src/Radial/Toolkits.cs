@@ -480,7 +480,7 @@ namespace Radial
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="str">The string value.</param>
-        /// <returns>If can not convert return false, otherwirse return its string value (obj=null will return false).</returns>
+        /// <returns>If can not convert return false, otherwirse return its string value.</returns>
         public static bool TryConvertToString(object obj, out string str)
         {
             str = null;
@@ -490,19 +490,25 @@ namespace Radial
 
             Type objType = obj.GetType();
 
-            if (objType.IsEnum)
-            {
-                str = ((int)obj).ToString();
-
-                return true;
-            }
-
-            if (obj.ToString() != objType.ToString())
+            if (objType == typeof(string))
             {
                 str = obj.ToString();
 
                 return true;
             }
+
+            if (objType.IsEnum)
+            {
+                str = ((int)obj).ToString();
+                return true;
+            }
+
+            try
+            {
+                str = Convert.ChangeType(obj, typeof(string)).ToString();
+                return true;
+            }
+            catch { }
 
             return false;
         }

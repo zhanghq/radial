@@ -474,5 +474,37 @@ namespace Radial
                 return bf.Deserialize(ms) as T;
             }
         }
+
+        /// <summary>
+        /// Try convert the object to its string value.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="str">The string value.</param>
+        /// <returns>If can not convert return false, otherwirse return its string value (obj=null will return false).</returns>
+        public static bool TryConvertToString(object obj, out string str)
+        {
+            str = null;
+
+            if (obj == null)
+                return false;
+
+            Type objType = obj.GetType();
+
+            if (objType.IsEnum)
+            {
+                str = ((int)obj).ToString();
+
+                return true;
+            }
+
+            if (obj.ToString() != objType.ToString())
+            {
+                str = obj.ToString();
+
+                return true;
+            }
+
+            return false;
+        }
     }
 }

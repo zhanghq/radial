@@ -45,7 +45,8 @@ namespace Radial.Serialization
         public static T Deserialize<T>(string json)
         {
             if (string.IsNullOrWhiteSpace(json))
-                json = string.Empty;
+                return default(T);
+
             return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
         }
 
@@ -57,7 +58,8 @@ namespace Radial.Serialization
         public static object Deserialize(string json)
         {
             if (string.IsNullOrWhiteSpace(json))
-                json = string.Empty;
+                return null;
+
             return Newtonsoft.Json.JsonConvert.DeserializeObject(json);
         }
 
@@ -74,15 +76,15 @@ namespace Radial.Serialization
 
             obj = default(T);
 
-            if (string.IsNullOrWhiteSpace(json))
-                json = string.Empty;
-
-            try
+            if (!string.IsNullOrWhiteSpace(json))
             {
-                obj = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
-                success = true;
+                try
+                {
+                    obj = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
+                    success = true;
+                }
+                catch { }
             }
-            catch { }
 
             return success;
         }
@@ -99,15 +101,15 @@ namespace Radial.Serialization
 
             obj = null;
 
-            if (string.IsNullOrWhiteSpace(json))
-                json = string.Empty;
-
-            try
+            if (!string.IsNullOrWhiteSpace(json))
             {
-                obj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-                success = true;
+                try
+                {
+                    obj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+                    success = true;
+                }
+                catch { }
             }
-            catch { }
 
             return success;
         }

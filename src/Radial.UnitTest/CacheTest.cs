@@ -13,15 +13,47 @@ namespace Radial.UnitTest
     [TestFixture]
     public class CacheTest
     {
+        class Temp
+        {
+            public Temp()
+            {
+                Time = DateTime.Now;
+            }
+
+            public string Name { get; set; }
+            public DateTime Time { get; set; }
+        }
+
+        struct Temp2
+        {
+            public string Name { get; set; }
+        }
+
         [Test]
         public void Memcached()
         {
             Components.Container.RegisterType<ICache, MemCache>();
 
+            IList<Temp> list = new List<Temp>();
 
-            CacheStatic.SetString("name", "abc", 100);
+            for (int i = 0; i < 100; i++)
+                list.Add(new Temp { Name = Guid.NewGuid().ToString("N") });
 
-            Console.WriteLine(CacheStatic.GetString("name"));
+            CacheStatic.Set("test1", list, 100);
+
+            IList<Temp> list2 = CacheStatic.Get<IList<Temp>>("test1");
+
+            if (list2 != null)
+            {
+                foreach (var o in list2)
+                {
+                    Console.WriteLine("Name: {0}, Time: {1}", o.Name, o.Time);
+                }
+            }
+
+
+            //CacheStatic.Set("test2", null, 100);
+            //Console.WriteLine(CacheStatic.Get("test2"));
         }
 
         //[Test]

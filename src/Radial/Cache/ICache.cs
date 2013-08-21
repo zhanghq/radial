@@ -41,8 +41,5 @@ namespace Radial.Cache
         /// </summary>
         /// <param name="key">The cache key(case insensitive).</param>
         void Remove(string key);
-
-        #region Permanent Hashtable Cache
-        #endregion
     }
 }

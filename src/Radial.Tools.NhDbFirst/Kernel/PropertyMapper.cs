@@ -59,8 +59,7 @@ namespace Radial.Tools.NhDbFirst.Kernel
             }
             else
             {
-                writer.WriteLine(string.Format("    <property name=\"{0}\"{1}{2}{3}>", PropertyName,
-                    FieldDefinition.SqlType.Contains("char") ? " length=\"" + FieldDefinition.Length + "\"" : string.Empty,
+                writer.WriteLine(string.Format("    <property name=\"{0}\"{1}{2}>", PropertyName,
                     FieldDefinition.SqlType.Contains("text") ? " type=\"StringClob\"" : string.Empty,
                     FieldDefinition.IsNullable ? string.Empty : " not-null=\"true\""));
                 writer.WriteLine(string.Format("      <column name=\"{0}\" sql-type=\"{1}\"{2}{3}/>",
@@ -110,8 +109,7 @@ namespace Radial.Tools.NhDbFirst.Kernel
             }
             else
             {
-                writer.WriteLine(string.Format("    <property name=\"{0}\"{1}{2}{3}>", PropertyName,
-                    FieldDefinition.SqlType.Contains("char") ? " length=\"" + FieldDefinition.Length + "\"" : string.Empty,
+                writer.WriteLine(string.Format("    <property name=\"{0}\"{1}{2}>", PropertyName,
                     FieldDefinition.SqlType.Contains("text") ? " type=\"StringClob\"" : string.Empty,
                     FieldDefinition.IsNullable ? string.Empty : " not-null=\"true\""));
                 writer.WriteLine(string.Format("      <column name=\"{0}\" sql-type=\"{1}\"{2}{3}/>", FieldDefinition.Name, BuildSqlServerSqlType(FieldDefinition), FieldDefinition.IsNullable ? string.Empty : " not-null=\"true\"", string.IsNullOrWhiteSpace(FieldDefinition.Default) ? string.Empty : " default=\"" + FieldDefinition.Default + "\""));

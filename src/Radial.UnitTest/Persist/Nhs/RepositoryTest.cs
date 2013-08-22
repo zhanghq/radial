@@ -7,6 +7,7 @@ using Radial.Persist;
 using Radial.Persist.Nhs;
 using Radial.UnitTest.Persist.Nhs.Domain;
 using Radial.UnitTest.Persist.Nhs.Repository;
+using System.Data;
 
 namespace Radial.UnitTest.Persist.Nhs
 {
@@ -49,6 +50,26 @@ namespace Radial.UnitTest.Persist.Nhs
                 UserRepository userRepository = new UserRepository(uow);
 
                 Assert.AreEqual(2, userRepository.FindByKeys(new int[] { id1, id2 }).Count);
+            }
+        }
+
+        [Test]
+        public void FindDataTable()
+        {
+            using (IUnitOfWork uow = new NhUnitOfWork())
+            {
+                UserRepository userRepository = new UserRepository(uow);
+
+                DataTable dt = userRepository.FindAllDataTable();
+
+                Assert.NotNull(dt);
+
+                Console.WriteLine(string.Join(",", dt.Columns[0].ColumnName, dt.Columns[1].ColumnName));
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    Console.WriteLine(string.Join(",", row.ItemArray));
+                }
             }
         }
     }

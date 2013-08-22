@@ -6,6 +6,7 @@ using NHibernate;
 using Radial.Persist;
 using Radial.Persist.Nhs;
 using Radial.UnitTest.Persist.Nhs.Domain;
+using System.Data;
 
 namespace Radial.UnitTest.Persist.Nhs.Repository
 {
@@ -14,6 +15,11 @@ namespace Radial.UnitTest.Persist.Nhs.Repository
         public UserRepository(IUnitOfWork uow)
             : base(uow)
         {
+        }
+
+        public DataTable FindAllDataTable()
+        {
+            return SpExecuteDataTable("Sp_User_All");
         }
     }
 }

@@ -5,6 +5,8 @@ using System.Text;
 using NHibernate;
 using NHibernate.Criterion;
 using System.Collections;
+using System.Data.Common;
+using System.Data;
 
 namespace Radial.Persist.Nhs
 {
@@ -1016,5 +1018,96 @@ namespace Radial.Persist.Nhs
 
             return query.List();
         }
+
+
+        #region Stored Procedure
+
+        /// <summary>
+        /// Stored procedure ExecuteNonQuery.
+        /// </summary>
+        /// <param name="spName">The stored procedure name.</param>
+        /// <param name="parameters">The stored procedure parameters.</param>
+        /// <returns>The number of rows affected.</returns>
+        protected int SpExecuteNonQuery(string spName, params DbParameter[] parameters)
+        {
+            var cmd = SpCreateCommand(spName, parameters);
+
+            return cmd.ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// Stored procedure ExecuteScalar.
+        /// </summary>
+        /// <param name="spName">The stored procedure name.</param>
+        /// <param name="parameters">The stored procedure parameters.</param>
+        /// <returns>The first column of the first result row.</returns>
+        protected object SpExecuteScalar(string spName, params DbParameter[] parameters)
+        {
+            var cmd = SpCreateCommand(spName, parameters);
+
+            return cmd.ExecuteScalar();
+        }
+
+        /// <summary>
+        /// Stored procedure ExecuteReader.
+        /// </summary>
+        /// <param name="spName">The stored procedure name.</param>
+        /// <param name="parameters">The stored procedure parameters.</param>
+        /// <returns>System.Data.IDataReader instance.</returns>
+        protected IDataReader SpExecuteReader(string spName, params DbParameter[] parameters)
+        {
+            var cmd = SpCreateCommand(spName, parameters);
+
+            return cmd.ExecuteReader();
+        }
+
+        /// <summary>
+        /// Stored procedure ExecuteDataTable.
+        /// </summary>
+        /// <param name="spName">The stored procedure name.</param>
+        /// <param name="parameters">The stored procedure parameters.</param>
+        /// <returns>System.Data.DataTable instance.</returns>
+        protected DataTable SpExecuteDataTable(string spName, params DbParameter[] parameters)
+        {
+            DataTable dt = new DataTable();
+
+            using (var reader = SpExecuteReader(spName, parameters))
+            {
+                dt.Load(reader);
+            }
+
+            return dt;
+        }
+
+        /// <summary>
+        /// Create System.Data.IDbCommand instance for stored procedure.
+        /// </summary>
+        /// <param name="spName">The stored procedure name.</param>
+        /// <param name="parameters">The stored procedure parameters.</param>
+        /// <returns>
+        /// System.Data.IDbCommand instance.
+        /// </returns>
+        private IDbCommand SpCreateCommand(string spName, params DbParameter[] parameters)
+        {
+            var cmd = Session.Connection.CreateCommand();
+
+            cmd.CommandText = spName;
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            if (parameters != null)
+            {
+                foreach (var p in parameters)
+                {
+                    if (p.Direction == ParameterDirection.InputOutput && p.Value == null)
+                        p.Value = DBNull.Value;
+
+                    cmd.Parameters.Add(p);
+                }
+            }
+
+            return cmd;
+        }
+
+        #endregion
     }
 }

@@ -65,7 +65,7 @@ namespace Radial.Cache
         /// <param name="cacheSeconds">The cache holding seconds.</param>
         public void SetBinary(string key, byte [] value, int? cacheSeconds = null)
         {
-            key = CacheHelper.NormalizeKey(key);
+            key = CacheStatic.NormalizeKey(key);
 
             lock (SyncRoot)
             {
@@ -103,7 +103,7 @@ namespace Radial.Cache
         /// </returns>
         public byte [] GetBinary(string key)
         {
-            key = CacheHelper.NormalizeKey(key);
+            key = CacheStatic.NormalizeKey(key);
 
             lock (SyncRoot)
             {
@@ -124,7 +124,7 @@ namespace Radial.Cache
         /// <param name="key">The cache key(case insensitive).</param>
         public void Remove(string key)
         {
-            key = CacheHelper.NormalizeKey(key);
+            key = CacheStatic.NormalizeKey(key);
 
             lock (SyncRoot)
                 CacheEntries.RemoveWhere(o => o.Key == key);
@@ -139,7 +139,7 @@ namespace Radial.Cache
         /// <param name="cacheSeconds">The cache holding seconds.</param>
         public void SetString(string key, string value, int? cacheSeconds = null)
         {
-            key = CacheHelper.NormalizeKey(key);
+            key = CacheStatic.NormalizeKey(key);
 
             lock (SyncRoot)
             {
@@ -176,7 +176,7 @@ namespace Radial.Cache
         /// </returns>
         public string GetString(string key)
         {
-            key = CacheHelper.NormalizeKey(key);
+            key = CacheStatic.NormalizeKey(key);
 
             lock (SyncRoot)
             {

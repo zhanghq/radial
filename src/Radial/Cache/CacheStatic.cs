@@ -26,6 +26,18 @@ namespace Radial.Cache
         }
 
         /// <summary>
+        /// Normalizes the cache key.
+        /// </summary>
+        /// <param name="key">The cache key.</param>
+        /// <returns>Normalize cache key.</returns>
+        public static string NormalizeKey(string key)
+        {
+            Checker.Parameter(!string.IsNullOrWhiteSpace(key), "cache key can not be empty or null");
+
+            return key.Trim().ToLower();
+        }
+
+        /// <summary>
         /// Set cache data.
         /// </summary>
         /// <param name="key">The cache key(case insensitive).</param>

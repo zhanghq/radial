@@ -24,7 +24,7 @@ namespace Radial.Web
         /// </returns>
         public byte[] GetBinary(string key)
         {
-            var obj = HttpContext.Current.Cache[CacheHelper.NormalizeKey(key)];
+            var obj = HttpContext.Current.Cache[CacheStatic.NormalizeKey(key)];
 
             if (obj == null)
                 return null;
@@ -39,7 +39,7 @@ namespace Radial.Web
         public void Remove(string key)
         {
             lock (SyncRoot)
-                HttpContext.Current.Cache.Remove(CacheHelper.NormalizeKey(key));
+                HttpContext.Current.Cache.Remove(CacheStatic.NormalizeKey(key));
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Radial.Web
         {
             lock (SyncRoot)
             {
-                HttpContext.Current.Cache.Insert(CacheHelper.NormalizeKey(key), value, null, cacheSeconds.HasValue ? DateTime.Now.AddSeconds(cacheSeconds.Value) : System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration);
+                HttpContext.Current.Cache.Insert(CacheStatic.NormalizeKey(key), value, null, cacheSeconds.HasValue ? DateTime.Now.AddSeconds(cacheSeconds.Value) : System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration);
             }
         }
 
@@ -67,7 +67,7 @@ namespace Radial.Web
         {
             lock (SyncRoot)
             {
-                HttpContext.Current.Cache.Insert(CacheHelper.NormalizeKey(key), value, null, cacheSeconds.HasValue ? DateTime.Now.AddSeconds(cacheSeconds.Value) : System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration);
+                HttpContext.Current.Cache.Insert(CacheStatic.NormalizeKey(key), value, null, cacheSeconds.HasValue ? DateTime.Now.AddSeconds(cacheSeconds.Value) : System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration);
             }
         }
 
@@ -80,7 +80,7 @@ namespace Radial.Web
         /// </returns>
         public string GetString(string key)
         {
-            var obj = HttpContext.Current.Cache[CacheHelper.NormalizeKey(key)];
+            var obj = HttpContext.Current.Cache[CacheStatic.NormalizeKey(key)];
 
             if (obj == null)
                 return null;

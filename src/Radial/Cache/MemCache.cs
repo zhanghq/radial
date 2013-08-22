@@ -38,9 +38,9 @@ namespace Radial.Cache
             ThreadPool.QueueUserWorkItem(o =>
             {
                 if (cacheSeconds.HasValue)
-                    Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheHelper.NormalizeKey(key), value, TimeSpan.FromSeconds(cacheSeconds.Value));
+                    Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheStatic.NormalizeKey(key), value, TimeSpan.FromSeconds(cacheSeconds.Value));
                 else
-                    Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheHelper.NormalizeKey(key), value);
+                    Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheStatic.NormalizeKey(key), value);
             });
         }
 
@@ -54,7 +54,7 @@ namespace Radial.Cache
         /// </returns>
         public byte[] GetBinary(string key)
         {
-            var obj = Client.Get(CacheHelper.NormalizeKey(key));
+            var obj = Client.Get(CacheStatic.NormalizeKey(key));
 
             if (obj == null)
                 return null;
@@ -72,7 +72,7 @@ namespace Radial.Cache
         {
             ThreadPool.QueueUserWorkItem(o =>
             {
-                Client.Remove(CacheHelper.NormalizeKey(key));
+                Client.Remove(CacheStatic.NormalizeKey(key));
             });
         }
 
@@ -88,9 +88,9 @@ namespace Radial.Cache
             ThreadPool.QueueUserWorkItem(o =>
             {
                 if (cacheSeconds.HasValue)
-                    Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheHelper.NormalizeKey(key), value, TimeSpan.FromSeconds(cacheSeconds.Value));
+                    Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheStatic.NormalizeKey(key), value, TimeSpan.FromSeconds(cacheSeconds.Value));
                 else
-                    Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheHelper.NormalizeKey(key), value);
+                    Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheStatic.NormalizeKey(key), value);
             });
         }
 
@@ -103,7 +103,7 @@ namespace Radial.Cache
         /// </returns>
         public string GetString(string key)
         {
-            var obj = Client.Get(CacheHelper.NormalizeKey(key));
+            var obj = Client.Get(CacheStatic.NormalizeKey(key));
 
             if (obj == null)
                 return null;

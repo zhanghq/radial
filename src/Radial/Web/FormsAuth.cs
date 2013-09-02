@@ -102,11 +102,19 @@ namespace Radial.Web
         }
 
         /// <summary>
-        /// Redirects the browser to the login URL.
+        /// Redirects the user to the login page.
         /// </summary>
         public static void RedirectToLoginPage()
         {
             FormsAuthentication.RedirectToLoginPage();
+        }
+
+        /// <summary>
+        /// Redirects the user to the default page.
+        /// </summary>
+        public static void RedirectToDefaultPage()
+        {
+            HttpContext.Current.Response.Redirect(string.IsNullOrWhiteSpace(FormsAuthentication.DefaultUrl) ? "~/" : FormsAuthentication.DefaultUrl);
         }
 
         /// <summary>
@@ -129,12 +137,12 @@ namespace Radial.Web
         /// <summary>
         /// User sign out.
         /// </summary>
-        /// <param name="redirect">whether need to redirect to login page.</param>
+        /// <param name="redirect">whether need to redirect to default page.</param>
         public static void SignOut(bool redirect)
         {
             FormsAuthentication.SignOut();
             if (redirect)
-                FormsAuthentication.RedirectToLoginPage();
+                RedirectToDefaultPage();
         }
 
         /// <summary>

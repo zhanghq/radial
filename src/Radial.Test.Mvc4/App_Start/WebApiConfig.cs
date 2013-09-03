@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Radial.Web.Mvc.WebApi.Formatting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -11,9 +12,13 @@ namespace Radial.Test.Mvc
         {
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                routeTemplate: "api/{action}/{id}",
+                defaults: new { controller="WebApi",id = RouteParameter.Optional }
             );
+
+            config.Formatters.Clear();
+            config.Formatters.Add(new NewJsonMediaTypeFormatter());
+            config.Formatters.Add(new TextMediaTypeFormatter());
         }
     }
 }

@@ -33,15 +33,12 @@ namespace Radial.Cache
         /// <param name="key">The cache key(case insensitive).</param>
         /// <param name="value">The cache value.</param>
         /// <param name="cacheSeconds">The cache holding seconds.</param>
-        public void SetBinary(string key, byte [] value, int? cacheSeconds = null)
+        public void SetBinary(string key, byte[] value, int? cacheSeconds = null)
         {
-            ThreadPool.QueueUserWorkItem(o =>
-            {
-                if (cacheSeconds.HasValue)
-                    Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheStatic.NormalizeKey(key), value, TimeSpan.FromSeconds(cacheSeconds.Value));
-                else
-                    Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheStatic.NormalizeKey(key), value);
-            });
+            if (cacheSeconds.HasValue)
+                Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheStatic.NormalizeKey(key), value, TimeSpan.FromSeconds(cacheSeconds.Value));
+            else
+                Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheStatic.NormalizeKey(key), value);
         }
 
 
@@ -70,10 +67,7 @@ namespace Radial.Cache
         /// <param name="key">The cache key(case insensitive).</param>
         public void Remove(string key)
         {
-            ThreadPool.QueueUserWorkItem(o =>
-            {
-                Client.Remove(CacheStatic.NormalizeKey(key));
-            });
+            Client.Remove(CacheStatic.NormalizeKey(key));
         }
 
 
@@ -85,13 +79,10 @@ namespace Radial.Cache
         /// <param name="cacheSeconds">The cache holding seconds.</param>
         public void SetString(string key, string value, int? cacheSeconds = null)
         {
-            ThreadPool.QueueUserWorkItem(o =>
-            {
-                if (cacheSeconds.HasValue)
-                    Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheStatic.NormalizeKey(key), value, TimeSpan.FromSeconds(cacheSeconds.Value));
-                else
-                    Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheStatic.NormalizeKey(key), value);
-            });
+            if (cacheSeconds.HasValue)
+                Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheStatic.NormalizeKey(key), value, TimeSpan.FromSeconds(cacheSeconds.Value));
+            else
+                Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheStatic.NormalizeKey(key), value);
         }
 
         /// <summary>

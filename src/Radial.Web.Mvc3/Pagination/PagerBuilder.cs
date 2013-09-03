@@ -99,11 +99,11 @@ namespace Radial.Web.Mvc.Pagination
             //else
             //    _totalPageCount = pagerOptions.MaxPageIndex;
             _totalPageCount = totalPageCount;
-            //如果总页数小于1，且不是自动隐藏，则总页数设置为1
-            if (_totalPageCount < 1 && !pagerOptions.AutoHide)
+            //如果总页数小于等于1，且不是自动隐藏，则总页数设置为1
+            if (_totalPageCount < 1)
                 _totalPageCount = 1;
 
-            _pageIndex = pageIndex;
+            _pageIndex = pageIndex > 0 ? pageIndex : 1;
             _pagerOptions = pagerOptions;
             _routeName = routeName;
             _routeValues = routeValues;
@@ -354,8 +354,8 @@ namespace Radial.Web.Mvc.Pagination
         /// <returns></returns>
         internal MvcHtmlString RenderPager()
         {
-            //总页数小于1，则不显示，如果非自动隐藏，总页数始终不小于1
-            if (_totalPageCount < 1)
+            //总页数小于等于1，且自动隐藏，则不显示
+            if (_totalPageCount <= 1 && _pagerOptions.AutoHide)
                 return new MvcHtmlString(string.Empty);
 
 
@@ -363,7 +363,7 @@ namespace Radial.Web.Mvc.Pagination
             if ((_pageIndex > _totalPageCount && _totalPageCount > 0) || _pageIndex < 1)
             {
                 return
-                    MvcHtmlString.Create(string.Format("<div style=\"color:red;font-weight:bold\">{1}</div>",
+                    MvcHtmlString.Create(string.Format("<div style=\"color:red;font-weight:bold\">{0}</div>",
                                           _pagerOptions.PageIndexOutOfRangeErrorMessage));
             }
 
@@ -378,8 +378,8 @@ namespace Radial.Web.Mvc.Pagination
 
             if (_pagerOptions.ShowNumericPagerItems)
             {
-                if (_pagerOptions.AlwaysShowFirstLastPageNumber && _startPageIndex > 1)
-                    pagerItems.Add(new PagerItem("1", 1, false, PagerItemType.NumericPage));
+                //if (_pagerOptions.AlwaysShowFirstLastPageNumber && _startPageIndex > 1)
+                //    pagerItems.Add(new PagerItem("1", 1, false, PagerItemType.NumericPage));
 
                 // more page before numeric page buttons
                 if (_pagerOptions.ShowMorePagerItems)
@@ -392,9 +392,9 @@ namespace Radial.Web.Mvc.Pagination
                 if (_pagerOptions.ShowMorePagerItems)
                     AddMoreAfter(pagerItems);
 
-                if (_pagerOptions.AlwaysShowFirstLastPageNumber && _endPageIndex < _totalPageCount)
-                    pagerItems.Add(new PagerItem(_totalPageCount.ToString(), _totalPageCount, false,
-                                                 PagerItemType.NumericPage));
+                //if (_pagerOptions.AlwaysShowFirstLastPageNumber && _endPageIndex < _totalPageCount)
+                //    pagerItems.Add(new PagerItem(_totalPageCount.ToString(), _totalPageCount, false,
+                //                                 PagerItemType.NumericPage));
             }
 
             // Next page

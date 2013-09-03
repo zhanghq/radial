@@ -13,10 +13,9 @@ namespace Radial.Web.Mvc.Pagination
         /// </summary>
         public PagerOptions()
         {
-            AutoHide = false;
+            AutoHide = true;
             PageIndexParameterName = "pageIndex";
             NumericPagerItemCount = 10;
-            AlwaysShowFirstLastPageNumber = false;
             ShowPrevNext = true;
             PrevPageText = "上一页";
             NextPageText = "下一页";
@@ -147,10 +146,6 @@ namespace Radial.Web.Mvc.Pagination
         /// </summary>
         public string GoToPageSectionWrapperFormatString { get; set; }
 
-        /// <summary>
-        /// whether or not show first and last numeric page number
-        /// </summary>
-        public bool AlwaysShowFirstLastPageNumber { get; set; }
         /// <summary>
         /// 显示的最大数字页索引按钮数
         /// </summary>

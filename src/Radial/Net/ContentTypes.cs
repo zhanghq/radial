@@ -14,26 +14,26 @@ namespace Radial.Net
         /// <summary>
         /// Plain Text Content Type
         /// </summary>
-        public const string PlainText = "text/plain; charset=UTF-8";
+        public const string PlainText = "text/plain; charset=utf-8";
 
         /// <summary>
         /// Html Content Type
         /// </summary>
-        public const string Html = "text/html; charset=UTF-8";
+        public const string Html = "text/html; charset=utf-8";
 
         /// <summary>
         /// Xml Content Type
         /// </summary>
-        public const string Xml = "text/xml; charset=UTF-8";
+        public const string Xml = "text/xml; charset=utf-8";
 
         /// <summary>
         /// Json Content Type
         /// </summary>
-        public const string Json = "application/json; charset=UTF-8";
+        public const string Json = "application/json; charset=utf-8";
 
         /// <summary>
         /// Excel Content Type
         /// </summary>
-        public const string Excel = "application/vnd.ms-excel; charset=UTF-8";
+        public const string Excel = "application/vnd.ms-excel; charset=utf-8";
     }
 }

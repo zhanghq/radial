@@ -26,6 +26,10 @@ namespace Radial.Persist.Nhs.Param
         /// The cache key.
         /// </summary>
         private readonly string CacheKey = "nhparamcache";
+        /// <summary>
+        /// The cache minutes (0=do not remove cache).
+        /// </summary>
+        private readonly int CacheMinutes = 0;
 
         /// <summary>
         /// Storage alias.
@@ -39,6 +43,16 @@ namespace Radial.Persist.Nhs.Param
         {
             if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["NhParam.CacheKey"]))
                 CacheKey = ConfigurationManager.AppSettings["NhParam.CacheKey"].Trim().ToLower();
+
+            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["NhParam.CacheMins"]))
+            {
+                if (int.TryParse(ConfigurationManager.AppSettings["NhParam.CacheMins"], out CacheMinutes))
+                {
+                    if (CacheMinutes < 0)
+                        CacheMinutes = 0;
+                }
+            }
+
             if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["NhParam.StorageAlias"]))
                 StorageAlias = ConfigurationManager.AppSettings["NhParam.StorageAlias"].Trim().ToLower();
         }
@@ -180,7 +194,10 @@ namespace Radial.Persist.Nhs.Param
                 WriteToDatabase(_itemObject);
 
                 //set entity cache
-                CacheStatic.SetString(CacheKey, _itemObject.ToCacheString());
+                if (CacheMinutes > 0)
+                    CacheStatic.SetString(CacheKey, _itemObject.ToCacheString(), CacheMinutes * 60);
+                else
+                    CacheStatic.SetString(CacheKey, _itemObject.ToCacheString());
             }
         }
 

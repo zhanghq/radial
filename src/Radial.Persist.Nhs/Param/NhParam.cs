@@ -209,9 +209,9 @@ namespace Radial.Persist.Nhs.Param
             {
                 //set entity cache
                 if (CacheMinutes > 0)
-                    CacheStatic.SetString(CacheKey, item.ToCacheString(), CacheMinutes * 60);
+                    CacheStatic.Set(CacheKey, item.ToCacheString(), CacheMinutes * 60);
                 else
-                    CacheStatic.SetString(CacheKey, item.ToCacheString());
+                    CacheStatic.Set(CacheKey, item.ToCacheString());
             }
         }
 
@@ -222,7 +222,7 @@ namespace Radial.Persist.Nhs.Param
         /// <returns>The ParamItem item</returns>
         private ParamItem RetrieveFromCache()
         {
-            return ParamItem.FromCacheString(CacheStatic.GetString(CacheKey));
+            return ParamItem.FromCacheString(CacheStatic.Get<string>(CacheKey));
         }
 
         #endregion

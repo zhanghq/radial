@@ -58,68 +58,7 @@ namespace Radial.Cache
 
 
         /// <summary>
-        /// Set cache data.
-        /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <param name="value">The cache value.</param>
-        /// <param name="cacheSeconds">The cache holding seconds.</param>
-        public void SetBinary(string key, byte [] value, int? cacheSeconds = null)
-        {
-            key = CacheStatic.NormalizeKey(key);
-
-            lock (SyncRoot)
-            {
-                var entry = CacheEntries.SingleOrDefault(o => o.Key == key);
-
-                if (entry != null)
-                {
-                    entry.Value = value;
-
-                    if (!cacheSeconds.HasValue)
-                        entry.ExpiredAt = DateTime.Now.AddSeconds(cacheSeconds.Value);
-                    else
-                        entry.ExpiredAt = null;
-                }
-                else
-                {
-                    entry = new LocalCacheEntry { Key = key, Value = value };
-
-                    if (cacheSeconds.HasValue)
-                        entry.ExpiredAt = DateTime.Now.AddSeconds(cacheSeconds.Value);
-
-                    CacheEntries.Add(entry);
-                }
-
-            }
-        }
-
-
-        /// <summary>
-        /// Retrieve cached data.
-        /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <returns>
-        /// If there has matched data, return the cached binary value, otherwise return null.
-        /// </returns>
-        public byte [] GetBinary(string key)
-        {
-            key = CacheStatic.NormalizeKey(key);
-
-            lock (SyncRoot)
-            {
-                var entry = CacheEntries.SingleOrDefault(o => o.Key == key);
-
-                if (entry.Value == null || (entry.ExpiredAt.HasValue && DateTime.Now > entry.ExpiredAt))
-                    return null;
-
-                return (byte[])entry.Value;
-            }
-        }
-
-
-
-        /// <summary>
-        /// Remove cache key and its value.
+        /// Remove cache data.
         /// </summary>
         /// <param name="key">The cache key(case insensitive).</param>
         public void Remove(string key)
@@ -132,13 +71,41 @@ namespace Radial.Cache
 
 
         /// <summary>
+        /// Retrieve cached data.
+        /// </summary>
+        /// <param name="key">The cache key(case insensitive).</param>
+        /// <returns>
+        /// If there has matched key, return the cached value, otherwise return null.
+        /// </returns>
+        public object Get(string key)
+        {
+            key = CacheStatic.NormalizeKey(key);
+
+            lock (SyncRoot)
+            {
+                var entry = CacheEntries.SingleOrDefault(o => o.Key == key);
+
+                if (entry.Value == null || (entry.ExpiredAt.HasValue && DateTime.Now > entry.ExpiredAt))
+                    return null;
+
+                return entry.Value;
+            }
+        }
+
+        /// <summary>
         /// Set cache data.
         /// </summary>
         /// <param name="key">The cache key(case insensitive).</param>
         /// <param name="value">The cache value.</param>
         /// <param name="cacheSeconds">The cache holding seconds.</param>
-        public void SetString(string key, string value, int? cacheSeconds = null)
+        public void Set(string key, object value, int? cacheSeconds = null)
         {
+            if (value == null)
+            {
+                Remove(key);
+                return;
+            }
+
             key = CacheStatic.NormalizeKey(key);
 
             lock (SyncRoot)
@@ -164,28 +131,6 @@ namespace Radial.Cache
                     CacheEntries.Add(entry);
                 }
 
-            }
-        }
-
-        /// <summary>
-        /// Retrieve cached data.
-        /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <returns>
-        /// If there has matched data, return the cached string value, otherwise return null.
-        /// </returns>
-        public string GetString(string key)
-        {
-            key = CacheStatic.NormalizeKey(key);
-
-            lock (SyncRoot)
-            {
-                var entry = CacheEntries.SingleOrDefault(o => o.Key == key);
-
-                if (entry.Value == null || (entry.ExpiredAt.HasValue && DateTime.Now > entry.ExpiredAt))
-                    return null;
-
-                return (string)entry.Value;
             }
         }
     }

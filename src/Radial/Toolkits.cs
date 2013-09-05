@@ -480,7 +480,7 @@ namespace Radial
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="str">The string value.</param>
-        /// <returns>If can not convert return false, otherwirse return its string value.</returns>
+        /// <returns>If obj is null or can not convert return false, otherwirse return its string value.</returns>
         public static bool TryConvertToString(object obj, out string str)
         {
             str = null;

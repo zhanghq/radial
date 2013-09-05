@@ -16,54 +16,32 @@ namespace Radial.Cache
         /// </summary>
         /// <param name="key">The cache key(case insensitive).</param>
         /// <returns>
-        /// If there has matched data, return the cached binary value, otherwise return null.
+        /// If there has matched key, return the cached value, otherwise return null.
         /// </returns>
-        public byte[] GetBinary(string key)
+        public object Get(string key)
         {
             return null;
         }
 
+        /// <summary>
+        /// Set cache data.
+        /// </summary>
+        /// <param name="key">The cache key(case insensitive).</param>
+        /// <param name="value">The cache value.</param>
+        /// <param name="cacheSeconds">The cache holding seconds.</param>
+        public void Set(string key, object value, int? cacheSeconds = null)
+        {
+
+        }
+
 
         /// <summary>
-        /// Remove cache key and its value.
+        /// Remove cache data.
         /// </summary>
         /// <param name="key">The cache key(case insensitive).</param>
         public void Remove(string key)
         {
-        }
 
-        /// <summary>
-        /// Set cache data.
-        /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <param name="value">The cache value.</param>
-        /// <param name="cacheSeconds">The cache holding seconds.</param>
-        public void SetBinary(string key, byte[] value, int? cacheSeconds = null)
-        {
-        }
-
-
-        /// <summary>
-        /// Set cache data.
-        /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <param name="value">The cache value.</param>
-        /// <param name="cacheSeconds">The cache holding seconds.</param>
-        public void SetString(string key, string value, int? cacheSeconds = null)
-        {
-        }
-
-
-        /// <summary>
-        /// Retrieve cached data.
-        /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
-        /// <returns>
-        /// If there has matched data, return the cached string value, otherwise return null.
-        /// </returns>
-        public string GetString(string key)
-        {
-            return null;
         }
 
     }

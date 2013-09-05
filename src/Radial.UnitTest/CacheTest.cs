@@ -35,9 +35,11 @@ namespace Radial.UnitTest
         {
             Components.Container.RegisterType<ICache, MemCache>();
 
+            //primitive cache
             CacheStatic.Set("test0", 34.34, 100);
             Console.WriteLine(CacheStatic.Get<decimal>("test0"));
 
+            //collection cache
             IList<Temp> list = new List<Temp>();
 
             for (int i = 0; i < 100; i++)
@@ -55,10 +57,11 @@ namespace Radial.UnitTest
                 }
             }
 
-
+            //object cache
             CacheStatic.Set("test2", new Temp2 { Name = "sdfsd" }, 100);
             Console.WriteLine(CacheStatic.Get("test2"));
 
+            //enum cache
             CacheStatic.Set("test3",SerializeFormat.Json, 100);
             Console.WriteLine(CacheStatic.Get <SerializeFormat>("test3"));
         }

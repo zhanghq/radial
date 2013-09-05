@@ -29,7 +29,7 @@ namespace Radial.Cache
             /// <value>
             /// The value.
             /// </value>
-            public object Value { get; set; }
+            public byte[] Value { get; set; }
 
             /// <summary>
             /// Gets or sets the expired at.
@@ -77,7 +77,7 @@ namespace Radial.Cache
         /// <returns>
         /// If there has matched key, return the cached value, otherwise return null.
         /// </returns>
-        public object Get(string key)
+        public byte[] Get(string key)
         {
             key = CacheStatic.NormalizeKey(key);
 
@@ -98,9 +98,9 @@ namespace Radial.Cache
         /// <param name="key">The cache key(case insensitive).</param>
         /// <param name="value">The cache value.</param>
         /// <param name="cacheSeconds">The cache holding seconds.</param>
-        public void Set(string key, object value, int? cacheSeconds = null)
+        public void Set(string key, byte[] value, int? cacheSeconds = null)
         {
-            if (value == null)
+            if (value == null || value.Length == 0)
             {
                 Remove(key);
                 return;

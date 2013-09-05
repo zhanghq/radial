@@ -315,7 +315,7 @@ namespace Radial.Persist
         /// <param name="keys">The object keys.</param>
         /// <param name="orderBys">The order by snippets.</param>
         /// <returns>
-        /// If data exists, return an objects list, otherwise return an empty list.
+        /// If data exists and keys not empty, return an objects list, otherwise return an empty list.
         /// </returns>
         IList<TObject> FindByKeys(IEnumerable<TKey> keys, params OrderBySnippet<TObject>[] orderBys);
 

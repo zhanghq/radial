@@ -97,9 +97,8 @@ namespace Radial.Cache
         /// Retrieve cached data.
         /// </summary>
         /// <param name="key">The cache key(case insensitive).</param>
-        /// <returns>If there has matched value, return the cached data, otherwise return null.</returns>
-        /// <param name="serializeFormat">The cache value serialize format.</param>
-        public static object Get(string key, SerializeFormat serializeFormat = SerializeFormat.Json)
+        /// <returns>If there has matched key, return the cached data, otherwise return null.</returns>
+        public static object Get(string key)
         {
             return Deserialize(Instance.Get(key));
         }

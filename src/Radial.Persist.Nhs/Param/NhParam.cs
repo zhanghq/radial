@@ -143,15 +143,14 @@ namespace Radial.Persist.Nhs.Param
             {
                 if (_itemObject == null)
                 {
-                    _itemObject = ParamItem.FromCacheString(CacheStatic.GetString(CacheKey));
+                    _itemObject = RetrieveFromCache();
 
                     //cache empty
                     if (_itemObject == null)
                     {
                         _itemObject = ReadFromDatabase();
 
-                        if (_itemObject != null)
-                            CacheStatic.SetString(CacheKey, _itemObject.ToCacheString());
+                        SetToCache(_itemObject);
                     }
 
                     //database empty
@@ -193,13 +192,40 @@ namespace Radial.Persist.Nhs.Param
 
                 WriteToDatabase(_itemObject);
 
-                //set entity cache
-                if (CacheMinutes > 0)
-                    CacheStatic.SetString(CacheKey, _itemObject.ToCacheString(), CacheMinutes * 60);
-                else
-                    CacheStatic.SetString(CacheKey, _itemObject.ToCacheString());
+                SetToCache(_itemObject);
             }
         }
+
+
+        #region Cache
+
+        /// <summary>
+        /// Sets ParamItem to cache.
+        /// </summary>
+        /// <param name="item">The ParamItem item.</param>
+        private void SetToCache(ParamItem item)
+        {
+            if (item != null)
+            {
+                //set entity cache
+                if (CacheMinutes > 0)
+                    CacheStatic.SetString(CacheKey, item.ToCacheString(), CacheMinutes * 60);
+                else
+                    CacheStatic.SetString(CacheKey, item.ToCacheString());
+            }
+        }
+
+
+        /// <summary>
+        /// Retrieves ParamItem from cache.
+        /// </summary>
+        /// <returns>The ParamItem item</returns>
+        private ParamItem RetrieveFromCache()
+        {
+            return ParamItem.FromCacheString(CacheStatic.GetString(CacheKey));
+        }
+
+        #endregion
 
         /// <summary>
         /// Builds the name with xmlns.

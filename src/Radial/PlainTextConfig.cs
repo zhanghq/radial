@@ -92,38 +92,51 @@ namespace Radial
 
 
         /// <summary>
-        /// Determines whether contains the specified property.
+        /// Determines whether contains the specified property name.
         /// </summary>
-        /// <param name="property">The property.</param>
+        /// <param name="name">The property name.</param>
         /// <returns>
-        ///   <c>true</c> if contains the specified property; otherwise, <c>false</c>.
+        ///   <c>true</c> if contains the specified property name; otherwise, <c>false</c>.
         /// </returns>
-        public bool Contains(string property)
+        public bool Contains(string name)
         {
-            Checker.Parameter(!string.IsNullOrEmpty(property), "property can not be empty or null");
+            Checker.Parameter(!string.IsNullOrEmpty(name), "property name can not be empty or null");
 
-            property = property.ToLower().Trim();
-
-            return _entries.ContainsKey(property);
+            return _entries.ContainsKey(name.ToLower().Trim());
         }
 
         /// <summary>
         /// Gets the property value.
         /// </summary>
-        /// <param name="property">The property.</param>
+        /// <param name="name">The property name.</param>
         /// <returns>
-        /// If property exist, return its value, otherwise return null.
+        /// If property name exist, return its value, otherwise return null.
         /// </returns>
-        public string GetValue(string property)
+        public string this[string name]
         {
-            Checker.Parameter(!string.IsNullOrEmpty(property), "property can not be empty or null");
+            get
+            {
+                return GetValue(name);
+            }
+        }
 
-            property = property.ToLower().Trim();
+        /// <summary>
+        /// Gets the property value.
+        /// </summary>
+        /// <param name="name">The property name.</param>
+        /// <returns>
+        /// If property name exist, return its value, otherwise return null.
+        /// </returns>
+        public string GetValue(string name)
+        {
+            Checker.Parameter(!string.IsNullOrEmpty(name), "property name can not be empty or null");
 
-            if (!_entries.ContainsKey(property))
+            name = name.ToLower().Trim();
+
+            if (!_entries.ContainsKey(name))
                 return null;
 
-            return _entries[property];
+            return _entries[name];
         }
     }
 }

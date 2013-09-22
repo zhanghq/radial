@@ -57,9 +57,9 @@ namespace Radial.Persist.Nhs
         /// Sets the default order by snippets.
         /// </summary>
         /// <param name="orderBys">The order by snippets.</param>
-        protected void SetDefaultOrderBys(IEnumerable<OrderBySnippet<TObject>> orderBys)
+        protected void SetDefaultOrderBys(params OrderBySnippet<TObject>[] orderBys)
         {
-            if (orderBys != null)
+            if (orderBys != null && orderBys.Count() > 0)
                 DefaultOrderBys = orderBys;
             else
                 DefaultOrderBys = new List<OrderBySnippet<TObject>>();
@@ -87,6 +87,43 @@ namespace Radial.Persist.Nhs
             return Session.QueryOver<TObject>();
         }
 
+        /// <summary>
+        /// Appends custom order bys, if there is no custom value use default order bys instead.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="orderBys">The custom order bys.</param>
+        /// <returns></returns>
+        protected IQueryOver<TObject, TObject> AppendOrderBys(IQueryOver<TObject, TObject> query, params OrderBySnippet<TObject>[] orderBys)
+        {
+            Checker.Requires(query != null, "query can not be null");
+
+            if (orderBys == null || orderBys.Length == 0)
+                orderBys = DefaultOrderBys.ToArray();
+
+            foreach (var order in orderBys)
+            {
+                if (order.IsAscending)
+                    query = query.OrderBy(order.Property).Asc;
+                else
+                    query = query.OrderBy(order.Property).Desc;
+            }
+
+            return query;
+        }
+
+        /// <summary>
+        /// Appends custom order bys, if there is no custom value use default order bys instead.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="orderBys">The custom order bys.</param>
+        /// <returns></returns>
+        protected IQueryOver<TObject, TObject> AppendOrderBys(IQueryOver<TObject, TObject> query, IEnumerable<OrderBySnippet<TObject>> orderBys)
+        {
+            if (orderBys != null)
+               return AppendOrderBys(query, orderBys.ToArray());
+
+            return AppendOrderBys(query);
+        }
 
         /// <summary>
         /// Determine whether the object is exists.
@@ -285,18 +322,7 @@ namespace Radial.Persist.Nhs
             if (condition != null)
                 query = query.Where(condition);
 
-            if (orderBys == null || orderBys.Length == 0)
-                orderBys = DefaultOrderBys.ToArray();
-
-            foreach (OrderBySnippet<TObject> order in orderBys)
-            {
-                if (order.IsAscending)
-                    query = query.OrderBy(order.Property).Asc;
-                else
-                    query = query.OrderBy(order.Property).Desc;
-            }
-
-            return query.List();
+            return AppendOrderBys(query, orderBys).List();
         }
 
         /// <summary>
@@ -341,28 +367,13 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex, out int objectTotal)
         {
-            IQueryOver<TObject, TObject> countQuery = BuildQueryOver();
-            IQueryOver<TObject, TObject> dataQuery = BuildQueryOver();
+            IQueryOver<TObject, TObject> query = BuildQueryOver();
 
             if (condition != null)
-            {
-                countQuery = countQuery.Where(condition);
-                dataQuery = dataQuery.Where(condition);
-            }
-
-            if (orderBys == null || orderBys.Count() == 0)
-                orderBys = DefaultOrderBys;
-
-            foreach (OrderBySnippet<TObject> order in orderBys)
-            {
-                if (order.IsAscending)
-                    dataQuery = dataQuery.OrderBy(order.Property).Asc;
-                else
-                    dataQuery = dataQuery.OrderBy(order.Property).Desc;
-            }
+                query = query.Where(condition);
 
 
-            return ExecutePagingQuery(countQuery, dataQuery, pageSize, pageIndex, out objectTotal);
+            return ExecutePagingQuery(query, AppendOrderBys(query, orderBys), pageSize, pageIndex, out objectTotal);
         }
 
         /// <summary>
@@ -419,19 +430,8 @@ namespace Radial.Persist.Nhs
             if (condition != null)
                 query = query.Where(condition);
 
-            if (orderBys == null || orderBys.Count() == 0)
-                orderBys = DefaultOrderBys;
 
-            foreach (OrderBySnippet<TObject> order in orderBys)
-            {
-                if (order.IsAscending)
-                    query = query.OrderBy(order.Property).Asc;
-                else
-                    query = query.OrderBy(order.Property).Desc;
-            }
-
-
-            return query.Take(returnObjectCount).List();
+            return AppendOrderBys(query, orderBys).Take(returnObjectCount).List();
         }
 
 
@@ -479,18 +479,8 @@ namespace Radial.Persist.Nhs
             if (condition != null)
                 query = query.Where(condition);
 
-            if (orderBys == null || orderBys.Count() == 0)
-                orderBys = DefaultOrderBys;
 
-            foreach (OrderBySnippet<TObject> order in orderBys)
-            {
-                if (order.IsAscending)
-                    query = query.OrderBy(order.Property).Asc;
-                else
-                    query = query.OrderBy(order.Property).Desc;
-            }
-
-            return ExecutePagingQuery(query, pageSize, pageIndex);
+            return ExecutePagingQuery(AppendOrderBys(query, orderBys), pageSize, pageIndex);
         }
 
         /// <summary>
@@ -1005,18 +995,7 @@ namespace Radial.Persist.Nhs
 
             var query = BuildQueryOver().Where(Expression.InG<TKey>(metadata.IdentifierPropertyName, keys));
 
-            if (orderBys == null || orderBys.Length == 0)
-                orderBys = DefaultOrderBys.ToArray();
-
-            foreach (OrderBySnippet<TObject> order in orderBys)
-            {
-                if (order.IsAscending)
-                    query = query.OrderBy(order.Property).Asc;
-                else
-                    query = query.OrderBy(order.Property).Desc;
-            }
-
-            return query.List();
+            return AppendOrderBys(query, orderBys).List();
         }
 
 

@@ -373,7 +373,7 @@ namespace Radial.Persist.Nhs
                 query = query.Where(condition);
 
 
-            return ExecutePagingQuery(query, AppendOrderBys(query, orderBys), pageSize, pageIndex, out objectTotal);
+            return ExecutePagingQuery(AppendOrderBys(query, orderBys), pageSize, pageIndex, out objectTotal);
         }
 
         /// <summary>
@@ -690,78 +690,27 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Execute the paging query.
         /// </summary>
-        /// <param name="countQuery">The count query(must contains count sql statements).</param>
-        /// <param name="dataQuery">The data query.</param>
-        /// <param name="pageSize">The list size per page.</param>
-        /// <param name="pageIndex">The index of page.</param>
-        /// <param name="objectTotal">The number of total objects.</param>
-        /// <returns>The query result list</returns>
-        protected virtual IList<TObject> ExecutePagingQuery(IQuery countQuery, IQuery dataQuery, int pageSize, int pageIndex, out int objectTotal)
-        {
-            Checker.Parameter(countQuery != null, "countQuery can not be null");
-            Checker.Parameter(dataQuery != null, "dataQuery can not be null");
-            pageSize = NormalizePageSize(pageSize);
-            pageIndex = NormalizePageIndex(pageIndex);
-
-            IMultiQuery query = Session.CreateMultiQuery();
-            query.Add<int>(countQuery);
-            query.Add<TObject>(dataQuery.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize));
-
-            IList resultList = query.List();
-
-            objectTotal = ((IList<int>)resultList[0])[0];
-
-            return (IList<TObject>)resultList[1];
-        }
-
-        /// <summary>
-        /// Execute the paging query.
-        /// </summary>
-        /// <param name="countCriteria">The count criteria.</param>
-        /// <param name="dataCriteria">The data criteria.</param>
-        /// <param name="pageSize">The list size per page.</param>
-        /// <param name="pageIndex">The index of page.</param>
-        /// <param name="objectTotal">The number of total objects.</param>
-        /// <returns>The query result list</returns>
-        protected virtual IList<TObject> ExecutePagingQuery(ICriteria countCriteria, ICriteria dataCriteria, int pageSize, int pageIndex, out int objectTotal)
-        {
-            Checker.Parameter(countCriteria != null, "countCriteria can not be null");
-            Checker.Parameter(dataCriteria != null, "dataCriteria can not be null");
-            pageSize = NormalizePageSize(pageSize);
-            pageIndex = NormalizePageIndex(pageIndex);
-
-            IMultiCriteria criteria = Session.CreateMultiCriteria();
-            criteria.Add<int>(countCriteria.SetProjection(Projections.RowCount()));
-            criteria.Add<TObject>(dataCriteria.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize));
-
-            IList resultList = criteria.List();
-
-            objectTotal = ((IList<int>)resultList[0])[0];
-
-            return (IList<TObject>)resultList[1];
-        }
-
-        /// <summary>
-        /// Execute the paging query.
-        /// </summary>
         /// <param name="countQuery">The count query.</param>
-        /// <param name="dataQuery">The data query.</param>
+        /// <param name="dataQuery">The query.</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
         /// <param name="objectTotal">The number of total objects.</param>
-        /// <returns>The query result list</returns>
-        protected virtual IList<TObject> ExecutePagingQuery(IQueryOver<TObject> countQuery, IQueryOver<TObject> dataQuery, int pageSize, int pageIndex, out int objectTotal)
+        /// <returns>
+        /// The query result list
+        /// </returns>
+        protected virtual IList<TObject> ExecutePagingQuery(IQuery countQuery,IQuery dataQuery, int pageSize, int pageIndex, out int objectTotal)
         {
-            Checker.Parameter(countQuery != null, "countQuery can not be null");
-            Checker.Parameter(dataQuery != null, "dataQuery can not be null");
+            Checker.Parameter(countQuery != null, "count query can not be null");
+            Checker.Parameter(dataQuery != null, "data query can not be null");
+
             pageSize = NormalizePageSize(pageSize);
             pageIndex = NormalizePageIndex(pageIndex);
 
-            IMultiCriteria criteria = Session.CreateMultiCriteria();
-            criteria.Add<int>(countQuery.ToRowCountQuery());
-            criteria.Add<TObject>(dataQuery.Skip(pageSize * (pageIndex - 1)).Take(pageSize));
+            IMultiQuery mquery = Session.CreateMultiQuery();
+            mquery.Add<int>(countQuery);
+            mquery.Add<TObject>(dataQuery.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize));
 
-            IList resultList = criteria.List();
+            IList resultList = mquery.List();
 
             objectTotal = ((IList<int>)resultList[0])[0];
 
@@ -771,50 +720,110 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Execute the paging query.
         /// </summary>
-        /// <param name="dataQuery">The data query.</param>
+        /// <param name="criteria">The criteria.</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
-        /// <returns>The query result list</returns>
-        protected virtual IList<TObject> ExecutePagingQuery(IQuery dataQuery, int pageSize, int pageIndex)
+        /// <param name="objectTotal">The number of total objects.</param>
+        /// <returns>
+        /// The query result list
+        /// </returns>
+        protected virtual IList<TObject> ExecutePagingQuery(ICriteria criteria, int pageSize, int pageIndex, out int objectTotal)
         {
-            Checker.Parameter(dataQuery != null, "dataQuery can not be null");
+            Checker.Parameter(criteria != null, "criteria can not be null");
             pageSize = NormalizePageSize(pageSize);
             pageIndex = NormalizePageIndex(pageIndex);
 
-            return dataQuery.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize).List<TObject>();
+            ICriteria countCriteria = criteria.Clone() as ICriteria;
+            countCriteria.ClearOrders();
+
+            IMultiCriteria mcriteria = Session.CreateMultiCriteria();
+            mcriteria.Add<int>(countCriteria.SetProjection(Projections.RowCount()));
+            mcriteria.Add<TObject>(criteria.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize));
+
+            IList resultList = mcriteria.List();
+
+            objectTotal = ((IList<int>)resultList[0])[0];
+
+            return (IList<TObject>)resultList[1];
         }
 
         /// <summary>
         /// Execute the paging query.
         /// </summary>
-        /// <param name="dataCriteria">The data criteria.</param>
+        /// <param name="query">The query.</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
-        /// <returns>The query result list</returns>
-        protected virtual IList<TObject> ExecutePagingQuery(ICriteria dataCriteria, int pageSize, int pageIndex)
+        /// <param name="objectTotal">The number of total objects.</param>
+        /// <returns>
+        /// The query result list
+        /// </returns>
+        protected virtual IList<TObject> ExecutePagingQuery(IQueryOver<TObject> query, int pageSize, int pageIndex, out int objectTotal)
         {
-            Checker.Parameter(dataCriteria != null, "dataCriteria can not be null");
+            Checker.Parameter(query != null, "query can not be null");
             pageSize = NormalizePageSize(pageSize);
             pageIndex = NormalizePageIndex(pageIndex);
 
-            return dataCriteria.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize).List<TObject>();
+            IQueryOver<TObject> countQuery = query.Clone();
+            countQuery.ClearOrders();
+
+            IMultiCriteria mcriteria = Session.CreateMultiCriteria();
+            mcriteria.Add<int>(countQuery.ToRowCountQuery());
+            mcriteria.Add<TObject>(query.Skip(pageSize * (pageIndex - 1)).Take(pageSize));
+
+            IList resultList = mcriteria.List();
+
+            objectTotal = ((IList<int>)resultList[0])[0];
+
+            return (IList<TObject>)resultList[1];
         }
 
         /// <summary>
         /// Execute the paging query.
         /// </summary>
-        /// <param name="dataQuery">The data query.</param>
+        /// <param name="query">The data query.</param>
         /// <param name="pageSize">The list size per page.</param>
         /// <param name="pageIndex">The index of page.</param>
         /// <returns>The query result list</returns>
-        protected virtual IList<TObject> ExecutePagingQuery(IQueryOver<TObject> dataQuery, int pageSize, int pageIndex)
+        protected virtual IList<TObject> ExecutePagingQuery(IQuery query, int pageSize, int pageIndex)
         {
-            Checker.Parameter(dataQuery != null, "dataQuery can not be null");
+            Checker.Parameter(query != null, "query can not be null");
+            pageSize = NormalizePageSize(pageSize);
+            pageIndex = NormalizePageIndex(pageIndex);
+
+            return query.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize).List<TObject>();
+        }
+
+        /// <summary>
+        /// Execute the paging query.
+        /// </summary>
+        /// <param name="criteria">The data criteria.</param>
+        /// <param name="pageSize">The list size per page.</param>
+        /// <param name="pageIndex">The index of page.</param>
+        /// <returns>The query result list</returns>
+        protected virtual IList<TObject> ExecutePagingQuery(ICriteria criteria, int pageSize, int pageIndex)
+        {
+            Checker.Parameter(criteria != null, "criteria can not be null");
+            pageSize = NormalizePageSize(pageSize);
+            pageIndex = NormalizePageIndex(pageIndex);
+
+            return criteria.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize).List<TObject>();
+        }
+
+        /// <summary>
+        /// Execute the paging query.
+        /// </summary>
+        /// <param name="query">The data query.</param>
+        /// <param name="pageSize">The list size per page.</param>
+        /// <param name="pageIndex">The index of page.</param>
+        /// <returns>The query result list</returns>
+        protected virtual IList<TObject> ExecutePagingQuery(IQueryOver<TObject> query, int pageSize, int pageIndex)
+        {
+            Checker.Parameter(query != null, "query can not be null");
             pageSize = NormalizePageSize(pageSize);
             pageIndex = NormalizePageIndex(pageIndex);
 
 
-            return dataQuery.Skip(pageSize * (pageIndex - 1)).Take(pageSize).List();
+            return query.Skip(pageSize * (pageIndex - 1)).Take(pageSize).List();
         }
 
         #endregion

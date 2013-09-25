@@ -33,6 +33,21 @@ namespace Radial.UnitTest.Persist.Nhs
         }
 
         [Test]
+        public void FindAll()
+        {
+            using (IUnitOfWork uow = new NhUnitOfWork())
+            {
+                UserRepository userRepository = new UserRepository(uow);
+
+                int total;
+
+                IList<User> users = userRepository.FindAll(null, new OrderBySnippet<User>[] { new OrderBySnippet<User>(o => o.Id, false) }, 5, 1, out total);
+
+                Assert.IsNotEmpty(users);
+            }
+        }
+
+        [Test]
         public void FindByKeys()
         {
             int id1 = RandomCode.NewInstance.Next(1, int.MaxValue);

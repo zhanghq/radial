@@ -92,37 +92,27 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <param name="query">The query.</param>
         /// <param name="orderBys">The custom order bys.</param>
+        /// <param name="withDefaultOrderBys">if set to <c>true</c> [with default order bys].</param>
         /// <returns></returns>
-        protected IQueryOver<TObject, TObject> AppendOrderBys(IQueryOver<TObject, TObject> query, params OrderBySnippet<TObject>[] orderBys)
+        protected IQueryOver<TObject, TObject> AppendOrderBys(IQueryOver<TObject, TObject> query, IEnumerable<OrderBySnippet<TObject>> orderBys = null, bool withDefaultOrderBys = true)
         {
             Checker.Requires(query != null, "query can not be null");
 
-            if (orderBys == null || orderBys.Length == 0)
+            if (withDefaultOrderBys && (orderBys == null || orderBys.Count() == 0))
                 orderBys = DefaultOrderBys.ToArray();
 
-            foreach (var order in orderBys)
+            if (orderBys != null)
             {
-                if (order.IsAscending)
-                    query = query.OrderBy(order.Property).Asc;
-                else
-                    query = query.OrderBy(order.Property).Desc;
+                foreach (var order in orderBys)
+                {
+                    if (order.IsAscending)
+                        query = query.OrderBy(order.Property).Asc;
+                    else
+                        query = query.OrderBy(order.Property).Desc;
+                }
             }
 
             return query;
-        }
-
-        /// <summary>
-        /// Appends custom order bys, if there is no custom value use default order bys instead.
-        /// </summary>
-        /// <param name="query">The query.</param>
-        /// <param name="orderBys">The custom order bys.</param>
-        /// <returns></returns>
-        protected IQueryOver<TObject, TObject> AppendOrderBys(IQueryOver<TObject, TObject> query, IEnumerable<OrderBySnippet<TObject>> orderBys)
-        {
-            if (orderBys != null)
-               return AppendOrderBys(query, orderBys.ToArray());
-
-            return AppendOrderBys(query);
         }
 
         /// <summary>
@@ -993,7 +983,7 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// If data exists and keys not empty, return an objects list, otherwise return an empty list.
         /// </returns>
-        public IList<TObject> FindByKeys(IEnumerable<TKey> keys, params OrderBySnippet<TObject>[] orderBys)
+        public virtual IList<TObject> FindByKeys(IEnumerable<TKey> keys, params OrderBySnippet<TObject>[] orderBys)
         {
             if (keys == null || keys.Count() == 0)
                 return new List<TObject>();
@@ -1004,7 +994,7 @@ namespace Radial.Persist.Nhs
 
             var query = BuildQueryOver().Where(Expression.InG<TKey>(metadata.IdentifierPropertyName, keys));
 
-            return AppendOrderBys(query, orderBys).List();
+            return AppendOrderBys(query, orderBys, false).List();
         }
 
 

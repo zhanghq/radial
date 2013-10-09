@@ -79,6 +79,7 @@
     <Compile Include="Boot\Cfg\BootTaskElement.cs" />
     <Compile Include="Boot\Cfg\BootTaskElementCollection.cs" />
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />
+    <Compile Include="IO\EasyStream.cs" />
     <Compile Include="Serialization\SerializeFormat.cs" />
     <Compile Include="Cache\CacheStatic.cs" />
     <Compile Include="Cache\EmptyCache.cs" />

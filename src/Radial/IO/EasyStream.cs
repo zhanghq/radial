@@ -50,6 +50,22 @@ namespace Radial.IO
             /// Gets stream bytes.
             /// </summary>
             /// <param name="stream">The stream.</param>
+            /// <param name="offset">The offset.</param>
+            /// <param name="count">The bytes count.</param>
+            /// <returns>Stream bytes.</returns>
+            public static byte[] GetBytes(Stream stream, int offset, int count)
+            {
+                byte[] buffer = new byte[] { };
+
+                stream.Read(buffer, offset, count);
+
+                return buffer;
+            }
+
+            /// <summary>
+            /// Gets stream bytes.
+            /// </summary>
+            /// <param name="stream">The stream.</param>
             /// <param name="count">The bytes count.</param>
             /// <returns>
             /// Stream bytes.
@@ -76,6 +92,23 @@ namespace Radial.IO
 
                 return bytes.ToArray();
 
+            }
+
+            /// <summary>
+            /// Gets file content bytes.
+            /// </summary>
+            /// <param name="filePath">The file path.</param>
+            /// <param name="offset">The offset.</param>
+            /// <param name="count">The bytes count.</param>
+            /// <returns>
+            /// File content bytes.
+            /// </returns>
+            public static byte[] GetBytes(string filePath, int offset, int count)
+            {
+                using (Stream fs = new FileStream(filePath, FileMode.Open))
+                {
+                    return GetBytes(fs, offset, count);
+                }
             }
 
             /// <summary>

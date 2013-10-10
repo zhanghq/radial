@@ -21,11 +21,30 @@ namespace Radial.IO
             /// Gets stream text.
             /// </summary>
             /// <param name="stream">The stream.</param>
-            /// <returns>Stream text.</returns>
+            /// <returns>
+            /// Stream text.
+            /// </returns>
             public static string GetText(Stream stream)
             {
                 stream.Position = 0;
                 using (StreamReader sr = new StreamReader(stream))
+                {
+                    return sr.ReadToEnd();
+                }
+            }
+
+            /// <summary>
+            /// Gets stream text.
+            /// </summary>
+            /// <param name="stream">The stream.</param>
+            /// <param name="encoding">The encoding.</param>
+            /// <returns>
+            /// Stream text.
+            /// </returns>
+            public static string GetText(Stream stream, Encoding encoding)
+            {
+                stream.Position = 0;
+                using (StreamReader sr = new StreamReader(stream, encoding))
                 {
                     return sr.ReadToEnd();
                 }
@@ -43,6 +62,22 @@ namespace Radial.IO
                 using (Stream fs = new FileStream(filePath, FileMode.Open))
                 {
                     return GetText(fs);
+                }
+            }
+
+            /// <summary>
+            /// Gets file content text.
+            /// </summary>
+            /// <param name="filePath">The file path.</param>
+            /// <param name="encoding">The encoding.</param>
+            /// <returns>
+            /// File content text.
+            /// </returns>
+            public static string GetText(string filePath, Encoding encoding)
+            {
+                using (Stream fs = new FileStream(filePath, FileMode.Open))
+                {
+                    return GetText(fs, encoding);
                 }
             }
 
@@ -146,6 +181,43 @@ namespace Radial.IO
             }
 
             /// <summary>
+            /// Gets stream text lines.
+            /// </summary>
+            /// <param name="stream">The stream.</param>
+            /// <param name="encoding">The encoding.</param>
+            /// <returns>
+            /// Stream text lines
+            /// </returns>
+            public static string[] GetLines(Stream stream,Encoding encoding)
+            {
+                stream.Position = 0;
+                IList<string> lines = new List<string>();
+                using (StreamReader sr = new StreamReader(stream, encoding))
+                {
+                    if (sr.Peek() > -1)
+                        lines.Add(sr.ReadLine());
+                }
+
+                return lines.ToArray();
+            }
+
+            /// <summary>
+            /// Gets file content text lines.
+            /// </summary>
+            /// <param name="filePath">The file path.</param>
+            /// <param name="encoding">The encoding.</param>
+            /// <returns>
+            /// File content text lines
+            /// </returns>
+            public static string[] GetLines(string filePath, Encoding encoding)
+            {
+                using (Stream fs = new FileStream(filePath, FileMode.Open))
+                {
+                    return GetLines(fs, encoding);
+                }
+            }
+
+            /// <summary>
             /// Gets file content text lines.
             /// </summary>
             /// <param name="filePath">The file path.</param>
@@ -181,6 +253,20 @@ namespace Radial.IO
             /// </summary>
             /// <param name="stream">The stream.</param>
             /// <param name="text">The text.</param>
+            /// <param name="encoding">The encoding.</param>
+            public static void Save(Stream stream, string text, Encoding encoding)
+            {
+                using (StreamWriter sw = new StreamWriter(stream, encoding))
+                {
+                    sw.Write(text);
+                }
+            }
+
+            /// <summary>
+            /// Saves text to stream.
+            /// </summary>
+            /// <param name="stream">The stream.</param>
+            /// <param name="text">The text.</param>
             public static void Save(Stream stream, string text)
             {
                 using (StreamWriter sw = new StreamWriter(stream))
@@ -207,6 +293,20 @@ namespace Radial.IO
             /// </summary>
             /// <param name="content">The content.</param>
             /// <param name="filePath">The file path.</param>
+            /// <param name="encoding">The encoding.</param>
+            public static void SaveToFile(string content, string filePath, Encoding encoding)
+            {
+                using (Stream fs = new FileStream(filePath, FileMode.Create))
+                {
+                    Save(fs, content, encoding);
+                }
+            }
+
+            /// <summary>
+            /// Saves the content to a new file.
+            /// </summary>
+            /// <param name="content">The content.</param>
+            /// <param name="filePath">The file path.</param>
             public static void SaveToFile(string content, string filePath)
             {
                 using (Stream fs = new FileStream(filePath, FileMode.Create))
@@ -225,6 +325,20 @@ namespace Radial.IO
                 using (Stream fs = new FileStream(filePath, FileMode.Append))
                 {
                     Save(fs, content);
+                }
+            }
+
+            /// <summary>
+            /// Appends the content to file.
+            /// </summary>
+            /// <param name="content">The content.</param>
+            /// <param name="filePath">The file path.</param>
+            /// <param name="encoding">The encoding.</param>
+            public static void AppendToFile(string content, string filePath,Encoding encoding)
+            {
+                using (Stream fs = new FileStream(filePath, FileMode.Append))
+                {
+                    Save(fs, content, encoding);
                 }
             }
 

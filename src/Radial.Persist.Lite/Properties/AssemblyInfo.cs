@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Radial.Persist.Lite")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Radial Project")]
 [assembly: AssemblyProduct("Radial.Persist.Lite")]
-[assembly: AssemblyCopyright("Copyright © Radial Project 2013")]
+[assembly: AssemblyCopyright("Licensed Under LGPL")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

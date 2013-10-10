@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Radial.Web.Mvc")]
 [assembly: AssemblyDescription("Based On Asp.net MVC 4.0")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Radial Project")]
 [assembly: AssemblyProduct("Radial.Web.Mvc")]
-[assembly: AssemblyCopyright("Copyright © Radial Project 2011")]
+[assembly: AssemblyCopyright("Licensed Under LGPL")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

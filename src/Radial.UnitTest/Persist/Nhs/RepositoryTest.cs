@@ -87,5 +87,16 @@ namespace Radial.UnitTest.Persist.Nhs
                 }
             }
         }
+
+        [Test]
+        public void ExtraCondition()
+        {
+            using (IUnitOfWork uow = new NhUnitOfWork())
+            {
+                OrderRepository repo = new OrderRepository(uow);
+                //观察输出的Sql
+                var objs = repo.FindAll();
+            }
+        }
     }
 }

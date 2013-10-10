@@ -74,6 +74,7 @@
     <Compile Include="FtpClientTest.cs" />
     <Compile Include="IOTest.cs" />
     <Compile Include="Persist\Nhs\Level2CacheTest.cs" />
+    <Compile Include="Persist\Nhs\Repository\OrderRepository.cs" />
     <Compile Include="Serialization\JsonTest.cs" />
     <Compile Include="Persist\Nhs\RepositoryTest.cs" />
     <Compile Include="RedisTest.cs" />

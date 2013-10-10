@@ -95,7 +95,7 @@ namespace Radial.UnitTest.Persist.Nhs
             {
                 OrderRepository repo = new OrderRepository(uow);
                 //观察输出的Sql
-                var obj = repo[2];
+                var objs = repo.FindAll();
             }
         }
     }

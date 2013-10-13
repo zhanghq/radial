@@ -63,7 +63,7 @@ namespace Radial.UnitTest
 
             //enum cache
             CacheStatic.Set("test3",SerializeFormat.Json, 100);
-            Console.WriteLine(CacheStatic.Get <SerializeFormat>("test3"));
+            Console.WriteLine(CacheStatic.Get<SerializeFormat>("test3"));
         }
 
         //[Test]

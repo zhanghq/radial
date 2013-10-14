@@ -294,6 +294,48 @@ namespace Radial.Param
         /// <returns>
         /// If path exists, return its value, otherwise throw an exception.
         /// </returns>
+        public static float GetValueFloat(string path)
+        {
+            string paramValue = GetValue(path);
+
+            float returnValue = 0;
+
+            Checker.Requires(float.TryParse(paramValue.Trim(), out returnValue), CanNotConvertExceptionFormat, path, typeof(float).FullName);
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Get the param value.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <param name="defaultValue">The default value when param value empty or can not convert.</param>
+        /// <returns>
+        /// If path exists, return its value, otherwise return default value.
+        /// </returns>
+        public static float GetValueFloat(string path, float defaultValue)
+        {
+            string paramValue = GetValue(path);
+            if (string.IsNullOrWhiteSpace(paramValue))
+                return defaultValue;
+
+            float returnValue = 0;
+
+            if (!float.TryParse(paramValue.Trim(), out returnValue))
+            {
+                returnValue = defaultValue;
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Get the param value.
+        /// </summary>
+        /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
+        /// <returns>
+        /// If path exists, return its value, otherwise throw an exception.
+        /// </returns>
         public static int GetValueInt32(string path)
         {
             string paramValue = GetValue(path);

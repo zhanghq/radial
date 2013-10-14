@@ -3,7 +3,7 @@ Radial Project
 Radial project is a lightweight c# framework, which is designed to improve developers working efficiency, more convenient and efficient to build applications, It contains the following components:
 
 ### Dependency Injection ###
-Radial contains a unified entrance class of Microsoft.Practices.Unity, easy to use
+Radial contains an unified entrance class of Microsoft.Practices.Unity, easy to use, but many features in Radial depends on it
 
 ```csharp
 Components.Container.RegisterType<IParam, XmlParam>();
@@ -151,3 +151,4 @@ Also a key aspect of Radial and also two libraries:
 - ExcelTools: import/export Execel files
 - RangeValue: represents a range of value, minimum and maximum
 - Validator: common used validation methods
+- ......

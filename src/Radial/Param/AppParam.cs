@@ -473,7 +473,10 @@ namespace Radial.Param
             if (objType.IsEnum)
                 return ((int)obj).ToString();
 
-            if (objType == typeof(string) || objType.IsPrimitive)
+            if (objType == typeof(Boolean) || objType == typeof(Byte) || objType == typeof(SByte)
+                || objType == typeof(Int16) || objType == typeof(UInt16) || objType == typeof(Int32) || objType == typeof(UInt32)
+                || objType == typeof(Int64) || objType == typeof(UInt64) || objType == typeof(Char) || objType == typeof(String)
+                || objType == typeof(Double) || objType == typeof(Single) || objType == typeof(Decimal))
                 return obj.ToString().Trim();
 
             throw new NotSupportedException(string.Format("Object type {0} was not supported in AppParam", objType.FullName));

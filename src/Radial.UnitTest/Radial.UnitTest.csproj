@@ -73,8 +73,13 @@
     <Compile Include="ExcelToolsTest.cs" />
     <Compile Include="FtpClientTest.cs" />
     <Compile Include="IOTest.cs" />
+    <Compile Include="Persist\Nhs\Domain\Book.cs" />
     <Compile Include="Persist\Nhs\Level2CacheTest.cs" />
     <Compile Include="Persist\Nhs\Repository\OrderRepository.cs" />
+    <Compile Include="Persist\Nhs\Repository\BookRepository.cs" />
+    <Compile Include="Persist\Nhs\Shard\ShardPoolInitializer.cs" />
+    <Compile Include="Persist\Nhs\Shard\BookStoragePolicy.cs" />
+    <Compile Include="Persist\Nhs\Shard\ShardTest.cs" />
     <Compile Include="Serialization\JsonTest.cs" />
     <Compile Include="Persist\Nhs\RepositoryTest.cs" />
     <Compile Include="RedisTest.cs" />
@@ -105,6 +110,7 @@
     </None>
     <None Include="Config\log4net.config" />
     <None Include="Config\NHibernate.config" />
+    <None Include="Config\StoragePolicy.config" />
     <None Include="Config\XmlParam.config">
       <SubType>Designer</SubType>
     </None>
@@ -118,6 +124,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Persist\Nhs\Domain\Order.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Persist\Nhs\Domain\Book.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

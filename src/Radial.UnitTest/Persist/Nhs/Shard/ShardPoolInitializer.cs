@@ -37,7 +37,12 @@ namespace Radial.UnitTest.Persist.Nhs.Shard
                 {
                     foreach (var m in tsd.GetTableMappings(cfg.Name))
                     {
-                        configuration.GetClassMapping(m.ObjectType).Table.Name = ns.TableName(m.TableName);
+                        var map = configuration.GetClassMapping(m.ObjectType);
+
+                        if (map != null)
+                        {
+                            map.Table.Name = ns == null ? string.Format("[{0}]", m.TableName) : ns.TableName(m.TableName);
+                        }
                     }
                 }
                 wrapperSet.Add(new SessionFactoryWrapper(cfg.Name, configuration.BuildSessionFactory()));

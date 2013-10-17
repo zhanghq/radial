@@ -21,8 +21,39 @@ namespace Radial.Persist
         /// </summary>
         static StorageRouter()
         {
-            Initial(ConfigurationPath);
-            FileWatcher.CreateMonitor(ConfigurationPath, Initial);
+            lock (S_SyncRoot)
+            {
+                AliasConfigSet = new HashSet<StorageAliasConfig>();
+
+                Checker.Requires(File.Exists(ConfigurationPath), "can not find storage alias configuration file at: {0}", ConfigurationPath);
+
+                XDocument doc = XDocument.Load(ConfigurationPath);
+                XElement root = doc.Element(BuildXName("storage"));
+
+                if (root == null)
+                    return;
+
+                var aliasElements = from e in root.Descendants(BuildXName("alias")) select e;
+
+                foreach (XElement ce in aliasElements)
+                {
+                    StorageAliasConfig cfg = new StorageAliasConfig();
+
+                    cfg.Name = ce.Attribute("name") == null ? string.Empty : ce.Attribute("name").Value.Trim().ToLower();
+
+                    Checker.Requires(!string.IsNullOrWhiteSpace(cfg.Name), "storage alias name can not be empty or null");
+
+                    Checker.Requires(!AliasConfigSet.Contains(cfg), "storage alias name duplicated");
+
+                    var settingsElement = ce.Element("settings");
+
+                    if (settingsElement != null)
+                        cfg.Settings = settingsElement.Value.Trim();
+
+                    AliasConfigSet.Add(cfg);
+
+                }
+            }
         }
 
         /// <summary>
@@ -55,47 +86,6 @@ namespace Radial.Persist
         /// The storage alias config set.
         /// </value>
         public static ISet<StorageAliasConfig> AliasConfigSet { get; internal set; }
-
-        /// <summary>
-        /// Initials the specified config file path.
-        /// </summary>
-        /// <param name="configFilePath">The config file path.</param>
-        private static void Initial(string configFilePath)
-        {
-            lock (S_SyncRoot)
-            {
-                AliasConfigSet = new HashSet<StorageAliasConfig>();
-
-                Checker.Requires(File.Exists(configFilePath), "can not find storage alias configuration file at: {0}", ConfigurationPath);
-
-                XDocument doc = XDocument.Load(configFilePath);
-                XElement root = doc.Element(BuildXName("storage"));
-
-                if (root == null)
-                    return;
-
-                var aliasElements = from e in root.Descendants(BuildXName("alias")) select e;
-
-                foreach (XElement ce in aliasElements)
-                {
-                    StorageAliasConfig cfg = new StorageAliasConfig();
-                    
-                    cfg.Name = ce.Attribute("name") == null ? string.Empty : ce.Attribute("name").Value.Trim().ToLower();
-
-                    Checker.Requires(!string.IsNullOrWhiteSpace(cfg.Name), "storage alias name can not be empty or null");
-
-                    Checker.Requires(!AliasConfigSet.Contains(cfg), "storage alias name duplicated");
-
-                    var settingsElement = ce.Element("settings");
-
-                    if (settingsElement != null)
-                        cfg.Settings = settingsElement.Value.Trim();
-
-                    AliasConfigSet.Add(cfg);
-
-                }
-            }
-        }
 
         /// <summary>
         /// Gets storage alias according to the specified object key.

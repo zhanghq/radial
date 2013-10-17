@@ -65,8 +65,7 @@ namespace Radial.Persist.Nhs
         {
             get
             {
-
-                SessionFactoryWrapper wrapper = S_FactoryWrapperSet.FirstOrDefault();
+                SessionFactoryWrapper wrapper = GetFactoryWrappers().FirstOrDefault();
 
                 return wrapper.Factory;
             }
@@ -80,7 +79,7 @@ namespace Radial.Persist.Nhs
         /// <returns>The SessionFactoryWrapper object.</returns>
         public static SessionFactoryWrapper GeFactorytWrapper(string storageAlias)
         {
-            return GetFactoryWrappers(storageAlias)[0];
+            return GetFactoryWrappers(storageAlias).FirstOrDefault();
         }
 
         /// <summary>
@@ -92,20 +91,19 @@ namespace Radial.Persist.Nhs
         {
             IList<SessionFactoryWrapper> list = new List<SessionFactoryWrapper>();
 
-            if (storageAliases.Length > 0)
+            if (storageAliases != null && storageAliases.Length > 0)
             {
                 foreach (string alias in storageAliases)
                 {
-
                     string normalizedAlias = alias.ToLower().Trim();
                     SessionFactoryWrapper wrapper = S_FactoryWrapperSet.SingleOrDefault(o => o.Alias == normalizedAlias);
 
                     Checker.Requires(wrapper != null, CanNotFindInstanceExceptionMessageWithAlias, normalizedAlias);
 
                     list.Add(wrapper);
-
-                    return list.ToArray();
                 }
+
+                return list.ToArray();
             }
 
             return S_FactoryWrapperSet.ToArray();
@@ -131,7 +129,6 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public static string[] GetStorageAliases()
         {
-
             IList<string> aliases = new List<string>(S_FactoryWrapperSet.Count);
 
             foreach (SessionFactoryWrapper wrapper in S_FactoryWrapperSet)
@@ -139,25 +136,6 @@ namespace Radial.Persist.Nhs
 
             return aliases.ToArray();
 
-        }
-
-        /// <summary>
-        /// Gets all storage aliases according to the storage group.
-        /// </summary>
-        /// <param name="group">The storage group, if equal to null means the storage not included in any group.</param>
-        /// <returns>
-        /// The storage aliases array.
-        /// </returns>
-        public static string[] GetStorageAliases(int? group)
-        {
-            var q = S_FactoryWrapperSet.Where(o => o.Group == group);
-
-            IList<string> aliases = new List<string>(S_FactoryWrapperSet.Count);
-
-            foreach (SessionFactoryWrapper wrapper in q)
-                aliases.Add(wrapper.Alias);
-
-            return aliases.ToArray();
         }
 
         /// <summary>

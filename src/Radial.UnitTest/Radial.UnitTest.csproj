@@ -78,7 +78,7 @@
     <Compile Include="Persist\Nhs\Repository\OrderRepository.cs" />
     <Compile Include="Persist\Nhs\Repository\BookRepository.cs" />
     <Compile Include="Persist\Nhs\Shard\ShardPoolInitializer.cs" />
-    <Compile Include="Persist\Nhs\Shard\BookStoragePolicy.cs" />
+    <Compile Include="Persist\Nhs\Shard\ShardStoragePolicy.cs" />
     <Compile Include="Persist\Nhs\Shard\ShardTest.cs" />
     <Compile Include="Serialization\JsonTest.cs" />
     <Compile Include="Persist\Nhs\RepositoryTest.cs" />
@@ -110,7 +110,6 @@
     </None>
     <None Include="Config\log4net.config" />
     <None Include="Config\NHibernate.config" />
-    <None Include="Config\StoragePolicy.config" />
     <None Include="Config\XmlParam.config">
       <SubType>Designer</SubType>
     </None>
@@ -127,6 +126,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Persist\Nhs\Domain\Book.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Config\StorageAlias.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

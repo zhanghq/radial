@@ -1,5 +1,6 @@
 ﻿using NHibernate.Cfg;
 using NHibernate.Util;
+using Radial.Persist;
 using Radial.Persist.Nhs;
 using Radial.Persist.Nhs.NamingStrategy;
 using Radial.UnitTest.Persist.Nhs.Domain;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Practices.Unity;
 
 namespace Radial.UnitTest.Persist.Nhs.Shard
 {
@@ -26,14 +28,19 @@ namespace Radial.UnitTest.Persist.Nhs.Shard
 
             configuration.Configure(ConfigurationPath);
 
-            var bookTable = configuration.GetClassMapping(typeof(Book)).Table;
-            string originalBookTableName = bookTable.Name;
+            ITableShardable tsd = Components.Container.Resolve<ITableShardable>();
 
-            for (int i = 1; i <= 2; i++)
+            foreach (var cfg in StorageRouter.AliasConfigSet)
             {
-                string alias = "shard" + i;
-                bookTable.Name = ns == null ? string.Format("[{0}{1}]", originalBookTableName, i) : ns.TableName(originalBookTableName.Trim('[', ']') + i);
-                wrapperSet.Add(new SessionFactoryWrapper(alias, configuration.BuildSessionFactory()));
+                //本例是分表，故需要执行此操作，如果不分表，则可以跳过此步
+                if (tsd != null)
+                {
+                    foreach (var m in tsd.GetTableMappings(cfg.Name))
+                    {
+                        configuration.GetClassMapping(m.ObjectType).Table.Name = ns.TableName(m.TableName);
+                    }
+                }
+                wrapperSet.Add(new SessionFactoryWrapper(cfg.Name, configuration.BuildSessionFactory()));
             }
 
             return wrapperSet;

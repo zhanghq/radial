@@ -9,7 +9,7 @@ namespace Radial.Persist.Nhs
     /// <summary>
     /// A wrapper class of ISessionFactory instance.
     /// </summary>
-    public sealed class SessionFactoryWrapper
+    public sealed class SessionFactoryWrapper : IEquatable<StorageAliasConfig>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SessionFactoryWrapper"/> class.
@@ -17,24 +17,12 @@ namespace Radial.Persist.Nhs
         /// <param name="alias">The storage alias (case insensitive).</param>
         /// <param name="factory">The factory instance.</param>
         public SessionFactoryWrapper(string alias, ISessionFactory factory)
-            : this(alias, factory, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SessionFactoryWrapper"/> class.
-        /// </summary>
-        /// <param name="alias">The storage alias (case insensitive).</param>
-        /// <param name="factory">The factory instance.</param>
-        /// <param name="group">The factory group, if equal to null means the factory not included in any group.</param>
-        public SessionFactoryWrapper(string alias, ISessionFactory factory, int? group)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(alias), "storage alias can not be empty or null");
             Checker.Parameter(factory != null, "factory instance can not be null");
 
             Alias = alias.ToLower().Trim();
             Factory = factory;
-            Group = group;
         }
 
         /// <summary>
@@ -50,15 +38,6 @@ namespace Radial.Persist.Nhs
         /// Gets the factory instance.
         /// </summary>
         public ISessionFactory Factory
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets the storage group, if equal to null means the factory not included in any group.
-        /// </summary>
-        public int? Group
         {
             get;
             private set;
@@ -91,6 +70,16 @@ namespace Radial.Persist.Nhs
         public override int GetHashCode()
         {
             return Alias.GetHashCode();
+        }
+
+        /// <summary>
+        /// Equalses the specified other.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        /// <returns></returns>
+        public bool Equals(StorageAliasConfig other)
+        {
+            return Equals(other);
         }
     }
 }

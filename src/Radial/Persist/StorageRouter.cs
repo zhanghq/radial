@@ -4,36 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.IO;
+using Microsoft.Practices.Unity;
 
 namespace Radial.Persist
 {
     /// <summary>
     /// Storage router.
     /// </summary>
-    public sealed class StorageRouter
+    public static class StorageRouter
     {
-        /// <summary>
-        /// Represent the item of storage policy configuration.
-        /// </summary>
-        class StoragePolicyConfigItem
-        {
-            /// <summary>
-            /// Gets the type of the entity.
-            /// </summary>
-            public Type EntityType { get; internal set; }
-
-            /// <summary>
-            /// Gets the storage policy instance.
-            /// </summary>
-            public IStoragePolicy StoragePolicy { get; internal set; }
-        }
-
-
-        static StorageRouter S_Router;
         static object S_SyncRoot = new object();
-
-        const string Xmlns = "urn:radial-persist-storagepolicy";
-
+        const string Xmlns = "urn:radial-persist-storage-alias";
 
         /// <summary>
         /// Initializes the <see cref="StorageRouter"/> class.
@@ -45,24 +26,13 @@ namespace Radial.Persist
         }
 
         /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        private static Logger Logger
-        {
-            get
-            {
-                return Logger.GetInstance("StorageRouter");
-            }
-        }
-
-        /// <summary>
         /// Gets the configuration path.
         /// </summary>
         private static string ConfigurationPath
         {
             get
             {
-                return SystemSettings.GetConfigPath("StoragePolicy.config");
+                return SystemSettings.GetConfigPath("StorageAlias.config");
             }
         }
 
@@ -79,21 +49,12 @@ namespace Radial.Persist
         }
 
         /// <summary>
-        /// Prevents a default instance of the <see cref="StorageRouter"/> class from being created.
-        /// </summary>
-        private StorageRouter()
-        {
-            StoragePolicyConfigItemSet = new HashSet<StoragePolicyConfigItem>();
-        }
-
-
-        /// <summary>
-        /// Gets or sets the storage policy config item set.
+        /// Gets the storage alias config set.
         /// </summary>
         /// <value>
-        /// The storage policy config item set.
+        /// The storage alias config set.
         /// </value>
-        private HashSet<StoragePolicyConfigItem> StoragePolicyConfigItemSet { get; set; }
+        public static ISet<StorageAliasConfig> AliasConfigSet { get; internal set; }
 
         /// <summary>
         /// Initials the specified config file path.
@@ -103,131 +64,99 @@ namespace Radial.Persist
         {
             lock (S_SyncRoot)
             {
-                Logger.Debug("load storage policy configuration");
-                S_Router = new StorageRouter();
+                AliasConfigSet = new HashSet<StorageAliasConfig>();
 
-                if (!File.Exists(configFilePath))
-                    return;
+                Checker.Requires(File.Exists(configFilePath), "can not find storage alias configuration file at: {0}", ConfigurationPath);
 
                 XDocument doc = XDocument.Load(configFilePath);
-                XElement root = doc.Element(BuildXName("policies"));
+                XElement root = doc.Element(BuildXName("storage"));
 
                 if (root == null)
                     return;
 
-                var classElements = from e in root.Descendants(BuildXName("class")) select e;
+                var aliasElements = from e in root.Descendants(BuildXName("alias")) select e;
 
-                foreach (XElement ce in classElements)
+                foreach (XElement ce in aliasElements)
                 {
-                    StoragePolicyConfigItem classObj = new StoragePolicyConfigItem();
-                    string type = ce.Attribute("type") == null ? string.Empty : ce.Attribute("type").Value.Trim();
-                    Checker.Requires(!string.IsNullOrWhiteSpace(type), "class type can not be empty or null");
-                    string policy = ce.Attribute("policy") == null ? string.Empty : ce.Attribute("policy").Value.Trim();
-                    Checker.Requires(!string.IsNullOrWhiteSpace(policy), "storage policy class type can not be empty or null");
+                    StorageAliasConfig cfg = new StorageAliasConfig();
+                    
+                    cfg.Name = ce.Attribute("name") == null ? string.Empty : ce.Attribute("name").Value.Trim().ToLower();
 
-                    classObj.EntityType = Type.GetType(type);
-                    classObj.StoragePolicy = Activator.CreateInstance(Type.GetType(policy)) as IStoragePolicy;
+                    Checker.Requires(!string.IsNullOrWhiteSpace(cfg.Name), "storage alias name can not be empty or null");
 
-                    Checker.Requires(classObj.StoragePolicy != null, "storage policy class must implement IStoragePolicy");
+                    Checker.Requires(!AliasConfigSet.Contains(cfg), "storage alias name duplicated");
 
-                    Checker.Requires(S_Router.StoragePolicyConfigItemSet.SingleOrDefault(o => o.EntityType == classObj.EntityType) == null, "same storage policy class:{0}", classObj.EntityType.FullName);
+                    var settingsElement = ce.Element("settings");
 
-                    S_Router.StoragePolicyConfigItemSet.Add(classObj);
+                    if (settingsElement != null)
+                        cfg.Settings = settingsElement.Value.Trim();
+
+                    AliasConfigSet.Add(cfg);
 
                 }
             }
         }
 
-
-
         /// <summary>
-        /// Gets the storage policy instance.
+        /// Gets storage alias according to the specified object key.
         /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <returns>IStoragePolicy instance.</returns>
-        public static IStoragePolicy GetStoragePolicyInstance<TEntity>()
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="objectKey">The object key.</param>
+        /// <returns>
+        /// The storage alias.
+        /// </returns>
+        public static string GetStorageAlias<TObject>(object objectKey)
         {
-            return GetStoragePolicyInstance(typeof(TEntity));
+            return GetStorageAlias(typeof(TObject), objectKey);
         }
 
         /// <summary>
-        /// Gets the storage policy instance.
+        /// Gets storage alias according to the specified object key.
         /// </summary>
-        /// <param name="entityType">Type of the entity.</param>
-        /// <returns>IStoragePolicy instance.</returns>
-        public static IStoragePolicy GetStoragePolicyInstance(Type entityType)
+        /// <param name="type">Type of the object.</param>
+        /// <param name="key">The object key according to.</param>
+        /// <returns>
+        /// The storage alias.
+        /// </returns>
+        public static string GetStorageAlias(Type type, object key)
         {
-            if (entityType == null)
-                return null;
+            Checker.Parameter(type!=null, "object type can not be empty or null");
 
-            lock (S_SyncRoot)
-            {
-                return S_Router.StoragePolicyConfigItemSet.SingleOrDefault(o => o.EntityType == entityType).StoragePolicy;
-            }
-        }
+            IStoragePolicy ins = Components.Container.Resolve<IStoragePolicy>();
 
-        /// <summary>
-        /// Gets the storage alias.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <param name="keys">The keys according to.</param>
-        /// <returns>The storage alias.</returns>
-        public static string GetStorageAlias<TEntity>(params object[] keys)
-        {
-            return GetStorageAlias(typeof(TEntity), keys);
-        }
+            string alias = ins.GetObjectAlias(type, key);
 
-        /// <summary>
-        /// Gets the storage alias.
-        /// </summary>
-        /// <param name="entityType">Type of the entity.</param>
-        /// <param name="keys">The keys according to.</param>
-        /// <returns>The storage alias.</returns>
-        public static string GetStorageAlias(Type entityType, params object[] keys)
-        {
-            IStoragePolicy ins = GetStoragePolicyInstance(entityType);
-
-            Checker.Requires(ins != null, "can not find storage alias for {0}", entityType.FullName);
-
-            string alias = ins.GetAlias(keys);
-
-            Checker.Requires(!string.IsNullOrWhiteSpace(alias), "storage alias for {0} can not be empty or null", entityType.FullName);
+            Checker.Requires(!string.IsNullOrWhiteSpace(alias), "can not find storage alias for {0}", type.FullName);
 
             return alias.ToLower().Trim();
         }
 
-
         /// <summary>
-        /// Get all storage aliases.
+        /// Gets storage aliases supported by the specified object type.
         /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <returns>The storage alias array.</returns>
-        public static string[] GetStorageAliases<TEntity>()
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <returns>
+        /// The storage alias array.
+        /// </returns>
+        public static string[] GetTypeAliases<TObject>()
         {
-            return GetStorageAliases(typeof(TEntity));
+            return GetTypeAliases(typeof(TObject));
         }
 
         /// <summary>
-        /// Get all storage aliases.
+        /// Gets storage aliases supported by the specified object type.
         /// </summary>
-        /// <param name="entityType">Type of the entity.</param>
-        /// <returns>The storage alias array.</returns>
-        public static string[] GetStorageAliases(Type entityType)
+        /// <param name="type">Type of the object.</param>
+        /// <returns>
+        /// The storage alias array.
+        /// </returns>
+        public static string[] GetTypeAliases(Type type)
         {
-            IStoragePolicy ins = GetStoragePolicyInstance(entityType);
+            Checker.Parameter(type != null, "object type can not be empty or null");
 
-            Checker.Requires(ins != null, "can not find storage alias for {0}", entityType.FullName);
+            IStoragePolicy ins = Components.Container.Resolve<IStoragePolicy>();
 
-            string[] aliases = ins.GetAliases();
-
-            for (int i = 0; i < aliases.Length; i++)
-            {
-                Checker.Requires(!string.IsNullOrWhiteSpace(aliases[i]), "storage alias for {0} can not be empty or null", entityType.FullName);
-
-                aliases[i] = aliases[i].ToLower().Trim();
-            }
-
-            return aliases;
+            return ins.GetTypeAliases(type);
         }
     }
 }

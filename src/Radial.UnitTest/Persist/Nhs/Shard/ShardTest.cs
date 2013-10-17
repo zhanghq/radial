@@ -19,6 +19,8 @@ namespace Radial.UnitTest.Persist.Nhs.Shard
         public void SetUp()
         {
             Components.Container.RegisterType<IFactoryPoolInitializer, ShardPoolInitializer>();
+            Components.Container.RegisterType<IStoragePolicy, ShardStoragePolicy>();
+            Components.Container.RegisterType<ITableShardable, ShardStoragePolicy>();
         }
 
         [Test]
@@ -41,8 +43,8 @@ namespace Radial.UnitTest.Persist.Nhs.Shard
                 });
             }
 
-            //获取book支持的所有 storage alias
-            string[] aliases = StorageRouter.GetStorageAliases<Book>();
+            //Book支持的存储别名
+            string[] aliases = StorageRouter.GetTypeAliases<Book>();
 
             //保存
             foreach (var alias in aliases)
@@ -56,9 +58,9 @@ namespace Radial.UnitTest.Persist.Nhs.Shard
 
             }
 
+            //查询
             List<Book> nBooks = new List<Book>();
 
-            //查询
             Parallel.ForEach<string>(aliases, alias =>
             {
                 using (var uow = new NhUnitOfWork(alias))
@@ -72,6 +74,7 @@ namespace Radial.UnitTest.Persist.Nhs.Shard
             {
                 Console.WriteLine("id:{0},name:{1}", o.Id, o.Name);
             }
+
 
             //清理
             Parallel.ForEach<string>(aliases, alias =>

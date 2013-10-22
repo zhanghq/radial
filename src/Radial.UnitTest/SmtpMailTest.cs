@@ -17,7 +17,7 @@ namespace Radial.UnitTest
             SmtpMail client = new SmtpMail("smtp.163.com");
             MailMessage msg=new MailMessage();
             msg.From=new MailAddress("ihaiqing@163.com");
-            msg.To.Add("me@zhanghq.net");
+            msg.To.Add("ethan.zhang@live.cn");
             msg.Subject = "Test";
             msg.Body="<p>Hello</p>";
             msg.IsBodyHtml=true;

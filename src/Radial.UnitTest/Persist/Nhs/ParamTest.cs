@@ -10,14 +10,15 @@ namespace Radial.UnitTest.Persist.Nhs
      [TestFixture]
     public class ParamTest
     {
-        [Test]
-        public void Test1()
-        {
-            string path = Guid.NewGuid().ToString("N");
-            string value = "123";
-            NhParam p = new NhParam();
-            p.Save(path, value);
-            Assert.AreEqual(value, p.GetValue(path));
-        }
+         [Test]
+         public void Test1()
+         {
+             string path = Guid.NewGuid().ToString("N");
+             int c = 9;
+             string value = (2 / (c - 9)).ToString();
+             NhParam p = new NhParam();
+             p.Save(path, value);
+             Assert.AreEqual(value, p.GetValue(path));
+         }
     }
 }

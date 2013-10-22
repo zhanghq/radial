@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Radial.Web;
 using Radial.Web.Mvc;
+using Radial.Web.Mvc.Pagination;
 
 namespace Radial.Test.Mvc.Controllers
 {
@@ -77,6 +78,12 @@ namespace Radial.Test.Mvc.Controllers
         public ActionResult TransferTo(int? id)
         {
             return Content("Transfer To，Id：" + id);
+        }
+
+        public ActionResult Page(int? psi = 2, int? pid = 1)
+        {
+            PagedList<string> list = new PagedList<string>(new string[] { "a", "b" }, pid.Value, pid.Value, 10);
+            return View(list);
         }
     }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>System.Net.FtpClient</id>
+    <version>1.0.5025.13390</version>
+    <title>System.Net.FtpClient</title>
+    <authors>J.P. Trosclair</authors>
+    <owners>J.P. Trosclair</owners>
+    <licenseUrl>https://netftp.codeplex.com/license</licenseUrl>
+    <projectUrl>https://netftp.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>FTP and FTPS client implementation</description>
+    <copyright>Copyright 2013</copyright>
+    <tags>FTP FTPS .net SSL TLS</tags>
+  </metadata>
+</package>

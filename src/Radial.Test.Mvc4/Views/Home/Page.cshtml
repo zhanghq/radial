@@ -1,0 +1,20 @@
+﻿@using Radial.Web.Mvc.Pagination
+@model Radial.Web.Mvc.Pagination.PagedList<string>
+@{
+    ViewBag.Title = "Page";
+}
+
+<h2>Page</h2>
+@Html.Pager(Model, new Radial.Web.Mvc.Pagination.PagerOptions
+               {
+                   PageIndexParameterName = "pid",
+                   CurrentPagerItemWrapperFormatString = "<span class='current'>{0}</span>",
+                   PrevPageText = "<",
+                   NextPageText = ">",
+                   FirstPageText = "|<",
+                   LastPageText = ">|",
+                   ShowPageIndexBox = true,
+                   PageIndexBoxType = Radial.Web.Mvc.Pagination.PageIndexBoxType.DropDownList,
+                   ShowGoButton = true,
+                   GoButtonText = "Go"
+               })

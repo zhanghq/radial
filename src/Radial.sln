@@ -21,11 +21,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Tools.Hbm2Sql", "Rad
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Tools.NhDbFirst", "Radial.Tools.NhDbFirst\Radial.Tools.NhDbFirst.csproj", "{E7DD1C8C-28FA-4290-826B-792951250738}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Web.Mvc4", "Radial.Web.Mvc4\Radial.Web.Mvc4.csproj", "{E8C8DDF8-642E-4ED2-8903-5AB537972011}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Test.Mvc4", "Radial.Test.Mvc4\Radial.Test.Mvc4.csproj", "{2004E387-58C5-4907-BD2C-9C17E73A58BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Web.Mvc", "Radial.Web.Mvc\Radial.Web.Mvc.csproj", "{E8C8DDF8-642E-4ED2-8903-5AB537972011}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Log4Net.MongoDB", "Radial.Log4Net.MongoDB\Radial.Log4Net.MongoDB.csproj", "{B5F59E68-80D6-4D78-9CE7-DE348864E884}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Test.Mvc", "Radial.Test.Mvc\Radial.Test.Mvc.csproj", "{3FD3A02A-7518-4182-A5DE-AB5F5CC294AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,16 +127,6 @@ Global
 		{E8C8DDF8-642E-4ED2-8903-5AB537972011}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E8C8DDF8-642E-4ED2-8903-5AB537972011}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E8C8DDF8-642E-4ED2-8903-5AB537972011}.Release|x86.ActiveCfg = Release|Any CPU
-		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{2004E387-58C5-4907-BD2C-9C17E73A58BD}.Release|x86.ActiveCfg = Release|Any CPU
 		{B5F59E68-80D6-4D78-9CE7-DE348864E884}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B5F59E68-80D6-4D78-9CE7-DE348864E884}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5F59E68-80D6-4D78-9CE7-DE348864E884}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -147,6 +137,16 @@ Global
 		{B5F59E68-80D6-4D78-9CE7-DE348864E884}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B5F59E68-80D6-4D78-9CE7-DE348864E884}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B5F59E68-80D6-4D78-9CE7-DE348864E884}.Release|x86.ActiveCfg = Release|Any CPU
+		{3FD3A02A-7518-4182-A5DE-AB5F5CC294AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FD3A02A-7518-4182-A5DE-AB5F5CC294AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FD3A02A-7518-4182-A5DE-AB5F5CC294AF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3FD3A02A-7518-4182-A5DE-AB5F5CC294AF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3FD3A02A-7518-4182-A5DE-AB5F5CC294AF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3FD3A02A-7518-4182-A5DE-AB5F5CC294AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FD3A02A-7518-4182-A5DE-AB5F5CC294AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FD3A02A-7518-4182-A5DE-AB5F5CC294AF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3FD3A02A-7518-4182-A5DE-AB5F5CC294AF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3FD3A02A-7518-4182-A5DE-AB5F5CC294AF}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -158,7 +158,7 @@ Global
 		{B5F59E68-80D6-4D78-9CE7-DE348864E884} = {2FA84FC1-FB00-4E47-A422-91FA5CDA7733}
 		{488FAE42-3405-4563-958B-A15C2D80660B} = {3AFB6471-9556-4901-9777-3911BE99F7FD}
 		{4A4FCCD1-570A-457D-B49E-7AA8E6F58383} = {3AFB6471-9556-4901-9777-3911BE99F7FD}
-		{2004E387-58C5-4907-BD2C-9C17E73A58BD} = {3AFB6471-9556-4901-9777-3911BE99F7FD}
+		{3FD3A02A-7518-4182-A5DE-AB5F5CC294AF} = {3AFB6471-9556-4901-9777-3911BE99F7FD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35

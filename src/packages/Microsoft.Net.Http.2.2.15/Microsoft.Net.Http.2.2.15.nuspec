@@ -21,7 +21,6 @@ Supported Platforms:
 - Silverlight 4 and 5
 - Portable Class Libraries</description>
     <summary>This package provides a programming interface for modern HTTP/REST based applications.</summary>
-    <releaseNotes />
     <copyright>Copyright © Microsoft Corporation</copyright>
     <language>en-US</language>
     <tags>BCL HTTP REST Microsoft System Networking</tags>

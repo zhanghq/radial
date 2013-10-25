@@ -199,7 +199,9 @@ namespace Radial
         private static void FillWorkbook(ExcelPackage pck, DataTable table, int sheetIndex = 0, bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
         {
             ExcelWorksheet sheet = pck.Workbook.Worksheets.Add(string.IsNullOrWhiteSpace(table.TableName) ? "Sheet" + (sheetIndex + 1) : table.TableName);
-            sheet.Cells["A1"].LoadFromDataTable(table, columnHeader);
+
+            if (table.Rows.Count > 0)
+                sheet.Cells["A1"].LoadFromDataTable(table, columnHeader);
 
             foreach (var cell in sheet.Cells)
                 cell.AutoFitColumns();

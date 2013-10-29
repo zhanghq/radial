@@ -100,12 +100,7 @@ namespace Radial.Log4Net.MongoDB
             MongoServer server = client.GetServer();
             MongoDatabase db = server.GetDatabase(url.DatabaseName);
 
-            if (!db.CollectionExists(CollectionName))
-            {
-                CollectionOptionsBuilder options = CollectionOptions.SetCapped(true).SetMaxSize(StorageSize * 1024 * 1024);
-                db.CreateCollection(CollectionName, options);
-            }
-            else
+            if (db.CollectionExists(CollectionName))
             {
                 var collection = db.GetCollection(CollectionName);
                 var stats = collection.GetStats();
@@ -117,6 +112,11 @@ namespace Radial.Log4Net.MongoDB
                     cd.Add("size", StorageSize * 1024 * 1024);
                     db.RunCommand(cd);
                 }
+            }
+            else
+            {
+                CollectionOptionsBuilder options = CollectionOptions.SetCapped(true).SetMaxSize(StorageSize * 1024 * 1024);
+                db.CreateCollection(CollectionName, options);
             }
 
 

@@ -30,14 +30,28 @@ namespace Radial.Persist
         void RegisterNew<TObject>(IEnumerable<TObject> objs) where TObject : class;
 
         /// <summary>
-        /// Register object which will be saved.
+        /// Register object which will be updated.
+        /// </summary>
+        /// <typeparam name="TObject">The type of object.</typeparam>
+        /// <param name="obj">The object instance.</param>
+        void RegisterUpdate<TObject>(TObject obj) where TObject : class;
+
+        /// <summary>
+        /// Register object set which will be updated.
+        /// </summary>
+        /// <typeparam name="TObject">The type of object.</typeparam>
+        /// <param name="objs">The object set.</param>
+        void RegisterUpdate<TObject>(IEnumerable<TObject> objs) where TObject : class;
+
+        /// <summary>
+        /// Register object set which will be inserted or updated.
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>
         /// <param name="obj">The object instance.</param>
         void RegisterSave<TObject>(TObject obj) where TObject : class;
 
         /// <summary>
-        /// Register object set which will be saved.
+        /// Register object set which will be inserted or updated.
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>
         /// <param name="objs">The object set.</param>

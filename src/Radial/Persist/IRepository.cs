@@ -332,10 +332,16 @@ namespace Radial.Persist
         void Add(IEnumerable<TObject> objs);
 
         /// <summary>
-        /// Save an object.
+        /// Add or update an object.
         /// </summary>
         /// <param name="obj">The object.</param>
         void Save(TObject obj);
+
+        /// <summary>
+        /// Update an object.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        void Update(TObject obj);
 
         /// <summary>
         /// Remove an object with the specified key.

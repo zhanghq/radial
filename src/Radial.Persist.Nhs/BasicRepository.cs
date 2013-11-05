@@ -492,7 +492,7 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Save an object.
+        /// Add or update an object.
         /// </summary>
         /// <param name="obj">The object.</param>
         public virtual void Save(TObject obj)
@@ -1087,5 +1087,15 @@ namespace Radial.Persist.Nhs
         }
 
         #endregion
+
+
+        /// <summary>
+        /// Updates an object.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        public void Update(TObject obj)
+        {
+            _uow.RegisterUpdate<TObject>(obj);
+        }
     }
 }

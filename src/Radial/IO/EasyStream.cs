@@ -173,7 +173,7 @@ namespace Radial.IO
                 IList<string> lines = new List<string>();
                 using (StreamReader sr = new StreamReader(stream))
                 {
-                    if (sr.Peek() > -1)
+                    while (sr.Peek() > -1)
                         lines.Add(sr.ReadLine());
                 }
 
@@ -194,7 +194,7 @@ namespace Radial.IO
                 IList<string> lines = new List<string>();
                 using (StreamReader sr = new StreamReader(stream, encoding))
                 {
-                    if (sr.Peek() > -1)
+                    while (sr.Peek() > -1)
                         lines.Add(sr.ReadLine());
                 }
 

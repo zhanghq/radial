@@ -26,7 +26,7 @@ namespace Radial.UnitTest
             EasyStream.Writer.AppendToFile(bytes, filePath);
 
 
-            Console.WriteLine(EasyStream.Reader.GetBytes(filePath).Length);
+            Console.WriteLine(EasyStream.Reader.GetText(filePath).Length);
 
         }
     }

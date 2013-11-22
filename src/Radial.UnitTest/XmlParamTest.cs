@@ -20,7 +20,7 @@ namespace Radial.UnitTest
         [Test]
         public void Get()
         {
-            Console.WriteLine(AppParam.GetValue("test1.level1.level1-1.level1-1-1"));
+            Console.WriteLine(AppParam.GetValue("test2.levelx"));
         }
     }
 }

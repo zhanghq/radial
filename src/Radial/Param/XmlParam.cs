@@ -146,9 +146,20 @@ namespace Radial.Param
             XElement e = S_Root;
             for (int i = 0; i < pathSplits.Length; i++)
             {
-                e = e.Descendants(BuildXName("item"))
-                    .Where(o => string.Compare(o.Attribute("name").Value, pathSplits[i].Trim(), true) == 0)
-                    .SingleOrDefault();
+                var next = e.Element(BuildXName("next"));
+
+                if (next == null)
+                {
+                    //no next element
+                    e = e.Elements(BuildXName("item"))
+                        .Where(o => string.Compare(o.Attribute("name").Value, pathSplits[i].Trim(), true) == 0).FirstOrDefault();
+                }
+                else
+                {
+                    //has next element
+                    e = next.Elements(BuildXName("item"))
+                        .Where(o => string.Compare(o.Attribute("name").Value, pathSplits[i].Trim(), true) == 0).FirstOrDefault();
+                }
                 if (e == null)
                     break;
             }

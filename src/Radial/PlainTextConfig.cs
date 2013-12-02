@@ -24,8 +24,9 @@ namespace Radial
          */
 
 
-        const string PropertyLineMatchPattern1 = "^([\\w_.-]*)\\s*=([^\"\'#=]*)$";
-        const string PropertyLineMatchPattern2 = "^([\\w_.-]*)\\s*=\\s*[\"\'](.*)[\"\']$";
+        const string PropertyLineMatchPattern1 = "^([\\w_.-]+)\\s*=\\s*([^\"\'\\s#=]*)$";
+        const string PropertyLineMatchPattern2 = "^([\\w_.-]+)\\s*=\\s*\"(.*)\"$";
+        const string PropertyLineMatchPattern3 = "^([\\w_.-]+)\\s*=\\s*\'(.*)\'$";
 
         readonly IDictionary<string, string> _entries;
 
@@ -41,9 +42,13 @@ namespace Radial
             {
                 Regex reg1 = new Regex(PropertyLineMatchPattern1);
                 Regex reg2 = new Regex(PropertyLineMatchPattern2);
+                Regex reg3 = new Regex(PropertyLineMatchPattern3);
 
                 foreach (string line in textLines)
                 {
+                    if (string.IsNullOrWhiteSpace(line))
+                        continue;
+
                     string key = string.Empty;
                     string value = string.Empty;
 
@@ -53,6 +58,8 @@ namespace Radial
                         groups = reg1.Match(line.Trim()).Groups;
                     else if (reg2.IsMatch(line.Trim()))
                         groups = reg2.Match(line.Trim()).Groups;
+                    else if (reg3.IsMatch(line.Trim()))
+                        groups = reg3.Match(line.Trim()).Groups;
 
                     if (groups != null && groups.Count == 3)
                     {

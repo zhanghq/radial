@@ -14,40 +14,6 @@ namespace Radial.Security
     public static class CryptoProvider
     {
 
-        /// <summary>
-        /// Encrypt using XOR.
-        /// </summary>
-        /// <param name="inputBytes">The input bytes.</param>
-        /// <param name="encryptKey">The encrypt key bytes.</param>
-        /// <returns>The ciphertext in binary format.</returns>
-        public static byte[] XorEncrypt(byte[] inputBytes, byte[] encryptKey)
-        {
-            Checker.Parameter(inputBytes != null, "inputBytes can not be null.");
-            Checker.Parameter(encryptKey != null, "encryptKey can not be null.");
-
-            if (encryptKey.Length < inputBytes.Length)
-            {
-                byte[] temp = new byte[inputBytes.Length];
-                for (int i = 0; i < temp.Length; i++)
-                {
-                    if (i < encryptKey.Length)
-                        temp[i] = encryptKey[i];
-                }
-
-                encryptKey = temp;
-            }
-
-            byte[] cipher = new byte[inputBytes.Length];
-
-            for (int i = 0; i < cipher.Length; i++)
-            {
-                cipher[i] = (byte)(inputBytes[i] ^ encryptKey[i]);
-            }
-
-            return cipher;
-        }
-
-
         #region SHA1
 
         /// <summary>

@@ -512,5 +512,38 @@ namespace Radial
 
             return false;
         }
+
+        /// <summary>
+        /// XOR.
+        /// </summary>
+        /// <param name="a">The input bytes a.</param>
+        /// <param name="b">The input bytes b.</param>
+        /// <returns>The XOR value.</returns>
+        public static byte[] Xor(byte[] a, byte[] b)
+        {
+            Checker.Parameter(a != null, "input bytes a can not be null.");
+            Checker.Parameter(b != null, "input bytes b can not be null.");
+
+            if (b.Length < a.Length)
+            {
+                byte[] temp = new byte[a.Length];
+                for (int i = 0; i < temp.Length; i++)
+                {
+                    if (i < b.Length)
+                        temp[i] = b[i];
+                }
+
+                b = temp;
+            }
+
+            byte[] c = new byte[a.Length];
+
+            for (int i = 0; i < c.Length; i++)
+            {
+                c[i] = (byte)(a[i] ^ b[i]);
+            }
+
+            return c;
+        }
     }
 }

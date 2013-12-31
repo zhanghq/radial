@@ -5,6 +5,7 @@ using System.Text;
 using Enyim.Caching;
 using NHibernate;
 using NHibernate.Cache;
+using Radial.Security;
 
 namespace Radial.Persist.Nhs.Cache.Memcached
 {
@@ -157,7 +158,7 @@ namespace Radial.Persist.Nhs.Cache.Memcached
             if (!string.IsNullOrWhiteSpace(_regionName))
                 plist.Add(_regionName);
 
-            return string.Join("#", plist) + "#" + key.ToString();
+            return CryptoProvider.MD5Encrypt(string.Join("#", plist) + "#" + key.ToString());
         }
     }
 }

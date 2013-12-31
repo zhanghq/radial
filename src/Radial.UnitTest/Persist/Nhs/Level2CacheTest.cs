@@ -17,22 +17,26 @@ namespace Radial.UnitTest.Persist.Nhs
         [Test]
         public void Test1()
         {
-            User u = new User { Id = RandomCode.NewInstance.Next(1, int.MaxValue), Name = "测试" };
+            //User u = new User { Id = RandomCode.NewInstance.Next(1, int.MaxValue), Name = "测试" };
+
+            //using (IUnitOfWork uow = new NhUnitOfWork())
+            //{
+            //    uow.RegisterNew<User>(u);
+
+            //    uow.Commit();
+            //}
 
             using (IUnitOfWork uow = new NhUnitOfWork())
             {
-                uow.RegisterNew<User>(u);
-
-                uow.Commit();
+                UserRepository usrRepo = new UserRepository(uow);
+                var us = usrRepo.FindAll();
             }
 
-            using (IUnitOfWork uow = new NhUnitOfWork())
-            {
-                UserRepository userRepository = new UserRepository(uow);
-                var u2 = userRepository[u.Id];
-
-                Assert.NotNull(u2);
-            }
+            //using (IUnitOfWork uow = new NhUnitOfWork())
+            //{
+            //    UserRepository usrRepo = new UserRepository(uow);
+            //    var us = usrRepo[123425828];
+            //}
         }
     }
 }

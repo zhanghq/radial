@@ -128,7 +128,9 @@
     <None Include="Config\log4net.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Config\NHibernate.config" />
+    <None Include="Config\NHibernate.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Config\XmlParam.config">
       <SubType>Designer</SubType>
     </None>
@@ -144,7 +146,9 @@
     <EmbeddedResource Include="Persist\Nhs\Domain\Order.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Persist\Nhs\Domain\Book.hbm.xml" />
+    <EmbeddedResource Include="Persist\Nhs\Domain\Book.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Config\StorageAlias.config" />

@@ -15,18 +15,7 @@ namespace Radial.UnitTest.Persist.Nhs.Repository
         public UserRepository(IUnitOfWork uow)
             : base(uow)
         {
-        }
-
-        public override IList<User> FindAll(System.Linq.Expressions.Expression<Func<User, bool>> condition, params OrderBySnippet<User>[] orderBys)
-        {
-            IQueryOver<User, User> query = BuildQueryOver();
-
-            if (condition != null)
-                query = query.Where(condition);
-
-            query.Cacheable();
-
-            return AppendOrderBys(query, orderBys).List();
+            UseQueryCache = true;
         }
 
         public DataTable FindAllDataTable()

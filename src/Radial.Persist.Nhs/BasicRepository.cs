@@ -43,6 +43,16 @@ namespace Radial.Persist.Nhs
             }
         }
 
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether use query cache.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if use query cache; otherwise, <c>false</c>.
+        /// </value>
+        protected bool UseQueryCache { get; set; }
+
         /// <summary>
         /// Gets the default order by snippets.
         /// </summary>
@@ -113,6 +123,59 @@ namespace Radial.Persist.Nhs
             }
 
             return query;
+        }
+
+        /// <summary>
+        /// Sets the query cacheable.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns></returns>
+        protected IQueryOver<TObject> SetQueryCacheable(IQueryOver<TObject> query)
+        {
+            if (UseQueryCache)
+                return query.Cacheable();
+
+            return query;
+        }
+
+        /// <summary>
+        /// Sets the query cacheable.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns></returns>
+        private IQuery SetQueryCacheable(IQuery query)
+        {
+            return query.SetCacheable(UseQueryCache);
+        }
+
+        /// <summary>
+        /// Sets the query cacheable.
+        /// </summary>
+        /// <param name="criteria">The criteria.</param>
+        /// <returns></returns>
+        protected ICriteria SetQueryCacheable(ICriteria criteria)
+        {
+            return criteria.SetCacheable(UseQueryCache);
+        }
+
+        /// <summary>
+        /// Sets the query cacheable.
+        /// </summary>
+        /// <param name="criteria">The criteria.</param>
+        /// <returns></returns>
+        protected IMultiCriteria SetQueryCacheable(IMultiCriteria criteria)
+        {
+            return criteria.SetCacheable(UseQueryCache);
+        }
+
+        /// <summary>
+        /// Sets the query cacheable.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns></returns>
+        protected IMultiQuery SetQueryCacheable(IMultiQuery query)
+        {
+            return query.SetCacheable(UseQueryCache);
         }
 
         /// <summary>
@@ -312,7 +375,7 @@ namespace Radial.Persist.Nhs
             if (condition != null)
                 query = query.Where(condition);
 
-            return AppendOrderBys(query, orderBys).List();
+            return SetQueryCacheable(AppendOrderBys(query, orderBys)).List();
         }
 
         /// <summary>
@@ -420,8 +483,7 @@ namespace Radial.Persist.Nhs
             if (condition != null)
                 query = query.Where(condition);
 
-
-            return AppendOrderBys(query, orderBys).Take(returnObjectCount).List();
+            return SetQueryCacheable(AppendOrderBys(query, orderBys).Take(returnObjectCount)).List();
         }
 
 
@@ -700,6 +762,8 @@ namespace Radial.Persist.Nhs
             mquery.Add<int>(countQuery);
             mquery.Add<TObject>(dataQuery.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize));
 
+            SetQueryCacheable(mquery);
+
             IList resultList = mquery.List();
 
             objectTotal = ((IList<int>)resultList[0])[0];
@@ -729,6 +793,8 @@ namespace Radial.Persist.Nhs
             IMultiCriteria mcriteria = Session.CreateMultiCriteria();
             mcriteria.Add<int>(countCriteria.SetProjection(Projections.RowCount()));
             mcriteria.Add<TObject>(criteria.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize));
+
+            SetQueryCacheable(mcriteria);
 
             IList resultList = mcriteria.List();
 
@@ -760,6 +826,8 @@ namespace Radial.Persist.Nhs
             mcriteria.Add<int>(countQuery.ToRowCountQuery());
             mcriteria.Add<TObject>(query.Skip(pageSize * (pageIndex - 1)).Take(pageSize));
 
+            SetQueryCacheable(mcriteria);
+
             IList resultList = mcriteria.List();
 
             objectTotal = ((IList<int>)resultList[0])[0];
@@ -780,7 +848,7 @@ namespace Radial.Persist.Nhs
             pageSize = NormalizePageSize(pageSize);
             pageIndex = NormalizePageIndex(pageIndex);
 
-            return query.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize).List<TObject>();
+            return SetQueryCacheable(query.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize)).List<TObject>();
         }
 
         /// <summary>
@@ -796,7 +864,7 @@ namespace Radial.Persist.Nhs
             pageSize = NormalizePageSize(pageSize);
             pageIndex = NormalizePageIndex(pageIndex);
 
-            return criteria.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize).List<TObject>();
+            return SetQueryCacheable(criteria.SetFirstResult(pageSize * (pageIndex - 1)).SetMaxResults(pageSize)).List<TObject>();
         }
 
         /// <summary>
@@ -812,8 +880,7 @@ namespace Radial.Persist.Nhs
             pageSize = NormalizePageSize(pageSize);
             pageIndex = NormalizePageIndex(pageIndex);
 
-
-            return query.Skip(pageSize * (pageIndex - 1)).Take(pageSize).List();
+            return SetQueryCacheable(query.Skip(pageSize * (pageIndex - 1)).Take(pageSize)).List();
         }
 
         #endregion
@@ -994,7 +1061,7 @@ namespace Radial.Persist.Nhs
 
             var query = BuildQueryOver().Where(Expression.InG<TKey>(metadata.IdentifierPropertyName, keys));
 
-            return AppendOrderBys(query, orderBys, false).List();
+            return SetQueryCacheable(AppendOrderBys(query, orderBys, false)).List();
         }
 
 

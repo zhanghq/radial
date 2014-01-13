@@ -43,7 +43,7 @@ namespace Radial.Persist
 
                     Checker.Requires(!string.IsNullOrWhiteSpace(cfg.Name), "storage alias name can not be empty or null");
 
-                    Checker.Requires(!AliasConfigSet.Contains(cfg), "storage alias name duplicated");
+                    Checker.Requires(!AliasConfigSet.Contains(cfg), "storage alias name duplicated: {0}", cfg.Name);
 
                     var settingsElement = ce.Element("settings");
 

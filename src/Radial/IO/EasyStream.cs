@@ -276,7 +276,7 @@ namespace Radial.IO
             }
 
             /// <summary>
-            /// Saves the content to a new file.
+            /// Saves the content to a file using FileMode.Create.
             /// </summary>
             /// <param name="content">The content.</param>
             /// <param name="filePath">The file path.</param>
@@ -289,7 +289,7 @@ namespace Radial.IO
             }
 
             /// <summary>
-            /// Saves the content to a new file.
+            /// Saves the content to a file using FileMode.Create.
             /// </summary>
             /// <param name="content">The content.</param>
             /// <param name="filePath">The file path.</param>
@@ -303,7 +303,7 @@ namespace Radial.IO
             }
 
             /// <summary>
-            /// Saves the content to a new file.
+            /// Saves the content to a file using FileMode.Create.
             /// </summary>
             /// <param name="content">The content.</param>
             /// <param name="filePath">The file path.</param>

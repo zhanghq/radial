@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Radial.Boot;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -22,6 +23,23 @@ namespace Radial.Test.Mvc
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            Bootstrapper.Initialize();
+        }
+
+        protected void Application_BeginRequest()
+        {
+            Bootstrapper.Start();
+        }
+
+        protected void Application_EndRequest()
+        {
+            Bootstrapper.Stop();
+        }
+
+        protected void Application_Error()
+        {
+            Bootstrapper.Stop();
         }
     }
 }

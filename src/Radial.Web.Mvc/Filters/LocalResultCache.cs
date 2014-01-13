@@ -136,11 +136,16 @@ namespace Radial.Web.Mvc.Filters
             if (string.IsNullOrWhiteSpace(url))
                 return;
 
-            string bdpp = GetBaseDirectoryPhysicalPath();
-            string cfn = CreateCacheFileName(url);
+            var rule = GetMatchedRule(url);
+
+            if (rule == null)
+                return;
 
             try
             {
+                string bdpp = GetBaseDirectoryPhysicalPath();
+                string cfn = CreateCacheFileName(url, rule.IgnoreCase);
+
                 if (Directory.Exists(bdpp))
                 {
                     foreach (string f in Directory.EnumerateFiles(bdpp, cfn, SearchOption.AllDirectories))
@@ -205,7 +210,17 @@ namespace Radial.Web.Mvc.Filters
         /// <returns></returns>
         private ResultCacheRule GetMatchedRule(System.Web.Routing.RequestContext context)
         {
-            return ResultCacheRuleCfg.GetMatchedRule(context.HttpContext.Request.Url.PathAndQuery);
+            return GetMatchedRule(context.HttpContext.Request.Url.PathAndQuery);
+        }
+
+        /// <summary>
+        /// Gets the matched staticize rule.
+        /// </summary>
+        /// <param name="requestPathAndQuery">The request path and query.</param>
+        /// <returns></returns>
+        private ResultCacheRule GetMatchedRule(string requestPathAndQuery)
+        {
+            return ResultCacheRuleCfg.GetMatchedRule(requestPathAndQuery);
         }
 
         /// <summary>
@@ -222,29 +237,43 @@ namespace Radial.Web.Mvc.Filters
         /// Normalizes the relative URL.
         /// </summary>
         /// <param name="url">The URL.</param>
+        /// <param name="ignoreCase">if set to <c>true</c> [ignore case].</param>
         /// <returns></returns>
-        private string NormalizeRelativeUrl(string url)
+        private string NormalizeRelativeUrl(string url, bool ignoreCase)
         {
-            url = HttpKits.MakeRelativeUrl(url).Trim('/');
-
-            var querys = HttpKits.ResolveParameters(url);
-            SortedDictionary<string, string> sd = new SortedDictionary<string, string>();
-
-            foreach (string k in querys)
-            {
-                var v = querys[k];
-                if (!string.IsNullOrWhiteSpace(v))
-                    sd.Add(k, v.Trim());
-            }
-
-            IList<string> paramList = new List<string>();
-            foreach (KeyValuePair<string, string> kv in sd)
-                paramList.Add(string.Format("{0}={1}", kv.Key, kv.Value));
+            url = HttpKits.MakeRelativeUrl(url).TrimStart('/');
 
             //new query string
-            string nqs = string.Join("&", paramList);
+            string nqs = null;
 
-            return url.Split('?')[0] + nqs;
+            if (url.IndexOf('?') > 0)
+            {
+                var querys = HttpKits.ResolveParameters(url.Substring(url.IndexOf('?')));
+                SortedDictionary<string, string> sd = new SortedDictionary<string, string>();
+
+                foreach (string k in querys)
+                {
+                    var v = querys[k];
+                    if (!string.IsNullOrWhiteSpace(v))
+                        sd.Add(k, v.Trim());
+                }
+
+                IList<string> paramList = new List<string>();
+                foreach (KeyValuePair<string, string> kv in sd)
+                    paramList.Add(string.Format("{0}={1}", kv.Key, kv.Value));
+
+                nqs = string.Join("&", paramList);
+            }
+
+            string newUrl = url.Split('?')[0];
+
+            if (ignoreCase)
+                newUrl = newUrl.ToLower();
+
+            if (!string.IsNullOrWhiteSpace(nqs))
+                newUrl += "?" + nqs;
+
+            return newUrl;
         }
 
 
@@ -277,10 +306,11 @@ namespace Radial.Web.Mvc.Filters
         /// Creates the name of the cache file.
         /// </summary>
         /// <param name="url">The URL.</param>
+        /// <param name="ignoreCase">if set to <c>true</c> [ignore case].</param>
         /// <returns></returns>
-        private string CreateCacheFileName(string url)
+        private string CreateCacheFileName(string url, bool ignoreCase)
         {
-            return CryptoProvider.MD5Encrypt(NormalizeRelativeUrl(url));
+            return CryptoProvider.MD5Encrypt(NormalizeRelativeUrl(url,ignoreCase));
         }
 
         /// <summary>
@@ -300,7 +330,7 @@ namespace Radial.Web.Mvc.Filters
         /// <returns></returns>
         private string BuildCacheFilePhysicalPath(HttpRequestBase request, ResultCacheRule rule)
         {
-            string file = CreateCacheFileName(request.RawUrl);
+            string file = CreateCacheFileName(request.RawUrl, rule.IgnoreCase);
             return request.MapPath(HttpKits.CombineRelativeUrl(BaseDirectoryRelativePath, BuildCacheDirectoryRelativePath(rule), file));
         }
 

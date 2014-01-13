@@ -8,11 +8,11 @@ using Microsoft.Practices.Unity;
 
 namespace Radial.Test.Mvc.Controllers
 {
+    [ResultCache]
     public class ResultCacheController : Controller
     {
         //
         // GET: /ResultCache/
-        [ResultCache]
         public ActionResult Index()
         {
             System.Net.WebClient c = new System.Net.WebClient();
@@ -25,7 +25,7 @@ namespace Radial.Test.Mvc.Controllers
         {
             IResultCacheable c = Components.Container.Resolve<IResultCacheable>();
 
-            c.BatchRemove("b");
+            c.Remove("resultcache");
 
             return Content("ok");
         }

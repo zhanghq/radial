@@ -485,55 +485,41 @@ namespace Radial.Web
         /// <summary>
         /// Makes the relative url to absolute url.
         /// </summary>
-        /// <param name="relativeUrl">The relative url.</param>
-        /// <returns>The absolute url.</returns>
-        public static string MakeAbsoluteUrl(string relativeUrl)
+        /// <param name="url">The URL.</param>
+        /// <returns>
+        /// The absolute url.
+        /// </returns>
+        public static string MakeAbsoluteUrl(string url)
         {
-            if (string.IsNullOrWhiteSpace(relativeUrl))
-                relativeUrl = "";
-            else
-                relativeUrl = relativeUrl.Trim('~', '/',' ');
+            Uri originalUri = new Uri(url, UriKind.RelativeOrAbsolute);
 
-            if (relativeUrl.ToLower().StartsWith("http://") || relativeUrl.ToLower().StartsWith("https://") || relativeUrl.ToLower().StartsWith("ftp://"))
-                return relativeUrl;
+            if (originalUri.IsAbsoluteUri)
+                return originalUri.ToString();
 
-            string url = string.Format("{0}://{1}", CurrentContext.Request.Url.Scheme, CurrentContext.Request.Url.Host);
+            url = CombineRelativeUrl(CurrentContext.Request.ApplicationPath.Trim('/'), url);
 
-            if (!((CurrentContext.Request.Url.Scheme == "http" && CurrentContext.Request.Url.Port == 80) || (CurrentContext.Request.Url.Scheme == "https" && CurrentContext.Request.Url.Port == 443)))
-            {
-                url += ":" + CurrentContext.Request.Url.Port;
-            }
+            UriBuilder baseUriBuilder = new UriBuilder(CurrentContext.Request.Url.Scheme, CurrentContext.Request.Url.Host, CurrentContext.Request.Url.Port);
 
-            string path = (CurrentContext.Request.ApplicationPath.Trim('/') + "/" + relativeUrl).Trim('/');
+            Uri newUri = new Uri(baseUriBuilder.Uri, url);
 
-            if (string.IsNullOrWhiteSpace(path))
-                return url;
-            else
-                return url + "/" + path;
+            return newUri.ToString();
         }
 
         /// <summary>
         /// Makes the absolute url to relative url.
         /// </summary>
-        /// <param name="absoluteUrl">The absolute url.</param>
-        /// <returns>The relative url.</returns>
-        public static string MakeRelativeUrl(string absoluteUrl)
+        /// <param name="url">The URL.</param>
+        /// <returns>
+        /// The relative url.
+        /// </returns>
+        public static string MakeRelativeUrl(string url)
         {
-            Checker.Parameter(!string.IsNullOrWhiteSpace(absoluteUrl), "absoluteUrl can not be empty or null");
+            Uri uri = new Uri(url, UriKind.RelativeOrAbsolute);
 
-            absoluteUrl = absoluteUrl.Trim();
+            if (uri.IsAbsoluteUri)
+                return uri.PathAndQuery;
 
-            string url = string.Format("{0}://{1}", CurrentContext.Request.Url.Scheme, CurrentContext.Request.Url.Host);
-
-            if (!((CurrentContext.Request.Url.Scheme == "http" && CurrentContext.Request.Url.Port == 80) || (CurrentContext.Request.Url.Scheme == "https" && CurrentContext.Request.Url.Port == 443)))
-            {
-                url += ":" + CurrentContext.Request.Url.Port;
-            }
-
-            url += "/" + CurrentContext.Request.ApplicationPath.Trim('/');
-            url = url.Trim('/');
-
-            return "/" + absoluteUrl.Replace(url, "").Trim('/');
+            return "/" + uri.ToString().TrimStart('~', '/');
         }
 
         /// <summary>
@@ -550,7 +536,7 @@ namespace Radial.Web
                 foreach (string url in urls)
                 {
                     if (!string.IsNullOrWhiteSpace(url))
-                        levels.Add(url.Replace(@"\", "/").Trim('~', '/', ' '));
+                        levels.Add(url.Replace(@"\", "/").Trim().TrimStart('~', '/'));
                 }
             }
 

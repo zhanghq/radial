@@ -14,7 +14,7 @@ namespace Radial.Web.Mvc.Filters
     /// <summary>
     /// Indicates the action result can be cached
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited=false)]
     public sealed class ResultCacheAttribute : ActionFilterAttribute
     {
         IResultCacheable _cacheImpl;

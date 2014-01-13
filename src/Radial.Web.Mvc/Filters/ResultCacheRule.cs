@@ -16,13 +16,15 @@ namespace Radial.Web.Mvc.Filters
         /// Initializes a new instance of the <see cref="ResultCacheRule" /> class.
         /// </summary>
         /// <param name="url">The request url or url pattern.</param>
+        /// <param name="ignoreCase">if set to <c>true</c> to ignore url case.</param>
         /// <param name="groups">The group names.</param>
         /// <param name="expires">The expiration time, default to 10 mins if not set.</param>
-        public ResultCacheRule(string url, string[] groups, TimeSpan? expires = null)
+        public ResultCacheRule(string url, bool ignoreCase, string[] groups, TimeSpan? expires = null)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(url), "url can not be empty or null");
 
-            Url = url.Trim('/', ' ').ToLower();
+            Url = url.Trim().TrimStart('~', '/');
+            IgnoreCase = ignoreCase;
 
             if (expires == null)
                 expires = new TimeSpan(0, 10, 0);
@@ -31,7 +33,7 @@ namespace Radial.Web.Mvc.Filters
 
             if (groups != null && groups.All(o => !string.IsNullOrWhiteSpace(o)))
             {
-                Groups=groups;
+                Groups = groups;
                 for (int i = 0; i < Groups.Length; i++)
                     Groups[i] = Groups[i].Trim().ToLower();
             }
@@ -41,6 +43,11 @@ namespace Radial.Web.Mvc.Filters
         /// Gets the request url or url pattern.
         /// </summary>
         public string Url { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether to ignore url case.
+        /// </summary>
+        public bool IgnoreCase { get; private set; }
 
         /// <summary>
         /// Gets the group names.

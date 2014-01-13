@@ -73,17 +73,26 @@ namespace Radial.Web.Mvc.Filters
                         var eau = e.Attribute("url");
                         var eag = e.Attribute("groups");
                         var eae = e.Attribute("expires");
+                        var eac = e.Attribute("ignoreCase");
 
                         string url = eau != null ? eau.Value : null;
+                        bool ignoreCase = true;
+
+                        if (eac != null&&!string.IsNullOrWhiteSpace(eac.Value))
+                        {
+                            if (eac.Value.Trim() == "0" || eac.Value.Trim().ToLower() == "false")
+                                ignoreCase = false;
+                        }
+
                         string groups = eag != null ? eag.Value : null;
                         TimeSpan expires;
 
                         ResultCacheRule rule = null;
 
                         if (eae != null && TimeSpan.TryParse(eae.Value, out expires))
-                            rule = new ResultCacheRule(url, groups.Split(','), expires);
+                            rule = new ResultCacheRule(url, ignoreCase, groups.Split(','), expires);
                         else
-                            rule = new ResultCacheRule(url, groups.Split(','));
+                            rule = new ResultCacheRule(url, ignoreCase, groups.Split(','));
 
                         if (!s_rules.Contains(rule))
                             s_rules.Add(rule);
@@ -103,16 +112,16 @@ namespace Radial.Web.Mvc.Filters
             if (string.IsNullOrWhiteSpace(requestUrl))
                 return null;
 
-            requestUrl = requestUrl.Trim('/', ' ');
+            requestUrl = HttpKits.MakeRelativeUrl(requestUrl).TrimStart('/');
 
             lock (SyncRoot)
             {
                 foreach (var o in s_rules)
                 {
-                    if (string.Compare(o.Url, requestUrl, true) == 0)
+                    if (string.Compare(o.Url, requestUrl, o.IgnoreCase) == 0)
                         return o;
 
-                    Regex reg = new Regex(o.Url, RegexOptions.IgnoreCase);
+                    Regex reg = new Regex(o.Url, o.IgnoreCase ? RegexOptions.IgnoreCase : RegexOptions.None);
 
                     if (reg.IsMatch(requestUrl))
                         return o;

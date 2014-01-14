@@ -12,7 +12,6 @@ namespace Radial.Test.Mvc
     {
         public void Initialize()
         {
-            Components.Container.RegisterType<IResultCacheable, LocalResultCache>(new ContainerControlledLifetimeManager());
         }
 
         public void Start()

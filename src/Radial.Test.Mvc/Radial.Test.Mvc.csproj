@@ -135,7 +135,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BootTask.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ResultCacheController.cs" />
     <Compile Include="Controllers\WebApiController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -207,7 +206,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Config\ResultCache.config">
+    <Content Include="Config\log4net.config">
       <SubType>Designer</SubType>
     </Content>
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
@@ -241,7 +240,6 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Page.cshtml" />
     <Content Include="Views\Home\Upload.cshtml" />
-    <Content Include="Views\ResultCache\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

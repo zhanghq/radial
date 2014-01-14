@@ -114,19 +114,6 @@
     <Compile Include="ControllerExtensions.cs" />
     <Compile Include="AjaxOnlyAttribute.cs" />
     <Compile Include="ExcelResult.cs" />
-    <Compile Include="Filters\IResultCacheable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Filters\ResultCacheAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Filters\ResultCacheRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Filters\ResultCacheRuleCfg.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Filters\LocalResultCache.cs" />
     <Compile Include="HttpKnownFaultResult.cs" />
     <Compile Include="Filters\ExceptionOutputData.cs" />
     <Compile Include="Filters\ExceptionOutputStyle.cs" />

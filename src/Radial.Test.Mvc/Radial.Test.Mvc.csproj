@@ -249,6 +249,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Radial.Log4Net.MongoDB\Radial.Log4Net.MongoDB.csproj">
+      <Project>{b5f59e68-80d6-4d78-9ce7-de348864e884}</Project>
+      <Name>Radial.Log4Net.MongoDB</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Radial.Web.Mvc\Radial.Web.Mvc.csproj">
       <Project>{e8c8ddf8-642e-4ed2-8903-5ab537972011}</Project>
       <Name>Radial.Web.Mvc</Name>

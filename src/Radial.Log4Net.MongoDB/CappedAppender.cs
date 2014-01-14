@@ -7,6 +7,7 @@ using MongoDB.Driver;
 using log4net.Appender;
 using log4net.Core;
 using MongoDB.Driver.Builders;
+using System.Threading;
 
 namespace Radial.Log4Net.MongoDB
 {
@@ -62,11 +63,10 @@ namespace Radial.Log4Net.MongoDB
         /// override the <see cref="M:PreAppendCheck()" /> method.
         ///   </para>
         /// </remarks>
-		protected override void Append(LoggingEvent loggingEvent)
-		{
-			var collection = GetCollection();
-			collection.Insert(BuildBsonLogModel(loggingEvent));
-		}
+        protected override void Append(LoggingEvent loggingEvent)
+        {
+            Append(new LoggingEvent[] { loggingEvent });
+        }
 
         /// <summary>
         /// Append a bulk array of logging events.
@@ -84,9 +84,24 @@ namespace Radial.Log4Net.MongoDB
         /// </remarks>
 		protected override void Append(LoggingEvent[] loggingEvents)
 		{
-			var collection = GetCollection();
-			collection.InsertBatch(loggingEvents.Select(BuildBsonLogModel));
+            Thread th = new Thread(AppendThread);
+            th.IsBackground = true;
+            th.Start(loggingEvents);
 		}
+
+
+        /// <summary>
+        /// Appends the thread.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        private void AppendThread(object args)
+        {
+            var collection = GetCollection();
+
+            IEnumerable<LoggingEvent> loggingEvents = args as IEnumerable<LoggingEvent>;
+
+            collection.InsertBatch(loggingEvents.Select(BuildBsonLogModel));
+        }
 
         /// <summary>
         /// Gets the collection.

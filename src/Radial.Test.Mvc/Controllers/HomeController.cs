@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Radial.Web;
 using Radial.Web.Mvc;
 using Radial.Web.Mvc.Pagination;
+using System.Drawing;
 
 namespace Radial.Test.Mvc.Controllers
 {
@@ -84,6 +85,28 @@ namespace Radial.Test.Mvc.Controllers
         {
             PagedList<string> list = new PagedList<string>(new string[] { "a", "b" }, pid.Value, psi.Value, 10);
             return View(list);
+        }
+
+        public ActionResult ImagePixelSize()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ImagePixelSize(HttpPostedFileBase file)
+        {
+            try
+            {
+                Image img = Image.FromStream(file.InputStream);
+
+                ViewBag.Size = img.Size;
+            }
+            catch(Exception ex)
+            {
+                ViewBag.Error=ex.Message;
+            }
+
+            return View();
         }
     }
 }

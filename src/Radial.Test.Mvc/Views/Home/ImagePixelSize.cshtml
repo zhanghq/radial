@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "ImagePixelSize";
+}
+
+<h2>Image Pixel Size</h2>
+<form method="post" action="@Url.Action("ImagePixelSize")" enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <button>上传</button>
+</form>
+
+<p>
+    @if (ViewBag.Error != null)
+    {
+        <text>@ViewBag.Error</text>
+    }
+    else
+    {
+        <text>@ViewBag.Size</text>
+    }
+</p>

@@ -88,7 +88,7 @@
     <Compile Include="Boot\Cfg\BootTaskElementCollection.cs" />
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />
     <Compile Include="IO\EasyStream.cs" />
-    <Compile Include="SafetyMethodReturns.cs" />
+    <Compile Include="MultiResult.cs" />
     <Compile Include="Persist\StorageAliasConfig.cs" />
     <Compile Include="Serialization\SerializeFormat.cs" />
     <Compile Include="Cache\CacheStatic.cs" />

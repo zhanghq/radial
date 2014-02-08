@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,10 +17,12 @@ namespace Radial
         /// <summary>
         /// Gets or sets the result value 1.
         /// </summary>
+        [JsonProperty("value1",Order=1)]
         public T1 Value1 { get; set; }
         /// <summary>
         /// Gets or sets the result value 2.
         /// </summary>
+        [JsonProperty("value2", Order = 2)]
         public T2 Value2 { get; set; }
     }
 
@@ -34,14 +37,17 @@ namespace Radial
         /// <summary>
         /// Gets or sets the result value 1.
         /// </summary>
+        [JsonProperty("value1", Order = 1)]
         public T1 Value1 { get; set; }
         /// <summary>
         /// Gets or sets the result value 2.
         /// </summary>
+        [JsonProperty("value2", Order = 2)]
         public T2 Value2 { get; set; }
         /// <summary>
         /// Gets or sets the result value 3.
         /// </summary>
+        [JsonProperty("value3", Order = 3)]
         public T3 Value3 { get; set; }
     }
 
@@ -57,18 +63,22 @@ namespace Radial
         /// <summary>
         /// Gets or sets the result value 1.
         /// </summary>
+        [JsonProperty("value1", Order = 1)]
         public T1 Value1 { get; set; }
         /// <summary>
         /// Gets or sets the result value 2.
         /// </summary>
+        [JsonProperty("value2", Order = 2)]
         public T2 Value2 { get; set; }
         /// <summary>
         /// Gets or sets the result value 3.
         /// </summary>
+        [JsonProperty("value3", Order = 3)]
         public T3 Value3 { get; set; }
         /// <summary>
         /// Gets or sets the result value 4.
         /// </summary>
+        [JsonProperty("value4", Order = 4)]
         public T4 Value4 { get; set; }
     }
 
@@ -85,22 +95,27 @@ namespace Radial
         /// <summary>
         /// Gets or sets the result value 1.
         /// </summary>
+        [JsonProperty("value1", Order = 1)]
         public T1 Value1 { get; set; }
         /// <summary>
         /// Gets or sets the result value 2.
         /// </summary>
+        [JsonProperty("value2", Order = 2)]
         public T2 Value2 { get; set; }
         /// <summary>
         /// Gets or sets the result value 3.
         /// </summary>
+        [JsonProperty("value3", Order = 3)]
         public T3 Value3 { get; set; }
         /// <summary>
         /// Gets or sets the result value 4.
         /// </summary>
+        [JsonProperty("value4", Order = 4)]
         public T4 Value4 { get; set; }
         /// <summary>
         /// Gets or sets the result value 5.
         /// </summary>
+        [JsonProperty("value5", Order = 5)]
         public T5 Value5 { get; set; }
     }
 
@@ -118,26 +133,32 @@ namespace Radial
         /// <summary>
         /// Gets or sets the result value 1.
         /// </summary>
+        [JsonProperty("value1", Order = 1)]
         public T1 Value1 { get; set; }
         /// <summary>
         /// Gets or sets the result value 2.
         /// </summary>
+        [JsonProperty("value2", Order = 2)]
         public T2 Value2 { get; set; }
         /// <summary>
         /// Gets or sets the result value 3.
         /// </summary>
+        [JsonProperty("value3", Order = 3)]
         public T3 Value3 { get; set; }
         /// <summary>
         /// Gets or sets the result value 4.
         /// </summary>
+        [JsonProperty("value4", Order = 4)]
         public T4 Value4 { get; set; }
         /// <summary>
         /// Gets or sets the result value 5.
         /// </summary>
+        [JsonProperty("value5", Order = 5)]
         public T5 Value5 { get; set; }
         /// <summary>
         /// Gets or sets the result value 6.
         /// </summary>
+        [JsonProperty("value6", Order = 6)]
         public T6 Value6 { get; set; }
     }
 
@@ -156,30 +177,37 @@ namespace Radial
         /// <summary>
         /// Gets or sets the result value 1.
         /// </summary>
+        [JsonProperty("value1", Order = 1)]
         public T1 Value1 { get; set; }
         /// <summary>
         /// Gets or sets the result value 2.
         /// </summary>
+        [JsonProperty("value2", Order = 2)]
         public T2 Value2 { get; set; }
         /// <summary>
         /// Gets or sets the result value 3.
         /// </summary>
+        [JsonProperty("value3", Order = 3)]
         public T3 Value3 { get; set; }
         /// <summary>
         /// Gets or sets the result value 4.
         /// </summary>
+        [JsonProperty("value4", Order = 4)]
         public T4 Value4 { get; set; }
         /// <summary>
         /// Gets or sets the result value 5.
         /// </summary>
+        [JsonProperty("value5", Order = 5)]
         public T5 Value5 { get; set; }
         /// <summary>
         /// Gets or sets the result value 6.
         /// </summary>
+        [JsonProperty("value6", Order = 6)]
         public T6 Value6 { get; set; }
         /// <summary>
         /// Gets or sets the result value 7.
         /// </summary>
+        [JsonProperty("value7", Order = 7)]
         public T7 Value7 { get; set; }
     }
 
@@ -199,34 +227,42 @@ namespace Radial
         /// <summary>
         /// Gets or sets the result value 1.
         /// </summary>
+        [JsonProperty("value1", Order = 1)]
         public T1 Value1 { get; set; }
         /// <summary>
         /// Gets or sets the result value 2.
         /// </summary>
+        [JsonProperty("value2", Order = 2)]
         public T2 Value2 { get; set; }
         /// <summary>
         /// Gets or sets the result value 3.
         /// </summary>
+        [JsonProperty("value3", Order = 3)]
         public T3 Value3 { get; set; }
         /// <summary>
         /// Gets or sets the result value 4.
         /// </summary>
+        [JsonProperty("value4", Order = 4)]
         public T4 Value4 { get; set; }
         /// <summary>
         /// Gets or sets the result value 5.
         /// </summary>
+        [JsonProperty("value5", Order = 5)]
         public T5 Value5 { get; set; }
         /// <summary>
         /// Gets or sets the result value 6.
         /// </summary>
+        [JsonProperty("value6", Order = 6)]
         public T6 Value6 { get; set; }
         /// <summary>
         /// Gets or sets the result value 7.
         /// </summary>
+        [JsonProperty("value7", Order = 7)]
         public T7 Value7 { get; set; }
         /// <summary>
         /// Gets or sets the result value 8.
         /// </summary>
+        [JsonProperty("value8", Order = 8)]
         public T8 Value8 { get; set; }
     }
 }

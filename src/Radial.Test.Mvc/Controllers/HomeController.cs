@@ -19,6 +19,7 @@ namespace Radial.Test.Mvc.Controllers
 
         public ActionResult Index()
         {
+            ViewBag.UserIP = HttpKits.GetClientIPv4Address();
             return View();
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
@@ -14,6 +15,12 @@ namespace Radial.Persist
         /// Gets the underlying data context object.
         /// </summary>
         object UnderlyingContext { get; }
+
+        /// <summary>
+        /// Reset the transaction isolation level.
+        /// </summary>
+        /// <param name="level">The new isolation level.</param>
+        void ResetIsolationLevel(IsolationLevel? level = null);
 
         /// <summary>
         /// Register object which will be inserted.

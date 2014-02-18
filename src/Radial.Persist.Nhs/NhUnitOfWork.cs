@@ -13,7 +13,7 @@ namespace Radial.Persist.Nhs
     public class NhUnitOfWork : IUnitOfWork
     {
         private readonly ISession _session;
-        private readonly IsolationLevel? _isolationLevel;
+        private IsolationLevel? _isolationLevel;
         private ITransaction _transaction;
 
         /// <summary>
@@ -21,15 +21,6 @@ namespace Radial.Persist.Nhs
         /// </summary>
         public NhUnitOfWork()
             : this(null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
-        /// </summary>
-        /// <param name="isolationLevel">Isolation level for the new transaction.</param>
-        public NhUnitOfWork(IsolationLevel isolationLevel)
-            : this(null, isolationLevel)
         {
         }
 
@@ -46,14 +37,12 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
+        /// Reset the transaction isolation level.
         /// </summary>
-        /// <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
-        /// <param name="isolationLevel">Isolation level for the new transaction.</param>
-        public NhUnitOfWork(string alias, IsolationLevel isolationLevel)
-            : this(alias)
+        /// <param name="level">The new isolation level.</param>
+        public void ResetIsolationLevel(IsolationLevel? level = null)
         {
-            _isolationLevel = isolationLevel;
+            _isolationLevel = level;
         }
 
         /// <summary>

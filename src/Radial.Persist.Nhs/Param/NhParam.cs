@@ -23,6 +23,10 @@ namespace Radial.Persist.Nhs.Param
         ParamItem _itemObject;
 
         /// <summary>
+        /// The enable cache.
+        /// </summary>
+        private readonly bool EnableCache = false;
+        /// <summary>
         /// The cache key.
         /// </summary>
         private readonly string CacheKey = "nhparamcache";
@@ -30,7 +34,6 @@ namespace Radial.Persist.Nhs.Param
         /// The cache minutes (0=do not remove cache).
         /// </summary>
         private readonly int CacheMinutes = 0;
-
         /// <summary>
         /// Storage alias.
         /// </summary>
@@ -41,6 +44,8 @@ namespace Radial.Persist.Nhs.Param
         /// </summary>
         public NhParam()
         {
+            bool.TryParse(ConfigurationManager.AppSettings["NhParam.EnableCache"], out EnableCache);
+
             if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["NhParam.CacheKey"]))
                 CacheKey = ConfigurationManager.AppSettings["NhParam.CacheKey"].Trim().ToLower();
 
@@ -205,7 +210,7 @@ namespace Radial.Persist.Nhs.Param
         /// <param name="item">The ParamItem item.</param>
         private void SetToCache(ParamItem item)
         {
-            if (item != null)
+            if (EnableCache && item != null)
             {
                 //set entity cache
                 if (CacheMinutes > 0)
@@ -222,7 +227,9 @@ namespace Radial.Persist.Nhs.Param
         /// <returns>The ParamItem item</returns>
         private ParamItem RetrieveFromCache()
         {
-            return ParamItem.FromCacheString(CacheStatic.Get<string>(CacheKey));
+            if (EnableCache)
+                return ParamItem.FromCacheString(CacheStatic.Get<string>(CacheKey));
+            return null;
         }
 
         #endregion

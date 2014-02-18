@@ -14,8 +14,7 @@ namespace Radial.UnitTest.Persist.Nhs
          public void Test1()
          {
              string path = Guid.NewGuid().ToString("N");
-             int c = 9;
-             string value = (2 / (c - 9)).ToString();
+             string value = RandomCode.NewInstance.Next(100).ToString();
              NhParam p = new NhParam();
              p.Save(path, value);
              Assert.AreEqual(value, p.GetValue(path));

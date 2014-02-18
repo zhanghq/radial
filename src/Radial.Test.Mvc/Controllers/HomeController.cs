@@ -9,6 +9,7 @@ using Radial.Web;
 using Radial.Web.Mvc;
 using Radial.Web.Mvc.Pagination;
 using System.Drawing;
+using Radial.Param;
 
 namespace Radial.Test.Mvc.Controllers
 {
@@ -108,6 +109,21 @@ namespace Radial.Test.Mvc.Controllers
             }
 
             return View();
+        }
+
+        public ActionResult Param()
+        {
+           ViewBag.Value= AppParam.GetValue("abc");
+           return View();
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult Param(string value)
+        {
+            AppParam.Save("abc", value);
+
+            return RedirectToAction("Param");
         }
     }
 }

@@ -209,6 +209,9 @@
     <Content Include="Config\log4net.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Config\NHibernate.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
@@ -241,6 +244,7 @@
     <Content Include="Views\Home\Page.cshtml" />
     <Content Include="Views\Home\Upload.cshtml" />
     <Content Include="Views\Home\ImagePixelSize.cshtml" />
+    <Content Include="Views\Home\Param.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -250,9 +254,9 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Radial.Log4Net.MongoDB\Radial.Log4Net.MongoDB.csproj">
-      <Project>{b5f59e68-80d6-4d78-9ce7-de348864e884}</Project>
-      <Name>Radial.Log4Net.MongoDB</Name>
+    <ProjectReference Include="..\Radial.Persist.Nhs\Radial.Persist.Nhs.csproj">
+      <Project>{719dee63-aeeb-4dbe-bd84-f005e3d3a39f}</Project>
+      <Name>Radial.Persist.Nhs</Name>
     </ProjectReference>
     <ProjectReference Include="..\Radial.Web.Mvc\Radial.Web.Mvc.csproj">
       <Project>{e8c8ddf8-642e-4ed2-8903-5ab537972011}</Project>

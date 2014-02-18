@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Param";
+}
+
+<h2>Param</h2>
+<div>
+    <p>
+        Current Value：
+    </p>
+    <div>@Html.Raw(ViewBag.Value)</div>
+</div>
+<hr />
+<div style="margin-top: 10px;">
+    @using (Html.BeginForm())
+    {
+        <p>New Value：</p>
+        <p>
+            <textarea name="value" style="width: 300px; height: 100px;"></textarea>
+        </p>
+        <p>
+            <button>Set</button>
+        </p>
+    }
+</div>

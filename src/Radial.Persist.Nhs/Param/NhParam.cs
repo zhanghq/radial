@@ -94,8 +94,7 @@ namespace Radial.Persist.Nhs.Param
         /// <summary>
         /// Writes to database.
         /// </summary>
-        /// <param name="item">The item.</param>
-        private void WriteToDatabase(ParamItem item)
+        private void WriteToDatabase()
         {
             using (IUnitOfWork uow = new NhUnitOfWork(StorageAlias))
             {
@@ -195,7 +194,7 @@ namespace Radial.Persist.Nhs.Param
                     _itemObject.XmlContent = sr.ReadToEnd().Trim();
                 }
 
-                WriteToDatabase(_itemObject);
+                WriteToDatabase();
 
                 SetToCache(_itemObject);
             }

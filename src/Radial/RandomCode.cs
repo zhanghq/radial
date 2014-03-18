@@ -47,15 +47,17 @@ namespace Radial
         /// <summary>
         /// Create a time-related key value. 
         /// </summary>
-        /// <remarks>The last 6 characters are random string, the rest are Unix timestamp in HEX.</remarks>
+        /// <remarks>The last 2 characters are random string, the rest are Unix timestamp with milliseconds in Base36 format.</remarks>
         /// <returns>Time-related key value.</returns>
         public static string TimeRelatedKey()
         {
-            string time = Toolkits.ToUnixTimeStamp(DateTime.Now).ToString("X");
+            DateTime now = DateTime.Now;
+
+            ulong longTime = (ulong)(Toolkits.ToUnixTimeStamp(now) * 1000 + now.Millisecond);
 
             string guid = Guid.NewGuid().ToString("n").ToUpper();
 
-            return string.Format("{0}{1}", time, guid.Substring(RandomCode.NewInstance.Next(0, guid.Length - 6), 6));
+            return string.Format("{0}{1}", Base36Encoder.ToBase36String(longTime), guid.Substring(RandomCode.NewInstance.Next(0, guid.Length - 2), 2));
         }
 
     }

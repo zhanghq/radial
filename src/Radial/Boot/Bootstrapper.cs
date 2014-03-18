@@ -20,8 +20,6 @@ namespace Radial.Boot
         static List<KeyValuePair<int, IBootTask>> ReversedTasks = new List<KeyValuePair<int, IBootTask>>();
 
         static bool Initialized = false;
-        static bool Started = false;
-        static bool Stopped = false;
 
         /// <summary>
         /// Gets a value indicating whether system is successful initialized.
@@ -36,40 +34,6 @@ namespace Radial.Boot
                 lock (SyncRoot)
                 {
                     return Initialized;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether system is successful started.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if successful started; otherwise, <c>false</c>.
-        /// </value>
-        public static bool IsStarted
-        {
-            get
-            {
-                lock (SyncRoot)
-                {
-                    return Started;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether system is successful stopped.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if successful stopped; otherwise, <c>false</c>.
-        /// </value>
-        public static bool IsStopped
-        {
-            get
-            {
-                lock (SyncRoot)
-                {
-                    return Stopped;
                 }
             }
         }
@@ -165,14 +129,10 @@ namespace Radial.Boot
         {
             lock (SyncRoot)
             {
-                if (Started)
-                    return;
-
                 //higher priority start first
                 if (Initialized)
                 {
                     Tasks.ForEach(o => o.Value.Start());
-                    Started = true;
                 }
 
             }
@@ -185,14 +145,10 @@ namespace Radial.Boot
         {
             lock (SyncRoot)
             {
-                if (Stopped)
-                    return;
-
                 //higher priority stop last
                 if (Initialized)
                 {
                     ReversedTasks.ForEach(o => o.Value.Stop());
-                    Stopped = true;
                 }
             }
         }

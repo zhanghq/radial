@@ -47,7 +47,7 @@ namespace Radial
         /// <summary>
         /// Create a time-related key value. 
         /// </summary>
-        /// <remarks>The last 2 characters are random string, the rest are Unix timestamp with milliseconds in Base36 format.</remarks>
+        /// <remarks>The last 2 characters are random string, the rest are Unix timestamp includes milliseconds in Base36 format.</remarks>
         /// <returns>Time-related key value.</returns>
         public static string TimeRelatedKey()
         {

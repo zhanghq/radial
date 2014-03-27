@@ -95,6 +95,16 @@ namespace Radial
         }
 
         /// <summary>
+        /// Gets the specified log instance.
+        /// </summary>
+        /// <typeparam name="T">the type.</typeparam>
+        /// <returns>log instance.</returns>
+        public static Logger GetInstance<T>()
+        {
+            return GetInstance(typeof(T).Name);
+        }
+
+        /// <summary>
         /// Logs a message string with the Debug level.
         /// </summary>
         /// <param name="format">The message format.</param>

@@ -166,6 +166,9 @@ namespace Radial.Persist.Nhs
         /// <param name="key">The object key.</param>
         public virtual void RegisterDelete<TObject, TKey>(TKey key) where TObject : class
         {
+            if (key == null)
+                return;
+
             var metadata = _session.SessionFactory.GetClassMetadata(typeof (TObject));
 
             Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property",

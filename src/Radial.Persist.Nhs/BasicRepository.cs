@@ -304,6 +304,9 @@ namespace Radial.Persist.Nhs
         /// <returns>If data exists, return the object, otherwise return null.</returns>
         public virtual TObject Find(TKey key)
         {
+            if (key == null)
+                return null;
+
             if (ExtraCondition != null)
             {
                 var metadata = Session.SessionFactory.GetClassMetadata(typeof(TObject));

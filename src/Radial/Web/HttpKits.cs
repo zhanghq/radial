@@ -292,7 +292,7 @@ namespace Radial.Web
         /// <param name="statusCode">The http response status code(200 by default).</param>
         public static void WriteJson<T>(T obj, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WriteJson(obj, ContentTypes.PlainText, statusCode);
+            WriteJson(obj, ContentTypes.Json, statusCode);
         }
 
         /// <summary>
@@ -314,7 +314,7 @@ namespace Radial.Web
         /// <param name="statusCode">The http response status code(200 by default).</param>
         public static void WriteJson(object obj, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WriteJson(obj, ContentTypes.PlainText, statusCode);
+            WriteJson(obj, ContentTypes.Json, statusCode);
         }
 
         /// <summary>
@@ -335,7 +335,7 @@ namespace Radial.Web
         /// <param name="statusCode">The http response status code(200 by default).</param>
         public static void WriteJson(string json, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WriteJson(json, ContentTypes.PlainText, statusCode);
+            WriteJson(json, ContentTypes.Json, statusCode);
         }
 
         /// <summary>

@@ -23,7 +23,7 @@ namespace Radial.Web.Mvc
         /// </summary>
         /// <param name="data">The data.</param>
         public NewJsonResult(object data)
-            : this(data, ContentTypes.PlainText, Encoding.UTF8)
+            : this(data, ContentTypes.Json, Encoding.UTF8)
         { }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Radial.Web.Mvc
         /// <param name="data">The data.</param>
         /// <param name="contentType">The content type.</param>
         public NewJsonResult(object data, string contentType)
-            : this(data,contentType,Encoding.UTF8)
+            : this(data, contentType, Encoding.UTF8)
         { }
 
 
@@ -43,7 +43,7 @@ namespace Radial.Web.Mvc
         /// <param name="data">The data.</param>
         /// <param name="encoding">The encoding.</param>
         /// <param name="contentType">The content type.</param>
-        public NewJsonResult(object data, string contentType,Encoding encoding)
+        public NewJsonResult(object data, string contentType, Encoding encoding)
         {
             _data = data;
             if (encoding != null)

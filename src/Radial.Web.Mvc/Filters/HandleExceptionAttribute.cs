@@ -132,7 +132,7 @@ namespace Radial.Web.Mvc.Filters
             if (string.IsNullOrWhiteSpace(ContentType))
             {
                 if (OutputStyle == ExceptionOutputStyle.Json)
-                    filterContext.HttpContext.Response.ContentType = ContentTypes.PlainText;
+                    filterContext.HttpContext.Response.ContentType = ContentTypes.Json;
                 if (OutputStyle == ExceptionOutputStyle.Xml)
                     filterContext.HttpContext.Response.ContentType = ContentTypes.Xml;
             }

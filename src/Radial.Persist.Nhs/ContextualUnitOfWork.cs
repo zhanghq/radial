@@ -243,27 +243,5 @@ namespace Radial.Persist.Nhs
                     _session.Update(obj);
             }
         }
-
-        /// <summary>
-        /// Register object which will be deleted.
-        /// </summary>
-        /// <typeparam name="TObject">The type of object.</typeparam>
-        /// <typeparam name="TKey">The type of object key.</typeparam>
-        /// <param name="keys">The object keys.</param>
-        public void RegisterDelete<TObject, TKey>(IEnumerable<TKey> keys) where TObject : class
-        {
-            if(keys!=null||keys.Count()>0)
-            {
-                var metadata = _session.SessionFactory.GetClassMetadata(typeof(TObject));
-
-                Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
-
-                string query = string.Format("from {0} o where o.{1} in ?", typeof(TObject).Name, metadata.IdentifierPropertyName);
-
-                PrepareTransaction();
-
-                _session.Delete(query, keys, metadata.IdentifierType);
-            }
-        }
     }
 }

@@ -87,6 +87,14 @@ namespace Radial.Persist
         void RegisterDelete<TObject, TKey>(TKey key) where TObject : class;
 
         /// <summary>
+        /// Register object which will be deleted.
+        /// </summary>
+        /// <typeparam name="TObject">The type of object.</typeparam>
+        /// <typeparam name="TKey">The type of object key.</typeparam>
+        /// <param name="keys">The object keys.</param>
+        void RegisterDelete<TObject, TKey>(IEnumerable<TKey> keys) where TObject : class;
+
+        /// <summary>
         /// Register delete all objects.
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>

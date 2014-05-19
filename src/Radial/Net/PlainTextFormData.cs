@@ -13,28 +13,17 @@ namespace Radial.Net
         string _paramName;
         string _value;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PlainTextFormData"/> class.
-        /// </summary>
-        /// <param name="paramName">The post parameter name.</param>
-        /// <param name="value">The post parameter value.</param>
-        public PlainTextFormData(string paramName, string value)
-            : this(paramName, value, Encoding.UTF8)
-        { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlainTextFormData"/> class.
         /// </summary>
         /// <param name="paramName">The post parameter name.</param>
         /// <param name="value">The post parameter value.</param>
-        /// <param name="encoding">The encoding of post data bytes.</param>
-        public PlainTextFormData(string paramName, string value, Encoding encoding)
+        public PlainTextFormData(string paramName, string value)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(paramName), "post parameter name can not be empty or null");
-            Checker.Parameter(encoding != null, "the encoding of post data bytes can not be null");
             _paramName = paramName.Trim();
             _value = value;
-            Encoding = encoding;
         }
 
 
@@ -51,7 +40,7 @@ namespace Radial.Net
             sb.AppendLine();
             sb.AppendLine(_value);
 
-            byte[] postBytes = Encoding.GetBytes(sb.ToString());
+            byte[] postBytes = StaticVariables.Encoding.GetBytes(sb.ToString());
             reqStream.Write(postBytes, 0, postBytes.Length);
         }
 
@@ -62,10 +51,5 @@ namespace Radial.Net
         {
             get { return _paramName; }
         }
-
-        /// <summary>
-        /// Gets or sets the encoding of post data bytes.
-        /// </summary>
-        public Encoding Encoding { get; set; }
     }
 }

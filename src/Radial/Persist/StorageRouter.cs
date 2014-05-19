@@ -63,7 +63,7 @@ namespace Radial.Persist
         {
             get
             {
-                return SystemSettings.GetConfigPath("StorageAlias.config");
+                return Path.Combine(StaticVariables.ConfigDirectory, "StorageAlias.config");
             }
         }
 

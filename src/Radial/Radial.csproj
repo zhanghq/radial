@@ -143,7 +143,7 @@
     <Compile Include="Serialization\Converters\UnixTimeJsonConverter.cs" />
     <Compile Include="Serialization\XmlSerializer.cs" />
     <Compile Include="Net\SmtpMail.cs" />
-    <Compile Include="SystemSettings.cs" />
+    <Compile Include="StaticVariables.cs" />
     <Compile Include="Toolkits.cs" />
     <Compile Include="Validator.cs" />
     <Compile Include="Net\FileFormData.cs" />

@@ -29,26 +29,12 @@ namespace Radial.Web.Mvc.Filters
         /// <param name="outputStyle">The exception output style.</param>
         /// <param name="defaultErrorCode">The default error code.</param>
         /// <param name="defaultHttpStatusCode">The default http status code.</param>
-        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode, HttpStatusCode? defaultHttpStatusCode = HttpStatusCode.OK)
-            : this(outputStyle, defaultErrorCode, string.Empty, Encoding.UTF8, defaultHttpStatusCode)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HandleExceptionAttribute" /> class.
-        /// </summary>
-        /// <param name="outputStyle">The exception output style.</param>
-        /// <param name="defaultErrorCode">The default error code.</param>
-        /// <param name="contentType">The content type.</param>
-        /// <param name="encoding">The encoding.</param>
-        /// <param name="defaultHttpStatusCode">The default http status code.</param>
-        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode, string contentType, Encoding encoding, HttpStatusCode? defaultHttpStatusCode = HttpStatusCode.OK)
+        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode, 
+            HttpStatusCode? defaultHttpStatusCode = HttpStatusCode.OK)
         {
             OutputStyle = outputStyle;
             DefaultErrorCode = defaultErrorCode;
             DefaultHttpStatusCode = defaultHttpStatusCode.Value;
-            Encoding = encoding;
-            ContentType = contentType;
         }
 
         /// <summary>
@@ -74,25 +60,6 @@ namespace Radial.Web.Mvc.Filters
         /// Gets the default http status code.
         /// </summary>
         public HttpStatusCode DefaultHttpStatusCode
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets the content type.
-        /// </summary>
-        public string ContentType
-        {
-            get;
-            private set;
-        }
-
-
-        /// <summary>
-        /// Gets the encoding.
-        /// </summary>
-        public Encoding Encoding
         {
             get;
             private set;
@@ -126,25 +93,20 @@ namespace Radial.Web.Mvc.Filters
             };
 
             filterContext.HttpContext.Response.Clear();
-            filterContext.HttpContext.Response.ContentEncoding = Encoding;
-
-
-            if (string.IsNullOrWhiteSpace(ContentType))
-            {
-                if (OutputStyle == ExceptionOutputStyle.Json)
-                    filterContext.HttpContext.Response.ContentType = ContentTypes.Json;
-                if (OutputStyle == ExceptionOutputStyle.Xml)
-                    filterContext.HttpContext.Response.ContentType = ContentTypes.Xml;
-            }
-            else
-                filterContext.HttpContext.Response.ContentType = ContentType;
+            filterContext.HttpContext.Response.ContentEncoding = StaticVariables.Encoding;
 
             string respContext = string.Empty;
 
-            if (OutputStyle == ExceptionOutputStyle.Xml)
-                respContext = data.ToXml();
             if (OutputStyle == ExceptionOutputStyle.Json)
+            {
+                filterContext.HttpContext.Response.ContentType = StaticVariables.JsonContentType;
                 respContext = data.ToJson();
+            }
+            if (OutputStyle == ExceptionOutputStyle.Xml)
+            {
+                filterContext.HttpContext.Response.ContentType = ContentTypes.Xml;
+                respContext = data.ToXml();
+            }
 
             HttpStatusCode scode = DefaultHttpStatusCode;
 

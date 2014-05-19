@@ -43,9 +43,6 @@ namespace QuickStart.Infras.Persist.Initializer
                 c.ConnectionStringName = "SqlClient";
                 c.BatchSize = 20;
                 c.HqlToSqlSubstitutions = "true 1, false 0, yes 'Y', no 'N'";
-#if DEBUG
-                c.LogSqlInConsole = true;
-#endif
             });
 
             if (HttpContext.Current == null)

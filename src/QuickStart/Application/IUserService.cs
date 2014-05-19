@@ -19,5 +19,11 @@ namespace QuickStart.Application
         /// <param name="email">The email.</param>
         /// <returns></returns>
         User Create(string name, string email);
+
+        /// <summary>
+        /// Gets all.
+        /// </summary>
+        /// <returns></returns>
+        IList<User> GetAll();
     }
 }

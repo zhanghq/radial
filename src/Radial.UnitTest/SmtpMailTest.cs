@@ -21,7 +21,7 @@ namespace Radial.UnitTest
             msg.Subject = "Test";
             msg.Body="<p>Hello</p>";
             msg.IsBodyHtml=true;
-            msg.BodyEncoding=Encoding.UTF8;
+            msg.BodyEncoding=StaticVariables.Encoding;
             Cycler.Execute(() => client.Send("ihaiqing@163.com", "0556016006", msg), 2, 1000);
         }
     }

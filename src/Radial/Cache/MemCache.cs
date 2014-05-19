@@ -38,7 +38,7 @@ namespace Radial.Cache
             if (obj == null)
                 return null;
 
-            return Encoding.UTF8.GetBytes(JsonSerializer.Serialize(obj));
+            return StaticVariables.Encoding.GetBytes(JsonSerializer.Serialize(obj));
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Radial.Cache
             if (bytes == null || bytes.Length == 0)
                 return null;
 
-            return JsonSerializer.Deserialize(Encoding.UTF8.GetString(bytes));
+            return JsonSerializer.Deserialize(StaticVariables.Encoding.GetString(bytes));
         }
 
         /// <summary>

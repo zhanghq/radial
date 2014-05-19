@@ -1,4 +1,5 @@
 ﻿using QuickStart.Domain;
+using QuickStart.Domain.Repos;
 using QuickStart.Models;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,21 @@ namespace QuickStart.Application.Impl
                 uow.Commit();
 
                 return u;
+            }
+        }
+
+
+        /// <summary>
+        /// Gets all.
+        /// </summary>
+        /// <returns></returns>
+        public IList<User> GetAll()
+        {
+            using (var uow = ResolveUnitOfWork())
+            {
+                IUserRepository repo = ResolveRepository<IUserRepository>(uow);
+
+                return repo.FindAll();
             }
         }
     }

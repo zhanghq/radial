@@ -20,24 +20,14 @@ namespace Radial.Security
         /// SHA1 encrypt.
         /// </summary>
         /// <param name="clearText">The cleartext.</param>
-        /// <returns>The ciphertext in Base64 string format.</returns>
+        /// <returns>
+        /// The ciphertext in Base64 string format.
+        /// </returns>
         public static string SHA1Encrypt(string clearText)
         {
-            return SHA1Encrypt(clearText, Encoding.UTF8);
-        }
-
-        /// <summary>
-        /// SHA1 encrypt.
-        /// </summary>
-        /// <param name="clearText">The cleartext.</param>
-        /// <param name="e">The encoding of cleartext.</param>
-        /// <returns>The ciphertext in Base64 string format.</returns>
-        public static string SHA1Encrypt(string clearText, Encoding e)
-        {
             Checker.Parameter(!string.IsNullOrWhiteSpace(clearText), "cleartext can not be empty or null.");
-            Checker.Parameter(e != null, "encoding of cleartext can not be null.");
 
-            byte[] clearTextBytes = e.GetBytes(clearText);
+            byte[] clearTextBytes = StaticVariables.Encoding.GetBytes(clearText);
 
             byte[] encryptedBytes = SHA1Encrypt(clearTextBytes);
 
@@ -65,29 +55,18 @@ namespace Radial.Security
         #endregion
 
         #region MD5
-
         /// <summary>
         /// MD5 encrypt.
         /// </summary>
         /// <param name="clearText">The cleartext.</param>
-        /// <returns>The ciphertext in Base64 string format.</returns>
+        /// <returns>
+        /// The ciphertext in Base64 string format.
+        /// </returns>
         public static string MD5Encrypt(string clearText)
         {
-            return MD5Encrypt(clearText, Encoding.UTF8);
-        }
-
-        /// <summary>
-        /// MD5 encrypt.
-        /// </summary>
-        /// <param name="clearText">The cleartext.</param>
-        /// <param name="e">The encoding of cleartext.</param>
-        /// <returns>The ciphertext in Base64 string format.</returns>
-        public static string MD5Encrypt(string clearText, Encoding e)
-        {
             Checker.Parameter(!string.IsNullOrWhiteSpace(clearText), "cleartext can not be empty or null.");
-            Checker.Parameter(e != null, "encoding of cleartext can not be null.");
 
-            byte[] clearTextBytes = e.GetBytes(clearText);
+            byte[] clearTextBytes = StaticVariables.Encoding.GetBytes(clearText);
 
             byte[] encryptedBytes = MD5Encrypt(clearTextBytes);
 
@@ -121,27 +100,16 @@ namespace Radial.Security
         /// </summary>
         /// <param name="clearText">The cleartext.</param>
         /// <param name="key">The encryption key.</param>
-        /// <returns>The ciphertext in Base64 string format.</returns>
+        /// <returns>
+        /// The ciphertext in Base64 string format.
+        /// </returns>
         public static string DESEncrypt(string clearText, SymmetricAlgorithm key)
         {
-            return DESEncrypt(clearText, Encoding.UTF8, key);
-        }
-
-        /// <summary>
-        /// DES encrypt.
-        /// </summary>
-        /// <param name="clearText">The cleartext.</param>
-        /// <param name="e">The encoding of cleartext.</param>
-        /// <param name="key">The encryption key.</param>
-        /// <returns>The ciphertext in Base64 string format.</returns>
-        public static string DESEncrypt(string clearText, Encoding e, SymmetricAlgorithm key)
-        {
             Checker.Parameter(!string.IsNullOrEmpty(clearText), "cleartext can not be empty or null.");
-            Checker.Parameter(e != null, "encoding of cleartext can not be null.");
 
             DESCryptoServiceProvider des = new DESCryptoServiceProvider();
 
-            byte[] inputByteArray = e.GetBytes(clearText);
+            byte[] inputByteArray = StaticVariables.Encoding.GetBytes(clearText);
 
             return DESEncrypt(inputByteArray, key);
         }
@@ -225,26 +193,8 @@ namespace Radial.Security
         public static string RijndaelEncrypt(string clearText, SymmetricAlgorithm key)
         {
             Checker.Parameter(!string.IsNullOrEmpty(clearText), "cleartext can not be empty or null.");
-            Checker.Parameter(key != null, "encryption key can not be null.");
 
-            return RijndaelEncrypt(Encoding.UTF8.GetBytes(clearText), key);
-        }
-
-        /// <summary>
-        /// Rijndael encrypt.
-        /// </summary>
-        /// <param name="clearText">The cleartext.</param>
-        /// <param name="e">The encoding of cleartext.</param>
-        /// <param name="key">The encryption key.</param>
-        /// <returns>
-        /// The ciphertext in Base64 string format.
-        /// </returns>
-        public static string RijndaelEncrypt(string clearText, Encoding e, SymmetricAlgorithm key)
-        {
-            Checker.Parameter(!string.IsNullOrEmpty(clearText), "cleartext can not be empty or null.");
-            Checker.Parameter(e != null, "encoding of cleartext can not be null.");
-
-            return RijndaelEncrypt(e.GetBytes(clearText), key);
+            return RijndaelEncrypt(StaticVariables.Encoding.GetBytes(clearText), key);
         }
 
         /// <summary>

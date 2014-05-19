@@ -43,7 +43,7 @@ namespace Radial
                 return;
 
             if (!string.IsNullOrWhiteSpace(downloadFileName))
-                downloadFileName = HttpUtility.UrlEncode(Path.GetFileNameWithoutExtension(downloadFileName), Encoding.UTF8) + ".xlsx";
+                downloadFileName = HttpUtility.UrlEncode(Path.GetFileNameWithoutExtension(downloadFileName), StaticVariables.Encoding) + ".xlsx";
             else
                 downloadFileName = Path.GetRandomFileName().Replace(".", string.Empty) + ".xlsx";
 
@@ -61,9 +61,9 @@ namespace Radial
 
                 HttpResponse httpResponse = HttpKits.CurrentContext.Response;
                 httpResponse.Clear();
-                httpResponse.Charset = Encoding.UTF8.BodyName;
+                httpResponse.Charset = StaticVariables.Encoding.BodyName;
                 httpResponse.AppendHeader("Content-Disposition", "attachment;filename=" + downloadFileName);
-                httpResponse.ContentEncoding = Encoding.UTF8;
+                httpResponse.ContentEncoding = StaticVariables.Encoding;
                 httpResponse.ContentType = ContentTypes.Excel;
                 httpResponse.BinaryWrite(pck.GetAsByteArray());
                 httpResponse.End();
@@ -106,7 +106,7 @@ namespace Radial
                 return;
 
             if (!string.IsNullOrWhiteSpace(downloadFileName))
-                downloadFileName = HttpUtility.UrlEncode(Path.GetFileNameWithoutExtension(downloadFileName), Encoding.UTF8) + ".xlsx";
+                downloadFileName = HttpUtility.UrlEncode(Path.GetFileNameWithoutExtension(downloadFileName), StaticVariables.Encoding) + ".xlsx";
             else
                 downloadFileName = Path.GetRandomFileName().Replace(".", string.Empty) + ".xlsx";
 
@@ -124,9 +124,9 @@ namespace Radial
 
                 HttpResponse httpResponse = HttpKits.CurrentContext.Response;
                 httpResponse.Clear();
-                httpResponse.Charset = Encoding.UTF8.BodyName;
+                httpResponse.Charset = StaticVariables.Encoding.BodyName;
                 httpResponse.AppendHeader("Content-Disposition", "attachment;filename=" + downloadFileName);
-                httpResponse.ContentEncoding = Encoding.UTF8;
+                httpResponse.ContentEncoding = StaticVariables.Encoding;
                 httpResponse.ContentType = ContentTypes.Excel;
                 httpResponse.BinaryWrite(pck.GetAsByteArray());
                 httpResponse.End();

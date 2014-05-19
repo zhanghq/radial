@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Radial.Extensions;
+using System.Runtime.Caching;
 
 namespace Radial.Cache
 {
@@ -11,127 +12,55 @@ namespace Radial.Cache
     /// </summary>
     public sealed class LocalCache : ICache
     {
-        /// <summary>
-        /// LocalCacheEntry
-        /// </summary>
-        class LocalCacheEntry
+
+        private ObjectCache ObjectCache
         {
-            /// <summary>
-            /// Gets or sets the key.
-            /// </summary>
-            /// <value>
-            /// The key.
-            /// </value>
-            public string Key { get; set; }
-            /// <summary>
-            /// Gets or sets the value.
-            /// </summary>
-            /// <value>
-            /// The value.
-            /// </value>
-            public byte[] Value { get; set; }
-
-            /// <summary>
-            /// Gets or sets the expired at.
-            /// </summary>
-            /// <value>
-            /// The expired at.
-            /// </value>
-            public DateTime? ExpiredAt { get; set; }
-        }
-
-        static HashSet<LocalCacheEntry> CacheEntries;
-        static object SyncRoot = new object();
-
-        /// <summary>
-        /// Initializes the <see cref="LocalCache"/> class.
-        /// </summary>
-        public LocalCache()
-        {
-            lock (SyncRoot)
+            get
             {
-                if (CacheEntries == null)
-                    CacheEntries = new HashSet<LocalCacheEntry>();
+                return MemoryCache.Default;
             }
         }
-
-
 
         /// <summary>
         /// Remove cache data.
         /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
+        /// <param name="key">The cache key.</param>
         public void Remove(string key)
         {
-            key = CacheStatic.NormalizeKey(key);
-
-            lock (SyncRoot)
-                CacheEntries.RemoveWhere(o => o.Key == key);
+            ObjectCache.Remove(CacheStatic.NormalizeKey(key));
         }
 
 
         /// <summary>
         /// Retrieve cached data.
         /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
+        /// <param name="key">The cache key.</param>
         /// <returns>
         /// If there has matched key, return the cached value, otherwise return null.
         /// </returns>
-        public byte[] Get(string key)
+        public object Get(string key)
         {
-            key = CacheStatic.NormalizeKey(key);
-
-            lock (SyncRoot)
-            {
-                var entry = CacheEntries.SingleOrDefault(o => o.Key == key);
-
-                if (entry.Value == null || (entry.ExpiredAt.HasValue && DateTime.Now > entry.ExpiredAt))
-                    return null;
-
-                return entry.Value;
-            }
+            return ObjectCache.Get(CacheStatic.NormalizeKey(key));
         }
 
         /// <summary>
         /// Set cache data.
         /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
+        /// <param name="key">The cache key.</param>
         /// <param name="value">The cache value.</param>
         /// <param name="cacheSeconds">The cache holding seconds.</param>
-        public void Set(string key, byte[] value, int? cacheSeconds = null)
+        public void Set(string key, object value, int? cacheSeconds = null)
         {
-            if (value == null || value.Length == 0)
-            {
-                Remove(key);
+            if (value == null)
                 return;
-            }
 
             key = CacheStatic.NormalizeKey(key);
 
-            lock (SyncRoot)
-            {
-                var entry = CacheEntries.SingleOrDefault(o => o.Key == key);
+            if (cacheSeconds.HasValue)
+                ObjectCache.Set(key, value, new DateTimeOffset(DateTime.Now.AddSeconds(cacheSeconds.Value)));
+            else
+                ObjectCache.Set(key, value, null);
 
-                if (entry != null)
-                {
-                    entry.Value = value;
-
-                    if (!cacheSeconds.HasValue)
-                        entry.ExpiredAt = DateTime.Now.AddSeconds(cacheSeconds.Value);
-                    else
-                        entry.ExpiredAt = null;
-                }
-                else
-                {
-                    entry = new LocalCacheEntry { Key = key, Value = value };
-
-                    if (cacheSeconds.HasValue)
-                        entry.ExpiredAt = DateTime.Now.AddSeconds(cacheSeconds.Value);
-
-                    CacheEntries.Add(entry);
-                }
-
-            }
         }
     }
 }

@@ -136,8 +136,8 @@ namespace Radial.Net
             string boundary = "---------------------------" + DateTime.Now.Ticks.ToString();
             string separator = "--" + boundary + "\r\n";
             string footer = "--" + boundary + "--\r\n";
-            byte[] separatorBytes = Encoding.UTF8.GetBytes(separator);
-            byte[] footerBytes = Encoding.UTF8.GetBytes(footer);
+            byte[] separatorBytes = StaticVariables.Encoding.GetBytes(separator);
+            byte[] footerBytes = StaticVariables.Encoding.GetBytes(footer);
 
 
             request.ContentType = "multipart/form-data; boundary=" + boundary;

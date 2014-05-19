@@ -292,7 +292,7 @@ namespace Radial.Web
         /// <param name="statusCode">The http response status code(200 by default).</param>
         public static void WriteJson<T>(T obj, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WriteJson(obj, ContentTypes.PlainText, statusCode);
+            WriteJson(obj, ContentTypes.Json, statusCode);
         }
 
         /// <summary>
@@ -314,7 +314,7 @@ namespace Radial.Web
         /// <param name="statusCode">The http response status code(200 by default).</param>
         public static void WriteJson(object obj, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WriteJson(obj, ContentTypes.PlainText, statusCode);
+            WriteJson(obj, ContentTypes.Json, statusCode);
         }
 
         /// <summary>
@@ -335,7 +335,7 @@ namespace Radial.Web
         /// <param name="statusCode">The http response status code(200 by default).</param>
         public static void WriteJson(string json, HttpStatusCode? statusCode = HttpStatusCode.OK)
         {
-            WriteJson(json, ContentTypes.PlainText, statusCode);
+            WriteJson(json, ContentTypes.Json, statusCode);
         }
 
         /// <summary>
@@ -360,14 +360,14 @@ namespace Radial.Web
         {
 
             if (string.IsNullOrWhiteSpace(xml))
-                xml = string.Format("<?xml version=\"1.0\" encoding=\"{0}\"?>", Encoding.UTF8.BodyName.ToLower());
+                xml = string.Format("<?xml version=\"1.0\" encoding=\"{0}\"?>", StaticVariables.Encoding.BodyName.ToLower());
 
             if (string.IsNullOrWhiteSpace(contentType))
                 CurrentContext.Response.ContentType = ContentTypes.Xml;
             else
                 CurrentContext.Response.ContentType = contentType.Trim();
 
-            CurrentContext.Response.Charset = Encoding.UTF8.BodyName;
+            CurrentContext.Response.Charset = StaticVariables.Encoding.BodyName;
             CurrentContext.Response.Write(xml);
             if (statusCode.HasValue)
                 CurrentContext.Response.StatusCode = (int)statusCode.Value;

@@ -17,11 +17,6 @@ namespace Radial.Net
         string ParamName { get; }
 
         /// <summary>
-        /// Gets or sets the encoding of post data bytes.
-        /// </summary>
-        Encoding Encoding { get; set; }
-
-        /// <summary>
         /// Write data to the request stream
         /// </summary>
         /// <param name="reqStream">The request stream.</param>

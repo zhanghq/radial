@@ -62,7 +62,7 @@ namespace Radial.Web.Mvc.WebApi.Formatting
             // Create task writing the serialized content 
             return Task.Factory.StartNew(() =>
             {
-                using (StreamWriter streamWriter = new StreamWriter(writeStream, Encoding.UTF8))
+                using (StreamWriter streamWriter = new StreamWriter(writeStream, StaticVariables.Encoding))
                 {
                     using (JsonTextWriter jsonTextWriter = new JsonTextWriter(streamWriter))
                     {
@@ -91,7 +91,7 @@ namespace Radial.Web.Mvc.WebApi.Formatting
             // Create task reading the content 
             return Task.Factory.StartNew(() =>
             {
-                using (StreamReader streamReader = new StreamReader(readStream, Encoding.UTF8))
+                using (StreamReader streamReader = new StreamReader(readStream, StaticVariables.Encoding))
                 {
                     using (JsonTextReader jsonTextReader = new JsonTextReader(streamReader))
                     {

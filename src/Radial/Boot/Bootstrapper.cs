@@ -131,7 +131,10 @@ namespace Radial.Boot
             {
                 //higher priority start first
                 if (Initialized)
+                {
                     Tasks.ForEach(o => o.Value.Start());
+                }
+
             }
         }
 
@@ -144,7 +147,9 @@ namespace Radial.Boot
             {
                 //higher priority stop last
                 if (Initialized)
+                {
                     ReversedTasks.ForEach(o => o.Value.Stop());
+                }
             }
         }
     }

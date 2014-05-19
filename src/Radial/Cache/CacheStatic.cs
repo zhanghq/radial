@@ -13,47 +13,6 @@ namespace Radial.Cache
     public static class CacheStatic
     {
         /// <summary>
-        /// Complex type serialization method.
-        /// </summary>
-        /// <param name="obj">The object.</param>
-        /// <returns></returns>
-        private static byte[] Serialize(object obj)
-        {
-            if (obj == null)
-                return null;
-
-            return Encoding.UTF8.GetBytes(JsonSerializer.Serialize(obj));
-        }
-
-        /// <summary>
-        /// Complex type deserialization method.
-        /// </summary>
-        /// <param name="bytes">The bytes.</param>
-        /// <returns></returns>
-        private static object Deserialize(byte[] bytes)
-        {
-            if (bytes == null || bytes.Length == 0)
-                return null;
-
-            return JsonSerializer.Deserialize(Encoding.UTF8.GetString(bytes));
-        }
-
-        /// <summary>
-        /// Complex type deserialization method.
-        /// </summary>
-        /// <typeparam name="T">The deserialize type.</typeparam>
-        /// <param name="bytes">The bytes.</param>
-        /// <returns></returns>
-        private static T Deserialize<T>(byte[] bytes)
-        {
-            if (bytes == null || bytes.Length == 0)
-                return default(T);
-
-            return JsonSerializer.Deserialize<T>(Encoding.UTF8.GetString(bytes));
-        }
-         
-
-        /// <summary>
         /// Gets the ICache instance.
         /// </summary>
         private static ICache Instance
@@ -66,6 +25,14 @@ namespace Radial.Cache
             }
         }
 
+        private static Logger Logger
+        {
+            get
+            {
+                return Logger.GetInstance(typeof(CacheStatic).Name);
+            }
+        }
+
         /// <summary>
         /// Normalizes the cache key.
         /// </summary>
@@ -75,55 +42,83 @@ namespace Radial.Cache
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(key), "cache key can not be empty or null");
 
-            return key.Trim().ToLower();
+            return key.Trim();
         }
-
-
-
 
         /// <summary>
         /// Set cache data.
         /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
+        /// <param name="key">The cache key.</param>
         /// <param name="value">The cache value.</param>
         /// <param name="cacheSeconds">The cache holding seconds.</param>
         public static void Set(string key, object value, int? cacheSeconds = null)
         {
-            Instance.Set(key, Serialize(value), cacheSeconds);
+            try
+            {
+                Instance.Set(key, value, cacheSeconds);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
         }
 
 
         /// <summary>
         /// Retrieve cached data.
         /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
+        /// <param name="key">The cache key.</param>
         /// <returns>If there has matched key, return the cached data, otherwise return null.</returns>
         public static object Get(string key)
         {
-            return Deserialize(Instance.Get(key));
+            try
+            {
+                return Instance.Get(key);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+
+            return null;
         }
 
         /// <summary>
         /// Retrieve cached data.
         /// </summary>
         /// <typeparam name="T">The cache value type.</typeparam>
-        /// <param name="key">The cache key(case insensitive).</param>
+        /// <param name="key">The cache key.</param>
+        /// <param name="converter">The object to T type converter.</param>
         /// <returns>
         /// If there has matched key, return the cached value, otherwise return null.
         /// </returns>
-        public static T Get<T>(string key)
+        public static T Get<T>(string key, Func<object, T> converter = null)
         {
-            return Deserialize<T>(Instance.Get(key));
-        }
+            var obj = Instance.Get(key);
 
+            if (obj == null)
+                return default(T);
+
+            if (converter != null)
+                return converter(obj);
+
+            return (T)obj;
+        }
 
         /// <summary>
         /// Remove cache data.
         /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
+        /// <param name="key">The cache key.</param>
         public static void Remove(string key)
         {
-            Instance.Remove(key);
+            try
+            {
+                Instance.Remove(key);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
         }
     }
 }

@@ -13,20 +13,20 @@ namespace Radial.Cache
         /// <summary>
         /// Retrieve cached data.
         /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
+        /// <param name="key">The cache key.</param>
         /// <returns>If there has matched key, return the cached value, otherwise return null.</returns>
-        byte[] Get(string key);
+        object Get(string key);
         /// <summary>
         /// Set cache data.
         /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
+        /// <param name="key">The cache key.</param>
         /// <param name="value">The cache value.</param>
         /// <param name="cacheSeconds">The cache holding seconds.</param>
-        void Set(string key, byte [] value, int? cacheSeconds = null);
+        void Set(string key, object value, int? cacheSeconds = null);
         /// <summary>
         /// Remove cache data.
         /// </summary>
-        /// <param name="key">The cache key(case insensitive).</param>
+        /// <param name="key">The cache key.</param>
         void Remove(string key);
     }
 }

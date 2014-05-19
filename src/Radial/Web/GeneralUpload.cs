@@ -152,7 +152,7 @@ namespace Radial.Web
         {
             lock (SyncRoot)
             {
-                string rootAP = Settings != null ? HttpServerUtility.MapPath(HttpKits.CombineRelativeUrl(Settings.RootDirectory)) : SystemSettings.BaseDirectory;
+                string rootAP = Settings != null ? HttpServerUtility.MapPath(HttpKits.CombineRelativeUrl(Settings.RootDirectory)) : StaticVariables.BaseDirectory;
 
                 //create root dir if not exist
                 if (!Directory.Exists(rootAP))

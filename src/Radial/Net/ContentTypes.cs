@@ -35,5 +35,10 @@ namespace Radial.Net
         /// Excel Content Type
         /// </summary>
         public const string Excel = "application/vnd.ms-excel; charset=utf-8";
+
+        /// <summary>
+        /// Binary Stream Content Type
+        /// </summary>
+        public const string BinaryStream = "application/octet-stream; charset=utf-8";
     }
 }

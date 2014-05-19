@@ -24,6 +24,20 @@ namespace Radial.Persist.Nhs.NamingStrategy
         /// </summary>
         private const string NotFoundDbDriverConfigExceptionMessageFormat = "can not find connection.driver_class settings";
 
+
+        /// <summary>
+        /// Gets the strategy.
+        /// </summary>
+        /// <param name="driverClassType">The driver class type.</param>
+        /// <returns>INamingStrategy instance, if not found matched strategy return null.</returns>
+        public static INamingStrategy GetStrategy(Type driverClassType)
+        {
+            Checker.Requires(driverClassType != null, "driverClassType can not be null");
+
+            return GetStrategy(driverClassType.FullName);
+
+        }
+
         /// <summary>
         /// Gets the strategy.
         /// </summary>
@@ -45,6 +59,19 @@ namespace Radial.Persist.Nhs.NamingStrategy
             throw new NotSupportedException(string.Format("the INamingStrategy instance for {0} is not supported yet", driverClassTypeString));
         }
 
+        /// <summary>
+        /// Determines whether the specified driver class type string is supported.
+        /// </summary>
+        /// <param name="driverClassType">The driver class type.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified driver class type string is supported; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsSupported(Type driverClassType)
+        {
+            Checker.Requires(driverClassType != null, "driverClassType can not be null");
+
+            return IsSupported(driverClassType.FullName);
+        }
 
         /// <summary>
         /// Determines whether the specified driver class type string is supported.

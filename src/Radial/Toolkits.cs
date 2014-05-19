@@ -157,26 +157,16 @@ namespace Radial
 
 
         /// <summary>
-        /// Compress.
-        /// </summary>
-        /// <param name="str">The input string.</param>
-        /// <returns>Compressed string.</returns>
-        public static string Compress(string str)
-        {
-            return Compress(str, Encoding.UTF8);
-        }
-
-        /// <summary>
         /// Compress
         /// </summary>
         /// <param name="str">The input string.</param>
-        /// <param name="e">The encoding of input string.</param>
-        /// <returns>Compressed string.</returns>
-        public static string Compress(string str, Encoding e)
+        /// <returns>
+        /// Compressed string.
+        /// </returns>
+        public static string Compress(string str)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(str), "input string can not be empty or null.");
-            Checker.Parameter(e != null, "encoding of input string can not be null.");
-            byte[] cb = Compress(e.GetBytes(str));
+            byte[] cb = Compress(StaticVariables.Encoding.GetBytes(str));
 
             StringBuilder ret = new StringBuilder();
             foreach (byte b in cb)
@@ -220,22 +210,12 @@ namespace Radial
         /// Decompress.
         /// </summary>
         /// <param name="str">The input string.</param>
-        /// <returns>Decompressed string.</returns>
+        /// <returns>
+        /// Decompressed string.
+        /// </returns>
         public static string Decompress(string str)
         {
-            return Decompress(str, Encoding.UTF8);
-        }
-
-        /// <summary>
-        /// Decompress.
-        /// </summary>
-        /// <param name="str">The input string.</param>
-        /// <param name="e">The encoding of input string.</param>
-        /// <returns>Decompressed string.</returns>
-        public static string Decompress(string str, Encoding e)
-        {
             Checker.Parameter(!string.IsNullOrWhiteSpace(str), "input string can not be empty or null.");
-            Checker.Parameter(e != null, "encoding of input string can not be null.");
 
             byte[] inputByteArray = new byte[str.Length / 2];
             for (int x = 0; x < inputByteArray.Length; x++)
@@ -245,7 +225,7 @@ namespace Radial
 
             byte[] cb = Decompress(inputByteArray);
 
-            return e.GetString(cb);
+            return StaticVariables.Encoding.GetString(cb);
         }
 
         /// <summary>
@@ -279,26 +259,16 @@ namespace Radial
         }
 
         /// <summary>
-        /// Convert to Base64 string(UTF-8 encoding).
-        /// </summary>
-        /// <param name="data">The input string.</param>
-        /// <returns>Base64 string.</returns>
-        public static string ToBase64String(string data)
-        {
-            return ToBase64String(data, Encoding.UTF8);
-        }
-
-        /// <summary>
         /// Convert to Base64 string.
         /// </summary>
         /// <param name="data">The input string.</param>
-        /// <param name="e">The encoding of input string.</param>
-        /// <returns>Base64 string.</returns>
-        public static string ToBase64String(string data, Encoding e)
+        /// <returns>
+        /// Base64 string.
+        /// </returns>
+        public static string ToBase64String(string data)
         {
-            Checker.Parameter(e != null, "encoding of input string can not be null.");
 
-            return ToBase64String(e.GetBytes(data));
+            return ToBase64String(StaticVariables.Encoding.GetBytes(data));
         }
 
         /// <summary>
@@ -311,28 +281,18 @@ namespace Radial
             return Convert.ToBase64String(data);
         }
 
-        /// <summary>
-        /// Convert to string from Base64 format(UTF-8 encoding).
-        /// </summary>
-        /// <param name="base64Str">The input string.</param>
-        /// <returns>Decoded string.</returns>
-        public static string FromBase64String(string base64Str)
-        {
-            return FromBase64String(base64Str, Encoding.UTF8);
-        }
-
 
         /// <summary>
         /// Convert to string from Base64 format.
         /// </summary>
         /// <param name="base64Str">The input string.</param>
-        /// <param name="e">The encoding of input string.</param>
-        /// <returns>Decoded string.</returns>
-        public static string FromBase64String(string base64Str, Encoding e)
+        /// <returns>
+        /// Decoded string.
+        /// </returns>
+        public static string FromBase64String(string base64Str)
         {
-            Checker.Parameter(e != null, "encoding of input string can not be null.");
 
-            return e.GetString(FromBase64StringToBytes(base64Str));
+            return StaticVariables.Encoding.GetString(FromBase64StringToBytes(base64Str));
         }
 
         /// <summary>
@@ -429,8 +389,8 @@ namespace Radial
         /// </returns>
         public static long ToUnixTimeStamp(DateTime time, TimeZoneInfo localTimeZoneInfo)
         {
-            if(localTimeZoneInfo==null)
-                localTimeZoneInfo=TimeZoneInfo.Local;
+            if (localTimeZoneInfo == null)
+                localTimeZoneInfo = TimeZoneInfo.Local;
             DateTime localStartTime = TimeZoneInfo.ConvertTimeFromUtc(new System.DateTime(1970, 1, 1), localTimeZoneInfo);
             return (long)(time - localStartTime).TotalSeconds;
 

@@ -54,7 +54,7 @@ namespace Radial
         {
             get
             {
-                return SystemSettings.GetConfigPath("log4net.config");
+                return Path.Combine(StaticVariables.ConfigDirectory, "log4net.config");
             }
         }
 
@@ -92,6 +92,16 @@ namespace Radial
         public static Logger GetInstance(string logName)
         {
             return new Logger(logName);
+        }
+
+        /// <summary>
+        /// Gets the specified log instance.
+        /// </summary>
+        /// <typeparam name="T">the type.</typeparam>
+        /// <returns>log instance.</returns>
+        public static Logger GetInstance<T>()
+        {
+            return GetInstance(typeof(T).Name);
         }
 
         /// <summary>

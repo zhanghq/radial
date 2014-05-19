@@ -44,7 +44,7 @@ namespace Radial.Drawing
         }
 
         /// <summary>
-        /// Generates the thumbnail of the original image.
+        /// Generates the thumbnail from the original image.
         /// </summary>
         /// <param name="original">The original image.</param>
         /// <param name="width">The width, in pixels, of the requested thumbnail image.</param>

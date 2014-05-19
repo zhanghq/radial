@@ -105,7 +105,6 @@ namespace Radial.Security
             return _cert.Verify();
         }
 
-
         /// <summary>
         /// Encrypts the use public key.
         /// </summary>
@@ -113,35 +112,20 @@ namespace Radial.Security
         /// <returns></returns>
         public string EncryptUsePublicKey(string msg)
         {
-            return EncryptUsePublicKey(msg, Encoding.Default);
+            return EncryptUsePublicKey(msg, false);
         }
-
 
         /// <summary>
         /// Encrypts the use public key.
         /// </summary>
         /// <param name="msg">The MSG.</param>
-        /// <param name="e">The e.</param>
-        /// <returns></returns>
-        public string EncryptUsePublicKey(string msg, Encoding e)
-        {
-            return EncryptUsePublicKey(msg, e, false);
-        }
-
-
-        /// <summary>
-        /// Encrypts the use public key.
-        /// </summary>
-        /// <param name="msg">The MSG.</param>
-        /// <param name="e">The e.</param>
         /// <param name="fOAEP">if set to <c>true</c> [f OAEP].</param>
         /// <returns></returns>
-        public string EncryptUsePublicKey(string msg, Encoding e, bool fOAEP)
+        public string EncryptUsePublicKey(string msg,  bool fOAEP)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(msg), "需要加密的消息不能为空");
-            Checker.Parameter(e != null, "字符编码不能为空");
 
-            byte[] encryptedBytes = EncryptUsePublicKey(e.GetBytes(msg), fOAEP);
+            byte[] encryptedBytes = EncryptUsePublicKey(StaticVariables.Encoding.GetBytes(msg), fOAEP);
 
             StringBuilder sb = new StringBuilder();
             foreach (byte eb in encryptedBytes)
@@ -150,6 +134,15 @@ namespace Radial.Security
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Encrypts the use public key.
+        /// </summary>
+        /// <param name="rgb">The RGB.</param>
+        /// <returns></returns>
+        public byte[] EncryptUsePublicKey(byte[] rgb)
+        {
+            return EncryptUsePublicKey(rgb, false);
+        }
 
         /// <summary>
         /// Encrypts the use public key.
@@ -173,7 +166,7 @@ namespace Radial.Security
         /// <returns></returns>
         public string DecryptUsePublicKey(string msg)
         {
-            return DecryptUsePublicKey(msg, Encoding.Default);
+            return DecryptUsePublicKey(msg, false);
         }
 
 
@@ -181,27 +174,13 @@ namespace Radial.Security
         /// Decrypts the use public key.
         /// </summary>
         /// <param name="msg">The MSG.</param>
-        /// <param name="e">The e.</param>
-        /// <returns></returns>
-        public string DecryptUsePublicKey(string msg, Encoding e)
-        {
-            return DecryptUsePublicKey(msg, e, false);
-        }
-
-
-        /// <summary>
-        /// Decrypts the use public key.
-        /// </summary>
-        /// <param name="msg">The MSG.</param>
-        /// <param name="e">The e.</param>
         /// <param name="fOAEP">if set to <c>true</c> [f OAEP].</param>
         /// <returns></returns>
-        public string DecryptUsePublicKey(string msg, Encoding e, bool fOAEP)
+        public string DecryptUsePublicKey(string msg, bool fOAEP)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(msg), "需要解密的消息不能为空");
-            Checker.Parameter(e != null, "字符编码不能为空");
 
-            byte[] data = e.GetBytes(msg);
+            byte[] data = StaticVariables.Encoding.GetBytes(msg);
 
             byte[] msgBytes = new byte[msg.Length / 2];
 
@@ -210,9 +189,18 @@ namespace Radial.Security
 
             byte[] dencryptedBytes = DecryptUsePublicKey(msgBytes, fOAEP);
 
-            return e.GetString(dencryptedBytes);
+            return StaticVariables.Encoding.GetString(dencryptedBytes);
         }
 
+        /// <summary>
+        /// Decrypts the use public key.
+        /// </summary>
+        /// <param name="rgb">The RGB.</param>
+        /// <returns></returns>
+        public byte[] DecryptUsePublicKey(byte[] rgb)
+        {
+            return DecryptUsePublicKey(rgb, false);
+        }
 
         /// <summary>
         /// Decrypts the use public key.
@@ -236,7 +224,7 @@ namespace Radial.Security
         /// <returns></returns>
         public string EncryptUsePrivateKey(string msg)
         {
-            return EncryptUsePrivateKey(msg, Encoding.Default);
+            return EncryptUsePrivateKey(msg, false);
         }
 
 
@@ -244,27 +232,13 @@ namespace Radial.Security
         /// Encrypts the use private key.
         /// </summary>
         /// <param name="msg">The MSG.</param>
-        /// <param name="e">The e.</param>
-        /// <returns></returns>
-        public string EncryptUsePrivateKey(string msg, Encoding e)
-        {
-            return EncryptUsePrivateKey(msg, e, false);
-        }
-
-
-        /// <summary>
-        /// Encrypts the use private key.
-        /// </summary>
-        /// <param name="msg">The MSG.</param>
-        /// <param name="e">The e.</param>
         /// <param name="fOAEP">if set to <c>true</c> [f OAEP].</param>
         /// <returns></returns>
-        public string EncryptUsePrivateKey(string msg, Encoding e, bool fOAEP)
+        public string EncryptUsePrivateKey(string msg,  bool fOAEP)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(msg), "message can not be empty or null");
-            Checker.Parameter(e != null, "encoding can not be null");
 
-            byte[] encryptedBytes = EncryptUsePrivateKey(e.GetBytes(msg), fOAEP);
+            byte[] encryptedBytes = EncryptUsePrivateKey(StaticVariables.Encoding.GetBytes(msg), fOAEP);
 
             StringBuilder sb = new StringBuilder();
             foreach (byte eb in encryptedBytes)
@@ -292,7 +266,6 @@ namespace Radial.Security
         }
 
 
-
         /// <summary>
         /// Decrypts the use private key.
         /// </summary>
@@ -300,7 +273,7 @@ namespace Radial.Security
         /// <returns></returns>
         public string DecryptUsePrivateKey(string msg)
         {
-            return DecryptUsePrivateKey(msg, Encoding.Default);
+            return DecryptUsePrivateKey(msg, false);
         }
 
 
@@ -308,27 +281,13 @@ namespace Radial.Security
         /// Decrypts the use private key.
         /// </summary>
         /// <param name="msg">The MSG.</param>
-        /// <param name="e">The e.</param>
-        /// <returns></returns>
-        public string DecryptUsePrivateKey(string msg, Encoding e)
-        {
-            return DecryptUsePrivateKey(msg, e, false);
-        }
-
-
-        /// <summary>
-        /// Decrypts the use private key.
-        /// </summary>
-        /// <param name="msg">The MSG.</param>
-        /// <param name="e">The e.</param>
         /// <param name="fOAEP">if set to <c>true</c> [f OAEP].</param>
         /// <returns></returns>
-        public string DecryptUsePrivateKey(string msg, Encoding e, bool fOAEP)
+        public string DecryptUsePrivateKey(string msg,  bool fOAEP)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(msg), "msg can not be empty or null");
-            Checker.Parameter(e != null, "encoding can not be null");
 
-            byte[] data = e.GetBytes(msg);
+            byte[] data = StaticVariables.Encoding.GetBytes(msg);
 
             byte[] msgBytes = new byte[msg.Length / 2];
 
@@ -337,7 +296,7 @@ namespace Radial.Security
 
             byte[] dencryptedBytes = DecryptUsePrivateKey(msgBytes, fOAEP);
 
-            return e.GetString(dencryptedBytes);
+            return StaticVariables.Encoding.GetString(dencryptedBytes);
         }
 
 
@@ -365,22 +324,9 @@ namespace Radial.Security
         /// <returns></returns>
         public string CreateSignatureUsePublicKey(string msg)
         {
-            return CreateSignatureUsePublicKey(msg, Encoding.Default);
-        }
-
-
-        /// <summary>
-        /// Creates the signature use public key.
-        /// </summary>
-        /// <param name="msg">The MSG.</param>
-        /// <param name="e">The e.</param>
-        /// <returns></returns>
-        public string CreateSignatureUsePublicKey(string msg, Encoding e)
-        {
             Checker.Parameter(!string.IsNullOrWhiteSpace(msg), "msg can not be empty or null");
-            Checker.Parameter(e != null, "encoding can not be null");
 
-            byte[] encryptedBytes = CreateSignatureUsePublicKey(e.GetBytes(msg));
+            byte[] encryptedBytes = CreateSignatureUsePublicKey(StaticVariables.Encoding.GetBytes(msg));
 
             StringBuilder sb = new StringBuilder();
             foreach (byte eb in encryptedBytes)
@@ -406,6 +352,7 @@ namespace Radial.Security
         }
 
 
+
         /// <summary>
         /// Creates the signature use private key.
         /// </summary>
@@ -413,22 +360,9 @@ namespace Radial.Security
         /// <returns></returns>
         public string CreateSignatureUsePrivateKey(string msg)
         {
-            return CreateSignatureUsePrivateKey(msg, Encoding.Default);
-        }
-
-
-        /// <summary>
-        /// Creates the signature use private key.
-        /// </summary>
-        /// <param name="msg">The MSG.</param>
-        /// <param name="e">The e.</param>
-        /// <returns></returns>
-        public string CreateSignatureUsePrivateKey(string msg, Encoding e)
-        {
             Checker.Parameter(!string.IsNullOrWhiteSpace(msg), "msg can not be empty or null");
-            Checker.Parameter(e != null, "encoding can not be empty or null");
 
-            byte[] encryptedBytes = CreateSignatureUsePrivateKey(e.GetBytes(msg));
+            byte[] encryptedBytes = CreateSignatureUsePrivateKey(StaticVariables.Encoding.GetBytes(msg));
 
             StringBuilder sb = new StringBuilder();
             foreach (byte eb in encryptedBytes)
@@ -464,24 +398,10 @@ namespace Radial.Security
         /// <returns></returns>
         public bool VerifySignatureUsePublicKey(string dataStr, string signature)
         {
-            return VerifySignatureUsePublicKey(dataStr, signature, Encoding.Default);
-        }
-
-
-        /// <summary>
-        /// Verifies the signature use public key.
-        /// </summary>
-        /// <param name="dataStr">The data STR.</param>
-        /// <param name="signature">The signature.</param>
-        /// <param name="e">The e.</param>
-        /// <returns></returns>
-        public bool VerifySignatureUsePublicKey(string dataStr, string signature, Encoding e)
-        {
             Checker.Parameter(!string.IsNullOrEmpty(dataStr), "dataStr can not be empty or null");
             Checker.Parameter(!string.IsNullOrEmpty(signature), "signature can not be empty or null");
-            Checker.Parameter(e != null, "encoding can not be null");
 
-            byte[] data = e.GetBytes(dataStr);
+            byte[] data = StaticVariables.Encoding.GetBytes(dataStr);
 
             byte[] signatureBytes = new byte[signature.Length / 2];
 
@@ -508,6 +428,7 @@ namespace Radial.Security
         }
 
 
+
         /// <summary>
         /// Verifies the signature use private key.
         /// </summary>
@@ -516,24 +437,10 @@ namespace Radial.Security
         /// <returns></returns>
         public bool VerifySignatureUsePrivateKey(string dataStr, string signature)
         {
-            return VerifySignatureUsePrivateKey(dataStr, signature, Encoding.Default);
-        }
-
-
-        /// <summary>
-        /// Verifies the signature use private key.
-        /// </summary>
-        /// <param name="dataStr">The data STR.</param>
-        /// <param name="signature">The signature.</param>
-        /// <param name="e">The e.</param>
-        /// <returns></returns>
-        public bool VerifySignatureUsePrivateKey(string dataStr, string signature, Encoding e)
-        {
             Checker.Parameter(!string.IsNullOrEmpty(dataStr), "dataStr can not be empty or null");
             Checker.Parameter(!string.IsNullOrEmpty(signature), "signature can not be empty or null");
-            Checker.Parameter(e != null, "encoding can not be null");
 
-            byte[] data = e.GetBytes(dataStr);
+            byte[] data = StaticVariables.Encoding.GetBytes(dataStr);
 
             byte[] signatureBytes = new byte[signature.Length / 2];
 

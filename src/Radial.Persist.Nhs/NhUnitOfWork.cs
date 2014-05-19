@@ -40,7 +40,7 @@ namespace Radial.Persist.Nhs
         /// Reset the transaction isolation level.
         /// </summary>
         /// <param name="level">The new isolation level.</param>
-        public void ResetIsolationLevel(IsolationLevel? level = null)
+        public virtual void ResetIsolationLevel(IsolationLevel? level = null)
         {
             _isolationLevel = level;
         }
@@ -93,7 +93,10 @@ namespace Radial.Persist.Nhs
                 PrepareTransaction();
 
                 foreach (TObject obj in objs)
-                    _session.Save(obj);
+                {
+                    if (obj != null)
+                        _session.Save(obj);
+                }
 
             }
         }
@@ -124,7 +127,10 @@ namespace Radial.Persist.Nhs
                 PrepareTransaction();
 
                 foreach (TObject obj in objs)
-                    _session.SaveOrUpdate(obj);
+                {
+                    if (obj != null)
+                        _session.SaveOrUpdate(obj);
+                }
             }
         }
 
@@ -147,14 +153,17 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>
         /// <param name="objs">The object instance.</param>
-        public void RegisterDelete<TObject>(IEnumerable<TObject> objs) where TObject : class
+        public virtual void RegisterDelete<TObject>(IEnumerable<TObject> objs) where TObject : class
         {
             if (objs != null && objs.Count() > 0)
             {
                 PrepareTransaction();
 
                 foreach (TObject obj in objs)
-                    _session.Delete(obj);
+                {
+                    if (obj != null)
+                        _session.Delete(obj);
+                }
             }
         }
 
@@ -166,6 +175,9 @@ namespace Radial.Persist.Nhs
         /// <param name="key">The object key.</param>
         public virtual void RegisterDelete<TObject, TKey>(TKey key) where TObject : class
         {
+            if (key == null)
+                return;
+
             var metadata = _session.SessionFactory.GetClassMetadata(typeof (TObject));
 
             Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property",
@@ -193,7 +205,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Commit changes to data source.
         /// </summary>
-        public void Commit()
+        public virtual void Commit()
         {
             if (_transaction != null && System.Transactions.Transaction.Current == null)
             {
@@ -216,7 +228,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
             if (_transaction != null)
                 _transaction.Dispose();
@@ -229,7 +241,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>
         /// <param name="obj">The object instance.</param>
-        public void RegisterUpdate<TObject>(TObject obj) where TObject : class
+        public virtual void RegisterUpdate<TObject>(TObject obj) where TObject : class
         {
             if (obj != null)
             {
@@ -243,14 +255,17 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <typeparam name="TObject">The type of object.</typeparam>
         /// <param name="objs">The object set.</param>
-        public void RegisterUpdate<TObject>(IEnumerable<TObject> objs) where TObject : class
+        public virtual void RegisterUpdate<TObject>(IEnumerable<TObject> objs) where TObject : class
         {
             if (objs != null && objs.Count() > 0)
             {
                 PrepareTransaction();
 
                 foreach (TObject obj in objs)
-                    _session.Update(obj);
+                {
+                    if (obj != null)
+                        _session.Update(obj);
+                }
             }
         }
     }

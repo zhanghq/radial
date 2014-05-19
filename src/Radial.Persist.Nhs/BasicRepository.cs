@@ -304,6 +304,9 @@ namespace Radial.Persist.Nhs
         /// <returns>If data exists, return the object, otherwise return null.</returns>
         public virtual TObject Find(TKey key)
         {
+            if (key == null)
+                return null;
+
             if (ExtraCondition != null)
             {
                 var metadata = Session.SessionFactory.GetClassMetadata(typeof(TObject));
@@ -750,7 +753,7 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// The query result list
         /// </returns>
-        protected virtual IList<TObject> ExecutePagingQuery(IQuery countQuery,IQuery dataQuery, int pageSize, int pageIndex, out int objectTotal)
+        protected virtual IList<TObject> ExecutePagingQuery(IQuery countQuery, IQuery dataQuery, int pageSize, int pageIndex, out int objectTotal)
         {
             Checker.Parameter(countQuery != null, "count query can not be null");
             Checker.Parameter(dataQuery != null, "data query can not be null");
@@ -1163,6 +1166,26 @@ namespace Radial.Persist.Nhs
         public void Update(TObject obj)
         {
             _uow.RegisterUpdate<TObject>(obj);
+        }
+
+
+        /// <summary>
+        /// Find all object keys.
+        /// </summary>
+        /// <param name="condition">The condition.</param>
+        /// <param name="orderBys">The order by snippets</param>
+        /// <returns>
+        /// If data exists, return an array, otherwise return an empty array.
+        /// </returns>
+        public TKey[] FindKeys(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
+        {
+            var metadata = this.Session.SessionFactory.GetClassMetadata(typeof(TObject));
+
+            Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
+
+            var query = AppendOrderBys(BuildQueryOver().Where(condition), orderBys);
+
+            return query.Select(Projections.Property(metadata.IdentifierPropertyName)).List<TKey>().ToArray();
         }
     }
 }

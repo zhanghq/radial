@@ -319,6 +319,17 @@ namespace Radial.Persist
         /// </returns>
         IList<TObject> FindByKeys(IEnumerable<TKey> keys, params OrderBySnippet<TObject>[] orderBys);
 
+
+        /// <summary>
+        /// Find all object keys.
+        /// </summary>
+        /// <param name="condition">The condition.</param>
+        /// <param name="orderBys">The order by snippets</param>
+        /// <returns>
+        /// If data exists, return an array, otherwise return an empty array.
+        /// </returns>
+        TKey[] FindKeys(Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys);
+
         /// <summary>
         /// Add an object.
         /// </summary>

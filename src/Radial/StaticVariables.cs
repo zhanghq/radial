@@ -20,7 +20,7 @@ namespace Radial
         /// <summary>
         /// Application configuration directory.
         /// </summary>
-        public static string ConfigDirectory = StaticVariables.GetConfigPath("Config");
+        public static string ConfigDirectory = Path.Combine(BaseDirectory, "Config");
 
         /// <summary>
         /// The encoding (default to UTF8).

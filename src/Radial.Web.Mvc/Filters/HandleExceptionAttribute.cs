@@ -99,7 +99,7 @@ namespace Radial.Web.Mvc.Filters
 
             if (OutputStyle == ExceptionOutputStyle.Json)
             {
-                filterContext.HttpContext.Response.ContentType = StaticVariables.JsonContentType;
+                filterContext.HttpContext.Response.ContentType = ContentTypes.Json;
                 respContext = data.ToJson();
             }
             if (OutputStyle == ExceptionOutputStyle.Xml)

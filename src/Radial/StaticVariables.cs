@@ -26,12 +26,5 @@ namespace Radial
         /// The encoding (default to UTF8).
         /// </summary>
         public static Encoding Encoding = Encoding.UTF8;
-
-
-        /// <summary>
-        /// The json content type (default to application/json).
-        /// </summary>
-        public static string JsonContentType = ContentTypes.Json;
-
     }
 }

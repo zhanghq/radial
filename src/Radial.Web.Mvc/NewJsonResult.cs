@@ -31,7 +31,7 @@ namespace Radial.Web.Mvc
         public override void ExecuteResult(ControllerContext context)
         {
             context.HttpContext.Response.Clear();
-            context.HttpContext.Response.ContentType = StaticVariables.JsonContentType;
+            context.HttpContext.Response.ContentType = ContentTypes.Json;
             context.HttpContext.Response.ContentEncoding = StaticVariables.Encoding;
 
             context.HttpContext.Response.Write(JsonSerializer.Serialize(_data));

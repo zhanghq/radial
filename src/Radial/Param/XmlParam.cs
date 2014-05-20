@@ -35,7 +35,7 @@ namespace Radial.Param
         {
             get
             {
-                return Path.Combine(StaticVariables.ConfigDirectory, "XmlParam.config");
+                return StaticVariables.GetConfigPath("XmlParam.config");
             }
         }
 

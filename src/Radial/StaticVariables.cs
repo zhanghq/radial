@@ -20,11 +20,23 @@ namespace Radial
         /// <summary>
         /// Application configuration directory.
         /// </summary>
-        public static string ConfigDirectory = Path.Combine(BaseDirectory, "Config");
+        public static string ConfigDirectory = StaticVariables.GetConfigPath("Config");
 
         /// <summary>
         /// The encoding (default to UTF8).
         /// </summary>
         public static Encoding Encoding = Encoding.UTF8;
+
+
+        /// <summary>
+        /// Gets the full path of configuration file.
+        /// </summary>
+        /// <param name="fileName">The configuration file name contains extension.</param>
+        /// <returns>The full path of configuration file.</returns>
+        public static string GetConfigPath(string fileName)
+        {
+            Checker.Parameter(!string.IsNullOrWhiteSpace(fileName), "configuration file name can not be empty or null.");
+            return Path.Combine(ConfigDirectory, fileName.Trim('\\', ' '));
+        }
     }
 }

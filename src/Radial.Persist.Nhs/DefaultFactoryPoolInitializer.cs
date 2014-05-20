@@ -19,7 +19,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         public virtual string ConfigurationPath
         {
-            get { return Path.Combine(StaticVariables.ConfigDirectory, "NHibernate.config"); }
+            get { return StaticVariables.GetConfigPath("NHibernate.config"); }
         }
 
 

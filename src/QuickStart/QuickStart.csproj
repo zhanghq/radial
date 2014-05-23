@@ -68,7 +68,6 @@
     <Compile Include="Infras\DependencyFactory.cs" />
     <Compile Include="Infras\Persist\Initializer\MySqlFactoryPoolInitializer.cs" />
     <Compile Include="Infras\Persist\Initializer\SqlClientFactoryPoolInitializer.cs" />
-    <Compile Include="Infras\Repos\MySql\UserRepository.cs" />
     <Compile Include="Infras\Repos\SqlClient\UserRepository.cs" />
     <Compile Include="Models\ModelBase.cs" />
     <Compile Include="Models\User.cs" />

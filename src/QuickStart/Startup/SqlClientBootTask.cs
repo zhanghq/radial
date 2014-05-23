@@ -20,13 +20,11 @@ namespace QuickStart.Startup
     /// </summary>
     public class SqlClientBootTask : GeneralBootTask
     {
-        protected override void InitializePoolInitializer()
+        public override void Initialize()
         {
-            Components.Container.RegisterType<IFactoryPoolInitializer, SqlClientFactoryPoolInitializer>(new ContainerControlledLifetimeManager());
-        }
+            base.Initialize();
 
-        protected override void InitializeRepositories()
-        {
+            Components.Container.RegisterType<IFactoryPoolInitializer, SqlClientFactoryPoolInitializer>(new ContainerControlledLifetimeManager());
             Components.Container.RegisterType<IUserRepository, UserRepository>();
         }
     }

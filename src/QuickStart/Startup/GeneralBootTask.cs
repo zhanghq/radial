@@ -22,42 +22,12 @@ namespace QuickStart.Startup
         /// <summary>
         /// System initialize process.
         /// </summary>
-        public void Initialize()
+        public virtual void Initialize()
         {
             Components.Container.RegisterType<IUnitOfWork, ContextualUnitOfWork>();
-            
-            InitializePoolInitializer();
-            
-            InitializeRepositories();
 
-            InitializeServices();
-
-            InitializeOthers();
-        }
-
-        /// <summary>
-        /// Registers the pool initializer.
-        /// </summary>
-        protected abstract void InitializePoolInitializer();
-
-        /// <summary>
-        /// Registers the repositories.
-        /// </summary>
-        protected abstract void InitializeRepositories();
-
-        /// <summary>
-        /// Registers the services.
-        /// </summary>
-        protected virtual void InitializeServices()
-        {
-            //register services
             Components.Container.RegisterType<IUserService, UserService>();
         }
-
-        /// <summary>
-        /// Initializes the others.
-        /// </summary>
-        protected virtual void InitializeOthers() { }
 
         /// <summary>
         /// Start system.

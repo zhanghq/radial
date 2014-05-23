@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using QuickStart.Infras.Persist;
 using QuickStart.Infras.Persist.Initializer;
 using QuickStart.Domain.Repos;
-using QuickStart.Infras.Repos.MySql;
 
 namespace QuickStart.Startup
 {
@@ -19,14 +18,11 @@ namespace QuickStart.Startup
     /// </summary>
     public class MySqlBootTask : GeneralBootTask
     {
-        protected override void InitializePoolInitializer()
+        public override void Initialize()
         {
-            Components.Container.RegisterType<IFactoryPoolInitializer, MySqlFactoryPoolInitializer>(new ContainerControlledLifetimeManager());
-        }
+            base.Initialize();
 
-        protected override void InitializeRepositories()
-        {
-            Components.Container.RegisterType<IUserRepository, UserRepository>();
+            Components.Container.RegisterType<IFactoryPoolInitializer, MySqlFactoryPoolInitializer>(new ContainerControlledLifetimeManager());
         }
     }
 }

@@ -14,7 +14,7 @@ namespace QuickStart.Models
     {
         public ModelBase()
         {
-            Id = Guid.NewGuid().ToString("n").ToUpper().Substring(0, 20);
+            Id = TimedKey.New();
         }
 
         /// <summary>

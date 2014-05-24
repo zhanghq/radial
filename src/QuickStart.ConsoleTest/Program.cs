@@ -29,8 +29,11 @@ namespace QuickStart.ConsoleTest
 
         private static void DoWork()
         {
-            var u = ServiceHub.User.Create("abc", "abc@sina.com");
-            Console.WriteLine("User Id: {0}", u.Id);
+            for (int i = 0; i < 1000; i++)
+            {
+                var u = ServiceHub.User.Create("abc", "abc@sina.com");
+                Console.WriteLine("User Id: {0}", u.Id);
+            }
         }
     }
 }

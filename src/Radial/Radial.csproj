@@ -144,6 +144,7 @@
     <Compile Include="Serialization\XmlSerializer.cs" />
     <Compile Include="Net\SmtpMail.cs" />
     <Compile Include="StaticVariables.cs" />
+    <Compile Include="TimedKey.cs" />
     <Compile Include="Toolkits.cs" />
     <Compile Include="Validator.cs" />
     <Compile Include="Net\FileFormData.cs" />

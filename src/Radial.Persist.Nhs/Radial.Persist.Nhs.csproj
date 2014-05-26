@@ -98,6 +98,7 @@
     <Compile Include="SessionFactoryPool.cs" />
     <Compile Include="SessionFactoryWrapper.cs" />
     <Compile Include="ShardTableMapping.cs" />
+    <Compile Include="TimingIdGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Radial\Radial.csproj">

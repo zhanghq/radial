@@ -1,5 +1,6 @@
 ﻿using QuickStart.Application;
 using QuickStart.Startup;
+using Radial;
 using Radial.Boot;
 using System;
 using System.Collections.Generic;

@@ -12,11 +12,6 @@ namespace QuickStart.Models
     /// </summary>
     public abstract class ModelBase
     {
-        public ModelBase()
-        {
-            Id = TimedKey.New();
-        }
-
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>

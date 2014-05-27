@@ -25,6 +25,8 @@ namespace QuickStart.Startup
             base.Initialize();
 
             Components.Container.RegisterType<IFactoryPoolInitializer, SqlClientFactoryPoolInitializer>(new ContainerControlledLifetimeManager());
+
+            //Your code here
             Components.Container.RegisterType<IUserRepository, UserRepository>();
         }
     }

@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--For Demonstrate Only-->
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="QuickStart" namespace="QuickStart.Models">
   <class name="User" table="User" lazy="false">
     <id name="Id" type="String" length="20">

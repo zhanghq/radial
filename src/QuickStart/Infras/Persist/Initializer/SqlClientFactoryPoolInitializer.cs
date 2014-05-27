@@ -31,6 +31,11 @@ namespace QuickStart.Infras.Persist.Initializer
         public ISet<SessionFactoryWrapper> Execute()
         {
 
+            //Add your connection strings like this:
+            //  <connectionStrings>
+            //      <add name="SqlClient" connectionString="xxxx"/>
+            //  </connectionStrings>
+
             ISet<SessionFactoryWrapper> wrapperSet = new HashSet<SessionFactoryWrapper>();
 
             var configuration = new Configuration();

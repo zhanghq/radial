@@ -23,6 +23,8 @@ namespace QuickStart.Startup
             base.Initialize();
 
             Components.Container.RegisterType<IFactoryPoolInitializer, MySqlFactoryPoolInitializer>(new ContainerControlledLifetimeManager());
+
+            //Your code here
         }
     }
 }

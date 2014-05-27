@@ -30,6 +30,10 @@ namespace QuickStart.Infras.Persist.Initializer
         /// </returns>
         public ISet<SessionFactoryWrapper> Execute()
         {
+            //Add your connection strings like this:
+            //  <connectionStrings>
+            //      <add name="MySql" connectionString="xxxx"/>
+            //  </connectionStrings>
 
             ISet<SessionFactoryWrapper> wrapperSet = new HashSet<SessionFactoryWrapper>();
 

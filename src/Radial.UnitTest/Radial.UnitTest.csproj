@@ -119,10 +119,6 @@
       <Project>{b5f59e68-80d6-4d78-9ce7-de348864e884}</Project>
       <Name>Radial.Log4Net.MongoDB</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Radial.Persist.Nhs\Radial.Persist.Nhs.csproj">
-      <Project>{719dee63-aeeb-4dbe-bd84-f005e3d3a39f}</Project>
-      <Name>Radial.Persist.Nhs</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Radial\Radial.csproj">
       <Project>{e9ec1cb9-79b6-47bc-af82-e8b7b7affcea}</Project>
       <Name>Radial</Name>

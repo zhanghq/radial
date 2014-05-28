@@ -4,6 +4,7 @@
     <Identity Id="Persist.Nhs.Vsix..ca935e5c-9c2b-41ac-a14f-be17ba297555" Version="1.0" Language="en-US" Publisher="Ethan Zhang" />
     <DisplayName>Radial.Persist.Nhs Templates</DisplayName>
     <Description xml:space="preserve">Visual Studio templates for Radial.Persist.Nhs</Description>
+    <MoreInfo>http://visualstudiogallery.msdn.microsoft.com/f4ee6394-b2fe-4866-a8d8-cac69a835886?SRC=Home</MoreInfo>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[12.0,13.0)" />

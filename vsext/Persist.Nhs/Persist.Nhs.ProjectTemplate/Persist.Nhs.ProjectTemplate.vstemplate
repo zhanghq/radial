@@ -60,16 +60,16 @@
     </Project>
   </TemplateContent>
   <WizardExtension>
-    <Assembly>NuGet.VisualStudio.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</Assembly>
+    <Assembly>NuGet.VisualStudio.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</Assembly>
     <FullClassName>NuGet.VisualStudio.TemplateWizard</FullClassName>
   </WizardExtension>
   <WizardData>
     <packages repository="extension" repositoryId="Persist.Nhs.Vsix..ca935e5c-9c2b-41ac-a14f-be17ba297555">
-      <package id="Iesi.Collections" version="3.2.0.1001" targetFramework="net45" />
-      <package id="log4net" version="2.0.3" targetFramework="net45" />
-      <package id="NHibernate" version="3.3.3.4001" targetFramework="net45" />
-      <package id="Radial" version="1.4.7.2" targetFramework="net45" />
-      <package id="Unity" version="3.5.1404.0" targetFramework="net45" />
+      <package id="Iesi.Collections" version="3.2.0.1001" />
+      <package id="log4net" version="2.0.3" />
+      <package id="NHibernate" version="3.3.3.4001" />
+      <package id="Radial" version="1.4.7.2" />
+      <package id="Unity" version="3.5.1404.0" />
     </packages>
   </WizardData>
 </VSTemplate>

@@ -52,7 +52,6 @@
         <ProjectItem ReplaceParameters="true" TargetFileName="ModelBase.cs">ModelBase.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true" TargetFileName="User.cs">User.cs</ProjectItem>
       </Folder>
-      <ProjectItem ReplaceParameters="true" TargetFileName="packages.config">packages.config</ProjectItem>
       <Folder Name="Startup" TargetFolderName="Startup">
         <ProjectItem ReplaceParameters="true" TargetFileName="GeneralBootTask.cs">GeneralBootTask.cs</ProjectItem>
         <ProjectItem ReplaceParameters="true" TargetFileName="MySqlBootTask.cs">MySqlBootTask.cs</ProjectItem>
@@ -66,12 +65,8 @@
   </WizardExtension>
   <WizardData>
     <packages repository="extension" repositoryId="Persist.Nhs.Vsix..ca935e5c-9c2b-41ac-a14f-be17ba297555">
-      <package id="Iesi.Collections" version="3.2.0.1001" targetFramework="net45" />
-      <package id="log4net" version="2.0.3" targetFramework="net45" />
-      <package id="Newtonsoft.Json" version="6.0.3" targetFramework="net45" />
       <package id="NHibernate" version="3.3.3.4001" targetFramework="net45" />
-      <package id="Radial" version="1.4.7.1" targetFramework="net45" />
-      <package id="Unity" version="3.5.1404.0" targetFramework="net45" />
+      <package id="Radial" version="1.4.7.2" targetFramework="net45" />
     </packages>
   </WizardData>
 </VSTemplate>

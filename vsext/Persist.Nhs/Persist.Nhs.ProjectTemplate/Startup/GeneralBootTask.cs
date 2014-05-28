@@ -1,16 +1,15 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System;
+using System.Collections.Generic;
+$if$ ($targetframeworkversion$ >= 3.5)using System.Linq;$endif$
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Practices.Unity;
 using $safeprojectname$.Application;
 using $safeprojectname$.Application.Impl;
 using Radial;
 using Radial.Boot;
-using Radial.Param;
 using Radial.Persist;
 using Radial.Persist.Nhs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace $safeprojectname$.Startup
 {

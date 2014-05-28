@@ -1,6 +1,6 @@
 ﻿In order to start application, you also need to complete the following tasks:
 
-1. Add your connection strings into Web.config
+1. Add your connection strings into Web.config/App.config
 
 Sql Client
 <connectionStrings>

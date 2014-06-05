@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial", "Radial\Radial.csproj", "{E9EC1CB9-79B6-47BC-AF82-E8B7B7AFFCEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Persist.Lite", "Radial.Persist.Lite\Radial.Persist.Lite.csproj", "{9C681E77-EE18-4273-90D0-F8A0C302D0EB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Tools.Hosts", "Radial.Tools.Hosts\Radial.Tools.Hosts.csproj", "{A3C53606-FDEA-47CC-A5A8-986F5711024C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{2FA84FC1-FB00-4E47-A422-91FA5CDA7733}"
@@ -43,16 +41,6 @@ Global
 		{E9EC1CB9-79B6-47BC-AF82-E8B7B7AFFCEA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E9EC1CB9-79B6-47BC-AF82-E8B7B7AFFCEA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E9EC1CB9-79B6-47BC-AF82-E8B7B7AFFCEA}.Release|x86.ActiveCfg = Release|Any CPU
-		{9C681E77-EE18-4273-90D0-F8A0C302D0EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C681E77-EE18-4273-90D0-F8A0C302D0EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C681E77-EE18-4273-90D0-F8A0C302D0EB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{9C681E77-EE18-4273-90D0-F8A0C302D0EB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{9C681E77-EE18-4273-90D0-F8A0C302D0EB}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9C681E77-EE18-4273-90D0-F8A0C302D0EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C681E77-EE18-4273-90D0-F8A0C302D0EB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9C681E77-EE18-4273-90D0-F8A0C302D0EB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{9C681E77-EE18-4273-90D0-F8A0C302D0EB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{9C681E77-EE18-4273-90D0-F8A0C302D0EB}.Release|x86.ActiveCfg = Release|Any CPU
 		{A3C53606-FDEA-47CC-A5A8-986F5711024C}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{A3C53606-FDEA-47CC-A5A8-986F5711024C}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{A3C53606-FDEA-47CC-A5A8-986F5711024C}.Debug|Mixed Platforms.Build.0 = Debug|x86

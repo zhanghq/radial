@@ -1,0 +1,39 @@
+﻿In order to start application, you also need to complete the following tasks:
+
+1. Add your connection strings into Web.config/App.config
+
+Sql Client
+<connectionStrings>
+	<add name="SqlClient" connectionString="xxxx"/>
+</connectionStrings>
+MySql
+<connectionStrings>
+	<add name="MySql" connectionString="xxxx"/>
+</connectionStrings>
+
+2.Boot up your system
+
+In MVC Application, code in Global.asax.cs like this:
+public class MvcApplication : System.Web.HttpApplication
+ {
+        protected void Application_Start()
+        {
+            Bootstrapper.Initialize();
+        }
+
+        protected void Application_BeginRequest()
+        {
+            Bootstrapper.Start();
+        }
+
+        protected void Application_EndRequest()
+        {
+            Bootstrapper.Stop();
+        }
+
+        protected void Application_Error()
+        {
+            Bootstrapper.Stop();
+        }
+}
+

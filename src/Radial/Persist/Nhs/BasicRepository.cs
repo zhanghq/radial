@@ -432,30 +432,30 @@ namespace Radial.Persist.Nhs
             return ExecutePagingQuery(AppendOrderBys(query, orderBys), pageSize, pageIndex, out objectTotal);
         }
 
-        /// <summary>
-        /// Find all objects.
-        /// </summary>
-        /// <param name="returnObjectCount">The number of objects returned.</param>
-        /// <returns>
-        /// If data exists, return an objects list, otherwise return an empty list.
-        /// </returns>
-        public virtual IList<TObject> FindAll(int returnObjectCount)
-        {
-            return FindAll(null, null, returnObjectCount);
-        }
+        ///// <summary>
+        ///// Find all objects.
+        ///// </summary>
+        ///// <param name="returnObjectCount">The number of objects returned.</param>
+        ///// <returns>
+        ///// If data exists, return an objects list, otherwise return an empty list.
+        ///// </returns>
+        //public virtual IList<TObject> FindAll(int returnObjectCount)
+        //{
+        //    return FindAll(null, null, returnObjectCount);
+        //}
 
-        /// <summary>
-        /// Find all objects.
-        /// </summary>
-        /// <param name="orderBys">The order by snippets.</param>
-        /// <param name="returnObjectCount">The number of objects returned.</param>
-        /// <returns>
-        /// If data exists, return an objects list, otherwise return an empty list.
-        /// </returns>
-        public virtual IList<TObject> FindAll(IEnumerable<OrderBySnippet<TObject>> orderBys, int returnObjectCount)
-        {
-            return FindAll(null, orderBys, returnObjectCount);
-        }
+        ///// <summary>
+        ///// Find all objects.
+        ///// </summary>
+        ///// <param name="orderBys">The order by snippets.</param>
+        ///// <param name="returnObjectCount">The number of objects returned.</param>
+        ///// <returns>
+        ///// If data exists, return an objects list, otherwise return an empty list.
+        ///// </returns>
+        //public virtual IList<TObject> FindAll(IEnumerable<OrderBySnippet<TObject>> orderBys, int returnObjectCount)
+        //{
+        //    return FindAll(null, orderBys, returnObjectCount);
+        //}
 
         /// <summary>
         /// Find all objects.
@@ -1013,15 +1013,15 @@ namespace Radial.Persist.Nhs
                 return BuildQueryOver().Select(Projections.Avg(selector)).Where(condition).SingleOrDefault<TResult>();
         }
 
-        /// <summary>
-        /// Find the first object.
-        /// </summary>
-        /// <param name="orderBys">The order by snippets</param>
-        /// <returns>If data exists, return the first object, otherwise return null.</returns>
-        public TObject FindFirst(params OrderBySnippet<TObject>[] orderBys)
-        {
-            return FindAll(orderBys, 1).FirstOrDefault();
-        }
+        ///// <summary>
+        ///// Find the first object.
+        ///// </summary>
+        ///// <param name="orderBys">The order by snippets</param>
+        ///// <returns>If data exists, return the first object, otherwise return null.</returns>
+        //public TObject FindFirst(params OrderBySnippet<TObject>[] orderBys)
+        //{
+        //    return FindAll(orderBys, 1).FirstOrDefault();
+        //}
 
         /// <summary>
         /// Find the first object.

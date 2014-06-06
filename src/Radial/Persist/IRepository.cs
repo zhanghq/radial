@@ -165,12 +165,12 @@ namespace Radial.Persist
         /// </returns>
         TObject Find(Expression<Func<TObject, bool>> condition);
 
-        /// <summary>
-        /// Find the first object.
-        /// </summary>
-        /// <param name="orderBys">The order by snippets</param>
-        /// <returns>If data exists, return the first object, otherwise return null.</returns>
-        TObject FindFirst(params OrderBySnippet<TObject>[] orderBys);
+        ///// <summary>
+        ///// Find the first object.
+        ///// </summary>
+        ///// <param name="orderBys">The order by snippets</param>
+        ///// <returns>If data exists, return the first object, otherwise return null.</returns>
+        //TObject FindFirst(params OrderBySnippet<TObject>[] orderBys);
 
         /// <summary>
         /// Find the first object.
@@ -197,24 +197,24 @@ namespace Radial.Persist
         /// <returns>If data exists, return an objects list, otherwise return an empty list.</returns>
         IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys);
 
-        /// <summary>
-        /// Find all objects.
-        /// </summary>
-        /// <param name="returnObjectCount">The number of objects returned.</param>
-        /// <returns>
-        /// If data exists, return an objects list, otherwise return an empty list.
-        /// </returns>
-        IList<TObject> FindAll(int returnObjectCount);
+        ///// <summary>
+        ///// Find all objects.
+        ///// </summary>
+        ///// <param name="returnObjectCount">The number of objects returned.</param>
+        ///// <returns>
+        ///// If data exists, return an objects list, otherwise return an empty list.
+        ///// </returns>
+        //IList<TObject> FindAll(int returnObjectCount);
 
-        /// <summary>
-        /// Find all objects.
-        /// </summary>
-        /// <param name="orderBys">The order by snippets.</param>
-        /// <param name="returnObjectCount">The number of objects returned.</param>
-        /// <returns>
-        /// If data exists, return an objects list, otherwise return an empty list.
-        /// </returns>
-        IList<TObject> FindAll(IEnumerable<OrderBySnippet<TObject>> orderBys, int returnObjectCount);
+        ///// <summary>
+        ///// Find all objects.
+        ///// </summary>
+        ///// <param name="orderBys">The order by snippets.</param>
+        ///// <param name="returnObjectCount">The number of objects returned.</param>
+        ///// <returns>
+        ///// If data exists, return an objects list, otherwise return an empty list.
+        ///// </returns>
+        //IList<TObject> FindAll(IEnumerable<OrderBySnippet<TObject>> orderBys, int returnObjectCount);
 
 
         /// <summary>

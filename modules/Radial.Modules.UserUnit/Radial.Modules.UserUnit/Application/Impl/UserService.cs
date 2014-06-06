@@ -7,48 +7,47 @@ using Radial.Modules.UserUnit.Domain;
 using Radial.Modules.UserUnit.Domain.Repos;
 using Radial.Modules.UserUnit.Models;
 
-//For Demonstrate Only
 namespace Radial.Modules.UserUnit.Application.Impl
 {
     /// <summary>
     /// UserService
     /// </summary>
-    class UserService : ServiceBase, IUserService
+    class UserService : ServiceBase//, IUserService
     {
-        /// <summary>
-        /// Creates the specified name.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="email">The email.</param>
-        /// <returns></returns>
-        public User Create(string name, string email)
-        {
-            using (var uow = ResolveUnitOfWork())
-            {
-                UserManager um = new UserManager(uow);
-                User u = um.Create(name, email);
+        ///// <summary>
+        ///// Creates the specified name.
+        ///// </summary>
+        ///// <param name="name">The name.</param>
+        ///// <param name="email">The email.</param>
+        ///// <returns></returns>
+        //public User Create(string name, string email)
+        //{
+        //    using (var uow = ResolveUnitOfWork())
+        //    {
+        //        UserManager um = new UserManager(uow);
+        //        User u = um.Create(name, email);
 
-                uow.RegisterNew<User>(u);
+        //        uow.RegisterNew<User>(u);
 
-                uow.Commit();
+        //        uow.Commit();
 
-                return u;
-            }
-        }
+        //        return u;
+        //    }
+        //}
 
 
-        /// <summary>
-        /// Gets all.
-        /// </summary>
-        /// <returns></returns>
-        public IList<User> GetAll()
-        {
-            using (var uow = ResolveUnitOfWork())
-            {
-                IUserRepository repo = ResolveRepository<IUserRepository>(uow);
+        ///// <summary>
+        ///// Gets all.
+        ///// </summary>
+        ///// <returns></returns>
+        //public IList<User> GetAll()
+        //{
+        //    using (var uow = ResolveUnitOfWork())
+        //    {
+        //        IUserRepository repo = ResolveRepository<IUserRepository>(uow);
 
-                return repo.FindAll();
-            }
-        }
+        //        return repo.FindAll();
+        //    }
+        //}
     }
 }

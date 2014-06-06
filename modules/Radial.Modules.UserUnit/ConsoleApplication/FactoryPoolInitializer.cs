@@ -13,14 +13,13 @@ using Configuration = NHibernate.Cfg.Configuration;
 using NHibernate.Context;
 using Radial.Web;
 using System.Web;
-using System.ServiceModel;
 
-namespace Radial.Modules.UserUnit.Infras.Persist.Initializer
+namespace ConsoleApplication
 {
     /// <summary>
     /// SqlClientFactoryPoolInitializer
     /// </summary>
-    class SqlClientFactoryPoolInitializer : IFactoryPoolInitializer
+    class FactoryPoolInitializer : IFactoryPoolInitializer
     {
         /// <summary>
         /// Execute pool initialization.
@@ -30,12 +29,6 @@ namespace Radial.Modules.UserUnit.Infras.Persist.Initializer
         /// </returns>
         public ISet<SessionFactoryWrapper> Execute()
         {
-
-            //Add your connection strings like this:
-            //  <connectionStrings>
-            //      <add name="SqlClient" connectionString="xxxx"/>
-            //  </connectionStrings>
-
             ISet<SessionFactoryWrapper> wrapperSet = new HashSet<SessionFactoryWrapper>();
 
             var configuration = new Configuration();
@@ -50,19 +43,12 @@ namespace Radial.Modules.UserUnit.Infras.Persist.Initializer
                 c.HqlToSqlSubstitutions = "true 1, false 0, yes 'Y', no 'N'";
             });
 
-            if (HttpContext.Current == null)
-            {
-                if (OperationContext.Current != null)
-                    configuration.CurrentSessionContext<WcfOperationSessionContext>();
-                else
-                    configuration.CurrentSessionContext<ThreadStaticSessionContext>();
-            }
-            else
-                configuration.CurrentSessionContext<WebSessionContext>();
+
+            configuration.CurrentSessionContext<ThreadStaticSessionContext>();
 
             configuration.SetNamingStrategy(NamingStrategyFactory.GetStrategy(typeof(Sql2008ClientDriver)));
 
-            configuration.AddAssembly(typeof(SqlClientFactoryPoolInitializer).Assembly);
+            Radial.Modules.UserUnit.Preparation.AddAssembly(configuration);
 
             wrapperSet.Add(new SessionFactoryWrapper("default", configuration.BuildSessionFactory()));
 

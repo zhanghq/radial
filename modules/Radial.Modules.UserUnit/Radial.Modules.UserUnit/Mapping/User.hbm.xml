@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Radial.Modules.UserUnit" namespace="Radial.Modules.UserUnit">
+  <class name="User" lazy="false">
+    <id name="Id" type="String" length="20">
+      <generator class="Radial.Persist.Nhs.TimingIdGenerator, Radial"/>
+    </id>
+    <version name="Version" type="Int32" unsaved-value="0"/>
+    <property name="Name" length="50" not-null="true"/>
+    <property name="Email" length="50"/>
+    <property name="Mobile" length="50"/>
+    <property name="Password" length="50" not-null="true"/>
+    <property name="Salt" length="20" not-null="true"/>
+    <property name="RegisterTime" not-null="true"/>
+    <property name="RegisterIp" length="50"/>
+    <property name="IsDelete" not-null="true"/>
+  </class>
+</hibernate-mapping>

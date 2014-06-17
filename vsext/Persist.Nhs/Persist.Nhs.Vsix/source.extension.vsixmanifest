@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="Persist.Nhs.Vsix..ca935e5c-9c2b-41ac-a14f-be17ba297555" Version="1.0.1" Language="en-US" Publisher="Ethan Zhang" />
+    <Identity Id="Persist.Nhs.Vsix..ca935e5c-9c2b-41ac-a14f-be17ba297555" Version="1.0.3" Language="en-US" Publisher="Ethan Zhang" />
     <DisplayName>Radial.Persist.Nhs Templates</DisplayName>
     <Description xml:space="preserve">Visual Studio templates for Radial.Persist.Nhs</Description>
     <MoreInfo>http://visualstudiogallery.msdn.microsoft.com/3beb260a-9754-437e-8820-8187ac7827db?SRC=Home</MoreInfo>

@@ -18,6 +18,20 @@ public class MvcApplication : System.Web.HttpApplication
  {
         protected void Application_Start()
         {
+			//This code alse can be declared in Web.config
+			//eg.
+			//  <configSections>
+			//		<section name="boot" type="Radial.Boot.Cfg.BootTaskSection, Radial" />
+			// </configSections>
+			// <boot>
+			//		<tasks>
+			//			<add type="xxx.SqlClientBootTask, xxx" />
+			//		</tasks>
+			// </boot>
+			Bootstrapper.RegisterTask(new SqlClientBootTask());
+			//OR
+			//Bootstrapper.RegisterTask(new MySqlBootTask());
+
             Bootstrapper.Initialize();
         }
 
@@ -36,4 +50,5 @@ public class MvcApplication : System.Web.HttpApplication
             Bootstrapper.Stop();
         }
 }
+
 

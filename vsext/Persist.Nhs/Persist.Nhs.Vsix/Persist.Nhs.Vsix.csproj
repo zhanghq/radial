@@ -67,9 +67,6 @@
     <Content Include="packages\NHibernate.3.3.3.4001.nupkg">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="packages\Radial.1.4.7.2.nupkg">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="packages\log4net.2.0.3.nupkg">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -77,6 +74,9 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="packages\Iesi.Collections.3.2.0.1001.nupkg">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="packages\Radial.1.4.7.4.nupkg">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="source.extension.vsixmanifest">

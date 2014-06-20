@@ -63,8 +63,8 @@ namespace Radial.UnitTest.Persist.Nhs
             using (IUnitOfWork uow = new NhUnitOfWork())
             {
                 UserRepository userRepository = new UserRepository(uow);
-
-                Assert.AreEqual(2, userRepository.FindByKeys(new int[] { id1, id2 }).Count);
+                var uss = userRepository.FindByKeys(new int[] { id1, id2 });
+                Assert.AreEqual(2, uss.Count);
             }
         }
 

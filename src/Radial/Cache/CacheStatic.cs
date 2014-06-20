@@ -46,16 +46,16 @@ namespace Radial.Cache
         }
 
         /// <summary>
-        /// Set cache data.
+        /// Put cache data.
         /// </summary>
         /// <param name="key">The cache key.</param>
         /// <param name="value">The cache value.</param>
         /// <param name="cacheSeconds">The cache holding seconds.</param>
-        public static void Set(string key, object value, int? cacheSeconds = null)
+        public static void Put(string key, object value, int? cacheSeconds = null)
         {
             try
             {
-                Instance.Set(key, value, cacheSeconds);
+                Instance.Put(key, value, cacheSeconds);
             }
             catch (Exception ex)
             {
@@ -65,7 +65,7 @@ namespace Radial.Cache
 
 
         /// <summary>
-        /// Retrieve cached data.
+        /// Get cache data.
         /// </summary>
         /// <param name="key">The cache key.</param>
         /// <returns>If there has matched key, return the cached data, otherwise return null.</returns>
@@ -84,7 +84,7 @@ namespace Radial.Cache
         }
 
         /// <summary>
-        /// Retrieve cached data.
+        /// Get cache data.
         /// </summary>
         /// <typeparam name="T">The cache value type.</typeparam>
         /// <param name="key">The cache key.</param>
@@ -106,14 +106,14 @@ namespace Radial.Cache
         }
 
         /// <summary>
-        /// Remove cache data.
+        /// Drop cache data.
         /// </summary>
         /// <param name="key">The cache key.</param>
-        public static void Remove(string key)
+        public static void Drop(string key)
         {
             try
             {
-                Instance.Remove(key);
+                Instance.Drop(key);
             }
             catch (Exception ex)
             {

@@ -213,9 +213,9 @@ namespace Radial.Persist.Nhs.Param
             {
                 //set entity cache
                 if (CacheMinutes > 0)
-                    CacheStatic.Set(CacheKey, item.ToCacheString(), CacheMinutes * 60);
+                    CacheStatic.Put(CacheKey, item.ToCacheString(), CacheMinutes * 60);
                 else
-                    CacheStatic.Set(CacheKey, item.ToCacheString());
+                    CacheStatic.Put(CacheKey, item.ToCacheString());
             }
         }
 

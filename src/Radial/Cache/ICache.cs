@@ -11,22 +11,22 @@ namespace Radial.Cache
     public interface ICache
     {
         /// <summary>
-        /// Retrieve cached data.
+        /// Get cache data.
         /// </summary>
         /// <param name="key">The cache key.</param>
         /// <returns>If there has matched key, return the cached value, otherwise return null.</returns>
         object Get(string key);
         /// <summary>
-        /// Set cache data.
+        /// Put cache data.
         /// </summary>
         /// <param name="key">The cache key.</param>
         /// <param name="value">The cache value.</param>
         /// <param name="cacheSeconds">The cache holding seconds.</param>
-        void Set(string key, object value, int? cacheSeconds = null);
+        void Put(string key, object value, int? cacheSeconds = null);
         /// <summary>
-        /// Remove cache data.
+        /// Drop cache data.
         /// </summary>
         /// <param name="key">The cache key.</param>
-        void Remove(string key);
+        void Drop(string key);
     }
 }

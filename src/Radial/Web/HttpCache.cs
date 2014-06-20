@@ -14,16 +14,16 @@ namespace Radial.Web
     public sealed class HttpCache : ICache
     {
         /// <summary>
-        /// Remove cache data.
+        /// Drop cache data.
         /// </summary>
         /// <param name="key">The cache key.</param>
-        public void Remove(string key)
+        public void Drop(string key)
         {
             HttpContext.Current.Cache.Remove(CacheStatic.NormalizeKey(key));
         }
 
         /// <summary>
-        /// Retrieve cached data.
+        /// Get cache data.
         /// </summary>
         /// <param name="key">The cache key.</param>
         /// <returns>
@@ -35,12 +35,12 @@ namespace Radial.Web
         }
 
         /// <summary>
-        /// Set cache data.
+        /// Put cache data.
         /// </summary>
         /// <param name="key">The cache key.</param>
         /// <param name="value">The cache value.</param>
         /// <param name="cacheSeconds">The cache holding seconds.</param>
-        public void Set(string key, object value, int? cacheSeconds = null)
+        public void Put(string key, object value, int? cacheSeconds = null)
         {
             if (value == null)
                 return;

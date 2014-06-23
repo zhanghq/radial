@@ -140,14 +140,16 @@
     <Compile Include="Boot\Cfg\BootTaskElement.cs" />
     <Compile Include="Boot\Cfg\BootTaskElementCollection.cs" />
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />
-    <Compile Include="Cache\CacheGroup.cs" />
+    <Compile Include="Cache\IClusterRegion.cs" />
     <Compile Include="IO\EasyStream.cs" />
     <Compile Include="MultiResult.cs" />
     <Compile Include="Persist\Nhs\AppStartModule.cs" />
     <Compile Include="Persist\Nhs\BasicRepository.cs" />
     <Compile Include="Persist\Nhs\Cache\Memcached\CacheClient.cs" />
     <Compile Include="Persist\Nhs\Cache\Memcached\CacheProvider.cs" />
-    <Compile Include="Persist\Nhs\Cache\NhCacheGroupPersister.cs" />
+    <Compile Include="Persist\Nhs\Cache\NhClusterRegion.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Persist\Nhs\ContextualUnitOfWork.cs" />
     <Compile Include="Persist\Nhs\DefaultFactoryPoolInitializer.cs" />
     <Compile Include="Persist\Nhs\HibernateEngine.cs" />

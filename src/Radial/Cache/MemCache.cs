@@ -5,6 +5,7 @@ using System.Text;
 using Enyim.Caching;
 using System.Threading;
 using Radial.Serialization;
+using Microsoft.Practices.Unity;
 
 namespace Radial.Cache
 {
@@ -15,6 +16,7 @@ namespace Radial.Cache
     {
         static object SyncRoot = new object();
         static MemcachedClient Client=null;
+        static IClusterRegion ClusterRegion = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemCache"/> class.
@@ -25,6 +27,8 @@ namespace Radial.Cache
             {
                 if (Client == null)
                     Client = new MemcachedClient();
+                if (ClusterRegion == null && Components.Container.IsRegistered<IClusterRegion>())
+                    ClusterRegion = Components.Container.Resolve<IClusterRegion>();
             }
         }
 
@@ -74,14 +78,7 @@ namespace Radial.Cache
         /// <param name="cacheSeconds">The cache holding seconds.</param>
         public void Put(string key, object value, int? cacheSeconds = null)
         {
-            if (value == null)
-                return;
-
-
-            if (cacheSeconds.HasValue)
-                Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheStatic.NormalizeKey(key), Serialize(value), TimeSpan.FromSeconds(cacheSeconds.Value));
-            else
-                Client.Store(Enyim.Caching.Memcached.StoreMode.Set, CacheStatic.NormalizeKey(key), Serialize(value));
+            Put(key, null, value, cacheSeconds);
         }
 
 
@@ -91,7 +88,66 @@ namespace Radial.Cache
         /// <param name="key">The cache key.</param>
         public void Drop(string key)
         {
-            Client.Remove(CacheStatic.NormalizeKey(key));
+            key = CacheStatic.NormalizeKey(key);
+            Client.Remove(key);
+
+            if (ClusterRegion != null)
+                ClusterRegion.Delete(key);
+        }
+
+        /// <summary>
+        /// Put cache data.
+        /// </summary>
+        /// <param name="key">The cache key.</param>
+        /// <param name="region">The cache region.</param>
+        /// <param name="value">The cache value.</param>
+        /// <param name="cacheSeconds">The cache holding seconds.</param>
+        public void Put(string key, string region, object value, int? cacheSeconds = null)
+        {
+            if (value == null)
+                return;
+
+            key = CacheStatic.NormalizeKey(key);
+
+            if (cacheSeconds.HasValue)
+                Client.Store(Enyim.Caching.Memcached.StoreMode.Set, key, Serialize(value), TimeSpan.FromSeconds(cacheSeconds.Value));
+            else
+                Client.Store(Enyim.Caching.Memcached.StoreMode.Set, key, Serialize(value));
+
+            if (!string.IsNullOrWhiteSpace(region) && ClusterRegion != null)
+                ClusterRegion.Insert(key, region.Trim());
+        }
+
+        /// <summary>
+        /// Drop cache region.
+        /// </summary>
+        /// <param name="region">The cache region.</param>
+        public void DropRegion(string region)
+        {
+            if (string.IsNullOrWhiteSpace(region))
+                return;
+
+            if (ClusterRegion != null)
+            {
+                var keys = ClusterRegion.GetKeys(region.Trim());
+                foreach (var k in keys)
+                    Drop(k);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the cache regions.
+        /// </summary>
+        /// <returns>
+        /// The cache regions.
+        /// </returns>
+        public string[] GetRegions()
+        {
+            if (ClusterRegion != null)
+                return ClusterRegion.GetRegions();
+
+            return new string[] { };
         }
     }
 }

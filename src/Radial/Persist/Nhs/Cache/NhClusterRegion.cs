@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace Radial.Persist.Nhs.Cache
 {
-    //CREATE TABLE [dbo].[CacheGroup](
+    //CREATE TABLE [dbo].[CacheRegion](
     //[CacheKey] [varchar](50) NOT NULL PRIMARY KEY, 
-    //[GroupName] [nvarchar](500) NOT NULL
+    //[RegionName] [nvarchar](500) NOT NULL
     //)
 
+
     /// <summary>
-    /// NhCacheGroupPersister.
+    /// NhClusterRegion.
     /// </summary>
-    public class NhCacheGroupPersister : ICacheGroupPersister
+    public class NhClusterRegion : IClusterRegion
     {
         /// <summary>
         /// Storage alias.
@@ -25,62 +26,62 @@ namespace Radial.Persist.Nhs.Cache
         private readonly string StorageAlias;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NhCacheGroupPersister"/> class.
+        /// Initializes a new instance of the <see cref="NhClusterRegion"/> class.
         /// </summary>
-        public NhCacheGroupPersister()
+        public NhClusterRegion()
         {
-            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["NhCacheGroup.StorageAlias"]))
-                StorageAlias = ConfigurationManager.AppSettings["NhCacheGroup.StorageAlias"].Trim().ToLower();
+            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["NhClusterRegion.StorageAlias"]))
+                StorageAlias = ConfigurationManager.AppSettings["NhClusterRegion.StorageAlias"].Trim().ToLower();
         }
 
+
         /// <summary>
-        /// Inserts the specified group.
+        /// Inserts cache key with the specified region.
         /// </summary>
         /// <param name="cacheKey">The cache key.</param>
-        /// <param name="group">The group.</param>
-        public void Insert(string cacheKey, string group)
+        /// <param name="region">The cache region.</param>
+        public void Insert(string cacheKey, string region)
         {
-            if (string.IsNullOrWhiteSpace(cacheKey) || string.IsNullOrWhiteSpace(group))
+            if (string.IsNullOrWhiteSpace(cacheKey) || string.IsNullOrWhiteSpace(region))
                 return;
 
             using (IUnitOfWork uow = new NhUnitOfWork(StorageAlias))
             {
                 ISession session = uow.UnderlyingContext as ISession;
 
-                ISQLQuery query1 = session.CreateSQLQuery("SELECT COUNT(0) FROM CacheGroup WHERE CacheKey=:CacheKey");
+                ISQLQuery query1 = session.CreateSQLQuery("SELECT COUNT(0) FROM CacheRegion WHERE CacheKey=:CacheKey");
                 query1.SetString("CacheKey", cacheKey);
 
                 if (query1.UniqueResult<int>() == 0)
                 {
-                    ISQLQuery query2 = session.CreateSQLQuery("INSERT INTO CacheGroup (CacheKey,GroupName) VALUES (:CacheKey,:GroupName)");
+                    ISQLQuery query2 = session.CreateSQLQuery("INSERT INTO CacheRegion (CacheKey,RegionName) VALUES (:CacheKey,:RegionName)");
                     query2.SetString("CacheKey", cacheKey);
-                    query2.SetString("GroupName", group);
+                    query2.SetString("RegionName", region);
                     query2.ExecuteUpdate();
                 }
             }
         }
 
         /// <summary>
-        /// Gets the cache keys.
+        /// Gets the cache keys contained in the specified region.
         /// </summary>
-        /// <param name="group">The group.</param>
+        /// <param name="region">The cache region.</param>
         /// <returns></returns>
-        public string[] GetCacheKeys(string group)
+        public string[] GetKeys(string region)
         {
-            if (string.IsNullOrWhiteSpace(group))
+            if (string.IsNullOrWhiteSpace(region))
                 return new string[] { };
 
             using (IUnitOfWork uow = new NhUnitOfWork(StorageAlias))
             {
                 ISession session = uow.UnderlyingContext as ISession;
 
-                ISQLQuery query1 = session.CreateSQLQuery("SELECT CacheKey FROM CacheGroup WHERE GroupName=:GroupName");
-                query1.SetString("GroupName", group);
+                ISQLQuery query1 = session.CreateSQLQuery("SELECT CacheKey FROM CacheRegion WHERE RegionName=:RegionName");
+                query1.SetString("RegionName", region);
 
                 return query1.List<string>().ToArray();
             }
         }
-
 
         /// <summary>
         /// Deletes the specified cache key.
@@ -95,30 +96,29 @@ namespace Radial.Persist.Nhs.Cache
             {
                 ISession session = uow.UnderlyingContext as ISession;
 
-                ISQLQuery query1 = session.CreateSQLQuery("DELETE FROM CacheGroup WHERE CacheKey=:CacheKey");
+                ISQLQuery query1 = session.CreateSQLQuery("DELETE FROM CacheRegion WHERE CacheKey=:CacheKey");
                 query1.SetString("CacheKey", cacheKey);
 
                 query1.ExecuteUpdate();
             }
         }
 
-        /// <summary>
-        /// Deletes the group.
-        /// </summary>
-        /// <param name="group">The group.</param>
-        public void DeleteGroup(string group)
-        {
-            if (string.IsNullOrWhiteSpace(group))
-                return;
 
+        /// <summary>
+        /// Gets the cache regions.
+        /// </summary>
+        /// <returns>
+        /// The cache regions.
+        /// </returns>
+        public string[] GetRegions()
+        {
             using (IUnitOfWork uow = new NhUnitOfWork(StorageAlias))
             {
                 ISession session = uow.UnderlyingContext as ISession;
 
-                ISQLQuery query1 = session.CreateSQLQuery("DELETE FROM CacheGroup WHERE GroupName=:GroupName");
-                query1.SetString("GroupName", group);
+                ISQLQuery query1 = session.CreateSQLQuery("SELECT DISTINCT RegionName FROM CacheRegion");
 
-                query1.ExecuteUpdate();
+                return query1.List<string>().ToArray();
             }
         }
     }

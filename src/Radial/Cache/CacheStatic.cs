@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Practices.Unity;
 using Radial.Serialization;
+using Radial.Security;
 
 namespace Radial.Cache
 {
@@ -43,6 +44,18 @@ namespace Radial.Cache
             Checker.Parameter(!string.IsNullOrWhiteSpace(key), "cache key can not be empty or null");
 
             return key.Trim();
+        }
+
+        /// <summary>
+        /// Prepares the cache key.
+        /// </summary>
+        /// <param name="keyDepends">The objects which cache key depends on.</param>
+        /// <returns></returns>
+        public static string PrepareKey(IEnumerable<KeyValuePair<string, object>> keyDepends)
+        {
+            Checker.Parameter(keyDepends != null && keyDepends.Count() > 0, "cache key depends can not be null or empty");
+
+            return CryptoProvider.SHA1Encrypt(JsonSerializer.Serialize(keyDepends));
         }
 
         /// <summary>
@@ -119,6 +132,59 @@ namespace Radial.Cache
             {
                 Logger.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Put cache data.
+        /// </summary>
+        /// <param name="key">The cache key.</param>
+        /// <param name="region">The cache region.</param>
+        /// <param name="value">The cache value.</param>
+        /// <param name="cacheSeconds">The cache holding seconds.</param>
+        public static void Put(string key, string region, object value, int? cacheSeconds = null)
+        {
+            try
+            {
+                Instance.Put(key, region, value, cacheSeconds);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Drop cache region.
+        /// </summary>
+        /// <param name="region">The cache region.</param>
+        public static void DropRegion(string region)
+        {
+            try
+            {
+                Instance.DropRegion(region);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Gets the cache regions.
+        /// </summary>
+        /// <returns>The cache regions.</returns>
+        public static string[] GetRegions()
+        {
+            try
+            {
+                return Instance.GetRegions();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+
+            return new string[] { };
         }
     }
 }

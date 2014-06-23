@@ -102,31 +102,46 @@ namespace Radial.UnitTest
         //    Console.WriteLine(rca.GetHash("test1").Count);
         //}
 
+
         [Test]
-        public void GroupUse()
+        public void RegionUse()
         {
             Components.Container.RegisterType<ICache, LocalCache>();
-            Components.Container.RegisterType<ICacheGroupPersister, NhCacheGroupPersister>();
 
             string name = "123244";
 
-            var keyDepends = new[] { new KeyValuePair<string, object>("name", name), new KeyValuePair<string, object>("name2", "234") };
+            string cachekey= CacheStatic.PrepareKey(new[] { new KeyValuePair<string, object>("name", name), new KeyValuePair<string, object>("name2", "234") });
 
             Temp t1 = new Temp { Name = name };
 
-            CacheGroup.Put(typeof(Temp).Name, keyDepends, t1);
+            CacheStatic.Put(cachekey, typeof(Temp).Name, t1);
 
-            Temp t2 = CacheGroup.Get<Temp>(typeof(Temp).Name, keyDepends);
+            CacheStatic.DropRegion(typeof(Temp).Name);
 
-            Assert.IsNotNull(t2);
+            Temp t2 = CacheStatic.Get<Temp>(cachekey);
 
-            CacheGroup.Drop(typeof(Temp).Name, keyDepends);
+            Assert.IsNull(t2);
+        }
 
-            Temp t3 = CacheGroup.Get<Temp>(typeof(Temp).Name, keyDepends);
+        [Test]
+        public void RegionUse2()
+        {
+            Components.Container.RegisterType<ICache, MemCache>();
+            Components.Container.RegisterType<IClusterRegion, NhClusterRegion>();
 
-            Assert.IsNull(t3);
+            string name = "123244";
 
-            CacheGroup.DropGroup(typeof(Temp).Name);
+            string cachekey = CacheStatic.PrepareKey(new[] { new KeyValuePair<string, object>("name", name), new KeyValuePair<string, object>("name2", "234") });
+
+            Temp t1 = new Temp { Name = name };
+
+            CacheStatic.Put(cachekey, typeof(Temp).Name, t1);
+
+            CacheStatic.DropRegion(typeof(Temp).Name);
+
+            Temp t2 = CacheStatic.Get<Temp>(cachekey);
+
+            Assert.IsNull(t2);
         }
     }
 }

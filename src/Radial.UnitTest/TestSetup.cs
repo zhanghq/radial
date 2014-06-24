@@ -10,11 +10,10 @@ namespace Radial.UnitTest
     public class TestSetup
     {
 
-
         [SetUp]
         public void SetUp()
         {
-            StaticVariables.ConfigDirectory = StaticVariables.ConfigDirectory.Replace(@"\bin\Debug", string.Empty);
+             //StaticVariables.ConfigDirectory = StaticVariables.ConfigDirectory.Replace(@"\bin\Debug", string.Empty);
         }
 
         [TearDown]

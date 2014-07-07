@@ -34,7 +34,7 @@ namespace Radial.Tools.Hbm2Sql
             {
                 string filePath = openFileDialog.FileName;
 
-                if (Path.GetDirectoryName(filePath) != AppDomain.CurrentDomain.BaseDirectory.Trim('\\'))
+                if (string.Compare(Path.GetDirectoryName(filePath), AppDomain.CurrentDomain.BaseDirectory.Trim('\\'), true) != 0)
                 {
                     MessageBox.Show(this, "不能选择运行目录以外的程序集", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;

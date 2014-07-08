@@ -13,7 +13,6 @@ namespace Radial.Net
     /// </summary>
     public static class HttpWebClient
     {
-
         /// <summary>
         /// Http Get method
         /// </summary>
@@ -39,6 +38,7 @@ namespace Radial.Net
 
             request.Method = WebRequestMethods.Http.Get;
             request.KeepAlive = false;
+            request.CookieContainer = new CookieContainer();
             HttpWebResponse resp = null;
 
             try
@@ -86,6 +86,7 @@ namespace Radial.Net
             request.Method = WebRequestMethods.Http.Post;
             request.ContentType = "application/x-www-form-urlencoded";
             request.KeepAlive = false;
+            request.CookieContainer = new CookieContainer();
             HttpWebResponse resp = null;
 
             try
@@ -143,6 +144,7 @@ namespace Radial.Net
             request.ContentType = "multipart/form-data; boundary=" + boundary;
             request.Method = WebRequestMethods.Http.Post;
             request.KeepAlive = false;
+            request.CookieContainer = new CookieContainer();
             HttpWebResponse resp = null;
 
             try

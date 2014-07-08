@@ -13,8 +13,13 @@ namespace Radial.Net
     public sealed class HttpResponseObj
     {
         HttpStatusCode _code;
-        WebHeaderCollection _header;
+        WebHeaderCollection _headers;
+        CookieCollection _cookies;
+        string _server;
         string _characterSet;
+        string _contentType;
+        string _contentEncoding;
+        long _contentLength;
         byte[] _rawData;
         string _text;
 
@@ -26,8 +31,13 @@ namespace Radial.Net
         {
             Checker.Parameter(webResp != null, "HttpWebResponse object can not be null");
             _code = webResp.StatusCode;
-            _header = webResp.Headers;
+            _headers = webResp.Headers;
+            _cookies = webResp.Cookies;
             _characterSet = webResp.CharacterSet;
+            _server = webResp.Server;
+            _contentType = webResp.ContentType;
+            _contentEncoding = webResp.ContentEncoding;
+            _contentLength = webResp.ContentLength;
 
             using (Stream respStream = webResp.GetResponseStream())
             {
@@ -49,13 +59,15 @@ namespace Radial.Net
                     {
                         if (!string.IsNullOrWhiteSpace(_characterSet))
                             encoding = Encoding.GetEncoding(_characterSet);
+                        if (encoding == null && !string.IsNullOrWhiteSpace(_contentEncoding))
+                            encoding = Encoding.GetEncoding(_contentEncoding);
                     }
                     catch (Exception ex)
                     {
                         Logger.Default.Warn(ex);
                     }
 
-                    StreamReader sr =null;
+                    StreamReader sr = null;
                     if (encoding != null)
                         sr = new StreamReader(ms, encoding);
                     else
@@ -119,9 +131,57 @@ namespace Radial.Net
         {
             get
             {
-                return _header;
+                return _headers;
             }
         }
 
+        /// <summary>
+        /// Gets the cookies.
+        /// </summary>
+        public CookieCollection Cookies
+        {
+            get
+            {
+                return _cookies;
+            }
+        }
+
+        /// <summary>
+        /// Gets the server.
+        /// </summary>
+        public string Server
+        {
+            get
+            {
+                return _server;
+            }
+        }
+
+        /// <summary>
+        /// Gets the type of the content.
+        /// </summary>
+        public string ContentType
+        {
+            get
+            {
+                return _contentType;
+            }
+        }
+
+        /// <summary>
+        /// Gets the content encoding.
+        /// </summary>
+        public string ContentEncoding
+        {
+            get { return _contentEncoding; }
+        }
+
+        /// <summary>
+        /// Gets the length of the content.
+        /// </summary>
+        public long ContentLength
+        {
+            get { return _contentLength; }
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace Radial.Persist.Nhs
     public abstract class BasicRepository<TObject, TKey> : IRepository<TObject, TKey> where TObject : class
     {
         IUnitOfWorkEssential _uow;
+        StraightQuery _sq;
 
         static string[] SupportedAggregationResultTypeNames = new string[] { typeof(short).FullName, typeof(ushort).FullName, typeof(int).FullName, typeof(uint).FullName, typeof(long).FullName, typeof(ulong).FullName, typeof(decimal).FullName, typeof(float).FullName, typeof(double).FullName };
 
@@ -29,6 +30,7 @@ namespace Radial.Persist.Nhs
         {
             Checker.Parameter(uow != null, "the IUnitOfWorkEssential instance can not be null");
             _uow = uow;
+            _sq = new StraightQuery(_uow);
             SetDefaultOrderBys(null);
         }
 
@@ -42,8 +44,6 @@ namespace Radial.Persist.Nhs
                 return (ISession)_uow.UnderlyingContext;
             }
         }
-
-
 
         /// <summary>
         /// Gets or sets a value indicating whether use query cache.
@@ -1068,6 +1068,54 @@ namespace Radial.Persist.Nhs
         }
 
 
+        #region Standard Query
+
+        /// <summary>
+        /// ExecuteNonQuery.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The number of rows affected.</returns>
+        protected int ExecuteNonQuery(string query, params DbParameter[] parameters)
+        {
+            return _sq.ExecuteNonQuery(query, parameters);
+        }
+
+        /// <summary>
+        /// ExecuteScalar.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The first column of the first result row.</returns>
+        protected object ExecuteScalar(string query, params DbParameter[] parameters)
+        {
+            return _sq.ExecuteScalar(query, parameters);
+        }
+
+        /// <summary>
+        /// ExecuteReader.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>System.Data.IDataReader instance.</returns>
+        protected IDataReader ExecuteReader(string query, params DbParameter[] parameters)
+        {
+            return _sq.ExecuteReader(query, parameters);
+        }
+
+        /// <summary>
+        /// ExecuteDataTable.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>System.Data.DataTable instance.</returns>
+        protected DataTable ExecuteDataTable(string query, params DbParameter[] parameters)
+        {
+            return _sq.ExecuteDataTable(query, parameters);
+        }
+
+        #endregion
+
         #region Stored Procedure
 
         /// <summary>
@@ -1078,9 +1126,7 @@ namespace Radial.Persist.Nhs
         /// <returns>The number of rows affected.</returns>
         protected int SpExecuteNonQuery(string spName, params DbParameter[] parameters)
         {
-            var cmd = SpCreateCommand(spName, parameters);
-
-            return cmd.ExecuteNonQuery();
+            return _sq.SpExecuteNonQuery(spName, parameters);
         }
 
         /// <summary>
@@ -1091,9 +1137,7 @@ namespace Radial.Persist.Nhs
         /// <returns>The first column of the first result row.</returns>
         protected object SpExecuteScalar(string spName, params DbParameter[] parameters)
         {
-            var cmd = SpCreateCommand(spName, parameters);
-
-            return cmd.ExecuteScalar();
+            return _sq.SpExecuteScalar(spName, parameters);
         }
 
         /// <summary>
@@ -1104,9 +1148,7 @@ namespace Radial.Persist.Nhs
         /// <returns>System.Data.IDataReader instance.</returns>
         protected IDataReader SpExecuteReader(string spName, params DbParameter[] parameters)
         {
-            var cmd = SpCreateCommand(spName, parameters);
-
-            return cmd.ExecuteReader();
+            return _sq.SpExecuteReader(spName, parameters);
         }
 
         /// <summary>
@@ -1117,43 +1159,7 @@ namespace Radial.Persist.Nhs
         /// <returns>System.Data.DataTable instance.</returns>
         protected DataTable SpExecuteDataTable(string spName, params DbParameter[] parameters)
         {
-            DataTable dt = new DataTable();
-
-            using (var reader = SpExecuteReader(spName, parameters))
-            {
-                dt.Load(reader);
-            }
-
-            return dt;
-        }
-
-        /// <summary>
-        /// Create System.Data.IDbCommand instance for stored procedure.
-        /// </summary>
-        /// <param name="spName">The stored procedure name.</param>
-        /// <param name="parameters">The stored procedure parameters.</param>
-        /// <returns>
-        /// System.Data.IDbCommand instance.
-        /// </returns>
-        private IDbCommand SpCreateCommand(string spName, params DbParameter[] parameters)
-        {
-            var cmd = Session.Connection.CreateCommand();
-
-            cmd.CommandText = spName;
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            if (parameters != null)
-            {
-                foreach (var p in parameters)
-                {
-                    if (p.Direction == ParameterDirection.InputOutput && p.Value == null)
-                        p.Value = DBNull.Value;
-
-                    cmd.Parameters.Add(p);
-                }
-            }
-
-            return cmd;
+            return _sq.SpExecuteDataTable(spName, parameters);
         }
 
         #endregion

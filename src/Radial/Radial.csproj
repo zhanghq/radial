@@ -166,6 +166,7 @@
     <Compile Include="Persist\Nhs\SessionFactoryPool.cs" />
     <Compile Include="Persist\Nhs\SessionFactoryWrapper.cs" />
     <Compile Include="Persist\Nhs\ShardTableMapping.cs" />
+    <Compile Include="Persist\Nhs\StraightQuery.cs" />
     <Compile Include="Persist\Nhs\TimingIdGenerator.cs" />
     <Compile Include="Persist\StorageAliasConfig.cs" />
     <Compile Include="Serialization\SerializeFormat.cs" />

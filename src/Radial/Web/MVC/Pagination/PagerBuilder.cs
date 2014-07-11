@@ -522,7 +522,7 @@ namespace Radial.Web.Mvc.Pagination
 
             if (_pagerOptions.ShowGoButton)
                 piBuilder.AppendFormat(
-                    "<input type=\"button\" value=\"{0}\" onclick=\"_MvcPager_GoToPage(document.getElementById('{1}')," + _totalPageCount + ")\"/>",
+                    "<input type=\"button\" value=\"{0}\" style=\"margin-left: 2px;\" onclick=\"_MvcPager_GoToPage(document.getElementById('{1}')," + _totalPageCount + ")\"/>",
                     _pagerOptions.GoButtonText
                     , controlId + "_pib");
             piBuilder.AppendFormat("<span id=\"{0}\" style=\"display:none;width:0px;height:0px\">{1}</span>",

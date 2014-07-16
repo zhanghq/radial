@@ -31,7 +31,7 @@ namespace Radial.Persist.Nhs
             Checker.Parameter(uow != null, "the IUnitOfWorkEssential instance can not be null");
             _uow = uow;
             _sq = new StraightQuery(_uow);
-            SetDefaultOrderBys(null);
+            SetDefaultOrderBys();
         }
 
         /// <summary>
@@ -88,13 +88,19 @@ namespace Radial.Persist.Nhs
         /// Builds the query over.
         /// </summary>
         /// <param name="withExtraCondition">if set to <c>true</c> [with extra condition].</param>
+        /// <param name="withDefaultOrderBys">if set to <c>true</c> [with default order bys].</param>
         /// <returns></returns>
-        protected IQueryOver<TObject, TObject> BuildQueryOver(bool withExtraCondition = true)
+        protected IQueryOver<TObject, TObject> BuildQueryOver(bool withExtraCondition = true, bool withDefaultOrderBys = true)
         {
-            if (withExtraCondition && ExtraCondition != null)
-                return Session.QueryOver<TObject>().Where(ExtraCondition);
+            var query = Session.QueryOver<TObject>();
 
-            return Session.QueryOver<TObject>();
+            if (withExtraCondition && ExtraCondition != null)
+                query = query.Where(ExtraCondition);
+
+            if (withDefaultOrderBys)
+                query = AppendOrderBys(query, DefaultOrderBys.ToArray());
+
+            return query;
         }
 
         /// <summary>
@@ -102,14 +108,10 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <param name="query">The query.</param>
         /// <param name="orderBys">The custom order bys.</param>
-        /// <param name="withDefaultOrderBys">if set to <c>true</c> [with default order bys].</param>
         /// <returns></returns>
-        protected IQueryOver<TObject, TObject> AppendOrderBys(IQueryOver<TObject, TObject> query, IEnumerable<OrderBySnippet<TObject>> orderBys = null, bool withDefaultOrderBys = true)
+        protected IQueryOver<TObject, TObject> AppendOrderBys(IQueryOver<TObject, TObject> query, params OrderBySnippet<TObject>[] orderBys)
         {
             Checker.Requires(query != null, "query can not be null");
-
-            if (withDefaultOrderBys && (orderBys == null || orderBys.Count() == 0))
-                orderBys = DefaultOrderBys.ToArray();
 
             if (orderBys != null)
             {
@@ -429,7 +431,7 @@ namespace Radial.Persist.Nhs
                 query = query.Where(condition);
 
 
-            return ExecutePagingQuery(AppendOrderBys(query, orderBys), pageSize, pageIndex, out objectTotal);
+            return ExecutePagingQuery(AppendOrderBys(query, orderBys.ToArray()), pageSize, pageIndex, out objectTotal);
         }
 
         ///// <summary>
@@ -486,7 +488,7 @@ namespace Radial.Persist.Nhs
             if (condition != null)
                 query = query.Where(condition);
 
-            return SetQueryCacheable(AppendOrderBys(query, orderBys).Take(returnObjectCount)).List();
+            return SetQueryCacheable(AppendOrderBys(query, orderBys.ToArray()).Take(returnObjectCount)).List();
         }
 
 
@@ -535,7 +537,7 @@ namespace Radial.Persist.Nhs
                 query = query.Where(condition);
 
 
-            return ExecutePagingQuery(AppendOrderBys(query, orderBys), pageSize, pageIndex);
+            return ExecutePagingQuery(AppendOrderBys(query, orderBys.ToArray()), pageSize, pageIndex);
         }
 
         /// <summary>
@@ -1064,7 +1066,7 @@ namespace Radial.Persist.Nhs
 
             var query = BuildQueryOver().Where(Expression.InG<TKey>(metadata.IdentifierPropertyName, keys));
 
-            return SetQueryCacheable(AppendOrderBys(query, orderBys, false)).List();
+            return SetQueryCacheable(AppendOrderBys(query, orderBys)).List();
         }
 
 

@@ -56,7 +56,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Gets the default order by snippets.
         /// </summary>
-        protected IEnumerable<OrderBySnippet<TObject>> DefaultOrderBys { get; private set; }
+        protected OrderBySnippet<TObject>[] DefaultOrderBys { get; private set; }
 
         /// <summary>
         /// Gets the extra condition which will be used in every default query (but not apply to multi-query, hql and your own query).
@@ -72,7 +72,7 @@ namespace Radial.Persist.Nhs
             if (orderBys != null && orderBys.Count() > 0)
                 DefaultOrderBys = orderBys;
             else
-                DefaultOrderBys = new List<OrderBySnippet<TObject>>();
+                DefaultOrderBys = new OrderBySnippet<TObject>[0];
         }
 
         /// <summary>
@@ -85,20 +85,16 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Builds the query over.
+        /// Builds the query over (without order bys).
         /// </summary>
         /// <param name="withExtraCondition">if set to <c>true</c> [with extra condition].</param>
-        /// <param name="withDefaultOrderBys">if set to <c>true</c> [with default order bys].</param>
         /// <returns></returns>
-        protected IQueryOver<TObject, TObject> BuildQueryOver(bool withExtraCondition = true, bool withDefaultOrderBys = true)
+        protected IQueryOver<TObject, TObject> BuildQueryOver(bool withExtraCondition = true)
         {
             var query = Session.QueryOver<TObject>();
 
             if (withExtraCondition && ExtraCondition != null)
                 query = query.Where(ExtraCondition);
-
-            if (withDefaultOrderBys)
-                query = AppendOrderBys(query, DefaultOrderBys.ToArray());
 
             return query;
         }
@@ -112,6 +108,9 @@ namespace Radial.Persist.Nhs
         protected IQueryOver<TObject, TObject> AppendOrderBys(IQueryOver<TObject, TObject> query, params OrderBySnippet<TObject>[] orderBys)
         {
             Checker.Requires(query != null, "query can not be null");
+
+            if (orderBys == null || orderBys.Length == 0)
+                orderBys = DefaultOrderBys;
 
             if (orderBys != null)
             {

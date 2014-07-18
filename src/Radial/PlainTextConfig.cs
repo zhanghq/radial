@@ -64,7 +64,7 @@ namespace Radial
                     if (groups != null && groups.Count == 3)
                     {
                         key = groups[1].Value.Trim().ToLower();
-                        value = groups[2].Value.Trim().ToLower();
+                        value = groups[2].Value.Trim();
                     }
 
                     if (!string.IsNullOrWhiteSpace(key) && !_entries.ContainsKey(key))

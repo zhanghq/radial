@@ -430,7 +430,7 @@ namespace Radial.Persist.Nhs
                 query = query.Where(condition);
 
 
-            return ExecutePagingQuery(AppendOrderBys(query, orderBys.ToArray()), pageSize, pageIndex, out objectTotal);
+            return ExecutePagingQuery(AppendOrderBys(query, orderBys != null ? orderBys.ToArray() : null), pageSize, pageIndex, out objectTotal);
         }
 
         ///// <summary>
@@ -487,7 +487,7 @@ namespace Radial.Persist.Nhs
             if (condition != null)
                 query = query.Where(condition);
 
-            return SetQueryCacheable(AppendOrderBys(query, orderBys.ToArray()).Take(returnObjectCount)).List();
+            return SetQueryCacheable(AppendOrderBys(query, orderBys != null ? orderBys.ToArray() : null).Take(returnObjectCount)).List();
         }
 
 
@@ -536,7 +536,7 @@ namespace Radial.Persist.Nhs
                 query = query.Where(condition);
 
 
-            return ExecutePagingQuery(AppendOrderBys(query, orderBys.ToArray()), pageSize, pageIndex);
+            return ExecutePagingQuery(AppendOrderBys(query, orderBys != null ? orderBys.ToArray() : null), pageSize, pageIndex);
         }
 
         /// <summary>

@@ -94,6 +94,7 @@
     <Compile Include="IOTest.cs" />
     <Compile Include="Persist\Nhs\Domain\Book.cs" />
     <Compile Include="Persist\Nhs\Level2CacheTest.cs" />
+    <Compile Include="Persist\Nhs\MultiThreadTest.cs" />
     <Compile Include="Persist\Nhs\Repository\OrderRepository.cs" />
     <Compile Include="Persist\Nhs\Repository\BookRepository.cs" />
     <Compile Include="Persist\Nhs\Shard\ShardPoolInitializer.cs" />

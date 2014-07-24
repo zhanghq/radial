@@ -92,9 +92,12 @@
     <Compile Include="ExcelToolsTest.cs" />
     <Compile Include="FtpClientTest.cs" />
     <Compile Include="IOTest.cs" />
+    <Compile Include="Persist\Nhs\Domain\Team.cs" />
     <Compile Include="Persist\Nhs\Domain\Book.cs" />
+    <Compile Include="Persist\Nhs\IdentifierTest.cs" />
     <Compile Include="Persist\Nhs\Level2CacheTest.cs" />
     <Compile Include="Persist\Nhs\MultiThreadTest.cs" />
+    <Compile Include="Persist\Nhs\Repository\TeamRepository.cs" />
     <Compile Include="Persist\Nhs\Repository\OrderRepository.cs" />
     <Compile Include="Persist\Nhs\Repository\BookRepository.cs" />
     <Compile Include="Persist\Nhs\Shard\ShardPoolInitializer.cs" />
@@ -161,6 +164,11 @@
     <None Include="Config\StorageAlias.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Persist\Nhs\Domain\Team.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

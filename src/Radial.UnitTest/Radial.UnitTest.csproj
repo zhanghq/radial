@@ -103,6 +103,7 @@
     <Compile Include="Persist\Nhs\Shard\ShardPoolInitializer.cs" />
     <Compile Include="Persist\Nhs\Shard\ShardStoragePolicy.cs" />
     <Compile Include="Persist\Nhs\Shard\ShardTest.cs" />
+    <Compile Include="Persist\Nhs\StraightQueryTest.cs" />
     <Compile Include="PlainTextConfigTest.cs" />
     <Compile Include="Serialization\JsonTest.cs" />
     <Compile Include="Persist\Nhs\RepositoryTest.cs" />

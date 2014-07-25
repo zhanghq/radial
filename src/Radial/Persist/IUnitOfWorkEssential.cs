@@ -17,10 +17,10 @@ namespace Radial.Persist
         object UnderlyingContext { get; }
 
         /// <summary>
-        /// Reset the transaction isolation level.
+        /// Prepares the transaction, typically this method is invoked implicitly, but it  also can be explicit used to implement custom control.
         /// </summary>
-        /// <param name="level">The new isolation level.</param>
-        void ResetIsolationLevel(IsolationLevel? level = null);
+        /// <param name="level">The isolation level.</param>
+        void PrepareTransaction(IsolationLevel? level = null);
 
         /// <summary>
         /// Register object which will be inserted.

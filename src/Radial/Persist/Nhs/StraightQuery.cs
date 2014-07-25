@@ -37,6 +37,39 @@ namespace Radial.Persist.Nhs
             }
         }
 
+        /// <summary>
+        /// Prepares the transaction.
+        /// </summary>
+        /// <param name="level">The level.</param>
+        public void PrepareTransaction(IsolationLevel? level = null)
+        {
+            _uow.PrepareTransaction(level);
+        }
+
+        /// <summary>
+        /// Commit changes to data source.
+        /// </summary>
+        public void Commit()
+        {
+            //nothing to do, if there has no-active transaction or a transaction scope
+            if (Session.Transaction.IsActive && System.Transactions.Transaction.Current == null)
+            {
+                try
+                {
+                    Session.Transaction.Commit();
+                }
+                catch
+                {
+                    Session.Transaction.Rollback();
+                    throw;
+                }
+                finally
+                {
+                    Session.Transaction.Dispose();
+                }
+            }
+        }
+
         #region Standard Query
 
         /// <summary>
@@ -106,9 +139,14 @@ namespace Radial.Persist.Nhs
         /// </returns>
         private IDbCommand CreateCommand(string query, params DbParameter[] parameters)
         {
-            var cmd = Session.Connection.CreateCommand();
+            //flush previous query to database before create new command.
+            Session.Flush();
 
+            var cmd = Session.Connection.CreateCommand();
             cmd.CommandText = query;
+
+            if (Session.Transaction.IsActive)
+                Session.Transaction.Enlist(cmd);
 
             if (parameters != null)
             {
@@ -190,10 +228,15 @@ namespace Radial.Persist.Nhs
         /// </returns>
         private IDbCommand SpCreateCommand(string spName, params DbParameter[] parameters)
         {
-            var cmd = Session.Connection.CreateCommand();
+            //flush previous query to database before create new command.
+            Session.Flush();
 
+            var cmd = Session.Connection.CreateCommand();
             cmd.CommandText = spName;
             cmd.CommandType = CommandType.StoredProcedure;
+
+            if (Session.Transaction.IsActive)
+                Session.Transaction.Enlist(cmd);
 
             if (parameters != null)
             {

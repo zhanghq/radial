@@ -14,8 +14,6 @@ namespace Radial.Persist.Nhs
     public class ContextualUnitOfWork : IUnitOfWork
     {
         private readonly ISession _session;
-        private IsolationLevel? _isolationLevel;
-        private ITransaction _transaction;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextualUnitOfWork"/> class.
@@ -37,25 +35,22 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Reset the transaction isolation level.
+        /// Prepares the transaction, typically this method is invoked implicitly, but it  also can be explicit used to implement custom control.
         /// </summary>
-        /// <param name="level">The new isolation level.</param>
-        public virtual void ResetIsolationLevel(IsolationLevel? level = null)
+        /// <param name="level">The isolation level.</param>
+        public void PrepareTransaction(IsolationLevel? level = null)
         {
-            _isolationLevel = level;
-        }
-
-        /// <summary>
-        /// Prepares the transaction.
-        /// </summary>
-        protected virtual void PrepareTransaction()
-        {
-            if (_transaction == null && System.Transactions.Transaction.Current == null)
+            //nothing to do, if there has a transaction scope
+            if (System.Transactions.Transaction.Current == null)
             {
-                if (!_isolationLevel.HasValue)
-                    _transaction = _session.BeginTransaction();
-                else
-                    _transaction = _session.BeginTransaction(_isolationLevel.Value);
+                //nothing to do, if there has an actived transaction
+                if (!_session.Transaction.IsActive)
+                {
+                    if (!level.HasValue)
+                        _session.BeginTransaction();
+                    else
+                        _session.BeginTransaction(level.Value);
+                }
             }
         }
 
@@ -195,20 +190,21 @@ namespace Radial.Persist.Nhs
         /// </summary>
         public virtual void Commit()
         {
-            if (_transaction != null && System.Transactions.Transaction.Current == null)
+            //nothing to do, if there has no-active transaction or a transaction scope
+            if (_session.Transaction.IsActive && System.Transactions.Transaction.Current == null)
             {
                 try
                 {
-                    _transaction.Commit();
+                    _session.Transaction.Commit();
                 }
                 catch
                 {
-                    _transaction.Rollback();
+                    _session.Transaction.Rollback();
                     throw;
                 }
                 finally
                 {
-                    _transaction.Dispose();
+                    _session.Transaction.Dispose();
                 }
             }
         }
@@ -218,10 +214,8 @@ namespace Radial.Persist.Nhs
         /// </summary>
         public virtual void Dispose()
         {
-            if (_transaction != null)
-                _transaction.Dispose();
+            _session.Transaction.Dispose();
         }
-
 
         /// <summary>
         /// Register object which will be updated.

@@ -1069,6 +1069,24 @@ namespace Radial.Persist.Nhs
         }
 
 
+        /// <summary>
+        /// Creates ISQLQuery instance.
+        /// </summary>
+        /// <param name="query">The query expressed in SQL.</param>
+        /// <param name="paramPairs">The query parameter key-value pairs.</param>
+        /// <returns></returns>
+        protected ISQLQuery CreateSQLQuery(string query, params KeyValuePair<string, object>[] paramPairs)
+        {
+            ISQLQuery sql = Session.CreateSQLQuery(query);
+            if (paramPairs != null && paramPairs.Length > 0)
+            {
+                foreach (var kv in paramPairs)
+                    sql.SetParameter(kv.Key, kv.Value);
+            }
+            return sql;
+        }
+
+
         #region Standard Query
 
         /// <summary>

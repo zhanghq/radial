@@ -38,36 +38,12 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Prepares the transaction.
+        /// Prepares the transaction, typically this method is invoked implicitly, but it  also can be explicit used to implement custom control.
         /// </summary>
-        /// <param name="level">The level.</param>
+        /// <param name="level">The isolation level.</param>
         public void PrepareTransaction(IsolationLevel? level = null)
         {
             _uow.PrepareTransaction(level);
-        }
-
-        /// <summary>
-        /// Commit changes to data source.
-        /// </summary>
-        public void Commit()
-        {
-            //nothing to do, if there has no-active transaction or a transaction scope
-            if (Session.Transaction.IsActive && System.Transactions.Transaction.Current == null)
-            {
-                try
-                {
-                    Session.Transaction.Commit();
-                }
-                catch
-                {
-                    Session.Transaction.Rollback();
-                    throw;
-                }
-                finally
-                {
-                    Session.Transaction.Dispose();
-                }
-            }
         }
 
         #region Standard Query

@@ -77,7 +77,7 @@ namespace Radial.UnitTest.Persist.Nhs
                 query.PrepareTransaction();
                 query.ExecuteNonQuery("Insert into Team (Id,Name) Values (rand(),'ces')");
                 query.SpExecuteNonQuery("TestSP1");
-                query.Commit();
+                uow.Commit();
             }
         }
 
@@ -92,7 +92,7 @@ namespace Radial.UnitTest.Persist.Nhs
                 query.ExecuteNonQuery("Insert into Team (Id,Name) Values (rand(),'ces')");
                 query.SpExecuteNonQuery("TestSP1");
                 // not affected
-                query.Commit();
+                uow.Commit();
 
                 //not commit，no data
                 //tc.Complete();

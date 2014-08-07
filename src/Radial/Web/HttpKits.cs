@@ -682,33 +682,6 @@ namespace Radial.Web
 
 
         /// <summary>
-        /// Gets the location based on ip address.
-        /// </summary>
-        /// <param name="ipAddress">The ip address.</param>
-        /// <returns>If no location matched return string.Empty, otherwise return the location based on ip address.</returns>
-        public static string GetLocation(string ipAddress)
-        {
-            Checker.Parameter(Validator.IsIP(ipAddress), "ip address format error:{0}", ipAddress);
-
-            string serverUrl = string.Format("http://opendata.baidu.com/api.php?query={0}&resource_id=6006&format=json", ipAddress.Trim());
-
-            HttpResponseObj resp = HttpWebClient.Get(serverUrl);
-
-            if (resp.Code == System.Net.HttpStatusCode.OK)
-            {
-                dynamic obj = Serialization.JsonSerializer.Deserialize<dynamic>(resp.Text);
-
-                if (obj != null && obj.data != null && obj.data.Count == 1)
-                {
-                    if (obj.data[0].location != null)
-                        return (string)obj.data[0].location;
-                }
-            }
-
-            return string.Empty;
-        }
-
-        /// <summary>
         /// Get the client IPv4 address.
         /// </summary>
         /// <param name="multiValueChooseLast">if set to <c>true</c> will choose last one if there are multiple values in specified http header, otherwise choose the first one.</param>

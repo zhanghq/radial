@@ -7,6 +7,7 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Net.NetworkInformation;
 using System.Threading;
+using Radial.Net;
 
 namespace Radial
 {
@@ -504,6 +505,40 @@ namespace Radial
             }
 
             return c;
+        }
+
+        /// <summary>
+        /// Gets the Geo information based on ip address.
+        /// </summary>
+        /// <param name="ipAddress">The ip address.</param>
+        /// <returns>If no location matched return null, otherwise return the Geo information based on ip address.</returns>
+        public static GeoInfo GetGeoInfo(string ipAddress)
+        {
+            Checker.Parameter(Validator.IsIP(ipAddress), "ip address format error: {0}", ipAddress);
+
+            string serverUrl = string.Format("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip={0}", ipAddress.Trim());
+
+            HttpResponseObj resp = HttpWebClient.Get(serverUrl);
+
+            if (resp.Code == System.Net.HttpStatusCode.OK)
+            {
+                dynamic obj = Serialization.JsonSerializer.Deserialize<dynamic>(resp.Text);
+
+                if (obj != null && obj.ret != null && obj.ret == 1)
+                {
+                    GeoInfo geo = new GeoInfo();
+                    if (obj.country != null)
+                        geo.Country = obj.country;
+                    if (obj.province != null)
+                        geo.Division = obj.province;
+                    if (obj.city != null)
+                        geo.City = obj.city;
+
+                    return geo;
+                }
+            }
+
+            return null;
         }
     }
 }

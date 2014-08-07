@@ -230,6 +230,7 @@
     <Compile Include="Base36Encoder.cs" />
     <Compile Include="Web\FormsAuth.cs" />
     <Compile Include="Web\GeneralUpload.cs" />
+    <Compile Include="GeoInfo.cs" />
     <Compile Include="Web\HttpCache.cs" />
     <Compile Include="Web\HttpKits.cs" />
     <Compile Include="Web\HttpKnownFaultException.cs" />

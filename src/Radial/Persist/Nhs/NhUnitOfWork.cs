@@ -214,10 +214,6 @@ namespace Radial.Persist.Nhs
                     _session.Transaction.Rollback();
                     throw;
                 }
-                finally
-                {
-                    _session.Transaction.Dispose();
-                }
             }
         }
 
@@ -226,7 +222,6 @@ namespace Radial.Persist.Nhs
         /// </summary>
         public virtual void Dispose()
         {
-            _session.Transaction.Dispose();
             _session.Dispose();
         }
 

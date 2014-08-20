@@ -326,6 +326,16 @@ namespace Radial.Windows
         }
 
         /// <summary>
+        /// Restarts the specified service name.
+        /// </summary>
+        /// <param name="serviceName">Name of the service.</param>
+        public static void Restart(string serviceName)
+        {
+            Stop(serviceName);
+            Start(serviceName);
+        }
+
+        /// <summary>
         /// Starts the service.
         /// </summary>
         /// <param name="service">The service.</param>

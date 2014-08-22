@@ -1,5 +1,5 @@
   <configSections>
-    <section name="connGroup" type="Radial.Persist.Lite.Cfg.ConnectionSection, Radial.Persist.Lite"/>
+    <section name="connGroup" type="Radial.Persist.Lite.Cfg.ConnectionSection, Radial"/>
   </configSections>
   
   <connGroup>

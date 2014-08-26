@@ -106,7 +106,7 @@ namespace Radial.Persist.Nhs
             if (obj != null)
             {
                 PrepareTransaction();
-                _session.Save(obj);
+                _session.SaveOrUpdate(obj);
             }
         }
 

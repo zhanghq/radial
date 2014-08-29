@@ -84,9 +84,7 @@ namespace Radial.Log4Net.MongoDB
         /// </remarks>
 		protected override void Append(LoggingEvent[] loggingEvents)
 		{
-            Thread th = new Thread(AppendThread);
-            th.IsBackground = true;
-            th.Start(loggingEvents);
+            ThreadPool.QueueUserWorkItem(AppendThread, loggingEvents);
 		}
 
 

@@ -80,6 +80,37 @@ namespace Radial
             return string.Empty;
         }
 
+        /// <summary>
+        /// Gets the enum value-description pairs.
+        /// </summary>
+        /// <typeparam name="TEnum">The type of the enum.</typeparam>
+        /// <returns>
+        /// Return enum value-description pairs, key=enum value, value=enum description.
+        /// </returns>
+        public static KeyValuePair<int, string>[] GetEnumValueDescriptions<TEnum>() where TEnum : struct
+        {
+            Checker.Parameter(typeof(TEnum).IsEnum, "TEnum must be an enumeration");
+
+            FieldInfo[] infos = typeof(TEnum).GetFields(BindingFlags.Static | BindingFlags.Public);
+
+            KeyValuePair<int, string>[] pairs = new KeyValuePair<int, string>[infos.Length];
+
+            for (int i = 0; i < infos.Length; i++)
+            {
+                int val = (int)infos[i].GetValue(null);
+
+                string desp = null;
+
+                object[] attObjs = infos[i].GetCustomAttributes(typeof(EnumDescriptionAttribute), false);
+                if (attObjs.Length == 1)
+                    desp = (attObjs[0] as EnumDescriptionAttribute).Text;
+
+                pairs[i] = new KeyValuePair<int, string>(val, desp);
+            }
+
+            return pairs;
+        }
+
 
         /// <summary>
         /// Convert ip string to int array.

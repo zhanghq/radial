@@ -19,14 +19,14 @@ namespace Radial.UnitTest
             byte[] bytes = new byte[1024];
             
 
-            EasyStream.Writer.SaveToFile(bytes, filePath);
+            StreamKits.Writer.SaveToFile(bytes, filePath);
 
-            Console.WriteLine(EasyStream.Reader.GetBytes(filePath).Length);
+            Console.WriteLine(StreamKits.Reader.GetBytes(filePath).Length);
 
-            EasyStream.Writer.AppendToFile(bytes, filePath);
+            StreamKits.Writer.AppendToFile(bytes, filePath);
 
 
-            Console.WriteLine(EasyStream.Reader.GetText(filePath).Length);
+            Console.WriteLine(StreamKits.Reader.GetText(filePath).Length);
 
         }
     }

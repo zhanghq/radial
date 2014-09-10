@@ -84,6 +84,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NHibernate.4.0.0.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="NReco.VideoConverter">
+      <HintPath>..\packages\NReco.VideoConverter.1.0.3.0\lib\net20\NReco.VideoConverter.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -149,7 +152,8 @@
     <Compile Include="Boot\Cfg\BootTaskElementCollection.cs" />
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />
     <Compile Include="Cache\IClusterRegion.cs" />
-    <Compile Include="IO\EasyStream.cs" />
+    <Compile Include="IO\StreamKits.cs" />
+    <Compile Include="IO\VideoKits.cs" />
     <Compile Include="MultiResult.cs" />
     <Compile Include="Persist\Lite\Cfg\ConnectionElement.cs" />
     <Compile Include="Persist\Lite\Cfg\ConnectionElementCollection.cs" />

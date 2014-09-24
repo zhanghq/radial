@@ -7,6 +7,8 @@ using NHibernate.Criterion;
 using System.Collections;
 using System.Data.Common;
 using System.Data;
+using NHibernate.Type;
+using NHibernate.Dialect.Function;
 
 namespace Radial.Persist.Nhs
 {
@@ -105,7 +107,8 @@ namespace Radial.Persist.Nhs
         /// <param name="query">The query.</param>
         /// <param name="orderBys">The custom order bys.</param>
         /// <returns></returns>
-        protected IQueryOver<TObject, TObject> AppendOrderBys(IQueryOver<TObject, TObject> query, params OrderBySnippet<TObject>[] orderBys)
+        protected IQueryOver<TObject, TObject> AppendOrderBys(IQueryOver<TObject, TObject> query,
+            params OrderBySnippet<TObject>[] orderBys)
         {
             Checker.Requires(query != null, "query can not be null");
 
@@ -122,6 +125,32 @@ namespace Radial.Persist.Nhs
                         query = query.OrderBy(order.Property).Desc;
                 }
             }
+
+            return query;
+        }
+
+
+        /// <summary>
+        /// Appends the order bys.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="sqlFuncQuery">The complex function SQL query string.</param>
+        /// <param name="funcReturnType">Type of the function return value (NHibernateUtil.xxx).</param>
+        /// <param name="isAsc">if set to <c>true</c> [is asc].</param>
+        /// <returns></returns>
+        protected IQueryOver<TObject, TObject> AppendOrderBys(IQueryOver<TObject, TObject> query, string sqlFuncQuery,
+            IType funcReturnType, bool isAsc = true)
+        {
+            Checker.Requires(query != null, "query can not be null");
+            Checker.Requires(!string.IsNullOrWhiteSpace(sqlFuncQuery), "function SQL query string can not be null or empty");
+            Checker.Requires(funcReturnType != null, "type of the function return value can not be null");
+
+            IProjection p = Projections.SqlFunction(new SQLFunctionTemplate(funcReturnType, sqlFuncQuery), funcReturnType);
+
+            if (isAsc)
+                query = query.OrderBy(p).Asc;
+            else
+                query = query.OrderBy(p).Desc;
 
             return query;
         }

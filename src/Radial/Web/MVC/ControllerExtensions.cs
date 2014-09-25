@@ -103,6 +103,20 @@ namespace Radial.Web.Mvc
             return new NewJsonResult(data);
         }
 
+        /// <summary>
+        /// Renders json to the response.
+        /// </summary>
+        /// <param name="c">The controller.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="contentType">Type of the content.</param>
+        /// <returns>
+        /// NewJsonResult instance.
+        /// </returns>
+        public static NewJsonResult NewJson(this Controller c, object data,string contentType)
+        {
+            return new NewJsonResult(data, contentType);
+        }
+
 
         /// <summary>
         /// Throws a new KnownFaultException and let the system itself to decide how to deal with.

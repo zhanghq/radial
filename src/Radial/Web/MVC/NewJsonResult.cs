@@ -14,14 +14,26 @@ namespace Radial.Web.Mvc
     public class NewJsonResult : ActionResult
     {
         object _data;
+        string _contentType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NewJsonResult" /> class.
         /// </summary>
         /// <param name="data">The data.</param>
-        public NewJsonResult(object data)
+        public NewJsonResult(object data) : this(data, null) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NewJsonResult" /> class.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="contentType">Type of the content.</param>
+        public NewJsonResult(object data, string contentType)
         {
             _data = data;
+            if (string.IsNullOrWhiteSpace(contentType))
+                _contentType = ContentTypes.Json;
+            else
+                _contentType = contentType.Trim();
         }
 
         /// <summary>
@@ -31,7 +43,7 @@ namespace Radial.Web.Mvc
         public override void ExecuteResult(ControllerContext context)
         {
             context.HttpContext.Response.Clear();
-            context.HttpContext.Response.ContentType = ContentTypes.Json;
+            context.HttpContext.Response.ContentType = _contentType;
             context.HttpContext.Response.ContentEncoding = StaticVariables.Encoding;
 
             context.HttpContext.Response.Write(JsonSerializer.Serialize(_data));

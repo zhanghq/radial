@@ -349,7 +349,8 @@ namespace Radial
         /// <param name="ttl">The TTL.</param>
         /// <param name="dontFragment">if set to <c>true</c> [dont fragment].</param>
         /// <returns></returns>
-        public static IList<PingReply> GetPingReplies(string host, int count = 4, int interval = 1000, int bytes = 32, int timeout = 1000, int ttl = 128, bool dontFragment = false)
+        public static IList<PingReply> GetPingReplies(string host, int count = 4, int interval = 1000, 
+            int bytes = 32, int timeout = 1000, int ttl = 128, bool dontFragment = false)
         {
             IList<PingReply> list = new List<PingReply>();
 

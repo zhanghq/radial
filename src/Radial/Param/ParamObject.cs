@@ -151,8 +151,8 @@ namespace Radial.Param
         ///   <c>true</c> if contains next level(descendant) param objects; otherwise, <c>false</c>.
         /// </value>
         [DataMember]
-        [JsonProperty("contains_next")]
-        public bool ContainsNext
+        [JsonProperty("has_next")]
+        public bool HasNext
         { get; set; }
     }
 }

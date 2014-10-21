@@ -127,7 +127,7 @@ namespace Radial.Param
 
             XElement next = e.Element(BuildXName("next"));
             if (next != null && next.Elements(BuildXName("item")).Count() > 0)
-                obj.ContainsNext = true;
+                obj.HasNext = true;
 
             return obj;
         }

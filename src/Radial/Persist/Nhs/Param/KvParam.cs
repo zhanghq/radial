@@ -1,7 +1,9 @@
-﻿using Radial.Param;
+﻿using NHibernate;
+using Radial.Param;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,7 +50,28 @@ namespace Radial.Persist.Nhs.Param
         /// </returns>
         public ParamObject Get(string path)
         {
-            return null;
+            path = ParamObject.NormalizePath(path);
+
+            using (var uow = new NhUnitOfWork(StorageAlias))
+            {
+                ISession session = uow.UnderlyingContext as ISession;
+                var query = session.CreateSQLQuery("SELECT Path,Description,Value,HasNext FROM KvParam WHERE Path=:Path");
+                query.SetString("Path", path);
+                var lines = query.List();
+
+                if (lines.Count == 0)
+                    return null;
+
+                var fields = (object[])lines[0];
+
+                return new ParamObject
+                {
+                    Path = fields[0].ToString().Trim(),
+                    Description = fields[1] != null ? fields[1].ToString() : null,
+                    Value = fields[2] != null ? fields[2].ToString().Trim() : null,
+                    HasNext = bool.Parse(fields[3].ToString())
+                };
+            }
         }
 
         /// <summary>
@@ -77,7 +100,31 @@ namespace Radial.Persist.Nhs.Param
         /// </returns>
         public IList<ParamObject> Next(string currentPath)
         {
-            return null;
+            currentPath = ParamObject.NormalizePath(currentPath);
+
+            IList<ParamObject> list = new List<ParamObject>();
+
+            using (var uow = new NhUnitOfWork(StorageAlias))
+            {
+                ISession session = uow.UnderlyingContext as ISession;
+                var query = session.CreateSQLQuery("SELECT Path,Description,Value,HasNext FROM KvParam WHERE Parent=:Parent");
+                query.SetString("Parent", currentPath);
+                var lines = query.List();
+
+                foreach (var line in lines)
+                {
+                    var fields = (object[])line;
+
+                    list.Add(new ParamObject
+                    {
+                        Path = fields[0].ToString().Trim(),
+                        Description = fields[1] != null ? fields[1].ToString() : null,
+                        Value = fields[2] != null ? fields[2].ToString().Trim() : null,
+                        HasNext = bool.Parse(fields[3].ToString())
+                    });
+                }
+            }
+            return list;
         }
 
         /// <summary>
@@ -92,8 +139,44 @@ namespace Radial.Persist.Nhs.Param
         /// </returns>
         public IList<ParamObject> Next(string currentPath, int pageSize, int pageIndex, out int objectTotal)
         {
+            if (pageSize < 0)
+                pageSize = 0;
+            if (pageIndex < 1)
+                pageIndex = 1;
+
             objectTotal = 0;
-            return null;
+
+            currentPath = ParamObject.NormalizePath(currentPath);
+
+            IList<ParamObject> list = new List<ParamObject>();
+
+            using (var uow = new NhUnitOfWork(StorageAlias))
+            {
+                ISession session = uow.UnderlyingContext as ISession;
+                var query = session.CreateSQLQuery("SELECT Path,Description,Value,HasNext FROM KvParam WHERE Parent=:Parent");
+                query.SetString("Parent", currentPath);
+                query.SetMaxResults(pageSize);
+                query.SetFirstResult(pageSize * (pageIndex - 1));
+                var lines = query.List();
+
+                foreach (var line in lines)
+                {
+                    var fields = (object[])line;
+
+                    list.Add(new ParamObject
+                    {
+                        Path = fields[0].ToString().Trim(),
+                        Description = fields[1] != null ? fields[1].ToString() : null,
+                        Value = fields[2] != null ? fields[2].ToString().Trim() : null,
+                        HasNext = bool.Parse(fields[3].ToString())
+                    });
+                }
+
+                query = session.CreateSQLQuery("SELECT COUNT(*) FROM KvParam WHERE Parent=:Parent");
+                query.SetString("Parent", currentPath);
+                objectTotal = int.Parse(query.UniqueResult().ToString());
+            }
+            return list;
         }
 
         /// <summary>
@@ -105,7 +188,35 @@ namespace Radial.Persist.Nhs.Param
         /// </returns>
         public IList<ParamObject> Search(string path)
         {
-            return null;
+            if (string.IsNullOrWhiteSpace(path))
+                return Next(path);
+
+            path = ParamObject.NormalizePath(path);
+
+            IList<ParamObject> list = new List<ParamObject>();
+
+            using (var uow = new NhUnitOfWork(StorageAlias))
+            {
+                ISession session = uow.UnderlyingContext as ISession;
+                var query = session.CreateSQLQuery("SELECT Path,Description,Value,HasNext FROM KvParam WHERE Path LIKE :Path ORDER BY Parent");
+                query.SetString("Path", path + "%");
+                var lines = query.List();
+
+                foreach (var line in lines)
+                {
+                    var fields = (object[])line;
+
+                    list.Add(new ParamObject
+                    {
+                        Path = fields[0].ToString().Trim(),
+                        Description = fields[1] != null ? fields[1].ToString() : null,
+                        Value = fields[2] != null ? fields[2].ToString().Trim() : null,
+                        HasNext = bool.Parse(fields[3].ToString())
+                    });
+                }
+            }
+
+            return list;
         }
 
         /// <summary>
@@ -120,8 +231,49 @@ namespace Radial.Persist.Nhs.Param
         /// </returns>
         public IList<ParamObject> Search(string path, int pageSize, int pageIndex, out int objectTotal)
         {
+            if (string.IsNullOrWhiteSpace(path))
+                return Next(path, pageSize, pageIndex, out objectTotal);
+
+            if (pageSize < 0)
+                pageSize = 0;
+            if (pageIndex < 1)
+                pageIndex = 1;
+
             objectTotal = 0;
-            return null;
+
+            path = ParamObject.NormalizePath(path);
+
+            IList<ParamObject> list = new List<ParamObject>();
+
+            using (var uow = new NhUnitOfWork(StorageAlias))
+            {
+                ISession session = uow.UnderlyingContext as ISession;
+                var query = session.CreateSQLQuery("SELECT Path,Description,Value,HasNext FROM KvParam WHERE Path LIKE :Path ORDER BY Parent");
+                query.SetString("Path", path + "%");
+                query.SetMaxResults(pageSize);
+                query.SetFirstResult(pageSize * (pageIndex - 1));
+
+                var lines = query.List();
+
+                foreach (var line in lines)
+                {
+                    var fields = (object[])line;
+
+                    list.Add(new ParamObject
+                    {
+                        Path = fields[0].ToString().Trim(),
+                        Description = fields[1] != null ? fields[1].ToString() : null,
+                        Value = fields[2] != null ? fields[2].ToString().Trim() : null,
+                        HasNext = bool.Parse(fields[3].ToString())
+                    });
+                }
+
+                query = session.CreateSQLQuery("SELECT COUNT(*) FROM KvParam WHERE Path LIKE :Path");
+                query.SetString("Path", path + "%");
+                objectTotal = int.Parse(query.UniqueResult().ToString());
+            }
+
+            return list;
         }
 
         /// <summary>
@@ -150,6 +302,34 @@ namespace Radial.Persist.Nhs.Param
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
         public void Delete(string path)
         {
+            path = ParamObject.NormalizePath(path);
+
+            using (var uow = new NhUnitOfWork(StorageAlias))
+            {
+                uow.PrepareTransaction();
+
+                ISession session = uow.UnderlyingContext as ISession;
+
+                var query = session.CreateSQLQuery("DELETE FROM KvParam WHERE Path=:Path");
+                query.SetString("Path", path);
+                query.ExecuteUpdate();
+
+                var parentPath = ParamObject.GetParentPath(path);
+
+                if(!string.IsNullOrWhiteSpace(parentPath))
+                {
+                    query = session.CreateSQLQuery("SELECT COUNT(*) FROM KvParam WHERE Parent=:Parent");
+                    query.SetString("Parent", parentPath);
+                    if(int.Parse(query.UniqueResult().ToString())==0)
+                    {
+                        query = session.CreateSQLQuery("UPDATE KvParam SET HasNext=0 WHERE Path=:Path");
+                        query.SetString("Path", parentPath);
+                        query.ExecuteUpdate();
+                    }
+                }
+
+                uow.Commit();
+            }
         }
     }
 }

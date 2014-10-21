@@ -343,7 +343,7 @@ namespace Radial.Persist.Nhs.Param
 
             XElement next = e.Element(BuildXName("next"));
             if (next != null && next.Elements(BuildXName("item")).Count() > 0)
-                obj.ContainsNext = true;
+                obj.HasNext = true;
 
             return obj;
         }
@@ -733,7 +733,6 @@ namespace Radial.Persist.Nhs.Param
         /// <returns>
         /// If path matches, return an objects list, otherwise return an empty list.
         /// </returns>
-        /// <exception cref="System.NotImplementedException"></exception>
         public IList<ParamObject> Search(string path, int pageSize, int pageIndex, out int objectTotal)
         {
             if (string.IsNullOrWhiteSpace(path))

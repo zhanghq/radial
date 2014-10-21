@@ -97,6 +97,7 @@
     <Compile Include="Persist\Nhs\Domain\Team.cs" />
     <Compile Include="Persist\Nhs\Domain\Book.cs" />
     <Compile Include="Persist\Nhs\IdentifierTest.cs" />
+    <Compile Include="Persist\Nhs\KvParamTest.cs" />
     <Compile Include="Persist\Nhs\Level2CacheTest.cs" />
     <Compile Include="Persist\Nhs\MultiThreadTest.cs" />
     <Compile Include="Persist\Nhs\Repository\TeamRepository.cs" />
@@ -113,7 +114,7 @@
     <Compile Include="SmtpMailTest.cs" />
     <Compile Include="Persist\Nhs\Domain\User.cs" />
     <Compile Include="Persist\Nhs\Domain\Order.cs" />
-    <Compile Include="Persist\Nhs\ParamTest.cs" />
+    <Compile Include="Persist\Nhs\NhParamTest.cs" />
     <Compile Include="Persist\Nhs\Repository\UserRepository.cs" />
     <Compile Include="Persist\Nhs\UnitOfWorkTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

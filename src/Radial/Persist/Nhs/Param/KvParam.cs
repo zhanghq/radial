@@ -294,6 +294,71 @@ namespace Radial.Persist.Nhs.Param
         /// <param name="value">The value.</param>
         public void Save(string path, string description, string value)
         {
+            path = ParamObject.NormalizePath(path);
+
+            if (!string.IsNullOrWhiteSpace(description))
+                description = description.Trim();
+
+            if (!string.IsNullOrWhiteSpace(value))
+                value = value.Trim();
+
+            using (var uow = new NhUnitOfWork(StorageAlias))
+            {
+                uow.PrepareTransaction();
+
+                ISession session = uow.UnderlyingContext as ISession;
+
+                var query = session.CreateSQLQuery("SELECT COUNT(*) FROM KvParam WHERE Path=:Path");
+                query.SetString("Path", path);
+                if (int.Parse(query.UniqueResult().ToString()) == 0)
+                {
+                    //insert
+
+                    var parentPath = ParamObject.GetParentPath(path);
+
+                    while(!string.IsNullOrWhiteSpace(parentPath))
+                    {
+                        //check and create parent
+                        query = session.CreateSQLQuery("SELECT COUNT(*) FROM KvParam WHERE Path=:Path");
+                        query.SetString("Path", parentPath);
+
+                        if (int.Parse(query.UniqueResult().ToString()) == 0)
+                        {
+                            query = session.CreateSQLQuery("INSERT INTO KvParam (Path,Parent,Description,Value,HasNext) VALUES (:Path,:Parent,NULL,NULL,1)");
+                            query.SetString("Path", parentPath);
+                            query.SetString("Parent", ParamObject.GetParentPath(parentPath));
+                            query.ExecuteUpdate();
+                        }
+                        else
+                        {
+                            query = session.CreateSQLQuery("UPDATE KvParam SET HasNext=1 WHERE Path=:Path");
+                            query.SetString("Path", parentPath);
+                            query.ExecuteUpdate();
+                        }
+
+                        parentPath = ParamObject.GetParentPath(parentPath);
+                    }
+
+                    //self
+                    query = session.CreateSQLQuery("INSERT INTO KvParam (Path,Parent,Description,Value,HasNext) VALUES (:Path,:Parent,:Description,:Value,0)");
+                    query.SetString("Path", path);
+                    query.SetString("Parent", ParamObject.GetParentPath(path));
+                    query.SetString("Description", description);
+                    query.SetString("Value", value);
+                    query.ExecuteUpdate();
+                }
+                else
+                {
+                    //update
+                    query = session.CreateSQLQuery("UPDATE KvParam SET Description=:Description,Value=:Value WHERE Path=:Path");
+                    query.SetString("Path", path);
+                    query.SetString("Description", description);
+                    query.SetString("Value", value);
+                    query.ExecuteUpdate();
+                }
+
+                uow.Commit();
+            }
         }
 
         /// <summary>
@@ -314,6 +379,7 @@ namespace Radial.Persist.Nhs.Param
                 query.SetString("Path", path);
                 query.ExecuteUpdate();
 
+                //set parent has next=0
                 var parentPath = ParamObject.GetParentPath(path);
 
                 if(!string.IsNullOrWhiteSpace(parentPath))
@@ -327,6 +393,11 @@ namespace Radial.Persist.Nhs.Param
                         query.ExecuteUpdate();
                     }
                 }
+
+                //delete old next
+                query = session.CreateSQLQuery("DELETE FROM KvParam WHERE Parent Like :Parent");
+                query.SetString("Parent", path+"%");
+                query.ExecuteUpdate();
 
                 uow.Commit();
             }

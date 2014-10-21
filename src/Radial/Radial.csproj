@@ -185,8 +185,8 @@
     <Compile Include="Persist\Nhs\NamingStrategy\SqlServerNamingStrategy.cs" />
     <Compile Include="Persist\Nhs\NhUnitOfWork.cs" />
     <Compile Include="Persist\Nhs\Order\SqlServerRandomOrder.cs" />
+    <Compile Include="Persist\Nhs\Param\KvParam.cs" />
     <Compile Include="Persist\Nhs\Param\NhParam.cs" />
-    <Compile Include="Persist\Nhs\Param\ParamItem.cs" />
     <Compile Include="Persist\Nhs\SessionFactoryPool.cs" />
     <Compile Include="Persist\Nhs\SessionFactoryWrapper.cs" />
     <Compile Include="Persist\Nhs\ShardTableMapping.cs" />

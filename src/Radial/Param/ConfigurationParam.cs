@@ -79,13 +79,13 @@ namespace Radial.Param
         /// </summary>
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
         /// <returns>
-        /// /// <returns>If path exists, return its value, otherwise return string.Empty.</returns>
+        /// /// <returns>If path exists, return its value, otherwise return null.</returns>
         /// </returns>
         public string GetValue(string path)
         {
             ParamObject p = Get(path);
             if (p != null)
-                return p.Value;
+                return null;
             return string.Empty;
         }
 

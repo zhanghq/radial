@@ -18,9 +18,72 @@ namespace Radial.Persist.Nhs.Param
     /// </summary>
     public class NhParam : IParam
     {
+
+        /// <summary>
+        /// NhParam Item
+        /// </summary>
+        class NhParamItem
+        {
+            public const string ItemId = "ParamItem";
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="NhParamItem" /> class.
+            /// </summary>
+            public NhParamItem()
+            {
+                Version = 1;
+            }
+
+            /// <summary>
+            /// Gets or sets the xml based content.
+            /// </summary>
+            public string XmlContent
+            {
+                get;
+                set;
+            }
+
+
+            /// <summary>
+            /// Gets or sets the version.
+            /// </summary>
+            public int Version
+            {
+                get;
+                set;
+            }
+
+            /// <summary>
+            /// To the cache string.
+            /// </summary>
+            /// <returns></returns>
+            public string ToCacheString()
+            {
+                return Radial.Toolkits.ToBase64String(XmlContent) + "|" + Version;
+            }
+
+            /// <summary>
+            /// Froms the cache string.
+            /// </summary>
+            /// <param name="str">The STR.</param>
+            /// <returns></returns>
+            public static NhParamItem FromCacheString(string str)
+            {
+                if (string.IsNullOrWhiteSpace(str))
+                    return null;
+
+                string[] sp = str.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (sp.Length == 2)
+                    return new NhParamItem { XmlContent = Toolkits.FromBase64String(sp[0]), Version = int.Parse(sp[1]) };
+
+                return null;
+            }
+        }
+
         static object S_SyncRoot = new object();
 
-        ParamItem _itemObject;
+        NhParamItem _itemObject;
 
         /// <summary>
         /// The enable cache.
@@ -68,23 +131,23 @@ namespace Radial.Persist.Nhs.Param
         /// Reads from database.
         /// </summary>
         /// <returns></returns>
-        private ParamItem ReadFromDatabase()
+        private NhParamItem ReadFromDatabase()
         {
-            ParamItem item = null;
+            NhParamItem item = null;
 
             using (IUnitOfWork uow = new NhUnitOfWork(StorageAlias))
             {
                 ISession session = uow.UnderlyingContext as ISession;
 
                 ISQLQuery query = session.CreateSQLQuery("SELECT XmlContent, Version FROM Param WHERE Id=:Id");
-                query.SetString("Id", ParamItem.ItemId);
+                query.SetString("Id", NhParamItem.ItemId);
 
                 IList list = query.List();
 
                 if (list != null && list.Count == 1)
                 {
                     IList olist = (IList)list[0];
-                    item = new ParamItem { XmlContent = (string)olist[0], Version = (int)olist[1] };
+                    item = new NhParamItem { XmlContent = (string)olist[0], Version = (int)olist[1] };
                 }
             }
 
@@ -100,7 +163,7 @@ namespace Radial.Persist.Nhs.Param
             {
                 ISession session = uow.UnderlyingContext as ISession;
                 ISQLQuery query = session.CreateSQLQuery("SELECT COUNT(*) FROM Param WHERE Id=:Id");
-                query.SetString("Id", ParamItem.ItemId);
+                query.SetString("Id", NhParamItem.ItemId);
 
                 //ToString method for compatibility with different database
                 bool exist = query.UniqueResult().ToString() == "1" ? true : false;
@@ -109,7 +172,7 @@ namespace Radial.Persist.Nhs.Param
                 {
                     ISQLQuery insertQuery = session.CreateSQLQuery("INSERT INTO Param (Id, XmlContent, Version) VALUES (:Id, :XmlContent, :Version)");
 
-                    insertQuery.SetString("Id", ParamItem.ItemId);
+                    insertQuery.SetString("Id", NhParamItem.ItemId);
                     insertQuery.SetParameter("XmlContent", _itemObject.XmlContent, NHibernateUtil.StringClob);
                     insertQuery.SetInt32("Version", _itemObject.Version);
 
@@ -122,7 +185,7 @@ namespace Radial.Persist.Nhs.Param
                     int oldVersion = _itemObject.Version;
                     _itemObject.Version++;
 
-                    updateQuery.SetString("Id", ParamItem.ItemId);
+                    updateQuery.SetString("Id", NhParamItem.ItemId);
                     updateQuery.SetParameter("XmlContent", _itemObject.XmlContent, NHibernateUtil.StringClob);
                     updateQuery.SetInt32("Version", _itemObject.Version);
                     updateQuery.SetInt32("OldVersion", oldVersion);
@@ -160,7 +223,7 @@ namespace Radial.Persist.Nhs.Param
                     //database empty
                     if (_itemObject == null)
                     {
-                        _itemObject = new ParamItem();
+                        _itemObject = new NhParamItem();
                         
                         XDocument doc = new XDocument();
                         doc.Add(new XElement(BuildXName("params")));
@@ -207,7 +270,7 @@ namespace Radial.Persist.Nhs.Param
         /// Sets ParamItem to cache.
         /// </summary>
         /// <param name="item">The ParamItem item.</param>
-        private void SetToCache(ParamItem item)
+        private void SetToCache(NhParamItem item)
         {
             if (EnableCache && item != null)
             {
@@ -224,10 +287,10 @@ namespace Radial.Persist.Nhs.Param
         /// Retrieves ParamItem from cache.
         /// </summary>
         /// <returns>The ParamItem item</returns>
-        private ParamItem RetrieveFromCache()
+        private NhParamItem RetrieveFromCache()
         {
             if (EnableCache)
-                return ParamItem.FromCacheString(CacheStatic.Get<string>(CacheKey));
+                return NhParamItem.FromCacheString(CacheStatic.Get<string>(CacheKey));
             return null;
         }
 
@@ -436,18 +499,20 @@ namespace Radial.Persist.Nhs.Param
             if (!string.IsNullOrWhiteSpace(description))
                 obj.Description = description.Trim();
             else
-                obj.Description = string.Empty;
+                obj.Description = null;
 
             e.SetAttributeValue("description", obj.Description);
 
             if (!string.IsNullOrWhiteSpace(value))
                 obj.Value = value.Trim();
             else
-                obj.Value = string.Empty;
+                obj.Value = null;
 
             if (e.Element(BuildXName("value")) != null)
                 e.Element(BuildXName("value")).Remove();
-            e.Add(new XElement(BuildXName("value"), new XCData(obj.Value)));
+         
+            if (obj.Value != null)
+                e.Add(new XElement(BuildXName("value"), new XCData(obj.Value)));
 
             SaveRootElement(root);
 
@@ -478,7 +543,6 @@ namespace Radial.Persist.Nhs.Param
         /// <returns>
         /// If path exists, return the object, otherwise return null.
         /// </returns>
-        /// <exception cref="System.NotImplementedException"></exception>
         public ParamObject Get(string path)
         {
             path = ParamObject.NormalizePath(path);
@@ -502,15 +566,14 @@ namespace Radial.Persist.Nhs.Param
         /// </summary>
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
         /// <returns>
-        /// If path exists, return its value, otherwise return string.Empty.
+        /// If path exists, return its value, otherwise return null.
         /// </returns>
-        /// <exception cref="System.NotImplementedException"></exception>
         public string GetValue(string path)
         {
             ParamObject o = Get(path);
 
             if (o == null)
-                return string.Empty;
+                return null;
 
             return o.Value;
         }
@@ -706,7 +769,7 @@ namespace Radial.Persist.Nhs.Param
         /// <param name="value">The value.</param>
         public void Save(string path, string value)
         {
-            Save(path, string.Empty, value);
+            Save(path, null, value);
         }
 
         /// <summary>

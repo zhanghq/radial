@@ -52,7 +52,7 @@ namespace Radial.Param
         /// Get the param value.
         /// </summary>
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
-        /// <returns>If path exists, return its value, otherwise return string.Empty.</returns>
+        /// <returns>If path exists, return its value, otherwise return null.</returns>
         public static string GetValue(string path)
         {
             return Instance.GetValue(path);
@@ -215,7 +215,9 @@ namespace Radial.Param
 
             decimal returnValue = 0;
 
-            Checker.Requires(decimal.TryParse(paramValue.Trim(), out returnValue), CanNotConvertExceptionFormat, path, typeof(decimal).FullName);
+            if (!string.IsNullOrWhiteSpace(paramValue))
+                Checker.Requires(decimal.TryParse(paramValue.Trim(), out returnValue),
+                    CanNotConvertExceptionFormat, path, typeof(decimal).FullName);
 
             return returnValue;
         }
@@ -258,7 +260,9 @@ namespace Radial.Param
 
             double returnValue = 0;
 
-            Checker.Requires(double.TryParse(paramValue.Trim(), out returnValue), CanNotConvertExceptionFormat, path, typeof(double).FullName);
+            if (!string.IsNullOrWhiteSpace(paramValue))
+                Checker.Requires(double.TryParse(paramValue.Trim(), out returnValue), 
+                    CanNotConvertExceptionFormat, path, typeof(double).FullName);
 
             return returnValue;
         }
@@ -300,7 +304,9 @@ namespace Radial.Param
 
             float returnValue = 0;
 
-            Checker.Requires(float.TryParse(paramValue.Trim(), out returnValue), CanNotConvertExceptionFormat, path, typeof(float).FullName);
+            if (!string.IsNullOrWhiteSpace(paramValue))
+                Checker.Requires(float.TryParse(paramValue.Trim(), out returnValue),
+                    CanNotConvertExceptionFormat, path, typeof(float).FullName);
 
             return returnValue;
         }
@@ -342,7 +348,9 @@ namespace Radial.Param
 
             int returnValue = 0;
 
-            Checker.Requires(int.TryParse(paramValue.Trim(), out returnValue), CanNotConvertExceptionFormat, path, typeof(int).FullName);
+            if (!string.IsNullOrWhiteSpace(paramValue))
+                Checker.Requires(int.TryParse(paramValue.Trim(), out returnValue),
+                    CanNotConvertExceptionFormat, path, typeof(int).FullName);
 
             return returnValue;
         }
@@ -384,7 +392,9 @@ namespace Radial.Param
 
             long returnValue = 0;
 
-            Checker.Requires(long.TryParse(paramValue.Trim(), out returnValue), CanNotConvertExceptionFormat, path, typeof(long).FullName);
+            if (!string.IsNullOrWhiteSpace(paramValue))
+                Checker.Requires(long.TryParse(paramValue.Trim(), out returnValue),
+                    CanNotConvertExceptionFormat, path, typeof(long).FullName);
 
             return returnValue;
         }
@@ -426,7 +436,9 @@ namespace Radial.Param
 
             float returnValue = 0;
 
-            Checker.Requires(float.TryParse(paramValue.Trim(), out returnValue), CanNotConvertExceptionFormat, path, typeof(float).FullName);
+            if (!string.IsNullOrWhiteSpace(paramValue))
+                Checker.Requires(float.TryParse(paramValue.Trim(), out returnValue),
+                    CanNotConvertExceptionFormat, path, typeof(float).FullName);
 
             return returnValue;
         }
@@ -466,7 +478,7 @@ namespace Radial.Param
         private static string GetObjectString(object obj)
         {
             if (obj == null)
-                return string.Empty;
+                return null;
 
             Type objType = obj.GetType();
 
@@ -477,7 +489,7 @@ namespace Radial.Param
                 || objType == typeof(Int16) || objType == typeof(UInt16) || objType == typeof(Int32) || objType == typeof(UInt32)
                 || objType == typeof(Int64) || objType == typeof(UInt64) || objType == typeof(Char) || objType == typeof(String)
                 || objType == typeof(Double) || objType == typeof(Single) || objType == typeof(Decimal))
-                return obj.ToString().Trim();
+                return obj.ToString();
 
             throw new NotSupportedException(string.Format("Object type {0} was not supported in AppParam", objType.FullName));
         }

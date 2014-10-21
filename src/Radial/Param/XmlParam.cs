@@ -278,7 +278,7 @@ namespace Radial.Param
                     obj.Description = description.Trim();
                 }
                 else
-                    obj.Description = string.Empty;
+                    obj.Description = null;
 
                 e.SetAttributeValue("description", obj.Description);
 
@@ -287,11 +287,13 @@ namespace Radial.Param
                     obj.Value = value.Trim();
                 }
                 else
-                    obj.Value = string.Empty;
+                    obj.Value = null;
 
                 if (e.Element(BuildXName("value")) != null)
                     e.Element(BuildXName("value")).Remove();
-                e.Add(new XElement(BuildXName("value"), new XCData(obj.Value)));
+
+                if (obj.Value != null)
+                    e.Add(new XElement(BuildXName("value"), new XCData(obj.Value)));
 
                 S_Root.Save(ConfigurationPath);
 
@@ -348,14 +350,14 @@ namespace Radial.Param
         /// </summary>
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
         /// <returns>
-        /// If path exists, return its value, otherwise return string.Empty.
+        /// If path exists, return its value, otherwise return null.
         /// </returns>
         public string GetValue(string path)
         {
             ParamObject o = Get(path);
 
             if (o == null)
-                return string.Empty;
+                return null;
 
             return o.Value;
         }
@@ -554,7 +556,7 @@ namespace Radial.Param
         /// <param name="value">The value.</param>
         public void Save(string path, string value)
         {
-            Save(path, string.Empty, value);
+            Save(path, null, value);
         }
 
         /// <summary>

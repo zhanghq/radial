@@ -30,6 +30,33 @@ namespace Radial.Persist.Nhs.Param
         }
 
         /// <summary>
+        /// Fieldses to object.
+        /// </summary>
+        /// <param name="fields">The fields.</param>
+        /// <returns></returns>
+        private ParamObject FieldsToObject(object[] fields)
+        {
+            var obj = new ParamObject
+            {
+                Path = fields[0].ToString().Trim(),
+                Description = fields[1] != null ? fields[1].ToString() : null,
+                Value = fields[2] != null ? fields[2].ToString().Trim() : null
+            };
+
+            bool hasNext;
+            string field3 = fields[3].ToString().Trim();
+            if (!bool.TryParse(field3, out hasNext))
+            {
+                if (field3 == "1")
+                    hasNext = true;
+            }
+
+            obj.HasNext = hasNext;
+
+            return obj;
+        }
+
+        /// <summary>
         /// Determine whether the specified param object is exists.
         /// </summary>
         /// <param name="path">The parameter path (case insensitive) or configuration name.</param>
@@ -64,13 +91,7 @@ namespace Radial.Persist.Nhs.Param
 
                 var fields = (object[])lines[0];
 
-                return new ParamObject
-                {
-                    Path = fields[0].ToString().Trim(),
-                    Description = fields[1] != null ? fields[1].ToString() : null,
-                    Value = fields[2] != null ? fields[2].ToString().Trim() : null,
-                    HasNext = bool.Parse(fields[3].ToString())
-                };
+                return FieldsToObject(fields);
             }
         }
 
@@ -115,13 +136,7 @@ namespace Radial.Persist.Nhs.Param
                 {
                     var fields = (object[])line;
 
-                    list.Add(new ParamObject
-                    {
-                        Path = fields[0].ToString().Trim(),
-                        Description = fields[1] != null ? fields[1].ToString() : null,
-                        Value = fields[2] != null ? fields[2].ToString().Trim() : null,
-                        HasNext = bool.Parse(fields[3].ToString())
-                    });
+                    list.Add(FieldsToObject(fields));
                 }
             }
             return list;
@@ -163,13 +178,7 @@ namespace Radial.Persist.Nhs.Param
                 {
                     var fields = (object[])line;
 
-                    list.Add(new ParamObject
-                    {
-                        Path = fields[0].ToString().Trim(),
-                        Description = fields[1] != null ? fields[1].ToString() : null,
-                        Value = fields[2] != null ? fields[2].ToString().Trim() : null,
-                        HasNext = bool.Parse(fields[3].ToString())
-                    });
+                    list.Add(FieldsToObject(fields));
                 }
 
                 query = session.CreateSQLQuery("SELECT COUNT(*) FROM KvParam WHERE Parent=:Parent");
@@ -206,13 +215,7 @@ namespace Radial.Persist.Nhs.Param
                 {
                     var fields = (object[])line;
 
-                    list.Add(new ParamObject
-                    {
-                        Path = fields[0].ToString().Trim(),
-                        Description = fields[1] != null ? fields[1].ToString() : null,
-                        Value = fields[2] != null ? fields[2].ToString().Trim() : null,
-                        HasNext = bool.Parse(fields[3].ToString())
-                    });
+                    list.Add(FieldsToObject(fields));
                 }
             }
 
@@ -259,13 +262,7 @@ namespace Radial.Persist.Nhs.Param
                 {
                     var fields = (object[])line;
 
-                    list.Add(new ParamObject
-                    {
-                        Path = fields[0].ToString().Trim(),
-                        Description = fields[1] != null ? fields[1].ToString() : null,
-                        Value = fields[2] != null ? fields[2].ToString().Trim() : null,
-                        HasNext = bool.Parse(fields[3].ToString())
-                    });
+                    list.Add(FieldsToObject(fields));
                 }
 
                 query = session.CreateSQLQuery("SELECT COUNT(*) FROM KvParam WHERE Path LIKE :Path");

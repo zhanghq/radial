@@ -55,6 +55,7 @@ namespace Radial.UnitTest.Persist.Nhs
         {
             KvParam kvp = new KvParam();
             kvp.Save("test2.abc.abc", Guid.NewGuid().ToString());
+            kvp.Save("test2.abc.abc", Guid.NewGuid().ToString());
             kvp.Delete("test2.abc");
         }
     }

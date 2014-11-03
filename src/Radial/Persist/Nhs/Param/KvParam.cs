@@ -341,7 +341,7 @@ namespace Radial.Persist.Nhs.Param
                     query.SetString("Path", path);
                     query.SetString("Parent", ParamObject.GetParentPath(path));
                     query.SetString("Description", description);
-                    query.SetString("Value", value);
+                    query.SetParameter("Value",value,NHibernateUtil.StringClob);
                     query.ExecuteUpdate();
                 }
                 else
@@ -350,7 +350,7 @@ namespace Radial.Persist.Nhs.Param
                     query = session.CreateSQLQuery("UPDATE KvParam SET Description=:Description,Value=:Value WHERE Path=:Path");
                     query.SetString("Path", path);
                     query.SetString("Description", description);
-                    query.SetString("Value", value);
+                    query.SetParameter("Value", value, NHibernateUtil.StringClob);
                     query.ExecuteUpdate();
                 }
 

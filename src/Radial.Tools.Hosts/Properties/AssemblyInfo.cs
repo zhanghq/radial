@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Radial Project")]
 [assembly: AssemblyProduct("Hosts Tool")]
-[assembly: AssemblyCopyright("Copyright © Radial Project 2012")]
+[assembly: AssemblyCopyright("Licensed Under LGPL")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

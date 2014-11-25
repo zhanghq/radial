@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial", "Radial\Radial.csproj", "{E9EC1CB9-79B6-47BC-AF82-E8B7B7AFFCEA}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Log4Net.MongoDB", "Radial.Log4Net.MongoDB\Radial.Log4Net.MongoDB.csproj", "{B5F59E68-80D6-4D78-9CE7-DE348864E884}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Test.Mvc", "Radial.Test.Mvc\Radial.Test.Mvc.csproj", "{0C6EC629-B0F3-4A14-ADE5-DF8F433A90A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radial.Tools.Srvd", "Radial.Tools.Srvd\Radial.Tools.Srvd.csproj", "{528077AC-A498-4999-856F-1350481F5E8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +103,16 @@ Global
 		{0C6EC629-B0F3-4A14-ADE5-DF8F433A90A8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0C6EC629-B0F3-4A14-ADE5-DF8F433A90A8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0C6EC629-B0F3-4A14-ADE5-DF8F433A90A8}.Release|x86.ActiveCfg = Release|Any CPU
+		{528077AC-A498-4999-856F-1350481F5E8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{528077AC-A498-4999-856F-1350481F5E8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{528077AC-A498-4999-856F-1350481F5E8A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{528077AC-A498-4999-856F-1350481F5E8A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{528077AC-A498-4999-856F-1350481F5E8A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{528077AC-A498-4999-856F-1350481F5E8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{528077AC-A498-4999-856F-1350481F5E8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{528077AC-A498-4999-856F-1350481F5E8A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{528077AC-A498-4999-856F-1350481F5E8A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{528077AC-A498-4999-856F-1350481F5E8A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -112,6 +124,7 @@ Global
 		{E7DD1C8C-28FA-4290-826B-792951250738} = {2FA84FC1-FB00-4E47-A422-91FA5CDA7733}
 		{B5F59E68-80D6-4D78-9CE7-DE348864E884} = {2FA84FC1-FB00-4E47-A422-91FA5CDA7733}
 		{0C6EC629-B0F3-4A14-ADE5-DF8F433A90A8} = {3AFB6471-9556-4901-9777-3911BE99F7FD}
+		{528077AC-A498-4999-856F-1350481F5E8A} = {2FA84FC1-FB00-4E47-A422-91FA5CDA7733}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35

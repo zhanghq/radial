@@ -24,7 +24,8 @@ namespace Radial.Tools.Srvd
                     case CmdAction.Uninstall: Uninstall(); break;
                     case CmdAction.Run: Run(); break;
                     case CmdAction.State: State(); break;
-                    default: Console.WriteLine("unknown args: {0}", string.Join(" ", args)); break;
+                    case CmdAction.Help: Help(); break;
+                    default: Console.WriteLine("unknown command, type \"-?\" for help"); break;
                 }
             }
             catch (Exception ex)
@@ -93,6 +94,11 @@ namespace Radial.Tools.Srvd
             ServiceState status = ServiceHelper.GetStatus(Cmd.Context.ServiceName);
 
             Console.WriteLine("service {0} was {1}", Cmd.Context.ServiceName, status);
+        }
+
+        private static void Help()
+        {
+            Cmd.WriteHelp(Console.Out);
         }
     }
 }

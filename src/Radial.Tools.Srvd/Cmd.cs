@@ -39,7 +39,11 @@ namespace Radial.Tools.Srvd
         /// <summary>
         /// The state.
         /// </summary>
-        State
+        State,
+        /// <summary>
+        /// The help.
+        /// </summary>
+        Help
     }
 
 
@@ -64,17 +68,44 @@ namespace Radial.Tools.Srvd
         /// </summary>
         private Cmd() { }
 
+        /// <summary>
+        /// Writes the help.
+        /// </summary>
+        /// <param name="tw">The text writer.</param>
+        public static void WriteHelp(TextWriter tw)
+        {
+            tw.WriteLine("======Command Action======");
+            tw.WriteLine("-i  Install daemon");
+            tw.WriteLine("-u  Uninstall daemon");
+            tw.WriteLine("-start  Start daemon");
+            tw.WriteLine("-stop  Stop daemon");
+            tw.WriteLine("-state  Check service state");
+            tw.WriteLine("-?        Show help");
+            tw.WriteLine("");
+            tw.WriteLine("======Command Args======");
+            tw.WriteLine("--service  Service name");
+            tw.WriteLine("--path      Executable file full path");
+            tw.WriteLine("--args      Arguments of executable file");
+            tw.WriteLine("");
+            tw.WriteLine("======Examples ======");
+            tw.WriteLine("#Install daemon using the specified service name");
+            tw.WriteLine("srvd.exe -i --service=xxxx --path=xxx.exe --args=xxxxx");
+            tw.WriteLine("#Install daemon using the auto service name");
+            tw.WriteLine("srvd.exe -i --path=xxx.exe --args=xxxx");
+            tw.WriteLine("#Uninstall daemon with the specified service name");
+            tw.WriteLine("srvd.exe -u --service=xxxx");
+            tw.WriteLine("#Start daemon with the specified service name");
+            tw.WriteLine("srvd.exe -start --service=xxxx");
+            tw.WriteLine("#Stop daemon with the specified service name");
+            tw.WriteLine("srvd.exe -stop --service=xxxx");
+            tw.WriteLine("#Check service state with the specified service name");
+            tw.WriteLine("srvd.exe -state --service=xxxx");
+
+        }
+
         public static void Initial(string[] args)
         {
             Cmd cmd = new Cmd();
-
-            //srvd.exe -i --service=xxxx --path=xxx.exe --args=xxxxx
-            //srvd.exe -i --path=xxx.exe --args=xxxx
-            //srvd.exe -start --service=xxxx
-            //srvd.exe -stop --service=xxxx
-            //srvd.exe -u --service=xxxx
-            //srvd.exe -r --path=xxx.exe --args=xxxxx
-            //srvd.exe -state --service=xxxx
 
             if (args != null && args.Length > 0)
             {
@@ -90,6 +121,8 @@ namespace Radial.Tools.Srvd
                     cmd.Action = CmdAction.Run;
                 if (args[0] == "-state")
                     cmd.Action = CmdAction.State;
+                if (args[0] == "-?")
+                    cmd.Action = CmdAction.Help;
 
                 string serviceArg = args.Where(o => o.StartsWith("--service=")).FirstOrDefault();
                 string pathArg = args.Where(o => o.StartsWith("--path=")).FirstOrDefault();
@@ -119,8 +152,7 @@ namespace Radial.Tools.Srvd
 
             S_Context = cmd;
         }
-
-
+           
         /// <summary>
         /// Gets the cmd context.
         /// </summary>

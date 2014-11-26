@@ -29,13 +29,17 @@ namespace Radial.Tools.Srvd
         /// </summary>
         Stop,
         /// <summary>
+        /// The restart.
+        /// </summary>
+        Restart,
+        /// <summary>
         /// The uninstall.
         /// </summary>
         Uninstall,
         /// <summary>
-        /// The run.
+        /// The daemon.
         /// </summary>
-        Run,
+        Daemon,
         /// <summary>
         /// The state.
         /// </summary>
@@ -74,11 +78,14 @@ namespace Radial.Tools.Srvd
         /// <param name="tw">The text writer.</param>
         public static void WriteHelp(TextWriter tw)
         {
+            tw.WriteLine("This program can be used to manipulate Windows services, and also can be used as a daemon");
+            tw.WriteLine("");
             tw.WriteLine("======Command Action======");
-            tw.WriteLine("-i  Install daemon");
-            tw.WriteLine("-u  Uninstall daemon");
-            tw.WriteLine("-start  Start daemon");
-            tw.WriteLine("-stop  Stop daemon");
+            tw.WriteLine("-i  Install as a daemon");
+            tw.WriteLine("-u  Uninstall service");
+            tw.WriteLine("-start  Start service");
+            tw.WriteLine("-stop  Stop service");
+            tw.WriteLine("-restart  Stop service");
             tw.WriteLine("-state  Check service state");
             tw.WriteLine("-?        Show help");
             tw.WriteLine("");
@@ -87,18 +94,20 @@ namespace Radial.Tools.Srvd
             tw.WriteLine("--path      Executable file full path");
             tw.WriteLine("--args      Arguments of executable file");
             tw.WriteLine("");
-            tw.WriteLine("======Examples ======");
-            tw.WriteLine("#Install daemon using the specified service name");
+            tw.WriteLine("======Usage ======");
+            tw.WriteLine("#Install as a daemon using the specified service name");
             tw.WriteLine("srvd.exe -i --service=xxxx --path=xxx.exe --args=xxxxx");
-            tw.WriteLine("#Install daemon using the auto service name");
+            tw.WriteLine("#Install as a daemon using the auto service name");
             tw.WriteLine("srvd.exe -i --path=xxx.exe --args=xxxx");
-            tw.WriteLine("#Uninstall daemon with the specified service name");
+            tw.WriteLine("#Uninstall  service of the specified name");
             tw.WriteLine("srvd.exe -u --service=xxxx");
-            tw.WriteLine("#Start daemon with the specified service name");
+            tw.WriteLine("#Start service of the specified name");
             tw.WriteLine("srvd.exe -start --service=xxxx");
-            tw.WriteLine("#Stop daemon with the specified service name");
+            tw.WriteLine("#Stop service of the specified name");
             tw.WriteLine("srvd.exe -stop --service=xxxx");
-            tw.WriteLine("#Check service state with the specified service name");
+            tw.WriteLine("#Restart service of the specified name");
+            tw.WriteLine("srvd.exe -restart --service=xxxx");
+            tw.WriteLine("#Check service state");
             tw.WriteLine("srvd.exe -state --service=xxxx");
 
         }
@@ -115,10 +124,12 @@ namespace Radial.Tools.Srvd
                     cmd.Action = CmdAction.Start;
                 if (args[0] == "-stop")
                     cmd.Action = CmdAction.Stop;
+                if (args[0] == "-restart")
+                    cmd.Action = CmdAction.Restart;
                 if (args[0] == "-u")
                     cmd.Action = CmdAction.Uninstall;
-                if (args[0] == "-r")
-                    cmd.Action = CmdAction.Run;
+                if (args[0] == "-d")
+                    cmd.Action = CmdAction.Daemon;
                 if (args[0] == "-state")
                     cmd.Action = CmdAction.State;
                 if (args[0] == "-?")
@@ -142,11 +153,11 @@ namespace Radial.Tools.Srvd
                 if (!string.IsNullOrWhiteSpace(argsArg))
                     cmd.Args = argsArg.Trim().Remove(0, 7);
 
-                if (cmd.Action == CmdAction.Install || cmd.Action == CmdAction.Run)
+                if (cmd.Action == CmdAction.Install || cmd.Action == CmdAction.Daemon)
                     Checker.Requires(!string.IsNullOrWhiteSpace(cmd.ExePath), "missing executable file path (--path)");
 
-                if (cmd.Action == CmdAction.Start || cmd.Action == CmdAction.Stop ||
-                    cmd.Action == CmdAction.Uninstall || cmd.Action == CmdAction.State)
+                if (cmd.Action == CmdAction.Start || cmd.Action == CmdAction.Stop || cmd.Action == CmdAction.Restart
+                    || cmd.Action == CmdAction.Uninstall || cmd.Action == CmdAction.State)
                     Checker.Requires(!string.IsNullOrWhiteSpace(cmd.ServiceName), "missing service name (--service)");
             }
 

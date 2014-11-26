@@ -34,8 +34,6 @@ namespace Radial.Tools.Srvd
             // 
             // serviceProcessInstaller
             // 
-            this.serviceProcessInstaller.Password = null;
-            this.serviceProcessInstaller.Username = null;
             this.serviceProcessInstaller.Account = System.ServiceProcess.ServiceAccount.LocalService;
             // 
             // ProjectInstaller

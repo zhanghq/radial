@@ -21,8 +21,9 @@ namespace Radial.Tools.Srvd
                     case CmdAction.Install: Install(); break;
                     case CmdAction.Start: Start(); break;
                     case CmdAction.Stop: Stop(); break;
+                    case CmdAction.Restart: Restart(); break;
                     case CmdAction.Uninstall: Uninstall(); break;
-                    case CmdAction.Run: Run(); break;
+                    case CmdAction.Daemon: Daemon(); break;
                     case CmdAction.State: State(); break;
                     case CmdAction.Help: Help(); break;
                     default: Console.WriteLine("unknown command, type \"-?\" for help"); break;
@@ -42,44 +43,73 @@ namespace Radial.Tools.Srvd
                 return;
             }
 
-            string exePath = string.Format("{0} -r --path={1}",
+            string exePath = string.Format("{0} -d --path={1}",
                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.FriendlyName.Replace(".vshost", null)),
                 Convert.ToBase64String(Encoding.UTF8.GetBytes(Cmd.Context.ExePath)));
 
             if (!string.IsNullOrWhiteSpace(Cmd.Context.Args))
                 exePath += string.Format(" --args={0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(Cmd.Context.Args)));
 
-            ServiceHelper.Install(Cmd.Context.ServiceName, null, "The deamon of " + Path.GetFileNameWithoutExtension(Cmd.Context.ExePath),
-                exePath, ServiceBootFlag.DemandStart);
+            ServiceHelper.Install(Cmd.Context.ServiceName, null,
+                "The deamon of " + (string.IsNullOrWhiteSpace(Cmd.Context.ServiceName) ? Path.GetFileNameWithoutExtension(Cmd.Context.ExePath) : Cmd.Context.ServiceName),
+                exePath, ServiceBootFlag.AutoStart);
 
             Console.WriteLine("service {0} install completed, waiting for start", Cmd.Context.ServiceName);
         }
 
         private static void Start()
         {
-            if (ServiceHelper.IsInstalled(Cmd.Context.ServiceName))
-                ServiceHelper.Start(Cmd.Context.ServiceName);
+            if (!ServiceHelper.IsInstalled(Cmd.Context.ServiceName))
+            {
+                Console.WriteLine("service {0} not found", Cmd.Context.ServiceName);
+                return;
+            }
 
+            ServiceHelper.Start(Cmd.Context.ServiceName);
             Console.WriteLine("service {0} started", Cmd.Context.ServiceName);
         }
 
         private static void Stop()
         {
-            if (ServiceHelper.IsInstalled(Cmd.Context.ServiceName))
-                ServiceHelper.Stop(Cmd.Context.ServiceName);
+            if (!ServiceHelper.IsInstalled(Cmd.Context.ServiceName))
+            {
+                Console.WriteLine("service {0} not found", Cmd.Context.ServiceName);
+                return;
+            }
+
+            ServiceHelper.Stop(Cmd.Context.ServiceName);
 
             Console.WriteLine("service {0} stopped", Cmd.Context.ServiceName);
         }
 
+        private static void Restart()
+        {
+            if (!ServiceHelper.IsInstalled(Cmd.Context.ServiceName))
+            {
+                Console.WriteLine("service {0} not found", Cmd.Context.ServiceName);
+                return;
+            }
+
+            ServiceHelper.Stop(Cmd.Context.ServiceName);
+            ServiceHelper.Start(Cmd.Context.ServiceName);
+
+            Console.WriteLine("service {0} restart ok", Cmd.Context.ServiceName);
+        }
+
         private static void Uninstall()
         {
-            if (ServiceHelper.IsInstalled(Cmd.Context.ServiceName))
-                ServiceHelper.Uninstall(Cmd.Context.ServiceName);
+            if (!ServiceHelper.IsInstalled(Cmd.Context.ServiceName))
+            {
+                Console.WriteLine("service {0} not found", Cmd.Context.ServiceName);
+                return;
+            }
+
+            ServiceHelper.Uninstall(Cmd.Context.ServiceName);
 
             Console.WriteLine("service {0} uninstall completed", Cmd.Context.ServiceName);
         }
 
-        private static void Run()
+        private static void Daemon()
         {
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[] 

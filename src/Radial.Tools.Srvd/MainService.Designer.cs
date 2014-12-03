@@ -1,6 +1,6 @@
 ﻿namespace Radial.Tools.Srvd
 {
-    partial class DaemonService
+    partial class MainService
     {
         /// <summary> 
         /// 必需的设计器变量。
@@ -28,11 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            // 
-            // DaemonService
-            // 
+            components = new System.ComponentModel.Container();
             this.ServiceName = "Srvd";
-
         }
 
         #endregion

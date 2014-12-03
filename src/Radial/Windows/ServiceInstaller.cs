@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -476,96 +475,6 @@ namespace Radial.Windows
 
             return scm;
         }
-
-        /// <summary>
-        /// Sets the parameter.
-        /// </summary>
-        /// <param name="serviceName">Name of the service.</param>
-        /// <param name="paramName">Name of the parameter.</param>
-        /// <param name="paramValue">The parameter value.</param>
-        /// <param name="valueKind">Kind of the value.</param>
-        public static void SetParameter(string serviceName, string paramName, object paramValue
-            , RegistryValueKind valueKind = RegistryValueKind.ExpandString)
-        {
-            if (string.IsNullOrWhiteSpace(paramName))
-                return;
-
-            if (paramValue == null)
-            {
-                RemoveParameter(serviceName, paramName);
-                return;
-            }
-
-            if (IsInstalled(serviceName))
-            {
-                var reg = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services\" + serviceName, true);
-
-                var preg = reg.OpenSubKey("Parameters", true);
-
-                if (preg == null)
-                    preg = reg.CreateSubKey("Parameters");
-
-                preg.SetValue(paramName, paramValue, valueKind);
-
-            }
-        }
-
-        /// <summary>
-        /// Removes the parameter.
-        /// </summary>
-        /// <param name="serviceName">Name of the service.</param>
-        /// <param name="paramName">Name of the parameter.</param>
-        public static void RemoveParameter(string serviceName, string paramName)
-        {
-            if (string.IsNullOrWhiteSpace(paramName))
-                return;
-
-            if (IsInstalled(serviceName))
-            {
-                var reg = Registry.LocalMachine.OpenSubKey(string.Format(@"SYSTEM\CurrentControlSet\Services\{0}\Parameters", serviceName), true);
-
-                if (reg != null)
-                    reg.DeleteValue(paramName);
-            }
-        }
-
-        /// <summary>
-        /// Gets the parameter.
-        /// </summary>
-        /// <param name="serviceName">Name of the service.</param>
-        /// <param name="paramName">Name of the parameter.</param>
-        /// <returns></returns>
-        public static object GetParameter(string serviceName, string paramName)
-        {
-            if (!string.IsNullOrWhiteSpace(paramName)
-                && IsInstalled(serviceName))
-            {
-                var reg = Registry.LocalMachine.OpenSubKey(string.Format(@"SYSTEM\CurrentControlSet\Services\{0}\Parameters", serviceName));
-
-                if (reg != null)
-                    return reg.GetValue(paramName);
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the parameter.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="serviceName">Name of the service.</param>
-        /// <param name="paramName">Name of the parameter.</param>
-        /// <returns></returns>
-        public static T GetParameter<T>(string serviceName, string paramName)
-        {
-            object val = GetParameter(serviceName, paramName);
-
-            if (val == null)
-                return default(T);
-
-            return (T)val;
-        }
-
     }
 
 

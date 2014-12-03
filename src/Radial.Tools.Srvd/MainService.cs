@@ -4,44 +4,38 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.ServiceProcess;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Radial.Tools.Srvd
 {
-    partial class DaemonService : ServiceBase
+    partial class MainService : ServiceBase
     {
         Process _cps;
 
-        public DaemonService(string serviceName)
+        public MainService()
         {
             InitializeComponent();
-            this.ServiceName = serviceName;
         }
 
         protected override void OnStart(string[] args)
         {
             // TODO:  在此处添加代码以启动服务。
-            string repath = ServiceHelper.GetParameter<string>(this.ServiceName, "path");
-            File.WriteAllText("D:\\ab1.txt", repath);
-            string reargs = ServiceHelper.GetParameter<string>(this.ServiceName, "args");
-            File.WriteAllText("D:\\ab2.txt", reargs);
-
-            if (string.IsNullOrWhiteSpace(repath))
-                return;
-
             _cps = new Process();
 
-            _cps.StartInfo = new ProcessStartInfo(repath);
+            _cps.StartInfo = new ProcessStartInfo
+            {
+                FileName = Encoding.UTF8.GetString(Convert.FromBase64String(Cmd.Context.ExePath))
+            };
 
-
-            if (!string.IsNullOrWhiteSpace(reargs))
-                _cps.StartInfo.Arguments = reargs;
+            if (!string.IsNullOrWhiteSpace(Cmd.Context.Args))
+                _cps.StartInfo.Arguments = Encoding.UTF8.GetString(Convert.FromBase64String(Cmd.Context.Args));
 
             _cps.EnableRaisingEvents = true;
             _cps.Exited += Process_Exited;
             _cps.Start();
-
         }
 
         void Process_Exited(object sender, EventArgs e)
@@ -52,8 +46,7 @@ namespace Radial.Tools.Srvd
         protected override void OnStop()
         {
             // TODO:  在此处添加代码以执行停止服务所需的关闭操作。
-            if (_cps != null)
-                _cps.Kill();
+            _cps.Kill();
         }
     }
 }

@@ -14,144 +14,121 @@ namespace Radial.Tools.Srvd
         {
             try
             {
-                Cmd cmd = new Cmd(args);
+                Cmd.Initial(args);
 
-                switch (cmd.Action)
+                switch (Cmd.Context.Action)
                 {
-                    case CmdAction.Install: Install(cmd.ServiceName, cmd.ExePath, cmd.Args); break;
-                    case CmdAction.Start: Start(cmd.ServiceName); break;
-                    case CmdAction.Stop: Stop(cmd.ServiceName); break;
-                    case CmdAction.Restart: Restart(cmd.ServiceName); break;
-                    case CmdAction.Uninstall: Uninstall(cmd.ServiceName); break;
-                    case CmdAction.Daemon: Daemon(cmd.ServiceName); break;
-                    case CmdAction.State: State(cmd.ServiceName); break;
+                    case CmdAction.Install: Install(); break;
+                    case CmdAction.Start: Start(); break;
+                    case CmdAction.Stop: Stop(); break;
+                    case CmdAction.Restart: Restart(); break;
+                    case CmdAction.Uninstall: Uninstall(); break;
+                    case CmdAction.Daemon: Daemon(); break;
+                    case CmdAction.State: State(); break;
                     case CmdAction.Help: Help(); break;
                     default: Console.WriteLine("unknown command, type \"-?\" for help"); break;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex);
             }
         }
 
-        private static void Install(string serviceName, string exePath, string args)
+        private static void Install()
         {
-            if (ServiceHelper.IsInstalled(serviceName))
+            if (ServiceHelper.IsInstalled(Cmd.Context.ServiceName))
             {
-                Console.WriteLine("service {0} already installed", serviceName);
+                Console.WriteLine("service {0} already installed", Cmd.Context.ServiceName);
                 return;
             }
 
-            string daemonPath = string.Format("{0} -d --service={1}",
+            string exePath = string.Format("{0} -d --path={1}",
                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.FriendlyName.Replace(".vshost", null)),
-                serviceName);
+                Convert.ToBase64String(Encoding.UTF8.GetBytes(Cmd.Context.ExePath)));
 
-            ServiceHelper.Install(serviceName, serviceName, serviceName, daemonPath, ServiceBootFlag.AutoStart);
+            if (!string.IsNullOrWhiteSpace(Cmd.Context.Args))
+                exePath += string.Format(" --args={0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(Cmd.Context.Args)));
 
-            ServiceHelper.SetParameter(serviceName, "path", exePath);
-            ServiceHelper.SetParameter(serviceName, "args", args);
+            ServiceHelper.Install(Cmd.Context.ServiceName, null,
+                "The deamon of " + (string.IsNullOrWhiteSpace(Cmd.Context.ServiceName) ? Path.GetFileNameWithoutExtension(Cmd.Context.ExePath) : Cmd.Context.ServiceName),
+                exePath, ServiceBootFlag.AutoStart);
 
-            Console.WriteLine("service {0} install completed, waiting for start", serviceName);
+            Console.WriteLine("service {0} install completed, waiting for start", Cmd.Context.ServiceName);
         }
 
-        private static void Start(string serviceName)
+        private static void Start()
         {
-            if (!ServiceHelper.IsInstalled(serviceName))
+            if (!ServiceHelper.IsInstalled(Cmd.Context.ServiceName))
             {
-                Console.WriteLine("service {0} not found", serviceName);
+                Console.WriteLine("service {0} not found", Cmd.Context.ServiceName);
                 return;
             }
 
-            ServiceHelper.Start(serviceName);
-            Console.WriteLine("service {0} started", serviceName);
+            ServiceHelper.Start(Cmd.Context.ServiceName);
+            Console.WriteLine("service {0} started", Cmd.Context.ServiceName);
         }
 
-        private static void Stop(string serviceName)
+        private static void Stop()
         {
-            if (!ServiceHelper.IsInstalled(serviceName))
+            if (!ServiceHelper.IsInstalled(Cmd.Context.ServiceName))
             {
-                Console.WriteLine("service {0} not found", serviceName);
+                Console.WriteLine("service {0} not found", Cmd.Context.ServiceName);
                 return;
             }
 
-            ServiceHelper.Stop(serviceName);
+            ServiceHelper.Stop(Cmd.Context.ServiceName);
 
-            Console.WriteLine("service {0} stopped", serviceName);
+            Console.WriteLine("service {0} stopped", Cmd.Context.ServiceName);
         }
 
-        private static void Restart(string serviceName)
+        private static void Restart()
         {
-            if (!ServiceHelper.IsInstalled(serviceName))
+            if (!ServiceHelper.IsInstalled(Cmd.Context.ServiceName))
             {
-                Console.WriteLine("service {0} not found", serviceName);
+                Console.WriteLine("service {0} not found", Cmd.Context.ServiceName);
                 return;
             }
 
-            ServiceHelper.Stop(serviceName);
-            ServiceHelper.Start(serviceName);
+            ServiceHelper.Stop(Cmd.Context.ServiceName);
+            ServiceHelper.Start(Cmd.Context.ServiceName);
 
-            Console.WriteLine("service {0} restart ok", serviceName);
+            Console.WriteLine("service {0} restart ok", Cmd.Context.ServiceName);
         }
 
-        private static void Uninstall(string serviceName)
+        private static void Uninstall()
         {
-            if (!ServiceHelper.IsInstalled(serviceName))
+            if (!ServiceHelper.IsInstalled(Cmd.Context.ServiceName))
             {
-                Console.WriteLine("service {0} not found", serviceName);
+                Console.WriteLine("service {0} not found", Cmd.Context.ServiceName);
                 return;
             }
 
-            ServiceHelper.Uninstall(serviceName);
+            ServiceHelper.Uninstall(Cmd.Context.ServiceName);
 
-            Console.WriteLine("service {0} uninstall completed", serviceName);
+            Console.WriteLine("service {0} uninstall completed", Cmd.Context.ServiceName);
         }
 
-        private static void Daemon(string serviceName)
+        private static void Daemon()
         {
-            ServiceBase.Run(new ServiceBase[] { 
-                new DaemonService(serviceName) 
-            });
+            ServiceBase[] ServicesToRun;
+            ServicesToRun = new ServiceBase[] 
+            { 
+                new MainService() 
+            };
+            ServiceBase.Run(ServicesToRun);
         }
 
-        private static void State(string serviceName)
+        private static void State()
         {
-            ServiceState status = ServiceHelper.GetStatus(serviceName);
+            ServiceState status = ServiceHelper.GetStatus(Cmd.Context.ServiceName);
 
-            Console.WriteLine("service {0} was {1}", serviceName, status);
+            Console.WriteLine("service {0} was {1}", Cmd.Context.ServiceName, status);
         }
 
         private static void Help()
         {
-            Console.WriteLine("This program can be used to manipulate Windows services, and also can be used as a daemon");
-            Console.WriteLine("");
-            Console.WriteLine("======Command Action======");
-            Console.WriteLine("-i  Install as a daemon");
-            Console.WriteLine("-u  Uninstall service");
-            Console.WriteLine("-start  Start service");
-            Console.WriteLine("-stop  Stop service");
-            Console.WriteLine("-restart  Stop service");
-            Console.WriteLine("-state  Check service state");
-            Console.WriteLine("-?        Show help");
-            Console.WriteLine("");
-            Console.WriteLine("======Command Args======");
-            Console.WriteLine("--service  Service name");
-            Console.WriteLine("--path      Executable file full path");
-            Console.WriteLine("--args      Arguments of executable file (optional)");
-            Console.WriteLine("");
-            Console.WriteLine("======Usage ======");
-            Console.WriteLine("#Install as a daemon");
-            Console.WriteLine("srvd.exe -i --service=xxxx --path=xxx --args=xxxx");
-            Console.WriteLine("#Uninstall  service of the specified name");
-            Console.WriteLine("srvd.exe -u --service=xxxx");
-            Console.WriteLine("#Start service of the specified name");
-            Console.WriteLine("srvd.exe -start --service=xxxx");
-            Console.WriteLine("#Stop service of the specified name");
-            Console.WriteLine("srvd.exe -stop --service=xxxx");
-            Console.WriteLine("#Restart service of the specified name");
-            Console.WriteLine("srvd.exe -restart --service=xxxx");
-            Console.WriteLine("#Check service state");
-            Console.WriteLine("srvd.exe -state --service=xxxx");
+            Cmd.WriteHelp(Console.Out);
         }
     }
 }

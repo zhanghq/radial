@@ -498,7 +498,8 @@ namespace Radial.Web
 
             url = CombineRelativeUrl(CurrentContext.Request.ApplicationPath.Trim('/'), url);
 
-            UriBuilder baseUriBuilder = new UriBuilder(CurrentContext.Request.Url.Scheme, CurrentContext.Request.Url.Host, CurrentContext.Request.Url.Port);
+            UriBuilder baseUriBuilder = new UriBuilder(CurrentContext.Request.Url.Scheme,
+                CurrentContext.Request.Url.Host, CurrentContext.Request.Url.Port);
 
             Uri newUri = new Uri(baseUriBuilder.Uri, url);
 

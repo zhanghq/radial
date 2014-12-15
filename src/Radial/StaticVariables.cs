@@ -27,6 +27,11 @@ namespace Radial
         /// </summary>
         public static Encoding Encoding = Encoding.UTF8;
 
+        /// <summary>
+        /// The image file extensions.
+        /// </summary>
+        public static string[] ImageFileExtensions = new string[] { ".jpg", ".jpeg", ".jfif", ".gif", ".bmp", ".png", ".tif", ".tiff" }; 
+
 
         /// <summary>
         /// Gets the full path of configuration file.

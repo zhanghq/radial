@@ -94,7 +94,6 @@
     <Compile Include="CacheTest.cs" />
     <Compile Include="ExcelToolsTest.cs" />
     <Compile Include="FtpClientTest.cs" />
-    <Compile Include="IOTest.cs" />
     <Compile Include="Persist\Nhs\Domain\Team.cs" />
     <Compile Include="Persist\Nhs\Domain\Book.cs" />
     <Compile Include="Persist\Nhs\IdentifierTest.cs" />

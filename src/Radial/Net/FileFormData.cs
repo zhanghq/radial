@@ -42,7 +42,7 @@ namespace Radial.Net
 
             using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
-                _fileContent = StreamKits.Reader.GetBytes(fileStream);
+                _fileContent = GetBytes(fileStream);
             }
 
             _paramName = paramName.Trim();
@@ -83,7 +83,7 @@ namespace Radial.Net
 
             using (fileStream)
             {
-                _fileContent = StreamKits.Reader.GetBytes(fileStream);
+                _fileContent = GetBytes(fileStream);
             }
 
             _paramName = paramName.Trim();
@@ -140,6 +140,29 @@ namespace Radial.Net
             {
                 return _paramName;
             }
+        }
+
+        /// <summary>
+        /// Gets stream bytes.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <returns>
+        /// Stream bytes.
+        /// </returns>
+        private byte[] GetBytes(Stream stream)
+        {
+            stream.Position = 0;
+
+            IList<byte> bytes = new List<byte>();
+
+            int b = 0;
+            while ((b = stream.ReadByte()) > -1)
+            {
+                bytes.Add(Convert.ToByte(b));
+            }
+
+            return bytes.ToArray();
+
         }
 
         /// <summary>

@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Net.NetworkInformation;
 using System.Threading;
 using Radial.Net;
+using Radial.Extensions;
 
 namespace Radial
 {
@@ -571,6 +572,19 @@ namespace Radial
             }
 
             return null;
+        }
+
+
+        /// <summary>
+        /// Determines whether the specified file is image.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns></returns>
+        public static bool IsImage(string fileName)
+        {
+            Checker.Parameter(!string.IsNullOrWhiteSpace(fileName), "file name can not be null.");
+
+            return StaticVariables.ImageFileExtensions.Contains(o => o == Path.GetExtension(fileName).ToLower());
         }
     }
 }

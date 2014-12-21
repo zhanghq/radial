@@ -212,22 +212,22 @@ namespace Radial.IO
         }
 
         /// <summary>
-        /// Saves the content to a file using FileMode.OpenOrCreate.
+        /// Writes the content to a file using FileMode.OpenOrCreate.
         /// </summary>
         /// <param name="content">The content.</param>
         /// <param name="filePath">The file path.</param>
-        public static void SaveToFile(byte[] content, string filePath)
+        public static void WriteToFile(byte[] content, string filePath)
         {
-            SaveToFile(content, filePath, StaticVariables.Encoding);
+            WriteToFile(content, filePath, StaticVariables.Encoding);
         }
 
         /// <summary>
-        /// Saves the content to a file using FileMode.OpenOrCreate.
+        /// Writes the content to a file using FileMode.OpenOrCreate.
         /// </summary>
         /// <param name="content">The content.</param>
         /// <param name="filePath">The file path.</param>
         /// <param name="encoding">The encoding.</param>
-        public static void SaveToFile(byte[] content, string filePath, Encoding encoding)
+        public static void WriteToFile(byte[] content, string filePath, Encoding encoding)
         {
             if (content == null || content.Length == 0)
                 return;
@@ -244,22 +244,22 @@ namespace Radial.IO
         }
 
         /// <summary>
-        /// Saves the content to a file using FileMode.OpenOrCreate.
+        /// Writes the content to a file using FileMode.OpenOrCreate.
         /// </summary>
         /// <param name="content">The content.</param>
         /// <param name="filePath">The file path.</param>
-        public static void SaveToFile(string content, string filePath)
+        public static void WriteToFile(string content, string filePath)
         {
-            SaveToFile(content, filePath, StaticVariables.Encoding);
+            WriteToFile(content, filePath, StaticVariables.Encoding);
         }
 
         /// <summary>
-        /// Saves the content to a file using FileMode.OpenOrCreate.
+        /// Writes the content to a file using FileMode.OpenOrCreate.
         /// </summary>
         /// <param name="content">The content.</param>
         /// <param name="filePath">The file path.</param>
         /// <param name="encoding">The encoding.</param>
-        public static void SaveToFile(string content, string filePath, Encoding encoding)
+        public static void WriteToFile(string content, string filePath, Encoding encoding)
         {
             if (string.IsNullOrWhiteSpace(content))
                 return;
@@ -276,22 +276,22 @@ namespace Radial.IO
         }
 
         /// <summary>
-        /// Appends the content to file.
+        /// Adds the content to file.
         /// </summary>
         /// <param name="content">The content.</param>
         /// <param name="filePath">The file path.</param>
-        public static void AppendToFile(byte[] content, string filePath)
+        public static void AddToFile(byte[] content, string filePath)
         {
-            AppendToFile(content, filePath, StaticVariables.Encoding);
+            AddToFile(content, filePath, StaticVariables.Encoding);
         }
 
         /// <summary>
-        /// Appends the content to file.
+        /// Adds the content to file.
         /// </summary>
         /// <param name="content">The content.</param>
         /// <param name="filePath">The file path.</param>
         /// <param name="encoding">The encoding.</param>
-        public static void AppendToFile(byte[] content, string filePath, Encoding encoding)
+        public static void AddToFile(byte[] content, string filePath, Encoding encoding)
         {
             if (content == null || content.Length == 0)
                 return;
@@ -308,22 +308,22 @@ namespace Radial.IO
         }
 
         /// <summary>
-        /// Appends the content to file.
+        /// Adds the content to file.
         /// </summary>
         /// <param name="content">The content.</param>
         /// <param name="filePath">The file path.</param>
-        public static void AppendToFile(string content, string filePath)
+        public static void AddToFile(string content, string filePath)
         {
-            AppendToFile(content, filePath, StaticVariables.Encoding);
+            AddToFile(content, filePath, StaticVariables.Encoding);
         }
 
         /// <summary>
-        /// Appends the content to file.
+        /// Adds the content to file.
         /// </summary>
         /// <param name="content">The content.</param>
         /// <param name="filePath">The file path.</param>
         /// <param name="encoding">The encoding.</param>
-        public static void AppendToFile(string content, string filePath, Encoding encoding)
+        public static void AddToFile(string content, string filePath, Encoding encoding)
         {
             if (string.IsNullOrWhiteSpace(content))
                 return;
@@ -341,22 +341,22 @@ namespace Radial.IO
 
 
         /// <summary>
-        /// Appends line to file.
+        /// Adds line to file.
         /// </summary>
         /// <param name="line">The line content.</param>
         /// <param name="filePath">The file path.</param>
-        public static void AppendLine(string line, string filePath)
+        public static void AddLineToFile(string line, string filePath)
         {
-            AppendLine(line, filePath, StaticVariables.Encoding);
+            AddLineToFile(line, filePath, StaticVariables.Encoding);
         }
 
         /// <summary>
-        /// Appends line to file.
+        /// Add line to file.
         /// </summary>
         /// <param name="line">The line content.</param>
         /// <param name="filePath">The file path.</param>
         /// <param name="encoding">The encoding.</param>
-        public static void AppendLine(string line, string filePath, Encoding encoding)
+        public static void AddLineToFile(string line, string filePath, Encoding encoding)
         {
             if (string.IsNullOrWhiteSpace(line))
                 return;
@@ -373,22 +373,22 @@ namespace Radial.IO
         }
 
         /// <summary>
-        /// Appends lines to file.
+        /// Adds lines to file.
         /// </summary>
         /// <param name="lines">The lines content.</param>
         /// <param name="filePath">The file path.</param>
-        public static void AppendLines(IEnumerable<string> lines, string filePath)
+        public static void AddLinesToFile(IEnumerable<string> lines, string filePath)
         {
-            AppendLines(lines, filePath, StaticVariables.Encoding);
+            AddLinesToFile(lines, filePath, StaticVariables.Encoding);
         }
 
         /// <summary>
-        /// Appends lines to file.
+        /// Adds lines to file.
         /// </summary>
         /// <param name="lines">The lines content.</param>
         /// <param name="filePath">The file path.</param>
         /// <param name="encoding">The encoding.</param>
-        public static void AppendLines(IEnumerable<string> lines, string filePath, Encoding encoding)
+        public static void AddLinesToFile(IEnumerable<string> lines, string filePath, Encoding encoding)
         {
             if (lines == null || lines.Count() == 0)
                 return;

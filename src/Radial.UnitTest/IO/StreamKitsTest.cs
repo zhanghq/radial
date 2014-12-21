@@ -15,11 +15,11 @@ namespace Radial.UnitTest.IO
         public void Test1()
         {
             string path = @"D:\bcd\d\ab2c.txt";
-            StreamKits.SaveToFile("你好", path);
-            StreamKits.SaveToFile("你好2", path);
-            StreamKits.AppendLine("你好23", path);
-            StreamKits.AppendLine("你好233", path);
-            StreamKits.AppendLines(new string[] { "你好2332", "你好233a2" }, path);
+            StreamKits.WriteToFile("你好", path);
+            StreamKits.WriteToFile("你好2", path);
+            StreamKits.AddLineToFile("你好23", path);
+            StreamKits.AddLineToFile("你好233", path);
+            StreamKits.AddLinesToFile(new string[] { "你好2332", "你好233a2" }, path);
             //StreamKits.TruncateFile(path);
         }
     }

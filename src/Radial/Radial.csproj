@@ -148,6 +148,7 @@
     <Compile Include="Boot\Cfg\BootTaskElementCollection.cs" />
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />
     <Compile Include="Cache\IClusterRegion.cs" />
+    <Compile Include="IO\StreamKits.cs" />
     <Compile Include="IO\VideoMedia.cs" />
     <Compile Include="MultiResult.cs" />
     <Compile Include="Persist\Lite\Cfg\ConnectionElement.cs" />

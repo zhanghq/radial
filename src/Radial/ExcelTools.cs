@@ -23,7 +23,7 @@ namespace Radial
         /// </summary>
         /// <param name="dataTables">The export data tables.</param>
         /// <param name="downloadFileName">The download file name, use random name if set to null.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         public static void ExportToHttp(IEnumerable<DataTable> dataTables, string downloadFileName = null, bool columnHeader = true)
         {
             ExportToHttp(dataTables, downloadFileName, columnHeader, null);
@@ -35,7 +35,7 @@ namespace Radial
         /// </summary>
         /// <param name="dataTables">The export data tables.</param>
         /// <param name="downloadFileName">The download file name, use random name if set to null.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         /// <param name="customHandler">The custom handler.</param>
         public static void ExportToHttp(IEnumerable<DataTable> dataTables, string downloadFileName, bool columnHeader, Action<ExcelWorksheet> customHandler)
         {
@@ -75,7 +75,7 @@ namespace Radial
         /// </summary>
         /// <param name="dataTable">The export data table.</param>
         /// <param name="downloadFileName">The download file name, use random name if set to null.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         public static void ExportToHttp(DataTable dataTable, string downloadFileName = null, bool columnHeader = true)
         {
             ExportToHttp(dataTable, downloadFileName, columnHeader, null);
@@ -86,7 +86,7 @@ namespace Radial
         /// </summary>
         /// <param name="dataTable">The export data table.</param>
         /// <param name="downloadFileName">The download file name, use random name if set to null.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         /// <param name="customHandler">The custom handler.</param>
         public static void ExportToHttp(DataTable dataTable, string downloadFileName, bool columnHeader, Action<ExcelWorksheet> customHandler)
         {
@@ -98,7 +98,7 @@ namespace Radial
         /// </summary>
         /// <param name="dataSet">The export data set.</param>
         /// <param name="downloadFileName">The download file name, use random name if set to null.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         /// <param name="customHandler">The custom handler.</param>
         public static void ExportToHttp(DataSet dataSet, string downloadFileName, bool columnHeader, Action<ExcelWorksheet> customHandler)
         {
@@ -138,7 +138,7 @@ namespace Radial
         /// </summary>
         /// <param name="dataSet">The export data set.</param>
         /// <param name="downloadFileName">The download file name, use random name if set to null.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         public static void ExportToHttp(DataSet dataSet, string downloadFileName = null, bool columnHeader = true)
         {
             ExportToHttp(dataSet, downloadFileName, columnHeader, null);
@@ -149,7 +149,7 @@ namespace Radial
         /// </summary>
         /// <param name="dataTables">The export data tables.</param>
         /// <param name="excelFilePath">The excel file path, use random path if set to null.</param>
-        /// <param name="columnHeader">if set to <c>true</c> [column header].</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         public static void ExportToFile(IEnumerable<DataTable> dataTables, string excelFilePath = null, bool columnHeader = true)
         {
             ExportToFile(dataTables, excelFilePath, columnHeader, null);
@@ -160,15 +160,16 @@ namespace Radial
         /// </summary>
         /// <param name="dataTables">The export data tables.</param>
         /// <param name="excelFilePath">The excel file path, use random path if set to null.</param>
-        /// <param name="columnHeader">if set to <c>true</c> [column header].</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         /// <param name="customHandler">The custom handler.</param>
-        public static void ExportToFile(IEnumerable<DataTable> dataTables, string excelFilePath, bool columnHeader, Action<ExcelWorksheet> customHandler)
+        public static void ExportToFile(IEnumerable<DataTable> dataTables, string excelFilePath, bool columnHeader, 
+            Action<ExcelWorksheet> customHandler)
         {
             if (dataTables == null || dataTables.Count() == 0)
                 return;
 
             if (!string.IsNullOrWhiteSpace(excelFilePath))
-                excelFilePath = Path.GetFileNameWithoutExtension(excelFilePath) + ".xlsx";
+                excelFilePath = Path.Combine(Path.GetDirectoryName(excelFilePath), Path.GetFileNameWithoutExtension(excelFilePath) + ".xlsx");
             else
                 excelFilePath = Path.GetRandomFileName().Replace(".", string.Empty) + ".xlsx";
 
@@ -193,7 +194,7 @@ namespace Radial
         /// </summary>
         /// <param name="dataTable">The export data table.</param>
         /// <param name="excelFilePath">The excel file path, use random path if set to null.</param>
-        /// <param name="columnHeader">if set to <c>true</c> [column header].</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         /// <param name="customHandler">The custom handler.</param>
         public static void ExportToFile(DataTable dataTable, string excelFilePath, bool columnHeader, Action<ExcelWorksheet> customHandler)
         {
@@ -205,7 +206,7 @@ namespace Radial
         /// </summary>
         /// <param name="dataTable">The export data table.</param>
         /// <param name="excelFilePath">The excel file path, use random path if set to null.</param>
-        /// <param name="columnHeader">if set to <c>true</c> [column header].</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         public static void ExportToFile(DataTable dataTable, string excelFilePath = null, bool columnHeader = true)
         {
             ExportToFile(dataTable, excelFilePath, columnHeader, null);
@@ -216,7 +217,7 @@ namespace Radial
         /// </summary>
         /// <param name="dataSet">The export data set.</param>
         /// <param name="excelFilePath">The excel file path, use random path if set to null.</param>
-        /// <param name="columnHeader">if set to <c>true</c> [column header].</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         public static void ExportToFile(DataSet dataSet, string excelFilePath = null, bool columnHeader = true)
         {
             ExportToFile(dataSet, excelFilePath, columnHeader, null);
@@ -228,7 +229,7 @@ namespace Radial
         /// </summary>
         /// <param name="dataSet">The export data set.</param>
         /// <param name="excelFilePath">The excel file path, use random path if set to null.</param>
-        /// <param name="columnHeader">if set to <c>true</c> [column header].</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         /// <param name="customHandler">The custom handler.</param>
         public static void ExportToFile(DataSet dataSet, string excelFilePath, bool columnHeader, Action<ExcelWorksheet> customHandler)
         {
@@ -236,7 +237,7 @@ namespace Radial
                 return;
 
             if (!string.IsNullOrWhiteSpace(excelFilePath))
-                excelFilePath = Path.GetFileNameWithoutExtension(excelFilePath) + ".xlsx";
+                excelFilePath = Path.Combine(Path.GetDirectoryName(excelFilePath), Path.GetFileNameWithoutExtension(excelFilePath) + ".xlsx");
             else
                 excelFilePath = Path.GetRandomFileName().Replace(".", string.Empty) + ".xlsx";
 
@@ -262,7 +263,7 @@ namespace Radial
         /// <param name="pck">The PCK.</param>
         /// <param name="table">The table.</param>
         /// <param name="sheetIndex">Index of the sheet (zero-base).</param>
-        /// <param name="columnHeader">if set to <c>true</c> [column header].</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         /// <param name="customHandler">The custom handler.</param>
         private static void FillWorkbook(ExcelPackage pck, DataTable table, int sheetIndex, bool columnHeader, Action<ExcelWorksheet> customHandler)
         {

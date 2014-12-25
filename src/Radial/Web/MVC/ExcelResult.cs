@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Radial.Web.Mvc
         DataSet _dataSet;
         string _downloadFileName;
         bool _columnHeader;
+        Action<ExcelWorksheet> _customHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExcelResult"/> class.
@@ -24,8 +26,10 @@ namespace Radial.Web.Mvc
         /// <param name="dataTable">The data table.</param>
         /// <param name="downloadFileName">The download file name.</param>
         /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
-        public ExcelResult(DataTable dataTable, string downloadFileName = null, bool columnHeader = true)
-            : this(new DataTable[] { dataTable }, downloadFileName, columnHeader)
+        /// <param name="customHandler">The custom handler.</param>
+        public ExcelResult(DataTable dataTable, string downloadFileName = null, 
+            bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
+            : this(new DataTable[] { dataTable }, downloadFileName, columnHeader, customHandler)
         {
         }
 
@@ -35,11 +39,14 @@ namespace Radial.Web.Mvc
         /// <param name="dataTables">The data tables.</param>
         /// <param name="downloadFileName">The download file name.</param>
         /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
-        public ExcelResult(IEnumerable<DataTable> dataTables, string downloadFileName = null, bool columnHeader = true)
+        /// <param name="customHandler">The custom handler.</param>
+        public ExcelResult(IEnumerable<DataTable> dataTables, string downloadFileName = null, 
+            bool columnHeader = true, Action<ExcelWorksheet> customHandler=null)
         {
             _dataTables = new List<DataTable>(dataTables);
             _downloadFileName = downloadFileName;
             _columnHeader = columnHeader;
+            _customHandler = customHandler;
         }
 
         /// <summary>
@@ -48,11 +55,14 @@ namespace Radial.Web.Mvc
         /// <param name="dataSet">The data set.</param>
         /// <param name="downloadFileName">The download file name.</param>
         /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
-        public ExcelResult(DataSet dataSet, string downloadFileName = null, bool columnHeader = true)
+        /// <param name="customHandler">The custom handler.</param>
+        public ExcelResult(DataSet dataSet, string downloadFileName = null,
+            bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
         {
             _dataSet = dataSet;
             _downloadFileName = downloadFileName;
             _columnHeader = columnHeader;
+            _customHandler = customHandler;
         }
 
         /// <summary>
@@ -62,9 +72,9 @@ namespace Radial.Web.Mvc
         public override void ExecuteResult(ControllerContext context)
         {
             if (_dataTables != null)
-                ExcelTools.ExportToHttp(_dataTables, _downloadFileName, _columnHeader);
+                ExcelTools.ExportToHttp(_dataTables, _downloadFileName, _columnHeader, _customHandler);
             if (_dataSet != null)
-                ExcelTools.ExportToHttp(_dataSet, _downloadFileName, _columnHeader);
+                ExcelTools.ExportToHttp(_dataSet, _downloadFileName, _columnHeader, _customHandler);
         }
     }
 }

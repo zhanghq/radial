@@ -10,6 +10,7 @@ using Radial.Serialization;
 using System.Data;
 using System.Net;
 using System.Web.Routing;
+using OfficeOpenXml;
 
 namespace Radial.Web.Mvc
 {
@@ -176,11 +177,13 @@ namespace Radial.Web.Mvc
         /// <param name="c">The c.</param>
         /// <param name="dataTables">The data tables.</param>
         /// <param name="downloadFileName">The download file name.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
+        /// <param name="customHandler">The custom handler.</param>
         /// <returns>ExcelResult instance.</returns>
-        public static ExcelResult Excel(this Controller c, IEnumerable<DataTable> dataTables, string downloadFileName = null, bool columnHeader = true)
+        public static ExcelResult Excel(this Controller c, IEnumerable<DataTable> dataTables, string downloadFileName = null, 
+            bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
         {
-            return new ExcelResult(dataTables, downloadFileName, columnHeader);
+            return new ExcelResult(dataTables, downloadFileName, columnHeader, customHandler);
         }
 
         /// <summary>
@@ -189,11 +192,13 @@ namespace Radial.Web.Mvc
         /// <param name="c">The c.</param>
         /// <param name="dataTable">The data table.</param>
         /// <param name="downloadFileName">The download file name.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
+        /// <param name="customHandler">The custom handler.</param>
         /// <returns>ExcelResult instance.</returns>
-        public static ExcelResult Excel(this Controller c, DataTable dataTable, string downloadFileName = null, bool columnHeader = true)
+        public static ExcelResult Excel(this Controller c, DataTable dataTable, string downloadFileName = null,
+            bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
         {
-            return new ExcelResult(dataTable, downloadFileName, columnHeader);
+            return new ExcelResult(dataTable, downloadFileName, columnHeader, customHandler);
         }
 
         /// <summary>
@@ -202,11 +207,13 @@ namespace Radial.Web.Mvc
         /// <param name="c">The c.</param>
         /// <param name="dataSet">The data set.</param>
         /// <param name="downloadFileName">The download file name.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
+        /// <param name="customHandler">The custom handler.</param>
         /// <returns>ExcelResult instance.</returns>
-        public static ExcelResult Excel(this Controller c, DataSet dataSet, string downloadFileName = null, bool columnHeader = true)
+        public static ExcelResult Excel(this Controller c, DataSet dataSet, string downloadFileName = null, 
+            bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
         {
-            return new ExcelResult(dataSet, downloadFileName, columnHeader);
+            return new ExcelResult(dataSet, downloadFileName, columnHeader, customHandler);
         }
 
         /// <summary>
@@ -275,7 +282,8 @@ namespace Radial.Web.Mvc
         /// <param name="controllerName">Name of the controller.</param>
         /// <param name="routeValues">The route values.</param>
         /// <returns></returns>
-        public static TransferToRouteResult TransferToAction(this Controller c, string actionName, string controllerName, RouteValueDictionary routeValues)
+        public static TransferToRouteResult TransferToAction(this Controller c, string actionName,
+            string controllerName, RouteValueDictionary routeValues = null)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(actionName), "action name can not be empty or null");
 

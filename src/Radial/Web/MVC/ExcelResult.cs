@@ -25,7 +25,7 @@ namespace Radial.Web.Mvc
         /// </summary>
         /// <param name="dataTable">The data table.</param>
         /// <param name="downloadFileName">The download file name.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         /// <param name="customHandler">The custom handler.</param>
         public ExcelResult(DataTable dataTable, string downloadFileName = null, 
             bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
@@ -38,7 +38,7 @@ namespace Radial.Web.Mvc
         /// </summary>
         /// <param name="dataTables">The data tables.</param>
         /// <param name="downloadFileName">The download file name.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         /// <param name="customHandler">The custom handler.</param>
         public ExcelResult(IEnumerable<DataTable> dataTables, string downloadFileName = null, 
             bool columnHeader = true, Action<ExcelWorksheet> customHandler=null)
@@ -54,7 +54,7 @@ namespace Radial.Web.Mvc
         /// </summary>
         /// <param name="dataSet">The data set.</param>
         /// <param name="downloadFileName">The download file name.</param>
-        /// <param name="columnHeader">if set to <c>true</c> will set column name as header.</param>
+        /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         /// <param name="customHandler">The custom handler.</param>
         public ExcelResult(DataSet dataSet, string downloadFileName = null,
             bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)

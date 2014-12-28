@@ -97,11 +97,21 @@ namespace Radial
         /// <summary>
         /// Gets the specified log instance.
         /// </summary>
+        /// <param name="logType">The log type.</param>
+        /// <returns>log instance.</returns>
+        public static Logger GetInstance(Type logType)
+        {
+            return GetInstance(logType.Name);
+        }
+
+        /// <summary>
+        /// Gets the specified log instance.
+        /// </summary>
         /// <typeparam name="T">the type.</typeparam>
         /// <returns>log instance.</returns>
         public static Logger GetInstance<T>()
         {
-            return GetInstance(typeof(T).Name);
+            return GetInstance(typeof(T));
         }
 
         /// <summary>

@@ -279,6 +279,7 @@
     <Compile Include="Web\MVC\Pagination\PagerOptions.cs" />
     <Compile Include="Web\MVC\TransferResult.cs" />
     <Compile Include="Web\MVC\UrlHelperExtensions.cs" />
+    <Compile Include="Web\MVC\WebApi\ControllerExtensions.cs" />
     <Compile Include="Web\MVC\WebApi\Formatting\NewJsonMediaTypeFormatter.cs" />
     <Compile Include="Web\MVC\WebApi\Formatting\TextMediaTypeFormatter.cs" />
     <Compile Include="Web\MVC\XmlResult.cs" />

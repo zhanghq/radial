@@ -278,6 +278,7 @@ namespace Radial.Web
             else
                 CurrentContext.Response.ContentType = contentType.Trim();
 
+            CurrentContext.Response.ContentEncoding = StaticVariables.Encoding;
             CurrentContext.Response.Write(text);
             if (statusCode.HasValue)
                 CurrentContext.Response.StatusCode = (int)statusCode.Value;
@@ -367,7 +368,7 @@ namespace Radial.Web
             else
                 CurrentContext.Response.ContentType = contentType.Trim();
 
-            CurrentContext.Response.Charset = StaticVariables.Encoding.BodyName;
+            CurrentContext.Response.ContentEncoding = StaticVariables.Encoding;
             CurrentContext.Response.Write(xml);
             if (statusCode.HasValue)
                 CurrentContext.Response.StatusCode = (int)statusCode.Value;
@@ -469,7 +470,7 @@ namespace Radial.Web
         /// <returns>If found return the Content-Type string, otherwise return "application/octet-stream" as default</returns>
         public static string GetContentType(string fileExtension)
         {
-            string contentType = "application/octet-stream";
+            string contentType = ContentTypes.BinaryStream;
 
             if (!string.IsNullOrWhiteSpace(fileExtension))
             {

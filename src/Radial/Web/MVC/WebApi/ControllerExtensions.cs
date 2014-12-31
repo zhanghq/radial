@@ -39,6 +39,9 @@ namespace Radial.Web.Mvc.WebApi
         /// <returns></returns>
         public static HttpResponseMessage WritePlainText(this ApiController c, string text, HttpStatusCode? code = HttpStatusCode.OK)
         {
+            if (string.IsNullOrWhiteSpace(text))
+                text = string.Empty;
+
             var resp = new HttpResponseMessage(code.Value);
             resp.Content = new StringContent(text, StaticVariables.Encoding, ContentTypes.PlainText);
             return resp;
@@ -55,6 +58,9 @@ namespace Radial.Web.Mvc.WebApi
         /// <returns></returns>
         public static HttpResponseMessage WriteHtml(this ApiController c, string html, HttpStatusCode? code = HttpStatusCode.OK)
         {
+            if (string.IsNullOrWhiteSpace(html))
+                html = string.Empty;
+
             var resp = new HttpResponseMessage(code.Value);
             resp.Content = new StringContent(html, StaticVariables.Encoding, ContentTypes.Html);
             return resp;
@@ -81,6 +87,9 @@ namespace Radial.Web.Mvc.WebApi
         /// <returns></returns>
         public static HttpResponseMessage WriteJson(this ApiController c, string json, HttpStatusCode? code = HttpStatusCode.OK)
         {
+            if (string.IsNullOrWhiteSpace(json))
+                json = string.Empty;
+
             var resp = new HttpResponseMessage(code.Value);
             resp.Content = new StringContent(json, StaticVariables.Encoding, ContentTypes.Json);
             return resp;
@@ -108,6 +117,9 @@ namespace Radial.Web.Mvc.WebApi
         /// <returns></returns>
         public static HttpResponseMessage WriteXml(this ApiController c, string xml, HttpStatusCode? code = HttpStatusCode.OK)
         {
+            if (string.IsNullOrWhiteSpace(xml))
+                xml = string.Empty;
+
             var resp = new HttpResponseMessage(code.Value);
             resp.Content = new StringContent(xml, StaticVariables.Encoding, ContentTypes.Xml);
             return resp;

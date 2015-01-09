@@ -192,6 +192,7 @@
     <Compile Include="Persist\Nhs\StraightQuery.cs" />
     <Compile Include="Persist\Nhs\TimingIdGenerator.cs" />
     <Compile Include="Persist\StorageAliasConfig.cs" />
+    <Compile Include="RegisterInterfaceAttribute.cs" />
     <Compile Include="Serialization\SerializeFormat.cs" />
     <Compile Include="Cache\CacheStatic.cs" />
     <Compile Include="Cache\EmptyCache.cs" />

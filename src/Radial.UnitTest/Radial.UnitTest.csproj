@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CacheTest.cs" />
+    <Compile Include="ComponentTest.cs" />
     <Compile Include="ExcelToolsTest.cs" />
     <Compile Include="FtpClientTest.cs" />
     <Compile Include="IO\StreamKitsTest.cs" />

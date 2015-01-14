@@ -23,10 +23,16 @@ namespace Radial.Extensions
             if (predicate == null)
                 throw new System.ArgumentNullException("predicate");
 
-            IEnumerable<TSource> temps = source.Where(predicate);
 
-            for (int i = 0; i < temps.Count(); i++)
-                source.Remove(temps.ElementAt(i));
+            for (int i = 0; i < source.Count; i++)
+            {
+                var o = source.ElementAt(i);
+                if (predicate(o))
+                {
+                    source.Remove(o);
+                    i--;
+                }
+            }
         }
 
         /// <summary>

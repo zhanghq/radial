@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Radial.Web.Mvc.WebApi.Formatting
+namespace Radial.Web.WebApi.Formatting
 {
     /// <summary>
     /// TextMediaTypeFormatter

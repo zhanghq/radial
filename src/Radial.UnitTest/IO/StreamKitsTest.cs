@@ -22,5 +22,11 @@ namespace Radial.UnitTest.IO
             StreamKits.AddLinesToFile(new string[] { "你好2332", "你好233a2" }, path);
             //StreamKits.TruncateFile(path);
         }
+
+        [Test]
+        public void GetLines()
+        {
+            var lines = Radial.IO.StreamKits.GetLines("..\\..\\XmlParamTest.cs");
+        }
     }
 }

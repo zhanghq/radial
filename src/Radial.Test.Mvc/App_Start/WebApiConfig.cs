@@ -1,4 +1,4 @@
-﻿using Radial.Web.Mvc.WebApi.Formatting;
+﻿using Radial.Web.WebApi.Formatting;
 using System;
 using System.Collections.Generic;
 using System.Linq;

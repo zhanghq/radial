@@ -78,24 +78,27 @@ namespace Radial.Tools.Srvd
                 if (args[0] == "-?")
                     Action = CmdAction.Help;
 
-                string serviceArg = args.Where(o => o.StartsWith("--service=")).FirstOrDefault();
-                string pathArg = args.Where(o => o.StartsWith("--path=")).FirstOrDefault();
-                string argsArg = args.Where(o => o.StartsWith("--args=")).FirstOrDefault();
+                if (Action != CmdAction.Help)
+                {
+                    string serviceArg = args.Where(o => o.StartsWith("--service=")).FirstOrDefault();
+                    string pathArg = args.Where(o => o.StartsWith("--path=")).FirstOrDefault();
+                    string argsArg = args.Where(o => o.StartsWith("--args=")).FirstOrDefault();
 
-                if (!string.IsNullOrWhiteSpace(pathArg))
-                    ExePath = pathArg.Trim().Remove(0, 7);
+                    if (!string.IsNullOrWhiteSpace(pathArg))
+                        ExePath = pathArg.Trim().Remove(0, 7);
 
-                if (!string.IsNullOrWhiteSpace(serviceArg))
-                    ServiceName = serviceArg.Trim().Remove(0, 10);
+                    if (!string.IsNullOrWhiteSpace(serviceArg))
+                        ServiceName = serviceArg.Trim().Remove(0, 10);
 
-                if (!string.IsNullOrWhiteSpace(argsArg))
-                    Args = argsArg.Trim().Remove(0, 7);
+                    if (!string.IsNullOrWhiteSpace(argsArg))
+                        Args = argsArg.Trim().Remove(0, 7);
 
-                if (string.IsNullOrWhiteSpace(ServiceName))
-                    throw new ArgumentException("missing service name (--service)");
+                    if (string.IsNullOrWhiteSpace(ServiceName))
+                        throw new ArgumentException("missing service name (--service)");
 
-                if (Action == CmdAction.Install && string.IsNullOrWhiteSpace(ExePath))
-                    throw new ArgumentException("missing executable file path (--path)");
+                    if (Action == CmdAction.Install && string.IsNullOrWhiteSpace(ExePath))
+                        throw new ArgumentException("missing executable file path (--path)");
+                }
             }
         }
           

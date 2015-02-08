@@ -151,6 +151,7 @@
     <Compile Include="IO\StreamKits.cs" />
     <Compile Include="IO\VideoMedia.cs" />
     <Compile Include="MultiResult.cs" />
+    <Compile Include="Persist\DataReaderExtensions.cs" />
     <Compile Include="Persist\Lite\Cfg\ConnectionElement.cs" />
     <Compile Include="Persist\Lite\Cfg\ConnectionElementCollection.cs" />
     <Compile Include="Persist\Lite\Cfg\ConnectionSection.cs" />

@@ -557,17 +557,20 @@ namespace Radial
             {
                 dynamic obj = Serialization.JsonSerializer.Deserialize<dynamic>(resp.Text);
 
-                if (obj != null && obj.ret != null && obj.ret == 1)
+                if (obj != null && obj.ret != null)
                 {
-                    GeoInfo geo = new GeoInfo();
-                    if (obj.country != null)
-                        geo.Country = obj.country;
-                    if (obj.province != null)
-                        geo.Division = obj.province;
-                    if (obj.city != null)
-                        geo.City = obj.city;
+                    if (obj.ret == 1)
+                    {
+                        GeoInfo geo = new GeoInfo();
+                        if (obj.country != null)
+                            geo.Country = obj.country;
+                        if (obj.province != null)
+                            geo.Division = obj.province;
+                        if (obj.city != null)
+                            geo.City = obj.city;
 
-                    return geo;
+                        return geo;
+                    }
                 }
             }
 

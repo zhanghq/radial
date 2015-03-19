@@ -551,30 +551,34 @@ namespace Radial
 
             string serverUrl = string.Format("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip={0}", ipAddress.Trim());
 
+            GeoInfo geo = null;
+
             HttpResponseObj resp = HttpWebClient.Get(serverUrl);
 
             if (resp.Code == System.Net.HttpStatusCode.OK)
             {
-                dynamic obj = Serialization.JsonSerializer.Deserialize<dynamic>(resp.Text);
-
-                if (obj != null && obj.ret != null)
+                try
                 {
-                    if (obj.ret == 1)
+                    dynamic obj = Serialization.JsonSerializer.Deserialize<dynamic>(resp.Text);
+
+                    if (obj != null && obj.ret != null && obj.ret == 1)
                     {
-                        GeoInfo geo = new GeoInfo();
+                        geo = new GeoInfo();
                         if (obj.country != null)
                             geo.Country = obj.country;
                         if (obj.province != null)
                             geo.Division = obj.province;
                         if (obj.city != null)
                             geo.City = obj.city;
-
-                        return geo;
                     }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Default.Warn(ex, "GetGeoInfo response: {0}", resp.Text);
                 }
             }
 
-            return null;
+            return geo;
         }
 
 

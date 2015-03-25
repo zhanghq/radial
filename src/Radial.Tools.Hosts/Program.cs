@@ -49,11 +49,9 @@ namespace Radial.Tools.Hosts
         private static void ResumeInstance()
         {
             Process cp = Process.GetCurrentProcess();
-            IList<Process> aps = new List<Process>();
-            foreach (var p in Process.GetProcessesByName(cp.ProcessName))
-                aps.Add(p);
-            foreach (var p in Process.GetProcessesByName(cp.ProcessName + ".vshost"))
-                aps.Add(p);
+            List<Process> aps = new List<Process>();
+            aps.AddRange(Process.GetProcessesByName(cp.ProcessName));
+            aps.AddRange(Process.GetProcessesByName(cp.ProcessName + ".vshost"));
 
             foreach (Process p in aps)
             {

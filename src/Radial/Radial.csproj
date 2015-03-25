@@ -287,6 +287,7 @@
     <Compile Include="Web\MVC\XmlResult.cs" />
     <Compile Include="Web\UserIdentity.cs" />
     <Compile Include="Windows\ServiceInstaller.cs" />
+    <Compile Include="Windows\SingleRun.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

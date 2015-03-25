@@ -41,7 +41,7 @@ namespace Radial.Windows
         public static bool Lock(string mutexName)
         {
             if (string.IsNullOrWhiteSpace(mutexName))
-                mutexName = Process.GetCurrentProcess().MainModule.ModuleName.Replace(Vshost, null);
+                mutexName = Radial.Security.CryptoProvider.SHA1Encrypt(Process.GetCurrentProcess().MainModule.FileName.Replace(Vshost, null));
 
             bool createNew = false;
 
@@ -65,7 +65,7 @@ namespace Radial.Windows
         public static void Unlock(string mutexName)
         {
             if (string.IsNullOrWhiteSpace(mutexName))
-                mutexName = Process.GetCurrentProcess().MainModule.ModuleName.Replace(Vshost, null);
+                mutexName = Radial.Security.CryptoProvider.SHA1Encrypt(Process.GetCurrentProcess().MainModule.FileName.Replace(Vshost, null));
 
             Mutex result;
 

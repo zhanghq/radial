@@ -1,4 +1,6 @@
-﻿namespace Radial.Tools.Hosts
+﻿using Radial.Tools.Hosts.Properties;
+using System.Threading;
+namespace Radial.Tools.Hosts
 {
     partial class MainForm
     {
@@ -18,6 +20,13 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
+
+
+            var m = Mutex.OpenExisting(Resources.MutexName);
+
+            if (m != null)
+                m.ReleaseMutex();
+
         }
 
         #region Windows 窗体设计器生成的代码

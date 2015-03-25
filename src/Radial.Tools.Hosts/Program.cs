@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Radial.Tools.Hosts.Properties;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Radial.Tools.Hosts
 {
     static class Program
     {
-
         /// </summary>
         /// <param name="hWnd">窗口句柄</param>
         /// <param name="cmdShow">指定窗口如何显示。查看允许值列表，请查阅ShowWlndow函数的说明部分</param>
@@ -31,40 +32,40 @@ namespace Radial.Tools.Hosts
         [STAThread]
         static void Main()
         {
-            Process process = RuningInstance();
 
-            if (process == null)
+            bool createNew = false;
+            Mutex m = new Mutex(true, Resources.MutexName, out createNew);
+
+            if (createNew)
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new MainForm());
             }
             else
-                HandleRunningInstance(process);
+                ResumeInstance();
         }
 
-
-        private static void HandleRunningInstance(Process instance)
+        private static void ResumeInstance()
         {
-            ShowWindowAsync(instance.MainWindowHandle, 1);//显示
-            SetForegroundWindow(instance.MainWindowHandle);//当到最前端
-        }
+            Process cp = Process.GetCurrentProcess();
+            IList<Process> aps = new List<Process>();
+            foreach (var p in Process.GetProcessesByName(cp.ProcessName))
+                aps.Add(p);
+            foreach (var p in Process.GetProcessesByName(cp.ProcessName + ".vshost"))
+                aps.Add(p);
 
-        private static Process RuningInstance()
-        {
-            Process currentProcess = Process.GetCurrentProcess();
-            Process[] processes = Process.GetProcessesByName(currentProcess.ProcessName);
-            foreach (Process process in processes)
+            foreach (Process p in aps)
             {
-                if (process.Id != currentProcess.Id)
+                var pfn = p.MainModule.FileName.Replace(".vshost", "");
+                if (p.Id != cp.Id && pfn == cp.MainModule.FileName)
                 {
-                    if (Assembly.GetExecutingAssembly().Location.Replace("/", "\\") == currentProcess.MainModule.FileName)
-                    {
-                        return process;
-                    }
+                    ShowWindowAsync(p.MainWindowHandle, 1);//显示
+                    SetForegroundWindow(p.MainWindowHandle);//当到最前端
+
+                    break;
                 }
             }
-            return null;
         }
     }
 }

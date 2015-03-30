@@ -21,7 +21,7 @@ namespace Radial.Security
         /// </summary>
         /// <param name="clearText">The cleartext.</param>
         /// <returns>
-        /// The ciphertext in Base64 string format.
+        /// The ciphertext in string format.
         /// </returns>
         public static string SHA1Encrypt(string clearText)
         {
@@ -60,7 +60,7 @@ namespace Radial.Security
         /// </summary>
         /// <param name="clearText">The cleartext.</param>
         /// <returns>
-        /// The ciphertext in Base64 string format.
+        /// The ciphertext in string format.
         /// </returns>
         public static string MD5Encrypt(string clearText)
         {
@@ -93,174 +93,42 @@ namespace Radial.Security
 
         #endregion
 
-        #region DES
+        #region Symmetric
 
         /// <summary>
-        /// DES encrypt.
+        /// Symmetric encrypt.
         /// </summary>
-        /// <param name="clearText">The cleartext.</param>
-        /// <param name="key">The encryption key.</param>
-        /// <returns>
-        /// The ciphertext in Base64 string format.
-        /// </returns>
-        public static string DESEncrypt(string clearText, SymmetricAlgorithm key)
+        /// <param name="alg">The symmetric algorithm.</param>
+        /// <param name="input">The input bytes</param>
+        /// <returns></returns>
+        public static byte[] SymmetricEncrypt(SymmetricAlgorithm alg,byte[] input)
         {
-            Checker.Parameter(!string.IsNullOrEmpty(clearText), "cleartext can not be empty or null.");
-
-            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
-
-            byte[] inputByteArray = StaticVariables.Encoding.GetBytes(clearText);
-
-            return DESEncrypt(inputByteArray, key);
-        }
-
-        /// <summary>
-        /// DES encrypt.
-        /// </summary>
-        /// <param name="clearBytes">The cleartext.</param>
-        /// <param name="key">The encryption key.</param>
-        /// <returns>The ciphertext in Base64 string format.</returns>
-        public static string DESEncrypt(byte[] clearBytes, SymmetricAlgorithm key)
-        {
-            Checker.Parameter(clearBytes != null, "clearBytes can not be null.");
-            Checker.Parameter(key != null, "encryption key can not be null.");
-
-            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
-
             using (MemoryStream ms = new MemoryStream())
-            using (CryptoStream cs = new CryptoStream(ms, key.CreateEncryptor(), CryptoStreamMode.Write))
+            using (CryptoStream cs = new CryptoStream(ms, alg.CreateEncryptor(), CryptoStreamMode.Write))
             {
-                cs.Write(clearBytes, 0, clearBytes.Length);
+                cs.Write(input, 0, input.Length);
                 cs.FlushFinalBlock();
-                return Convert.ToBase64String(ms.ToArray());
+                return ms.ToArray();
             }
         }
 
-
         /// <summary>
-        /// DES decrypt.
+        /// Symmetric decrypt.
         /// </summary>
-        /// <param name="encryptedText">The ciphertext in Base64 string format.</param>
-        /// <param name="key">The encryption key.</param>
-        /// <returns>The cleartext.</returns>
-        public static string DESDecrypt(string encryptedText, SymmetricAlgorithm key)
+        /// <param name="alg">The symmetric algorithm.</param>
+        /// <param name="input">The input bytes</param>
+        /// <returns></returns>
+        public static byte[] SymmetricDecrypt(SymmetricAlgorithm alg, byte[] input)
         {
-            Checker.Parameter(!string.IsNullOrEmpty(encryptedText), "encryptedText can not be empty or null.");
-
-            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
-
-            return DESDecrypt(Convert.FromBase64String(encryptedText), key);;
-        }
-
-        /// <summary>
-        /// DES decrypt.
-        /// </summary>
-        /// <param name="encryptedBytes">The ciphertext in binary format.</param>
-        /// <param name="key">The encryption key.</param>
-        /// <returns>The cleartext.</returns>
-        public static string DESDecrypt(byte[] encryptedBytes, SymmetricAlgorithm key)
-        {
-            Checker.Parameter(encryptedBytes != null, "encryptedBytes can not be null.");
-            Checker.Parameter(key != null, "encryption key can not be null.");
-
-
-            DESCryptoServiceProvider des = new DESCryptoServiceProvider();
-            
-
-            using(MemoryStream ms = new MemoryStream(encryptedBytes))
-            using (CryptoStream cs = new CryptoStream(ms, key.CreateDecryptor(), CryptoStreamMode.Read))
-            using (StreamReader sr = new StreamReader(cs))
-            {
-                return sr.ReadToEnd();
-            }
-
-
-        }
-
-        #endregion
-
-
-        #region Rijndael
-
-        /// <summary>
-        /// Rijndael encrypt.
-        /// </summary>
-        /// <param name="clearText">The cleartext.</param>
-        /// <param name="key">The encryption key.</param>
-        /// <returns>
-        /// The ciphertext in Base64 string format.
-        /// </returns>
-        public static string RijndaelEncrypt(string clearText, SymmetricAlgorithm key)
-        {
-            Checker.Parameter(!string.IsNullOrEmpty(clearText), "cleartext can not be empty or null.");
-
-            return RijndaelEncrypt(StaticVariables.Encoding.GetBytes(clearText), key);
-        }
-
-        /// <summary>
-        /// Rijndael encrypt.
-        /// </summary>
-        /// <param name="clearBytes">The cleartext.</param>
-        /// <param name="key">The encryption key.</param>
-        /// <returns>
-        /// The ciphertext in Base64 string format.
-        /// </returns>
-        public static string RijndaelEncrypt(byte[] clearBytes, SymmetricAlgorithm key)
-        {
-            Checker.Parameter(clearBytes != null, "clearBytes can not be null.");
-            Checker.Parameter(key != null, "encryption key can not be null.");
-
-
-            Rijndael rijndael = Rijndael.Create();
-
             using (MemoryStream ms = new MemoryStream())
-            using (CryptoStream cs = new CryptoStream(ms, key.CreateEncryptor(), CryptoStreamMode.Write))
+            using (CryptoStream cs = new CryptoStream(ms, alg.CreateDecryptor(), CryptoStreamMode.Write))
             {
-                cs.Write(clearBytes, 0, clearBytes.Length);
+                cs.Write(input, 0, input.Length);
                 cs.FlushFinalBlock();
-                return Convert.ToBase64String(ms.ToArray());
+                return ms.ToArray();
             }
         }
 
-        /// <summary>
-        /// Rijndael decrypt.
-        /// </summary>
-        /// <param name="encryptedText">The ciphertext in Base64 string format</param>
-        /// <param name="key">The encryption key.</param>
-        /// <returns>
-        /// The cleartext.
-        /// </returns>
-        public static string RijndaelDecrypt(string encryptedText, SymmetricAlgorithm key)
-        {
-            Checker.Parameter(!string.IsNullOrEmpty(encryptedText), "encryptedText can not be empty or null.");
-
-            return RijndaelDecrypt(Convert.FromBase64String(encryptedText), key);
-        }
-
-        /// <summary>
-        /// Rijndael decrypt.
-        /// </summary>
-        /// <param name="encryptedBytes">The ciphertext in binary format.</param>
-        /// <param name="key">The encryption key.</param>
-        /// <returns>
-        /// The cleartext in binary format.
-        /// </returns>
-        public static string RijndaelDecrypt(byte[] encryptedBytes, SymmetricAlgorithm key)
-        {
-            Checker.Parameter(encryptedBytes != null, "encryptedBytes can not be null.");
-            Checker.Parameter(key != null, "encryption key can not be null.");
-
-           
-
-            Rijndael rijndael = Rijndael.Create();
-
-            using (MemoryStream ms = new MemoryStream(encryptedBytes, 0, encryptedBytes.Length))
-            using (CryptoStream cs = new CryptoStream(ms, key.CreateDecryptor(), CryptoStreamMode.Read))
-            using (StreamReader sr = new StreamReader(cs))
-            {
-                return sr.ReadToEnd();
-            }
-        }
 
         #endregion
     }

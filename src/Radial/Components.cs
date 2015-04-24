@@ -26,20 +26,23 @@ namespace Radial
         {
             get
             {
-                lock (SyncRoot)
+                if (InnerContainer == null)
                 {
-                    if (InnerContainer == null)
+                    lock (SyncRoot)
                     {
-                        InnerContainer = new UnityContainer();
+                        if (InnerContainer == null)
+                        {
+                            InnerContainer = new UnityContainer();
 
-                        UnityConfigurationSection section = (UnityConfigurationSection)ConfigurationManager.GetSection(UnityConfigurationSection.SectionName);
+                            UnityConfigurationSection section = (UnityConfigurationSection)ConfigurationManager.GetSection(UnityConfigurationSection.SectionName);
 
-                        if (section != null && section.Containers.Count > 0)
-                            section.Configure(InnerContainer);
+                            if (section != null && section.Containers.Count > 0)
+                                section.Configure(InnerContainer);
+                        }
                     }
-
-                    return InnerContainer;
                 }
+
+                return InnerContainer;
             }
         }
 

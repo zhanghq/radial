@@ -114,11 +114,11 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Gets the <see cref="NHibernate.ISessionFactory"/> instance with the specified storage alias.
         /// </summary>
-        /// <param name="factoryAlias">The storage alias (case insensitive).</param>
+        /// <param name="storageAlias">The storage alias (case insensitive).</param>
         /// <returns>The NHibernate.ISessionFactory instance</returns>
-        public static ISessionFactory GetFactoryInstance(string factoryAlias)
+        public static ISessionFactory GetFactoryInstance(string storageAlias)
         {
-            return GeFactorytWrapper(factoryAlias).Factory;
+            return GeFactorytWrapper(storageAlias).Factory;
         }
 
         /// <summary>
@@ -141,11 +141,11 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Open a new session using the specified storage alias.
         /// </summary>
-        /// <param name="alias">The storage alias (case insensitive).</param>
+        /// <param name="storageAlias">The storage alias (case insensitive).</param>
         /// <returns>A new ISession instance.</returns>
-        public static ISession OpenSession(string alias)
+        public static ISession OpenSession(string storageAlias)
         {
-            return GetFactoryInstance(alias).OpenSession();
+            return GetFactoryInstance(storageAlias).OpenSession();
         }
     }
 }

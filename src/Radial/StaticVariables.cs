@@ -36,12 +36,12 @@ namespace Radial
         /// <summary>
         /// Gets the full path of configuration file.
         /// </summary>
-        /// <param name="fileName">The configuration file name contains extension.</param>
+        /// <param name="filePath">The configuration file path.</param>
         /// <returns>The full path of configuration file.</returns>
-        public static string GetConfigPath(string fileName)
+        public static string GetConfigPath(string filePath)
         {
-            Checker.Parameter(!string.IsNullOrWhiteSpace(fileName), "configuration file name can not be empty or null.");
-            return Path.Combine(ConfigDirectory, fileName.Trim('\\', ' '));
+            Checker.Parameter(!string.IsNullOrWhiteSpace(filePath), "configuration file path can not be empty or null.");
+            return Path.Combine(ConfigDirectory, filePath.Trim('\\', ' '));
         }
     }
 }

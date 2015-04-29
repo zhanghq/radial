@@ -9,7 +9,7 @@ namespace Radial.Persist.Nhs
     /// <summary>
     /// A wrapper class of ISessionFactory instance.
     /// </summary>
-    public sealed class SessionFactoryWrapper : IEquatable<StorageAliasConfig>
+    public sealed class SessionFactoryWrapper : IEquatable<SessionFactoryWrapper>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SessionFactoryWrapper"/> class.
@@ -77,7 +77,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <param name="other">The other.</param>
         /// <returns></returns>
-        public bool Equals(StorageAliasConfig other)
+        public bool Equals(SessionFactoryWrapper other)
         {
             return Equals(other);
         }

@@ -24,17 +24,23 @@ namespace Radial.Tools.NhOmp
             sb.AppendLine("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
             sb.AppendLine(string.Format("<hibernate-mapping xmlns=\"urn:nhibernate-mapping-2.2\" assembly=\"{0}\" namespace=\"{1}\">",
                 ClassAssembly.GetName().Name, ClassType.Namespace));
-            sb.AppendLine(string.Format("  <class name=\"{0}\">",ClassType.Name));
+            sb.AppendLine(string.Format("  <class name=\"{0}\">", ClassType.Name));
 
-            foreach(var p in ClassType.GetProperties())
+            List<string> ps = new List<string>();
+
+            foreach (var p in ClassType.GetProperties())
             {
                 if (string.Compare(p.Name, "Id", false) == 0)
                 {
-                    sb.AppendLine(string.Format("    <id name=\"{0}\"/>", p.Name));
+                    ps.Add(string.Format("    <id name=\"{0}\"/>", p.Name));
                     continue;
                 }
-                sb.AppendLine(string.Format("    <property name=\"{0}\"/>", p.Name));
+                ps.Add(string.Format("    <property name=\"{0}\"/>", p.Name));
             }
+
+            ps.Sort();
+
+            ps.ForEach(o => sb.AppendLine(o));
 
             sb.AppendLine("  </class>");
 

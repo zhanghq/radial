@@ -14,7 +14,7 @@ namespace Radial.Test.Mvc
     {
         public void Initialize()
         {
-            Components.Container.RegisterType<IParam, NhParam>();
+            Components.Container.RegisterType<IParam, KvParam>();
         }
 
         public void Start()

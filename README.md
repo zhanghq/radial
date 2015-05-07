@@ -2,6 +2,9 @@ Radial Project
 ======
 Radial project is a lightweight c# framework, which is designed to improve developers working efficiency, more convenient and efficient to build applications, It contains the following components:
 
+### Install From NuGet ###
+PM> Install-Package Radial
+
 ### Dependency Injection ###
 Radial contains an unified entrance class of Microsoft.Practices.Unity, easy to use, but many features in Radial depends on it
 

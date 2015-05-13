@@ -208,7 +208,6 @@
     <Compile Include="Drawing\Captcha.cs" />
     <Compile Include="Checker.cs" />
     <Compile Include="Drawing\ImageKits.cs" />
-    <Compile Include="EnumDescriptionAttribute.cs" />
     <Compile Include="ExcelTools.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />

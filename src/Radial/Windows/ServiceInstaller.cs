@@ -343,7 +343,6 @@ namespace Radial.Windows
         /// <exception cref="System.ApplicationException">Unable to start service</exception>
         private static void Start(IntPtr service)
         {
-            SERVICE_STATUS status = new SERVICE_STATUS();
             StartService(service, 0, 0);
             var changedStatus = WaitForStatus(service, ServiceState.StartPending, ServiceState.Running);
             if (!changedStatus)

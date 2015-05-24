@@ -95,16 +95,9 @@ namespace Radial
         {
             if (string.IsNullOrWhiteSpace(source))
                 return false;
-
-            try
-            {
-                DateTime time = Convert.ToDateTime(source.Trim());
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+			
+			DateTime time;
+			return DateTime.TryParse (source, out time);
         }
         #endregion
 

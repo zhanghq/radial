@@ -180,8 +180,6 @@ namespace Radial.Security
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(msg), "需要解密的消息不能为空");
 
-            byte[] data = StaticVariables.Encoding.GetBytes(msg);
-
             byte[] msgBytes = new byte[msg.Length / 2];
 
             for (int i = 0; i < msgBytes.Length; i++)
@@ -286,8 +284,6 @@ namespace Radial.Security
         public string DecryptUsePrivateKey(string msg,  bool fOAEP)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(msg), "msg can not be empty or null");
-
-            byte[] data = StaticVariables.Encoding.GetBytes(msg);
 
             byte[] msgBytes = new byte[msg.Length / 2];
 

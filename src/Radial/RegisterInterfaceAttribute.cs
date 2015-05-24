@@ -21,12 +21,11 @@ namespace Radial
             : this(interfaceType, null)
         { }
 
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RegisterInterfaceAttribute"/> class.
-        /// </summary>
-        /// <param name="interfaceType">Type of the interface.</param>
-        /// <param name="symbol ">The symbol .</param>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Radial.RegisterInterfaceAttribute"/> class.
+		/// </summary>
+		/// <param name="interfaceType">Interface type.</param>
+		/// <param name="symbol">Symbol.</param>
         public RegisterInterfaceAttribute(Type interfaceType, string symbol)
         {
             InterfaceType = interfaceType;

@@ -2242,6 +2242,12 @@
             Constructor
             </summary>
         </member>
+        <member name="M:Common.Logging.Simple.NoOpLoggerFactoryAdapter.#ctor(System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Constructor for binary backwards compatibility
+            </summary>
+            <param name="properties">The properties.</param>
+        </member>
         <member name="M:Common.Logging.Simple.NoOpLoggerFactoryAdapter.GetLogger(System.Type)">
             <summary>
             Get a ILog instance by type 
@@ -2466,7 +2472,7 @@
                   &lt;logging&gt;
                     &lt;factoryAdapter type=&quot;Common.Logging.Simple.ConsoleOutLoggerFactoryAdapter, Common.Logging&quot;&gt;
                       &lt;arg key=&quot;showLogName&quot; value=&quot;true&quot; /&gt;
-                      &lt;arg key=&quot;showDataTime&quot; value=&quot;true&quot; /&gt;
+                      &lt;arg key=&quot;showDateTime&quot; value=&quot;true&quot; /&gt;
                       &lt;arg key=&quot;level&quot; value=&quot;ALL&quot; /&gt;
                       &lt;arg key=&quot;dateTimeFormat&quot; value=&quot;yyyy/MM/dd HH:mm:ss:fff&quot; /&gt;
                     &lt;/factoryAdapter&gt;

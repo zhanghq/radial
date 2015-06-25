@@ -18,14 +18,14 @@ namespace Radial.UnitTest
             _a = a;
         }
 
-        public void Do()
+        public void Do1()
         {
             Console.WriteLine("impl1: {0}", _a);
         }
     }
 
     interface Intface1{
-        void Do();
+        void Do1();
     }
 
     [RegisterInterface(typeof(Intface2))]
@@ -37,7 +37,7 @@ namespace Radial.UnitTest
             _a = a;
         }
 
-        public void Do()
+        public void Do2()
         {
             Console.WriteLine("impl2: {0}", _a);
         }
@@ -45,7 +45,29 @@ namespace Radial.UnitTest
 
     interface Intface2
     {
-        void Do();
+        void Do2();
+    }
+
+
+    [RegisterInterface(typeof(Intface1))]
+    [RegisterInterface(typeof(Intface2))]
+    class Impl3 : Intface1, Intface2
+    {
+        int _a;
+        public Impl3(int a)
+        {
+            _a = a;
+        }
+
+        public void Do1()
+        {
+            Console.WriteLine("impl3_1: {0}", _a);
+        }
+
+        public void Do2()
+        {
+            Console.WriteLine("impl3_2: {0}", _a);
+        }
     }
 
     [TestFixture]
@@ -56,12 +78,12 @@ namespace Radial.UnitTest
         {
             var p = new Microsoft.Practices.Unity.InjectionConstructor(123);
 
-            Components.RegisterInterfaces(new Type[] { typeof(Impl1), typeof(Impl2) }, null,
+            Components.RegisterInterfaces(new Type[] { typeof(Impl2), typeof(Impl3) }, null,
                 () => { return new ContainerControlledLifetimeManager(); }
                 , p);
 
-            var obj= Components.Container.Resolve<Intface2>();
-            obj.Do();
+            var obj = Components.Container.Resolve<Intface2>();
+            obj.Do2();
         }
     }
 }

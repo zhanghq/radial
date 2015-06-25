@@ -77,22 +77,30 @@ namespace Radial
 
             foreach (var type in implTypes)
             {
-                var attr = type.GetCustomAttributes(typeof(RegisterInterfaceAttribute), false)[0] as RegisterInterfaceAttribute;
+                var attrObjs = type.GetCustomAttributes(typeof(RegisterInterfaceAttribute), false);
 
-                if (attr == null)
+                if (attrObjs == null)
                     continue;
 
-                LifetimeManager fm =null;
-                if (lifetimeManagerFunc != null)
-                    fm = lifetimeManagerFunc();
-
-                if (!string.IsNullOrWhiteSpace(attr.Symbol))
+                foreach (var attrObj in attrObjs)
                 {
-                    if (attr.Symbol == symbol)
+                    var attr = attrObj as RegisterInterfaceAttribute;
+
+                    if (attr == null)
+                        continue;
+
+                    LifetimeManager fm = null;
+                    if (lifetimeManagerFunc != null)
+                        fm = lifetimeManagerFunc();
+
+                    if (!string.IsNullOrWhiteSpace(attr.Symbol))
+                    {
+                        if (attr.Symbol == symbol)
+                            Components.Container.RegisterType(attr.InterfaceType, type, fm, injectionMembers);
+                    }
+                    else
                         Components.Container.RegisterType(attr.InterfaceType, type, fm, injectionMembers);
                 }
-                else
-                    Components.Container.RegisterType(attr.InterfaceType, type, fm, injectionMembers);
             }
         }
     }

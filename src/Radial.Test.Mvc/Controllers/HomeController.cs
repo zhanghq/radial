@@ -125,5 +125,38 @@ namespace Radial.Test.Mvc.Controllers
 
             return RedirectToAction("Param");
         }
+
+        public ActionResult PdfToImage()
+        {
+            int desired_x_dpi = 200;
+            int desired_y_dpi = 200;
+
+            var s = Environment.Is64BitProcess;
+
+            var localGhostscriptDll = Path.Combine(@"C:\Users\Haiqing\Documents\CodeWork\radial\gs\gsdll32.dll");
+            var localDllInfo = new Ghostscript.NET.GhostscriptVersionInfo(localGhostscriptDll);
+
+            string inputPdfPath = @"D:\资料\电子书\NET设计规范-.NET约定、惯用法与模式.pdf";
+            string outputPath = @"D:\";
+
+            
+            using (var rasterizer = new Ghostscript.NET.Rasterizer.GhostscriptRasterizer())
+            using(Stream fs=System.IO.File.Open(inputPdfPath, FileMode.Open))
+            {
+                rasterizer.Open(fs, localDllInfo, false);
+
+                for (var pageNumber = 1; pageNumber <= rasterizer.PageCount && pageNumber <= 10; pageNumber++)
+                {
+                    var pageFilePath = Path.Combine(outputPath, string.Format("Page-{0}.png", pageNumber));
+
+                    var img = rasterizer.GetPage(desired_x_dpi, desired_y_dpi, pageNumber);
+                    img.Save(pageFilePath, System.Drawing.Imaging.ImageFormat.Png);
+                }
+
+                rasterizer.Close();
+            }
+
+            return View();
+        }
     }
 }

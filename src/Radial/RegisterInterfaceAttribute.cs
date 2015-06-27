@@ -9,7 +9,7 @@ namespace Radial
     /// <summary>
     /// RegisterInterfaceAttribute.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
     public sealed class RegisterInterfaceAttribute : Attribute
     {
 
@@ -21,11 +21,11 @@ namespace Radial
             : this(interfaceType, null)
         { }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Radial.RegisterInterfaceAttribute"/> class.
-		/// </summary>
-		/// <param name="interfaceType">Interface type.</param>
-		/// <param name="symbol">Symbol.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Radial.RegisterInterfaceAttribute"/> class.
+        /// </summary>
+        /// <param name="interfaceType">Interface type.</param>
+        /// <param name="symbol">Symbol.</param>
         public RegisterInterfaceAttribute(Type interfaceType, string symbol)
         {
             InterfaceType = interfaceType;

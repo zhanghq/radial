@@ -639,7 +639,7 @@ namespace Radial.Web
            "\r\n",
            ""
           };
-          
+
             string strOutput = strHtml;
 
             if (string.IsNullOrWhiteSpace(strOutput))
@@ -690,34 +690,36 @@ namespace Radial.Web
         /// If no error occurs return client IPv4 address.
         /// </returns>
         public static string GetClientIPv4Address(bool multiValueChooseLast = false)
-		{
-			IPAddress userHostIpAddressObj = IPAddress.Parse (CurrentContext.Request.UserHostAddress);
+        {
+            IPAddress userHostIpAddressObj = IPAddress.Parse(CurrentContext.Request.UserHostAddress);
 
-			string httpRealIpHeaderName = ConfigurationManager.AppSettings ["real-ip-header"];
+            string httpRealIpHeaderName = ConfigurationManager.AppSettings["real-ip-header"];
 
-			if (!string.IsNullOrWhiteSpace (httpRealIpHeaderName)) {
-				string headerIp = CurrentContext.Request.Headers [httpRealIpHeaderName];
+            if (!string.IsNullOrWhiteSpace(httpRealIpHeaderName))
+            {
+                string headerIp = CurrentContext.Request.Headers[httpRealIpHeaderName];
 
-				if (!string.IsNullOrWhiteSpace (headerIp)) {
-					string[] realips = headerIp.Split (new char[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (!string.IsNullOrWhiteSpace(headerIp))
+                {
+                    string[] realips = headerIp.Split(new char[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-					string realip = multiValueChooseLast ? realips.LastOrDefault () : realips.FirstOrDefault ();
+                    string realip = multiValueChooseLast ? realips.LastOrDefault() : realips.FirstOrDefault();
 
-					if (!string.IsNullOrWhiteSpace (realip))
-						userHostIpAddressObj = IPAddress.Parse (realip);
-				}
-			}
-			#if MONO
-			string ipv4 = userHostIpAddressObj.ToString ();
-			#else
+                    if (!string.IsNullOrWhiteSpace(realip))
+                        userHostIpAddressObj = IPAddress.Parse(realip);
+                }
+            }
+#if MONO
+            string ipv4 = userHostIpAddressObj.ToString();
+#else
 			string ipv4 = userHostIpAddressObj.MapToIPv4().ToString();
-			#endif
+#endif
 
-			//ipv6 local ip in ipv4=0.0.0.1
-			if (ipv4 == "0.0.0.1")
-				ipv4 = "127.0.0.1";
+            //ipv6 local ip in ipv4=0.0.0.1
+            if (ipv4 == "0.0.0.1")
+                ipv4 = "127.0.0.1";
 
-			return ipv4;
-		}
+            return ipv4;
+        }
     }
 }

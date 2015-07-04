@@ -709,7 +709,7 @@ namespace Radial.Web
                         userHostIpAddressObj = IPAddress.Parse(realip);
                 }
             }
-#if MONO
+#if Mono
             string ipv4 = userHostIpAddressObj.ToString();
 #else
 			string ipv4 = userHostIpAddressObj.MapToIPv4().ToString();

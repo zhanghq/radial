@@ -20,54 +20,56 @@ namespace Radial.Serialization
         /// <returns>The binary array.</returns>
         public static byte[] Serialize(object obj)
         {
-            byte[] bytes = null;
+            if (obj == null)
+                return null;
+
             IFormatter formatter = new BinaryFormatter();
             using (MemoryStream stream = new MemoryStream())
             {
                 formatter.Serialize(stream, obj);
-                bytes = stream.ToArray();
+                return stream.ToArray();
             }
-            return bytes;
         }
 
 
         /// <summary>
         /// Serializes object to binary array.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="T">The type of the object.</typeparam>
         /// <param name="obj">The obj instance.</param>
         /// <returns>The binary array.</returns>
-        public static byte[] Serialize<TObject>(TObject obj)
+        public static byte[] Serialize<T>(T obj)
         {
-            byte[] bytes = null;
+            if (obj == null)
+                return null;
+
             IFormatter formatter = new BinaryFormatter();
             using (MemoryStream stream = new MemoryStream())
             {
                 formatter.Serialize(stream, obj);
-                bytes = stream.ToArray();
+                return stream.ToArray();
             }
-            return bytes;
         }
 
         /// <summary>
         /// Deserializes binary array to object.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="T">The type of the object.</typeparam>
         /// <param name="binary">The binary array.</param>
         /// <returns>
         /// If the binary array is not null return the object, otherwise return type default value.
         /// </returns>
-        public static TObject Deserialize<TObject>(byte[] binary)
+        public static T Deserialize<T>(byte[] binary)
         {
 
-            TObject o = default(TObject);
+            T o = default(T);
 
             if (binary != null)
             {
                 IFormatter formatter = new BinaryFormatter();
                 using (Stream stream = new MemoryStream(binary))
                 {
-                    o = (TObject)formatter.Deserialize(stream);
+                    o = (T)formatter.Deserialize(stream);
                 }
             }
 
@@ -100,26 +102,24 @@ namespace Radial.Serialization
         /// <summary>
         /// Deserializes binary array to object.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="T">The type of the object.</typeparam>
         /// <param name="binary">The binary array.</param>
         /// <param name="obj">Deserialized object instance.</param>
         /// <returns>If successful deserialized return True, otherwise return False.</returns>
-        public static bool TryDeserialize<TObject>(byte[] binary, out TObject obj)
+        public static bool TryDeserialize<T>(byte[] binary, out T obj)
         {
             bool success = false;
 
-            obj = default(TObject);
+            obj = default(T);
 
             if (binary != null)
             {
                 try
                 {
-                    IFormatter formatter = new BinaryFormatter();
-                    using (Stream stream = new MemoryStream(binary))
-                    {
-                        obj = (TObject)formatter.Deserialize(stream);
-                        success = true;
-                    }
+
+                    obj = Deserialize<T>(binary);
+                    success = true;
+
                 }
                 catch { }
             }
@@ -143,12 +143,8 @@ namespace Radial.Serialization
             {
                 try
                 {
-                    IFormatter formatter = new BinaryFormatter();
-                    using (Stream stream = new MemoryStream(binary))
-                    {
-                        obj = formatter.Deserialize(stream);
-                        success = true;
-                    }
+                    obj = Deserialize(binary);
+                    success = true;
                 }
                 catch { }
             }

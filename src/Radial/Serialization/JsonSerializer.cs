@@ -21,6 +21,9 @@ namespace Radial.Serialization
         /// </returns>
         public static string Serialize<T>(T o)
         {
+            if (o == null)
+                return null;
+
             return Newtonsoft.Json.JsonConvert.SerializeObject(o);
         }
 
@@ -31,6 +34,9 @@ namespace Radial.Serialization
         /// <returns>Json string.</returns>
         public static string Serialize(object o)
         {
+            if (o == null)
+                return null;
+
             return Newtonsoft.Json.JsonConvert.SerializeObject(o);
         }
 
@@ -80,7 +86,7 @@ namespace Radial.Serialization
             {
                 try
                 {
-                    obj = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
+                    obj = Deserialize<T>(json);
                     success = true;
                 }
                 catch { }
@@ -105,7 +111,7 @@ namespace Radial.Serialization
             {
                 try
                 {
-                    obj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+                    obj = Deserialize(json);
                     success = true;
                 }
                 catch { }

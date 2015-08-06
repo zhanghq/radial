@@ -20,6 +20,9 @@ namespace Radial.Serialization
         /// <returns>The xml string.</returns>
         public static string Serialize(object obj, Type objType)
         {
+            if (obj == null)
+                return null;
+
             Checker.Parameter(objType != null, "object type can not be null");
 
             System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(objType);
@@ -42,12 +45,12 @@ namespace Radial.Serialization
         /// <summary>
         /// Serializes object to xml.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="T">The type of the object.</typeparam>
         /// <param name="obj">The obj instance.</param>
         /// <returns>The xml string.</returns>
-        public static string Serialize<TObject>(TObject obj)
+        public static string Serialize<T>(T obj)
         {
-            return Serialize(obj, typeof(TObject));
+            return Serialize(obj, typeof(T));
         }
 
 
@@ -79,21 +82,21 @@ namespace Radial.Serialization
         /// <summary>
         /// Deserializes xml to object.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="T">The type of the object.</typeparam>
         /// <param name="xml">The xml.</param>
         /// <returns>
         /// If the xml is not null or empty return object, otherwise return type default value.
         /// </returns>
-        public static TObject Deserialize<TObject>(string xml)
+        public static T Deserialize<T>(string xml)
         {
-            TObject obj = default(TObject);
+            T obj = default(T);
 
             if (!string.IsNullOrWhiteSpace(xml))
             {
-                System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(TObject));
+                System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
                 using (TextReader tr = new StringReader(xml.Trim()))
                 {
-                    obj = (TObject)serializer.Deserialize(tr);
+                    obj = (T)serializer.Deserialize(tr);
                 }
             }
             return obj;
@@ -118,12 +121,9 @@ namespace Radial.Serialization
             {
                 try
                 {
-                    System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(objType);
-                    using (TextReader tr = new StringReader(xml.Trim()))
-                    {
-                        obj = serializer.Deserialize(tr);
-                        success = true;
-                    }
+
+                    obj = Deserialize(xml, objType);
+                    success = true;
                 }
                 catch { }
             }
@@ -133,26 +133,22 @@ namespace Radial.Serialization
         /// <summary>
         /// Deserializes xml to object.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="T">The type of the object.</typeparam>
         /// <param name="xml">The xml.</param>
         /// <param name="obj">Deserialized object instance.</param>
         /// <returns>If successful deserialized return True, otherwise return False.</returns>
-        public static bool TryDeserialize<TObject>(string xml, out TObject obj)
+        public static bool TryDeserialize<T>(string xml, out T obj)
         {
             bool success = false;
 
-            obj = default(TObject);
+            obj = default(T);
 
             if (!string.IsNullOrWhiteSpace(xml))
             {
                 try
                 {
-                    System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(TObject));
-                    using (TextReader tr = new StringReader(xml.Trim()))
-                    {
-                        obj = (TObject)serializer.Deserialize(tr);
-                        success = true;
-                    }
+                    obj = Deserialize<T>(xml);
+                    success = true;
                 }
                 catch { }
             }

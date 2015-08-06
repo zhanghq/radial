@@ -13,3 +13,4 @@ out
 publish
 /vsext/Persist.Nhs/packages
 
+/src/.vs/config

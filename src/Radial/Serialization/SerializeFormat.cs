@@ -22,6 +22,10 @@ namespace Radial.Serialization
         /// <summary>
         /// Json type.
         /// </summary>
-        Json=2
+        Json=2,
+        /// <summary>
+        /// Bson type.
+        /// </summary>
+        Bson = 3
     }
 }

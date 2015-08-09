@@ -32,6 +32,11 @@ namespace Radial.Net
         public const string Json = "application/json";
 
         /// <summary>
+        /// Bson Content Type
+        /// </summary>
+        public const string Bson = "application/bson";
+
+        /// <summary>
         /// Excel Content Type
         /// </summary>
         public const string Excel = "application/vnd.ms-excel";

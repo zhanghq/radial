@@ -16,16 +16,15 @@ namespace Radial.Serialization
         /// Serializes object to xml.
         /// </summary>
         /// <param name="obj">The obj instance.</param>
-        /// <param name="objType">The type of the object.</param>
-        /// <returns>The xml string.</returns>
-        public static string Serialize(object obj, Type objType)
+        /// <returns>
+        /// The xml string.
+        /// </returns>
+        public static string Serialize(object obj)
         {
             if (obj == null)
                 return null;
 
-            Checker.Parameter(objType != null, "object type can not be null");
-
-            System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(objType);
+            System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(obj.GetType());
 
             Encoding enc = new UTF8Encoding(false);
 
@@ -50,7 +49,24 @@ namespace Radial.Serialization
         /// <returns>The xml string.</returns>
         public static string Serialize<T>(T obj)
         {
-            return Serialize(obj, typeof(T));
+            if (obj == null)
+                return null;
+
+            System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
+
+            Encoding enc = new UTF8Encoding(false);
+
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.Encoding = enc;
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                XmlWriter writer = XmlWriter.Create(ms, settings);
+                serializer.Serialize(writer, obj);
+                writer.Flush();
+                return enc.GetString(ms.ToArray());
+            }
         }
 
 

@@ -709,17 +709,28 @@ namespace Radial.Web
                         userHostIpAddressObj = IPAddress.Parse(realip);
                 }
             }
-#if MONO
-            string ipv4 = userHostIpAddressObj.ToString();
-#else
-			string ipv4 = userHostIpAddressObj.MapToIPv4().ToString();
-#endif
 
-            //ipv6 local ip in ipv4=0.0.0.1
-            if (ipv4 == "0.0.0.1")
-                ipv4 = "127.0.0.1";
 
-            return ipv4;
+            if (userHostIpAddressObj.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
+            {
+                if (userHostIpAddressObj.Equals(IPAddress.IPv6Loopback))
+                    return IPAddress.Loopback.ToString();
+
+                //code reference: http://referencesource.microsoft.com/#System/net/System/Net/IPAddress.cs
+                ushort[] m_Numbers = new ushort[8];
+                byte[] advb6 = userHostIpAddressObj.GetAddressBytes();
+                for (int i = 0; i < m_Numbers.Length; i++)
+                {
+                    m_Numbers[i] = (ushort)(advb6[i * 2] * 256 + advb6[i * 2 + 1]);
+                }
+                long adv4 = ((((uint)m_Numbers[6] & 0x0000FF00u) >> 8) | (((uint)m_Numbers[6] & 0x000000FFu) << 8)) |
+                    (((((uint)m_Numbers[7] & 0x0000FF00u) >> 8) | (((uint)m_Numbers[7] & 0x000000FFu) << 8)) << 16);
+
+                return (new IPAddress(adv4)).ToString();
+            }
+
+            return userHostIpAddressObj.ToString();
+
         }
     }
 }

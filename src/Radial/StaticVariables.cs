@@ -30,18 +30,29 @@ namespace Radial
         /// <summary>
         /// The image file extensions.
         /// </summary>
-        public static string[] ImageFileExtensions = new string[] { ".jpg", ".jpeg", ".jfif", ".gif", ".bmp", ".png", ".tif", ".tiff" }; 
+        public static string[] ImageFileExtensions = new string[] { ".jpg", ".jpeg", ".jfif", ".gif", ".bmp", ".png", ".tif", ".tiff" };
 
 
         /// <summary>
-        /// Gets the full path of configuration file.
+        /// Gets the physical path of configuration file.
         /// </summary>
-        /// <param name="filePath">The configuration file path.</param>
-        /// <returns>The full path of configuration file.</returns>
+        /// <param name="filePath">The configuration file relative path.</param>
+        /// <returns>The physical path of configuration file.</returns>
         public static string GetConfigPath(string filePath)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(filePath), "configuration file path can not be empty or null.");
             return Path.Combine(ConfigDirectory, filePath.Trim('\\', ' '));
+        }
+
+        /// <summary>
+        /// Gets the physical path of the file.
+        /// </summary>
+        /// <param name="filePath">The file relative path.</param>
+        /// <returns>The physical path of the file.</returns>
+        public static string GetPath(string filePath)
+        {
+            Checker.Parameter(!string.IsNullOrWhiteSpace(filePath), "file path can not be empty or null.");
+            return Path.Combine(BaseDirectory, filePath.Trim('\\', ' '));
         }
     }
 }

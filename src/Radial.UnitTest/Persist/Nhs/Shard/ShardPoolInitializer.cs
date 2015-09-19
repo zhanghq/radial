@@ -15,9 +15,9 @@ namespace Radial.UnitTest.Persist.Nhs.Shard
 {
     class ShardPoolInitializer : DefaultFactoryPoolInitializer
     {
-        public override ISet<SessionFactoryWrapper> Execute()
+        public override ISet<ConfigurationWrapper> Execute()
         {
-            ISet<SessionFactoryWrapper> wrapperSet = new HashSet<SessionFactoryWrapper>();
+            ISet<ConfigurationWrapper> wrapperSet = new HashSet<ConfigurationWrapper>();
 
             Configuration configuration = new Configuration();
 
@@ -45,7 +45,7 @@ namespace Radial.UnitTest.Persist.Nhs.Shard
                         }
                     }
                 }
-                wrapperSet.Add(new SessionFactoryWrapper(cfg.Name, configuration.BuildSessionFactory()));
+                wrapperSet.Add(new ConfigurationWrapper(cfg.Name, configuration));
             }
 
             return wrapperSet;

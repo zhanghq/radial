@@ -29,9 +29,9 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// The session factory wrapper set.
         /// </returns>
-        public virtual ISet<SessionFactoryWrapper> Execute()
+        public virtual ISet<ConfigurationWrapper> Execute()
         {
-            ISet<SessionFactoryWrapper> wrapperSet = new HashSet<SessionFactoryWrapper>();
+            ISet<ConfigurationWrapper> wrapperSet = new HashSet<ConfigurationWrapper>();
 
             Configuration configuration = new Configuration();
 
@@ -42,7 +42,7 @@ namespace Radial.Persist.Nhs
 
             configuration.Configure(ConfigurationPath);
 
-            wrapperSet.Add(new SessionFactoryWrapper("default", configuration.BuildSessionFactory()));
+            wrapperSet.Add(new ConfigurationWrapper("default", configuration));
 
             return wrapperSet;
         }

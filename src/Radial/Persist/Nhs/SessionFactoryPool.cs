@@ -12,17 +12,14 @@ namespace Radial.Persist.Nhs
     /// </summary>
     public static class SessionFactoryPool
     {
-        static ISet<SessionFactoryWrapper> S_FactoryWrapperSet;
-
-        const string CanNotFindInstanceExceptionMessage = "can not find the specified ISessionFactory instance";
-        const string CanNotFindInstanceExceptionMessageWithAlias = "can not find the specified ISessionFactory instance, alias: {0}";
+        static ISet<ConfigurationWrapper> S_ConfigurationWrapperSet;
 
         /// <summary>
         /// Initializes the <see cref="SessionFactoryPool"/> class.
         /// </summary>
         static SessionFactoryPool()
         {
-            if (S_FactoryWrapperSet == null)
+            if (S_ConfigurationWrapperSet == null)
             {
                 Logger.Debug("begin initialize session factory pool");
 
@@ -38,9 +35,9 @@ namespace Radial.Persist.Nhs
                     initializer = new DefaultFactoryPoolInitializer();
                 }
 
-                S_FactoryWrapperSet = initializer.Execute();
+                S_ConfigurationWrapperSet = initializer.Execute();
 
-                Checker.Requires(S_FactoryWrapperSet != null && S_FactoryWrapperSet.Count > 0, "failed to initialize: SessionFactoryWrapper set was null or empty");
+                Checker.Requires(S_ConfigurationWrapperSet != null && S_ConfigurationWrapperSet.Count > 0, "failed to initialize: ConfigurationWrapper set was null or empty");
 
                 Logger.Debug("end initialize session factory pool");
             }
@@ -65,7 +62,7 @@ namespace Radial.Persist.Nhs
         {
             get
             {
-                SessionFactoryWrapper wrapper = GetFactoryWrappers().FirstOrDefault();
+                ConfigurationWrapper wrapper = GetConfigurationWrappers().FirstOrDefault();
 
                 return wrapper.Factory;
             }
@@ -73,32 +70,32 @@ namespace Radial.Persist.Nhs
 
 
         /// <summary>
-        /// Gets the SessionFactoryWrapper object with the specified storage alias.
+        /// Gets the ConfigurationWrapper object with the specified storage alias.
         /// </summary>
         /// <param name="storageAlias">The storage alias (case insensitive).</param>
-        /// <returns>The SessionFactoryWrapper object.</returns>
-        public static SessionFactoryWrapper GeFactorytWrapper(string storageAlias)
+        /// <returns>The ConfigurationWrapper object.</returns>
+        public static ConfigurationWrapper GetConfigurationWrapper(string storageAlias)
         {
-            return GetFactoryWrappers(storageAlias).FirstOrDefault();
+            return GetConfigurationWrappers(storageAlias).FirstOrDefault();
         }
 
         /// <summary>
-        /// Gets the SessionFactoryWrapper object with the specified storage aliases.
+        /// Gets the ConfigurationWrapper object with the specified storage aliases.
         /// </summary>
         /// <param name="storageAliases">The storage alias array (case insensitive).</param>
-        /// <returns>The SessionFactoryWrapper object array.</returns>
-        public static SessionFactoryWrapper[] GetFactoryWrappers(params string[] storageAliases)
+        /// <returns>The ConfigurationWrapper object array.</returns>
+        public static ConfigurationWrapper[] GetConfigurationWrappers(params string[] storageAliases)
         {
-            IList<SessionFactoryWrapper> list = new List<SessionFactoryWrapper>();
+            IList<ConfigurationWrapper> list = new List<ConfigurationWrapper>();
 
             if (storageAliases != null && storageAliases.Length > 0)
             {
                 foreach (string alias in storageAliases)
                 {
                     string normalizedAlias = alias.ToLower().Trim();
-                    SessionFactoryWrapper wrapper = S_FactoryWrapperSet.SingleOrDefault(o => o.Alias == normalizedAlias);
+                    ConfigurationWrapper wrapper = S_ConfigurationWrapperSet.SingleOrDefault(o => o.Alias == normalizedAlias);
 
-                    Checker.Requires(wrapper != null, CanNotFindInstanceExceptionMessageWithAlias, normalizedAlias);
+                    Checker.Requires(wrapper != null, "can not find the specified ConfigurationWrapper instance, alias: {0}", normalizedAlias);
 
                     list.Add(wrapper);
                 }
@@ -106,7 +103,7 @@ namespace Radial.Persist.Nhs
                 return list.ToArray();
             }
 
-            return S_FactoryWrapperSet.ToArray();
+            return S_ConfigurationWrapperSet.ToArray();
 
         }
 
@@ -118,7 +115,7 @@ namespace Radial.Persist.Nhs
         /// <returns>The NHibernate.ISessionFactory instance</returns>
         public static ISessionFactory GetFactoryInstance(string storageAlias)
         {
-            return GeFactorytWrapper(storageAlias).Factory;
+            return GetConfigurationWrapper(storageAlias).Factory;
         }
 
         /// <summary>
@@ -129,9 +126,9 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public static string[] GetStorageAliases()
         {
-            IList<string> aliases = new List<string>(S_FactoryWrapperSet.Count);
+            IList<string> aliases = new List<string>(S_ConfigurationWrapperSet.Count);
 
-            foreach (SessionFactoryWrapper wrapper in S_FactoryWrapperSet)
+            foreach (ConfigurationWrapper wrapper in S_ConfigurationWrapperSet)
                 aliases.Add(wrapper.Alias);
 
             return aliases.ToArray();

@@ -168,8 +168,9 @@
     <Compile Include="Persist\Nhs\Order\SqlServerRandomOrder.cs" />
     <Compile Include="Persist\Nhs\Param\KvParam.cs" />
     <Compile Include="Persist\Nhs\Param\NhParam.cs" />
+    <Compile Include="Persist\Nhs\SchemaBuilder.cs" />
     <Compile Include="Persist\Nhs\SessionFactoryPool.cs" />
-    <Compile Include="Persist\Nhs\SessionFactoryWrapper.cs" />
+    <Compile Include="Persist\Nhs\ConfigurationWrapper.cs" />
     <Compile Include="Persist\Nhs\ShardTableMapping.cs" />
     <Compile Include="Persist\Nhs\StraightQuery.cs" />
     <Compile Include="Persist\Nhs\TimingIdGenerator.cs" />

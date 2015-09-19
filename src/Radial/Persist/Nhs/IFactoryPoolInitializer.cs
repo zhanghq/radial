@@ -13,7 +13,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Execute pool initialization.
         /// </summary>
-        /// <returns>The session factory wrapper set.</returns>
-        ISet<SessionFactoryWrapper> Execute();
+        /// <returns>The configuration wrapper set.</returns>
+        ISet<ConfigurationWrapper> Execute();
     }
 }

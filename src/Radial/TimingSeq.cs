@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Radial
 {
@@ -14,9 +8,7 @@ namespace Radial
     /// </summary>
     public static class TimingSeq
     {
-        static object SyncRoot = new object();
-
-        const string Alphabet = "0123456789ABCDEFHKNT";
+        const string Alphabet = "0123456789ABCDEFHKNRTU";
 
         /// <summary>
         /// Gets the prefix.
@@ -40,11 +32,15 @@ namespace Radial
         /// <returns>The value string.</returns>
         public static string Next()
         {
-            lock (SyncRoot)
-            {
-                Thread.Sleep(1);
-                return Prefix + EncodeLong((long)(DateTime.Now - new DateTime(2014, 1, 1)).TotalMilliseconds);
-            }
+            var yt = DateTime.Now;
+            var ytms = EncodeLong((long)yt.Year * 100000000000
+                + (long)(yt - new DateTime(yt.Year, 1, 1)).TotalMilliseconds);
+
+            string r = Guid.NewGuid().ToString("n").ToUpper();
+
+            r = r.Substring(RandomCode.NewInstance.Next(0, r.Length - 4), 4);
+
+            return Prefix + ytms + r;
         }
 
         /// <summary>

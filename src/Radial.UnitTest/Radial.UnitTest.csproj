@@ -104,7 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CacheTest.cs" />
-    <Compile Include="ComponentTest.cs" />
+    <Compile Include="DependencyTest.cs" />
     <Compile Include="ExcelToolsTest.cs" />
     <Compile Include="ExtensionsTest.cs" />
     <Compile Include="FtpClientTest.cs" />

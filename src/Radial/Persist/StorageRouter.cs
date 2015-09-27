@@ -112,7 +112,7 @@ namespace Radial.Persist
         {
             Checker.Parameter(type!=null, "object type can not be empty or null");
 
-            IStoragePolicy ins = Components.Container.Resolve<IStoragePolicy>();
+            IStoragePolicy ins = Dependency.Container.Resolve<IStoragePolicy>();
 
             string alias = ins.GetObjectAlias(type, key);
 
@@ -144,7 +144,7 @@ namespace Radial.Persist
         {
             Checker.Parameter(type != null, "object type can not be empty or null");
 
-            IStoragePolicy ins = Components.Container.Resolve<IStoragePolicy>();
+            IStoragePolicy ins = Dependency.Container.Resolve<IStoragePolicy>();
 
             return ins.GetTypeAliases(type);
         }

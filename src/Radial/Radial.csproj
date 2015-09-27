@@ -128,11 +128,13 @@
     <Compile Include="Boot\Cfg\BootTaskElementCollection.cs" />
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />
     <Compile Include="Cache\IClusterRegion.cs" />
+    <Compile Include="Dependency.cs" />
     <Compile Include="MiniDump.cs" />
     <Compile Include="IO\StreamKits.cs" />
     <Compile Include="IO\VideoMedia.cs" />
     <Compile Include="MultiResult.cs" />
     <Compile Include="Extensions\DataReaderExtensions.cs" />
+    <Compile Include="Persist\Extensions.cs" />
     <Compile Include="Persist\Lite\Cfg\ConnectionElement.cs" />
     <Compile Include="Persist\Lite\Cfg\ConnectionElementCollection.cs" />
     <Compile Include="Persist\Lite\Cfg\ConnectionSection.cs" />
@@ -183,7 +185,6 @@
     <Compile Include="Cache\LocalCache.cs" />
     <Compile Include="Cache\MemCache.cs" />
     <Compile Include="Cache\ICache.cs" />
-    <Compile Include="Components.cs" />
     <Compile Include="Cycler.cs" />
     <Compile Include="Drawing\Captcha.cs" />
     <Compile Include="Checker.cs" />

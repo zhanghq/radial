@@ -34,7 +34,7 @@ namespace Radial.UnitTest
         [Test]
         public void Memcached()
         {
-            Components.Container.RegisterType<ICache, MemCache>();
+            Dependency.Container.RegisterType<ICache, MemCache>();
 
             //primitive cache
             CacheStatic.Put("test0", 34.34, 100);
@@ -70,7 +70,7 @@ namespace Radial.UnitTest
         //[Test]
         //public void Redis()
         //{
-        //    Components.Container.RegisterType<ICache, RedisCache>();
+        //    Dependency.Container.RegisterType<ICache, RedisCache>();
 
 
         //    //CacheStatic.SetString("name", "abc", 100);
@@ -106,7 +106,7 @@ namespace Radial.UnitTest
         [Test]
         public void RegionUse()
         {
-            Components.Container.RegisterType<ICache, LocalCache>();
+            Dependency.Container.RegisterType<ICache, LocalCache>();
 
             string name = "123244";
 
@@ -126,8 +126,8 @@ namespace Radial.UnitTest
         [Test]
         public void RegionUse2()
         {
-            Components.Container.RegisterType<ICache, MemCache>();
-            Components.Container.RegisterType<IClusterRegion, NhClusterRegion>();
+            Dependency.Container.RegisterType<ICache, MemCache>();
+            Dependency.Container.RegisterType<IClusterRegion, NhClusterRegion>();
 
             string name = "123244";
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Radial.Persist;
 
 namespace Radial.UnitTest
 {
@@ -71,18 +72,18 @@ namespace Radial.UnitTest
     }
 
     [TestFixture]
-    public class ComponentTest
+    public class DependencyTest
     {
         [Test]
         public void RegisterInterfaces()
         {
             var p = new Microsoft.Practices.Unity.InjectionConstructor(123);
 
-            Components.RegisterInterfaces(new Type[] { typeof(Impl2), typeof(Impl3) }, null,
+            Dependency.Container.RegisterInterfaces(new Type[] { typeof(Impl2), typeof(Impl3) }, null,
                 () => { return new ContainerControlledLifetimeManager(); }
                 , p);
 
-            var obj = Components.Container.Resolve<Intface2>();
+            var obj = Dependency.Container.Resolve<Intface2>();
             obj.Do2();
         }
     }

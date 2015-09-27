@@ -20,9 +20,9 @@ namespace Radial.Cache
         {
             get
             {
-                if (!Components.Container.IsRegistered<ICache>())
+                if (!Dependency.Container.IsRegistered<ICache>())
                     return new EmptyCache();
-                return Components.Container.Resolve<ICache>();
+                return Dependency.Container.Resolve<ICache>();
             }
         }
 

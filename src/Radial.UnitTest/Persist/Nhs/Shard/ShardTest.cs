@@ -18,9 +18,9 @@ namespace Radial.UnitTest.Persist.Nhs.Shard
         [TestFixtureSetUp]
         public void SetUp()
         {
-            Components.Container.RegisterType<IFactoryPoolInitializer, ShardPoolInitializer>();
-            Components.Container.RegisterType<IStoragePolicy, ShardStoragePolicy>();
-            Components.Container.RegisterType<ITableShardable, ShardStoragePolicy>();
+            Dependency.Container.RegisterType<IFactoryPoolInitializer, ShardPoolInitializer>();
+            Dependency.Container.RegisterType<IStoragePolicy, ShardStoragePolicy>();
+            Dependency.Container.RegisterType<ITableShardable, ShardStoragePolicy>();
         }
 
         [Test]

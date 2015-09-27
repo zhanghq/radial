@@ -20,7 +20,7 @@ namespace Radial.Test.Mvc
 
         public void Initialize()
         {
-            Components.Container.RegisterType<IParam, KvParam>();
+            Dependency.Container.RegisterType<IParam, KvParam>();
 
             scheduler = (new StdSchedulerFactory()).GetScheduler();
             testJob = JobBuilder.Create<TestJob>().WithIdentity("testJob").Build();

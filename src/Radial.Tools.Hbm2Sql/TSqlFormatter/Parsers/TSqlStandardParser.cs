@@ -1325,14 +1325,14 @@ namespace Radial.Tools.Hbm2Sql.TSqlFormatter.Parsers
         private string GetKeywordMatchPhrase(ITokenList tokenList, int tokenID, ref List<string> rawKeywordParts, ref List<int> tokenCounts, ref List<List<IToken>> overflowNodes)
         {
             string phrase = "";
-            int phraseComponentsFound = 0;
+            int phraseDependencyFound = 0;
             rawKeywordParts = new List<string>();
             overflowNodes = new List<List<IToken>>();
             tokenCounts = new List<int>();
             string precedingWhitespace = "";
             int originalTokenID = tokenID;
 
-            while (tokenID < tokenList.Count && phraseComponentsFound < 7)
+            while (tokenID < tokenList.Count && phraseDependencyFound < 7)
             {
                 if (tokenList[tokenID].Type == SqlTokenType.OtherNode
                     || tokenList[tokenID].Type == SqlTokenType.BracketQuotedName
@@ -1340,7 +1340,7 @@ namespace Radial.Tools.Hbm2Sql.TSqlFormatter.Parsers
                     )
                 {
                     phrase += tokenList[tokenID].Value.ToUpperInvariant() + " ";
-                    phraseComponentsFound++;
+                    phraseDependencyFound++;
                     rawKeywordParts.Add(precedingWhitespace + tokenList[tokenID].Value);
 
                     tokenID++;
@@ -1359,7 +1359,7 @@ namespace Radial.Tools.Hbm2Sql.TSqlFormatter.Parsers
                         if (tokenList[tokenID].Type == SqlTokenType.WhiteSpace)
                             precedingWhitespace += tokenList[tokenID].Value;
                         else
-                            overflowNodes[phraseComponentsFound-1].Add(tokenList[tokenID]);
+                            overflowNodes[phraseDependencyFound-1].Add(tokenList[tokenID]);
 
                         tokenID++;
                     }

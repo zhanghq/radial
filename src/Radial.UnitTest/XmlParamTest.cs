@@ -14,7 +14,7 @@ namespace Radial.UnitTest
         [TestFixtureSetUp]
         public void Setup()
         {
-            Components.Container.RegisterType<IParam, XmlParam>();
+            Dependency.Container.RegisterType<IParam, XmlParam>();
         }
 
         [Test]

@@ -28,7 +28,7 @@ namespace Radial.UnitTest.Persist.Nhs.Shard
 
             configuration.Configure(ConfigurationPath);
 
-            ITableShardable tsd = Components.Container.Resolve<ITableShardable>();
+            ITableShardable tsd = Dependency.Container.Resolve<ITableShardable>();
 
             foreach (var cfg in StorageRouter.AliasConfigSet)
             {

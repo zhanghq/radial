@@ -27,8 +27,8 @@ namespace Radial.Cache
             {
                 if (Client == null)
                     Client = new MemcachedClient();
-                if (ClusterRegion == null && Components.Container.IsRegistered<IClusterRegion>())
-                    ClusterRegion = Components.Container.Resolve<IClusterRegion>();
+                if (ClusterRegion == null && Dependency.Container.IsRegistered<IClusterRegion>())
+                    ClusterRegion = Dependency.Container.Resolve<IClusterRegion>();
             }
         }
 

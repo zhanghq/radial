@@ -8,7 +8,6 @@ using System.Reflection;
 using System.Net.NetworkInformation;
 using System.Threading;
 using Radial.Net;
-using Radial.Extensions;
 
 namespace Radial
 {

@@ -10,7 +10,7 @@ namespace Radial.Persist
     /// <summary>
     /// The class contains extension methods of Radial.Persist.
     /// </summary>
-    public static class Extensions
+    public static class ExtensionMethods
     {
         #region IUnityContainer Extension Methods
 

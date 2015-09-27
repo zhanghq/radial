@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Radial.Boot.Cfg;
-using Radial.Extensions;
 
 namespace Radial.Boot
 {

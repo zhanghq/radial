@@ -83,6 +83,7 @@ namespace Radial.UnitTest
                 () => { return new ContainerControlledLifetimeManager(); }
                 , p);
 
+            
             var obj = Dependency.Container.Resolve<Intface2>();
             obj.Do2();
         }

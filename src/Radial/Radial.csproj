@@ -129,12 +129,12 @@
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />
     <Compile Include="Cache\IClusterRegion.cs" />
     <Compile Include="Dependency.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="MiniDump.cs" />
     <Compile Include="IO\StreamKits.cs" />
     <Compile Include="IO\VideoMedia.cs" />
     <Compile Include="MultiResult.cs" />
-    <Compile Include="Extensions\DataReaderExtensions.cs" />
-    <Compile Include="Persist\Extensions.cs" />
+    <Compile Include="Persist\ExtensionMethods.cs" />
     <Compile Include="Persist\Lite\Cfg\ConnectionElement.cs" />
     <Compile Include="Persist\Lite\Cfg\ConnectionElementCollection.cs" />
     <Compile Include="Persist\Lite\Cfg\ConnectionSection.cs" />
@@ -190,9 +190,6 @@
     <Compile Include="Checker.cs" />
     <Compile Include="Drawing\ImageKits.cs" />
     <Compile Include="ExcelTools.cs" />
-    <Compile Include="Extensions\CollectionExtensions.cs" />
-    <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Extensions\IOExtensions.cs" />
     <Compile Include="FileWatcher.cs" />
     <Compile Include="Boot\IBootTask.cs" />
     <Compile Include="Net\ContentTypes.cs" />

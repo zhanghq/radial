@@ -19,25 +19,25 @@ namespace Radial.Web.WebApi
     {
 
         /// <summary>
-        /// Writes the status code.
+        /// Writes the status code to HttpResponseMessage.
         /// </summary>
         /// <param name="c">The c.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage WriteStatusCode(this ApiController c, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage StatusCode(this ApiController c, HttpStatusCode? code = HttpStatusCode.OK)
         {
             var resp = new HttpResponseMessage(code.Value);
             return resp;
         }
 
         /// <summary>
-        /// Writes the plain text.
+        /// Writes the plain text to HttpResponseMessage.
         /// </summary>
         /// <param name="c">The c.</param>
         /// <param name="text">The text.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage WritePlainText(this ApiController c, string text, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage PlainText(this ApiController c, string text, HttpStatusCode? code = HttpStatusCode.OK)
         {
             if (string.IsNullOrWhiteSpace(text))
                 text = string.Empty;
@@ -50,13 +50,13 @@ namespace Radial.Web.WebApi
 
 
         /// <summary>
-        /// Writes the HTML.
+        /// Writes the HTML to HttpResponseMessage.
         /// </summary>
         /// <param name="c">The c.</param>
         /// <param name="html">The HTML.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage WriteHtml(this ApiController c, string html, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Html(this ApiController c, string html, HttpStatusCode? code = HttpStatusCode.OK)
         {
             if (string.IsNullOrWhiteSpace(html))
                 html = string.Empty;
@@ -67,25 +67,25 @@ namespace Radial.Web.WebApi
         }
 
         /// <summary>
-        /// Writes the json.
+        /// Writes the json to HttpResponseMessage.
         /// </summary>
         /// <param name="c">The c.</param>
         /// <param name="obj">The object.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage WriteJson(this ApiController c, object obj, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Json(this ApiController c, object obj, HttpStatusCode? code = HttpStatusCode.OK)
         {
-            return WriteJson(c, JsonSerializer.Serialize(obj), code);
+            return Json(c, JsonSerializer.Serialize(obj), code);
         }
 
         /// <summary>
-        /// Writes the json.
+        /// Writes the json to HttpResponseMessage.
         /// </summary>
         /// <param name="c">The c.</param>
         /// <param name="json">The json.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage WriteJson(this ApiController c, string json, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Json(this ApiController c, string json, HttpStatusCode? code = HttpStatusCode.OK)
         {
             if (string.IsNullOrWhiteSpace(json))
                 json = string.Empty;
@@ -97,25 +97,25 @@ namespace Radial.Web.WebApi
 
 
         /// <summary>
-        /// Writes the XML.
+        /// Writes the XML to HttpResponseMessage.
         /// </summary>
         /// <param name="c">The c.</param>
         /// <param name="obj">The object.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage WriteXml(this ApiController c, object obj, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Xml(this ApiController c, object obj, HttpStatusCode? code = HttpStatusCode.OK)
         {
-            return WriteJson(c, XmlSerializer.Serialize(obj), code);
+            return Json(c, XmlSerializer.Serialize(obj), code);
         }
 
         /// <summary>
-        /// Writes the XML.
+        /// Writes the XML to HttpResponseMessage.
         /// </summary>
         /// <param name="c">The c.</param>
         /// <param name="xml">The XML.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage WriteXml(this ApiController c, string xml, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Xml(this ApiController c, string xml, HttpStatusCode? code = HttpStatusCode.OK)
         {
             if (string.IsNullOrWhiteSpace(xml))
                 xml = string.Empty;
@@ -126,13 +126,13 @@ namespace Radial.Web.WebApi
         }
 
         /// <summary>
-        /// Writes the stream.
+        /// Writes the stream to HttpResponseMessage.
         /// </summary>
         /// <param name="c">The c.</param>
         /// <param name="bytes">The bytes.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage WriteStream(this ApiController c, byte[] bytes, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Stream(this ApiController c, byte[] bytes, HttpStatusCode? code = HttpStatusCode.OK)
         {
             var resp = new HttpResponseMessage(code.Value);
             resp.Content = new StreamContent(new MemoryStream(bytes));
@@ -140,13 +140,13 @@ namespace Radial.Web.WebApi
         }
 
         /// <summary>
-        /// Writes the stream.
+        /// Writes the stream to HttpResponseMessage.
         /// </summary>
         /// <param name="c">The c.</param>
         /// <param name="stream">The stream.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage WriteStream(this ApiController c, Stream stream, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Stream(this ApiController c, Stream stream, HttpStatusCode? code = HttpStatusCode.OK)
         {
             var resp = new HttpResponseMessage(code.Value);
             resp.Content = new StreamContent(stream);
@@ -154,15 +154,15 @@ namespace Radial.Web.WebApi
         }
 
         /// <summary>
-        /// Writes the stream.
+        /// Writes the stream to HttpResponseMessage.
         /// </summary>
         /// <param name="c">The c.</param>
         /// <param name="obj">The object.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage WriteStream(this ApiController c, object obj, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Stream(this ApiController c, object obj, HttpStatusCode? code = HttpStatusCode.OK)
         {
-            return WriteStream(c, Radial.Serialization.BinarySerializer.Serialize(obj), code);
+            return Stream(c, Radial.Serialization.BinarySerializer.Serialize(obj), code);
         }
     }
 }

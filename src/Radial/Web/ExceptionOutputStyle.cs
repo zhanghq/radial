@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Radial.Web.Mvc.Filters
+namespace Radial.Web
 {
     /// <summary>
     /// Exception message output style.

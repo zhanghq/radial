@@ -5,7 +5,7 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
 
-namespace Radial.Web.Mvc.Filters
+namespace Radial.Web
 {
     /// <summary>
     /// A struct represents exception data that will display on screen.

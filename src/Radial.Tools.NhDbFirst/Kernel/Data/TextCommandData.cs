@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Data.Common;
-using System.Data;
 
 namespace Radial.Tools.NhDbFirst.Data
 {

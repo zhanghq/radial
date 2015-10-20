@@ -20,8 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Xml;
-using System.Text;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Radial.Tools.Hbm2Sql.TSqlFormatter

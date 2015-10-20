@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-
-namespace Radial.Tools.NhDbFirst.Kernel
+﻿namespace Radial.Tools.NhDbFirst.Kernel
 {
     /// <summary>
     /// 数据源类型

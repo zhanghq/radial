@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using System.Net;
-using System.IO;
-using Radial.Net;
 using System.Net.FtpClient;
 
 namespace Radial.UnitTest

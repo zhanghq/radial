@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Net;
 using System.IO;
-using System.Collections.Specialized;
 
 namespace Radial.Net
 {
@@ -74,6 +70,19 @@ namespace Radial.Net
         /// <summary>
         /// Http Post method use "application/x-www-form-urlencoded" content type.
         /// </summary>
+        /// <param name="url">The request url(exclude query string).</param>
+        /// <param name="queryString">The query string.</param>
+        /// <returns>
+        /// The HttpResponseObj instance(never null).
+        /// </returns>
+        public static HttpResponseObj Post(string url, string queryString)
+        {
+            return Post((HttpWebRequest)WebRequest.Create(url), queryString);
+        }
+
+        /// <summary>
+        /// Http Post method use "application/x-www-form-urlencoded" content type.
+        /// </summary>
         /// <param name="request">The request(exclude query string).</param>
         /// <param name="queryString">The query string.</param>
         /// <returns>
@@ -137,8 +146,8 @@ namespace Radial.Net
             string boundary = "---------------------------" + DateTime.Now.Ticks.ToString();
             string separator = "--" + boundary + "\r\n";
             string footer = "--" + boundary + "--\r\n";
-            byte[] separatorBytes = StaticVariables.Encoding.GetBytes(separator);
-            byte[] footerBytes = StaticVariables.Encoding.GetBytes(footer);
+            byte[] separatorBytes = GlobalVariables.Encoding.GetBytes(separator);
+            byte[] footerBytes = GlobalVariables.Encoding.GetBytes(footer);
 
 
             request.ContentType = "multipart/form-data; boundary=" + boundary;

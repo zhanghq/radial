@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using log4net.Config;
 using log4net;
 using System.IO;
@@ -54,7 +51,7 @@ namespace Radial
         {
             get
             {
-                return StaticVariables.GetConfigPath("log4net.config");
+                return GlobalVariables.GetConfigPath("log4net.config");
             }
         }
 

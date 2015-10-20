@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NHibernate.Cfg;
 using NHibernate.Driver;
 using System.Xml.Linq;

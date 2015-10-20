@@ -1,14 +1,9 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Bson;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Radial.Web.WebApi.Formatting
@@ -62,7 +57,7 @@ namespace Radial.Web.WebApi.Formatting
             // Create task writing the serialized content 
             return Task.Factory.StartNew(() =>
             {
-                using (StreamWriter streamWriter = new StreamWriter(writeStream, StaticVariables.Encoding))
+                using (StreamWriter streamWriter = new StreamWriter(writeStream, GlobalVariables.Encoding))
                 {
                     using (JsonTextWriter jsonTextWriter = new JsonTextWriter(streamWriter))
                     {
@@ -91,7 +86,7 @@ namespace Radial.Web.WebApi.Formatting
             // Create task reading the content 
             return Task.Factory.StartNew(() =>
             {
-                using (StreamReader streamReader = new StreamReader(readStream, StaticVariables.Encoding))
+                using (StreamReader streamReader = new StreamReader(readStream, GlobalVariables.Encoding))
                 {
                     using (JsonTextReader jsonTextReader = new JsonTextReader(streamReader))
                     {

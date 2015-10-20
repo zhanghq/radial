@@ -1,35 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace Radial
 {
     /// <summary>
-    /// Static Variables of the system.
+    /// Global variables of the system.
     /// </summary>
-    public static class StaticVariables
+    public static class GlobalVariables
     {
         /// <summary>
-        /// Application base directory.
+        /// The global variable of application base directory.
         /// </summary>
         public static string BaseDirectory = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
 
         /// <summary>
-        /// Application configuration directory.
+        /// The global variable of application configuration directory.
         /// </summary>
         public static string ConfigDirectory = Path.Combine(BaseDirectory, "Config");
 
         /// <summary>
-        /// The encoding (default to UTF8).
+        /// The global variable of encoding (default to UTF8).
         /// </summary>
         public static Encoding Encoding = Encoding.UTF8;
 
         /// <summary>
-        /// The image file extensions.
+        /// The global variable of image file extensions.
         /// </summary>
         public static string[] ImageFileExtensions = new string[] { ".jpg", ".jpeg", ".jfif", ".gif", ".bmp", ".png", ".tif", ".tiff" };
+
+        /// <summary>
+        /// The global variable of web exception HTTP status code
+        /// </summary>
+        public static System.Net.HttpStatusCode WebExceptionHttpStatusCode = System.Net.HttpStatusCode.InternalServerError;
 
 
         /// <summary>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Radial.Net;
 using Radial.Serialization;
 
@@ -44,7 +40,7 @@ namespace Radial.Web.Mvc
         {
             context.HttpContext.Response.Clear();
             context.HttpContext.Response.ContentType = _contentType;
-            context.HttpContext.Response.ContentEncoding = StaticVariables.Encoding;
+            context.HttpContext.Response.ContentEncoding = GlobalVariables.Encoding;
 
             context.HttpContext.Response.Write(JsonSerializer.Serialize(_data));
 

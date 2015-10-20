@@ -4,11 +4,6 @@ using Quartz.Impl;
 using Radial.Boot;
 using Radial.Param;
 using Radial.Persist.Nhs.Param;
-using Radial.Web.Mvc.Filters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Radial.Test.Mvc
 {

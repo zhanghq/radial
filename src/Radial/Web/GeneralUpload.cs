@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Web;
 using Newtonsoft.Json;
 
@@ -151,7 +149,7 @@ namespace Radial.Web
         {
             lock (SyncRoot)
             {
-                string rootAP = Settings != null ? HttpServerUtility.MapPath(HttpKits.CombineRelativeUrl(Settings.RootDirectory)) : StaticVariables.BaseDirectory;
+                string rootAP = Settings != null ? HttpServerUtility.MapPath(HttpKits.CombineRelativeUrl(Settings.RootDirectory)) : GlobalVariables.BaseDirectory;
 
                 //create root dir if not exist
                 if (!Directory.Exists(rootAP))

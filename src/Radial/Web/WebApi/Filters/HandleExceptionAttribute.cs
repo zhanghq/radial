@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
-using System.Web;
-using System.Net;
 using Radial.Net;
 using System.Web.Http.Filters;
 using System.Net.Http;
@@ -31,15 +25,13 @@ namespace Radial.Web.WebApi.Filters
         /// <param name="outputStyle">The exception output style.</param>
         /// <param name="defaultErrorCode">The default error code, if unknown exception occurs.</param>
         /// <param name="defaultErrorMessage">The default error message, if unknown exception occurs.</param>
-        /// <param name="defaultHttpStatusCode">The default http status code.</param>
         public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode,
-            string defaultErrorMessage = null, HttpStatusCode? defaultHttpStatusCode = HttpStatusCode.OK)
+            string defaultErrorMessage = null)
         {
             OutputStyle = outputStyle;
             DefaultErrorCode = defaultErrorCode;
             if (!string.IsNullOrWhiteSpace(defaultErrorMessage))
                 DefaultErrorMessage = defaultErrorMessage.Trim();
-            DefaultHttpStatusCode = defaultHttpStatusCode.Value;
         }
 
         /// <summary>
@@ -70,15 +62,6 @@ namespace Radial.Web.WebApi.Filters
             private set;
         }
 
-        /// <summary>
-        /// Gets the default http status code.
-        /// </summary>
-        public HttpStatusCode DefaultHttpStatusCode
-        {
-            get;
-            private set;
-        }
-
 
         /// <summary>
         /// Called when an exception occurs.
@@ -94,7 +77,7 @@ namespace Radial.Web.WebApi.Filters
                 return;
             }
 
-            HttpKnownFaultException hkfe = actionExecutedContext.Exception as HttpKnownFaultException;
+            KnownFaultException hkfe = actionExecutedContext.Exception as KnownFaultException;
 
             ExceptionOutputData data = new ExceptionOutputData
             {
@@ -103,18 +86,14 @@ namespace Radial.Web.WebApi.Filters
                 ErrorMessage = hkfe != null ? hkfe.Message : DefaultErrorMessage
             };
 
-            HttpStatusCode scode = DefaultHttpStatusCode;
 
-            if (hkfe != null && hkfe.StatusCode.HasValue)
-                scode = hkfe.StatusCode.Value;
-
-            HttpResponseMessage resp = new HttpResponseMessage(scode);
+            HttpResponseMessage resp = new HttpResponseMessage(GlobalVariables.WebExceptionHttpStatusCode);
 
             if (OutputStyle == ExceptionOutputStyle.Json)
-                resp.Content = new StringContent(data.ToJson(), StaticVariables.Encoding, ContentTypes.Json);
+                resp.Content = new StringContent(data.ToJson(), GlobalVariables.Encoding, ContentTypes.Json);
 
             if (OutputStyle == ExceptionOutputStyle.Xml)
-                resp.Content = new StringContent(data.ToXml(), StaticVariables.Encoding, ContentTypes.Xml);
+                resp.Content = new StringContent(data.ToXml(), GlobalVariables.Encoding, ContentTypes.Xml);
 
             actionExecutedContext.Response = resp;
         }

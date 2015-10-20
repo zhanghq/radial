@@ -1,14 +1,8 @@
 ﻿using NHibernate.Cfg;
-using NHibernate.Util;
 using Radial.Persist;
 using Radial.Persist.Nhs;
 using Radial.Persist.Nhs.NamingStrategy;
-using Radial.UnitTest.Persist.Nhs.Domain;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
 
 namespace Radial.UnitTest.Persist.Nhs.Shard

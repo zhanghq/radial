@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Radial.Persist.Lite
+﻿namespace Radial.Persist.Lite
 {
     /// <summary>
     /// 占位符替换方法

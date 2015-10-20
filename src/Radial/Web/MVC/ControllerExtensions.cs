@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.Mvc;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using Radial.Serialization;
 using System.Data;
-using System.Net;
 using System.Web.Routing;
 using OfficeOpenXml;
 
@@ -125,23 +121,12 @@ namespace Radial.Web.Mvc
         /// <param name="c">The controller.</param>
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message.</param>
-        /// <returns>ThrowKnownFaultResult instance.</returns>
-        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message)
+        /// <returns>
+        /// ThrowKnownFaultResult instance.
+        /// </returns>
+        public static KnownFaultResult KnownFault(this Controller c, int errorCode, string message)
         {
-            return KnownFault(c, errorCode, message, null, null);
-        }
-
-        /// <summary>
-        /// Throws a new KnownFaultException and let the system itself to decide how to deal with.
-        /// </summary>
-        /// <param name="c">The controller.</param>
-        /// <param name="errorCode">The error code.</param>
-        /// <param name="message">The message.</param>
-        /// <param name="httpStatusCode">The HTTP status code.</param>
-        /// <returns>ThrowKnownFaultResult instance.</returns>
-        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message, HttpStatusCode? httpStatusCode)
-        {
-            return KnownFault(c, errorCode, message, null, httpStatusCode);
+            return KnownFault(c, errorCode, message, null);
         }
 
         /// <summary>
@@ -152,24 +137,11 @@ namespace Radial.Web.Mvc
         /// <param name="message">The message.</param>
         /// <param name="innerException">The inner exception.</param>
         /// <returns>ThrowKnownFaultResult instance.</returns>
-        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message, Exception innerException)
+        public static KnownFaultResult KnownFault(this Controller c, int errorCode, string message, Exception innerException)
         {
-            return new HttpKnownFaultResult(errorCode, message, innerException, null);
+            return new KnownFaultResult(errorCode, message, innerException);
         }
 
-        /// <summary>
-        /// Throws a new KnownFaultException and let the system itself to decide how to deal with.
-        /// </summary>
-        /// <param name="c">The controller.</param>
-        /// <param name="errorCode">The error code.</param>
-        /// <param name="message">The message.</param>
-        /// <param name="innerException">The inner exception.</param>
-        /// <param name="httpStatusCode">The HTTP status code.</param>
-        /// <returns>ThrowKnownFaultResult instance.</returns>
-        public static HttpKnownFaultResult KnownFault(this Controller c, int errorCode, string message, Exception innerException, HttpStatusCode? httpStatusCode)
-        {
-            return new HttpKnownFaultResult(errorCode, message, innerException, httpStatusCode);
-        }
 
         /// <summary>
         /// Export data to excel file.
@@ -180,7 +152,7 @@ namespace Radial.Web.Mvc
         /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         /// <param name="customHandler">The custom handler.</param>
         /// <returns>ExcelResult instance.</returns>
-        public static ExcelResult Excel(this Controller c, IEnumerable<DataTable> dataTables, string downloadFileName = null, 
+        public static ExcelResult Excel(this Controller c, IEnumerable<DataTable> dataTables, string downloadFileName = null,
             bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
         {
             return new ExcelResult(dataTables, downloadFileName, columnHeader, customHandler);
@@ -210,7 +182,7 @@ namespace Radial.Web.Mvc
         /// <param name="columnHeader">if set to <c>true</c>, column name will used as caption property on first row.</param>
         /// <param name="customHandler">The custom handler.</param>
         /// <returns>ExcelResult instance.</returns>
-        public static ExcelResult Excel(this Controller c, DataSet dataSet, string downloadFileName = null, 
+        public static ExcelResult Excel(this Controller c, DataSet dataSet, string downloadFileName = null,
             bool columnHeader = true, Action<ExcelWorksheet> customHandler = null)
         {
             return new ExcelResult(dataSet, downloadFileName, columnHeader, customHandler);

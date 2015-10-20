@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Radial.UnitTest.Persist.Nhs.Domain
+﻿namespace Radial.UnitTest.Persist.Nhs.Domain
 {
     public class User
     {

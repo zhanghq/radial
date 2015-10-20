@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Radial
 {
@@ -155,7 +150,7 @@ namespace Radial
             MiniDumpType.WithFullMemoryInfo | MiniDumpType.WithThreadInfo)
         {
             //default path
-            string dmpPath = StaticVariables.GetPath(DateTime.Now.ToString("yyyyMMddHHmmss") + ".dmp");
+            string dmpPath = GlobalVariables.GetPath(DateTime.Now.ToString("yyyyMMddHHmmss") + ".dmp");
 
             try
             {

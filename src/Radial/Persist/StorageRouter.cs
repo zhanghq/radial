@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using System.IO;
 using Microsoft.Practices.Unity;
@@ -63,7 +62,7 @@ namespace Radial.Persist
         {
             get
             {
-                return StaticVariables.GetConfigPath("StorageAlias.config");
+                return GlobalVariables.GetConfigPath("StorageAlias.config");
             }
         }
 

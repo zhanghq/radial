@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
+﻿using System.Collections.Generic;
 using NHibernate.Cfg;
-using System.Xml.Linq;
 using Radial.Persist.Nhs.NamingStrategy;
 
 namespace Radial.Persist.Nhs
@@ -19,7 +14,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         public virtual string ConfigurationPath
         {
-            get { return StaticVariables.GetConfigPath("NHibernate.config"); }
+            get { return GlobalVariables.GetConfigPath("NHibernate.config"); }
         }
 
 

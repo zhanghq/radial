@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Newtonsoft.Json;
-using System.Xml.Serialization;
 
 namespace Radial.Web
 {
@@ -50,7 +46,7 @@ namespace Radial.Web
         /// <returns>Json string.</returns>
         public string ToJson()
         {
-            return Radial.Serialization.JsonSerializer.Serialize(this);
+            return Serialization.JsonSerializer.Serialize(this);
         }
     }
 }

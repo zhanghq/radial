@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Enyim.Caching;
-using System.Threading;
 using Radial.Serialization;
 using Microsoft.Practices.Unity;
 
@@ -42,7 +38,7 @@ namespace Radial.Cache
             if (obj == null)
                 return null;
 
-            return StaticVariables.Encoding.GetBytes(JsonSerializer.Serialize(obj));
+            return GlobalVariables.Encoding.GetBytes(JsonSerializer.Serialize(obj));
         }
 
         /// <summary>
@@ -55,7 +51,7 @@ namespace Radial.Cache
             if (bytes == null || bytes.Length == 0)
                 return null;
 
-            return JsonSerializer.Deserialize(StaticVariables.Encoding.GetString(bytes));
+            return JsonSerializer.Deserialize(GlobalVariables.Encoding.GetString(bytes));
         }
 
         /// <summary>

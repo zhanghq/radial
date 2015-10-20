@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.IO;
 using System.Xml.Linq;
-using System.Text.RegularExpressions;
 
 namespace Radial.Param
 {
@@ -35,7 +33,7 @@ namespace Radial.Param
         {
             get
             {
-                return StaticVariables.GetConfigPath("XmlParam.config");
+                return GlobalVariables.GetConfigPath("XmlParam.config");
             }
         }
 

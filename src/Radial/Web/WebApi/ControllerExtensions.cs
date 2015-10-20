@@ -1,16 +1,12 @@
-﻿using Radial.Net;
+﻿using Radial;
+using Radial.Net;
 using Radial.Serialization;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace Radial.Web.WebApi
+namespace RadialWeb.WebApi
 {
     /// <summary>
     /// ControllerExtensions
@@ -24,9 +20,9 @@ namespace Radial.Web.WebApi
         /// <param name="c">The c.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage StatusCode(this ApiController c, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage StatusCode(this ApiController c, HttpStatusCode code = HttpStatusCode.OK)
         {
-            var resp = new HttpResponseMessage(code.Value);
+            var resp = new HttpResponseMessage(code);
             return resp;
         }
 
@@ -37,13 +33,13 @@ namespace Radial.Web.WebApi
         /// <param name="text">The text.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage PlainText(this ApiController c, string text, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage PlainText(this ApiController c, string text, HttpStatusCode code = HttpStatusCode.OK)
         {
             if (string.IsNullOrWhiteSpace(text))
                 text = string.Empty;
 
-            var resp = new HttpResponseMessage(code.Value);
-            resp.Content = new StringContent(text, StaticVariables.Encoding, ContentTypes.PlainText);
+            var resp = new HttpResponseMessage(code);
+            resp.Content = new StringContent(text, GlobalVariables.Encoding, ContentTypes.PlainText);
             return resp;
         }
 
@@ -56,13 +52,13 @@ namespace Radial.Web.WebApi
         /// <param name="html">The HTML.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage Html(this ApiController c, string html, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Html(this ApiController c, string html, HttpStatusCode code = HttpStatusCode.OK)
         {
             if (string.IsNullOrWhiteSpace(html))
                 html = string.Empty;
 
-            var resp = new HttpResponseMessage(code.Value);
-            resp.Content = new StringContent(html, StaticVariables.Encoding, ContentTypes.Html);
+            var resp = new HttpResponseMessage(code);
+            resp.Content = new StringContent(html, GlobalVariables.Encoding, ContentTypes.Html);
             return resp;
         }
 
@@ -73,7 +69,7 @@ namespace Radial.Web.WebApi
         /// <param name="obj">The object.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage Json(this ApiController c, object obj, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Json(this ApiController c, object obj, HttpStatusCode code = HttpStatusCode.OK)
         {
             return Json(c, JsonSerializer.Serialize(obj), code);
         }
@@ -85,13 +81,13 @@ namespace Radial.Web.WebApi
         /// <param name="json">The json.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage Json(this ApiController c, string json, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Json(this ApiController c, string json, HttpStatusCode code = HttpStatusCode.OK)
         {
             if (string.IsNullOrWhiteSpace(json))
                 json = string.Empty;
 
-            var resp = new HttpResponseMessage(code.Value);
-            resp.Content = new StringContent(json, StaticVariables.Encoding, ContentTypes.Json);
+            var resp = new HttpResponseMessage(code);
+            resp.Content = new StringContent(json, GlobalVariables.Encoding, ContentTypes.Json);
             return resp;
         }
 
@@ -103,9 +99,9 @@ namespace Radial.Web.WebApi
         /// <param name="obj">The object.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage Xml(this ApiController c, object obj, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Xml(this ApiController c, object obj, HttpStatusCode code = HttpStatusCode.OK)
         {
-            return Json(c, XmlSerializer.Serialize(obj), code);
+            return Xml(c, XmlSerializer.Serialize(obj), code);
         }
 
         /// <summary>
@@ -115,13 +111,13 @@ namespace Radial.Web.WebApi
         /// <param name="xml">The XML.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage Xml(this ApiController c, string xml, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Xml(this ApiController c, string xml, HttpStatusCode code = HttpStatusCode.OK)
         {
             if (string.IsNullOrWhiteSpace(xml))
                 xml = string.Empty;
 
-            var resp = new HttpResponseMessage(code.Value);
-            resp.Content = new StringContent(xml, StaticVariables.Encoding, ContentTypes.Xml);
+            var resp = new HttpResponseMessage(code);
+            resp.Content = new StringContent(xml, GlobalVariables.Encoding, ContentTypes.Xml);
             return resp;
         }
 
@@ -132,9 +128,9 @@ namespace Radial.Web.WebApi
         /// <param name="bytes">The bytes.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage Stream(this ApiController c, byte[] bytes, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Stream(this ApiController c, byte[] bytes, HttpStatusCode code = HttpStatusCode.OK)
         {
-            var resp = new HttpResponseMessage(code.Value);
+            var resp = new HttpResponseMessage(code);
             resp.Content = new StreamContent(new MemoryStream(bytes));
             return resp;
         }
@@ -146,9 +142,9 @@ namespace Radial.Web.WebApi
         /// <param name="stream">The stream.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage Stream(this ApiController c, Stream stream, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Stream(this ApiController c, Stream stream, HttpStatusCode code = HttpStatusCode.OK)
         {
-            var resp = new HttpResponseMessage(code.Value);
+            var resp = new HttpResponseMessage(code);
             resp.Content = new StreamContent(stream);
             return resp;
         }
@@ -160,9 +156,9 @@ namespace Radial.Web.WebApi
         /// <param name="obj">The object.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage Stream(this ApiController c, object obj, HttpStatusCode? code = HttpStatusCode.OK)
+        public static HttpResponseMessage Stream(this ApiController c, object obj, HttpStatusCode code = HttpStatusCode.OK)
         {
-            return Stream(c, Radial.Serialization.BinarySerializer.Serialize(obj), code);
+            return Stream(c, BinarySerializer.Serialize(obj), code);
         }
     }
 }

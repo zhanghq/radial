@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Radial.Tools.NhDbFirst.Data.Query;
 using Radial.Tools.NhDbFirst.Kernel;
 

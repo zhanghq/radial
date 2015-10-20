@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using Radial.Persist.Nhs.Param;
 
 namespace Radial.UnitTest.Persist.Nhs
 {
-     [TestFixture]
+    [TestFixture]
     public class NhParamTest
     {
          [Test]

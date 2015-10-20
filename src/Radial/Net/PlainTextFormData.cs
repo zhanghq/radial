@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 
 namespace Radial.Net
 {
@@ -40,7 +37,7 @@ namespace Radial.Net
             sb.AppendLine();
             sb.AppendLine(_value);
 
-            byte[] postBytes = StaticVariables.Encoding.GetBytes(sb.ToString());
+            byte[] postBytes = GlobalVariables.Encoding.GetBytes(sb.ToString());
             reqStream.Write(postBytes, 0, postBytes.Length);
         }
 

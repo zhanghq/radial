@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data.Common;
 using System.Data;
-using System.Text.RegularExpressions;
 using Radial.Persist.Lite.Cfg;
 using System.Configuration;
 

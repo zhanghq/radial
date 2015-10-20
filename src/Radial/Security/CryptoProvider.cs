@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Security.Cryptography;
-using Radial;
 using System.IO;
 
 namespace Radial.Security
@@ -27,7 +23,7 @@ namespace Radial.Security
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(clearText), "cleartext can not be empty or null.");
 
-            byte[] clearTextBytes = StaticVariables.Encoding.GetBytes(clearText);
+            byte[] clearTextBytes = GlobalVariables.Encoding.GetBytes(clearText);
 
             byte[] encryptedBytes = SHA1Encrypt(clearTextBytes);
 
@@ -66,7 +62,7 @@ namespace Radial.Security
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(clearText), "cleartext can not be empty or null.");
 
-            byte[] clearTextBytes = StaticVariables.Encoding.GetBytes(clearText);
+            byte[] clearTextBytes = GlobalVariables.Encoding.GetBytes(clearText);
 
             byte[] encryptedBytes = MD5Encrypt(clearTextBytes);
 

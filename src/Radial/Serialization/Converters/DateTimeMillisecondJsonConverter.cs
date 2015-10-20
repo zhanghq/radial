@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
 using Newtonsoft.Json;
 
 namespace Radial.Serialization.Converters

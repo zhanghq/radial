@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Radial.Tools.NhDbFirst.Data
+﻿namespace Radial.Tools.NhDbFirst.Data
 {
     /// <summary>
     /// 占位符替换方法

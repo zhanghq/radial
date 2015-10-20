@@ -19,11 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using System.Xml.XPath;
 using Radial.Tools.Hbm2Sql.TSqlFormatter.Interfaces;
 
 namespace Radial.Tools.Hbm2Sql.TSqlFormatter

@@ -198,7 +198,7 @@ namespace Radial
         public static string Compress(string str)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(str), "input string can not be empty or null.");
-            byte[] cb = Compress(StaticVariables.Encoding.GetBytes(str));
+            byte[] cb = Compress(GlobalVariables.Encoding.GetBytes(str));
 
             StringBuilder ret = new StringBuilder();
             foreach (byte b in cb)
@@ -257,7 +257,7 @@ namespace Radial
 
             byte[] cb = Decompress(inputByteArray);
 
-            return StaticVariables.Encoding.GetString(cb);
+            return GlobalVariables.Encoding.GetString(cb);
         }
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace Radial
         public static string ToBase64String(string data)
         {
 
-            return ToBase64String(StaticVariables.Encoding.GetBytes(data));
+            return ToBase64String(GlobalVariables.Encoding.GetBytes(data));
         }
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace Radial
         public static string FromBase64String(string base64Str)
         {
 
-            return StaticVariables.Encoding.GetString(FromBase64StringToBytes(base64Str));
+            return GlobalVariables.Encoding.GetString(FromBase64StringToBytes(base64Str));
         }
 
         /// <summary>
@@ -590,7 +590,7 @@ namespace Radial
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(fileName), "file name can not be null.");
 
-            return StaticVariables.ImageFileExtensions.Contains(o => o == Path.GetExtension(fileName).ToLower());
+            return GlobalVariables.ImageFileExtensions.Contains(o => o == Path.GetExtension(fileName).ToLower());
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Radial.Net;
 
 namespace Radial.Web.Mvc
@@ -33,7 +29,7 @@ namespace Radial.Web.Mvc
         public override void ExecuteResult(ControllerContext context)
         {
             context.HttpContext.Response.ContentType = ContentTypes.Xml;
-            context.HttpContext.Response.ContentEncoding = StaticVariables.Encoding;
+            context.HttpContext.Response.ContentEncoding = GlobalVariables.Encoding;
             context.HttpContext.Response.Write(_xml);
         }
     }

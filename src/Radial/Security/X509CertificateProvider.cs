@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using Radial;
 
 namespace Radial.Security
 {
@@ -125,7 +122,7 @@ namespace Radial.Security
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(msg), "需要加密的消息不能为空");
 
-            byte[] encryptedBytes = EncryptUsePublicKey(StaticVariables.Encoding.GetBytes(msg), fOAEP);
+            byte[] encryptedBytes = EncryptUsePublicKey(GlobalVariables.Encoding.GetBytes(msg), fOAEP);
 
             StringBuilder sb = new StringBuilder();
             foreach (byte eb in encryptedBytes)
@@ -187,7 +184,7 @@ namespace Radial.Security
 
             byte[] dencryptedBytes = DecryptUsePublicKey(msgBytes, fOAEP);
 
-            return StaticVariables.Encoding.GetString(dencryptedBytes);
+            return GlobalVariables.Encoding.GetString(dencryptedBytes);
         }
 
         /// <summary>
@@ -236,7 +233,7 @@ namespace Radial.Security
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(msg), "message can not be empty or null");
 
-            byte[] encryptedBytes = EncryptUsePrivateKey(StaticVariables.Encoding.GetBytes(msg), fOAEP);
+            byte[] encryptedBytes = EncryptUsePrivateKey(GlobalVariables.Encoding.GetBytes(msg), fOAEP);
 
             StringBuilder sb = new StringBuilder();
             foreach (byte eb in encryptedBytes)
@@ -292,7 +289,7 @@ namespace Radial.Security
 
             byte[] dencryptedBytes = DecryptUsePrivateKey(msgBytes, fOAEP);
 
-            return StaticVariables.Encoding.GetString(dencryptedBytes);
+            return GlobalVariables.Encoding.GetString(dencryptedBytes);
         }
 
 
@@ -322,7 +319,7 @@ namespace Radial.Security
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(msg), "msg can not be empty or null");
 
-            byte[] encryptedBytes = CreateSignatureUsePublicKey(StaticVariables.Encoding.GetBytes(msg));
+            byte[] encryptedBytes = CreateSignatureUsePublicKey(GlobalVariables.Encoding.GetBytes(msg));
 
             StringBuilder sb = new StringBuilder();
             foreach (byte eb in encryptedBytes)
@@ -358,7 +355,7 @@ namespace Radial.Security
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(msg), "msg can not be empty or null");
 
-            byte[] encryptedBytes = CreateSignatureUsePrivateKey(StaticVariables.Encoding.GetBytes(msg));
+            byte[] encryptedBytes = CreateSignatureUsePrivateKey(GlobalVariables.Encoding.GetBytes(msg));
 
             StringBuilder sb = new StringBuilder();
             foreach (byte eb in encryptedBytes)
@@ -397,7 +394,7 @@ namespace Radial.Security
             Checker.Parameter(!string.IsNullOrEmpty(dataStr), "dataStr can not be empty or null");
             Checker.Parameter(!string.IsNullOrEmpty(signature), "signature can not be empty or null");
 
-            byte[] data = StaticVariables.Encoding.GetBytes(dataStr);
+            byte[] data = GlobalVariables.Encoding.GetBytes(dataStr);
 
             byte[] signatureBytes = new byte[signature.Length / 2];
 
@@ -436,7 +433,7 @@ namespace Radial.Security
             Checker.Parameter(!string.IsNullOrEmpty(dataStr), "dataStr can not be empty or null");
             Checker.Parameter(!string.IsNullOrEmpty(signature), "signature can not be empty or null");
 
-            byte[] data = StaticVariables.Encoding.GetBytes(dataStr);
+            byte[] data = GlobalVariables.Encoding.GetBytes(dataStr);
 
             byte[] signatureBytes = new byte[signature.Length / 2];
 

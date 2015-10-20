@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using Microsoft.Practices.Unity;
 using NHibernate;
 
 namespace Radial.Persist.Nhs

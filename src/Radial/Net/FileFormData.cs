@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.IO;
 using Radial.IO;
@@ -164,10 +162,10 @@ namespace Radial.Net
 
             sb.AppendLine();
 
-            byte[] postBytesHeader = StaticVariables.Encoding.GetBytes(sb.ToString());
+            byte[] postBytesHeader = GlobalVariables.Encoding.GetBytes(sb.ToString());
             reqStream.Write(postBytesHeader, 0, postBytesHeader.Length);
             reqStream.Write(_fileContent, 0, _fileContent.Length);
-            byte[] postBytesEnd = StaticVariables.Encoding.GetBytes("\r\n");
+            byte[] postBytesEnd = GlobalVariables.Encoding.GetBytes("\r\n");
             reqStream.Write(postBytesEnd, 0, postBytesEnd.Length);
         }
     }

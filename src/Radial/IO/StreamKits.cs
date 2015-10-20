@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Radial.IO
 {
@@ -21,7 +20,7 @@ namespace Radial.IO
         /// </returns>
         public static string GetText(Stream stream)
         {
-            return GetText(stream, StaticVariables.Encoding);
+            return GetText(stream, GlobalVariables.Encoding);
         }
 
         /// <summary>
@@ -50,7 +49,7 @@ namespace Radial.IO
         /// </returns>
         public static string GetText(string filePath)
         {
-            return GetText(filePath, StaticVariables.Encoding);
+            return GetText(filePath, GlobalVariables.Encoding);
         }
 
         /// <summary>
@@ -159,7 +158,7 @@ namespace Radial.IO
         /// <returns>Stream text lines</returns>
         public static string[] GetLines(Stream stream)
         {
-            return GetLines(stream, StaticVariables.Encoding);
+            return GetLines(stream, GlobalVariables.Encoding);
         }
 
         /// <summary>
@@ -192,7 +191,7 @@ namespace Radial.IO
         /// </returns>
         public static string[] GetLines(string filePath)
         {
-            return GetLines(filePath, StaticVariables.Encoding);
+            return GetLines(filePath, GlobalVariables.Encoding);
         }
 
         /// <summary>
@@ -218,7 +217,7 @@ namespace Radial.IO
         /// <param name="filePath">The file path.</param>
         public static void WriteToFile(byte[] content, string filePath)
         {
-            WriteToFile(content, filePath, StaticVariables.Encoding);
+            WriteToFile(content, filePath, GlobalVariables.Encoding);
         }
 
         /// <summary>
@@ -250,7 +249,7 @@ namespace Radial.IO
         /// <param name="filePath">The file path.</param>
         public static void WriteToFile(string content, string filePath)
         {
-            WriteToFile(content, filePath, StaticVariables.Encoding);
+            WriteToFile(content, filePath, GlobalVariables.Encoding);
         }
 
         /// <summary>
@@ -282,7 +281,7 @@ namespace Radial.IO
         /// <param name="filePath">The file path.</param>
         public static void AddToFile(byte[] content, string filePath)
         {
-            AddToFile(content, filePath, StaticVariables.Encoding);
+            AddToFile(content, filePath, GlobalVariables.Encoding);
         }
 
         /// <summary>
@@ -314,7 +313,7 @@ namespace Radial.IO
         /// <param name="filePath">The file path.</param>
         public static void AddToFile(string content, string filePath)
         {
-            AddToFile(content, filePath, StaticVariables.Encoding);
+            AddToFile(content, filePath, GlobalVariables.Encoding);
         }
 
         /// <summary>
@@ -347,7 +346,7 @@ namespace Radial.IO
         /// <param name="filePath">The file path.</param>
         public static void AddLineToFile(string line, string filePath)
         {
-            AddLineToFile(line, filePath, StaticVariables.Encoding);
+            AddLineToFile(line, filePath, GlobalVariables.Encoding);
         }
 
         /// <summary>
@@ -379,7 +378,7 @@ namespace Radial.IO
         /// <param name="filePath">The file path.</param>
         public static void AddLinesToFile(IEnumerable<string> lines, string filePath)
         {
-            AddLinesToFile(lines, filePath, StaticVariables.Encoding);
+            AddLinesToFile(lines, filePath, GlobalVariables.Encoding);
         }
 
         /// <summary>

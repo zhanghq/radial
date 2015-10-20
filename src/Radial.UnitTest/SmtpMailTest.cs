@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
+﻿using System.Net.Mail;
 using NUnit.Framework;
 using Radial.Net;
 
@@ -21,7 +17,7 @@ namespace Radial.UnitTest
             msg.Subject = "Test";
             msg.Body="<p>Hello</p>";
             msg.IsBodyHtml=true;
-            msg.BodyEncoding=StaticVariables.Encoding;
+            msg.BodyEncoding=GlobalVariables.Encoding;
             Cycler.Execute(() => client.Send("ihaiqing@163.com", "0556016006", msg), 2, 1000);
         }
     }

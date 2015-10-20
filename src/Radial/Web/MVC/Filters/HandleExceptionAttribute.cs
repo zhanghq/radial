@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
-using System.Web;
-using System.Net;
 using Radial.Net;
+using System.Web.Http.Filters;
+using System.Net.Http;
 
 namespace Radial.Web.Mvc.Filters
 {
@@ -13,7 +9,7 @@ namespace Radial.Web.Mvc.Filters
     /// Represents an attribute that is used to handle and log an exception that is thrown by an action method.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public class HandleExceptionAttribute : HandleErrorAttribute
+    public class HandleExceptionAttribute : ExceptionFilterAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HandleExceptionAttribute" /> class with ExceptionOutputStyle.System.
@@ -29,15 +25,13 @@ namespace Radial.Web.Mvc.Filters
         /// <param name="outputStyle">The exception output style.</param>
         /// <param name="defaultErrorCode">The default error code, if unknown exception occurs.</param>
         /// <param name="defaultErrorMessage">The default error message, if unknown exception occurs.</param>
-        /// <param name="defaultHttpStatusCode">The default http status code.</param>
         public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode,
-            string defaultErrorMessage=null, HttpStatusCode? defaultHttpStatusCode = HttpStatusCode.OK)
+            string defaultErrorMessage = null)
         {
             OutputStyle = outputStyle;
             DefaultErrorCode = defaultErrorCode;
             if (!string.IsNullOrWhiteSpace(defaultErrorMessage))
                 DefaultErrorMessage = defaultErrorMessage.Trim();
-            DefaultHttpStatusCode = defaultHttpStatusCode.Value;
         }
 
         /// <summary>
@@ -69,67 +63,37 @@ namespace Radial.Web.Mvc.Filters
         }
 
         /// <summary>
-        /// Gets the default http status code.
-        /// </summary>
-        public HttpStatusCode DefaultHttpStatusCode
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// Called when an exception occurs.
         /// </summary>
-        /// <param name="filterContext">The action-filter context.</param>
-        /// <exception cref="T:System.ArgumentNullException">The <paramref name="filterContext"/> parameter is null.</exception>
-        public override void OnException(ExceptionContext filterContext)
+        /// <param name="actionExecutedContext">The HttpActionExecutedContext object.</param>
+        public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
-            Logger.Default.Fatal(filterContext.Exception);
-
+            Logger.Default.Fatal(actionExecutedContext.Exception);
 
             if (OutputStyle == ExceptionOutputStyle.System)
             {
-                base.OnException(filterContext);
+                base.OnException(actionExecutedContext);
                 return;
             }
 
-            filterContext.ExceptionHandled = true;
-
-            HttpKnownFaultException hkfe = filterContext.Exception as HttpKnownFaultException;
+            KnownFaultException hkfe = actionExecutedContext.Exception as KnownFaultException;
 
             ExceptionOutputData data = new ExceptionOutputData
             {
                 ErrorCode = hkfe != null ? hkfe.ErrorCode : DefaultErrorCode,
-                RequestUrl = HttpKits.MakeRelativeUrl(filterContext.HttpContext.Request.RawUrl).Replace("~", string.Empty),
+                RequestUrl = HttpKits.MakeRelativeUrl(actionExecutedContext.Request.RequestUri.AbsoluteUri).Replace("~", string.Empty),
                 ErrorMessage = hkfe != null ? hkfe.Message : DefaultErrorMessage
             };
 
-            filterContext.HttpContext.Response.Clear();
-            filterContext.HttpContext.Response.ContentEncoding = StaticVariables.Encoding;
-
-            string respContext = string.Empty;
+            HttpResponseMessage resp = new HttpResponseMessage(GlobalVariables.WebExceptionHttpStatusCode);
 
             if (OutputStyle == ExceptionOutputStyle.Json)
-            {
-                filterContext.HttpContext.Response.ContentType = ContentTypes.Json;
-                respContext = data.ToJson();
-            }
+                resp.Content = new StringContent(data.ToJson(), GlobalVariables.Encoding, ContentTypes.Json);
+
             if (OutputStyle == ExceptionOutputStyle.Xml)
-            {
-                filterContext.HttpContext.Response.ContentType = ContentTypes.Xml;
-                respContext = data.ToXml();
-            }
+                resp.Content = new StringContent(data.ToXml(), GlobalVariables.Encoding, ContentTypes.Xml);
 
-            HttpStatusCode scode = DefaultHttpStatusCode;
-
-            if (hkfe != null && hkfe.StatusCode.HasValue)
-                scode = hkfe.StatusCode.Value;
-
-            filterContext.HttpContext.Response.StatusCode = (int)scode;
-
-            filterContext.HttpContext.Response.Write(respContext);
-
-            filterContext.HttpContext.ApplicationInstance.CompleteRequest();
+            actionExecutedContext.Response = resp;
         }
     }
 }

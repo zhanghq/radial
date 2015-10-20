@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 using Radial.Tools.NhDbFirst.Data;
 using Radial.Tools.NhDbFirst.Properties;
 

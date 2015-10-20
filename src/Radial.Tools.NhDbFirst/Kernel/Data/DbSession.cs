@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data.Common;
 using System.Data;
-using System.Text.RegularExpressions;
-using System.Configuration;
 using Radial.Tools.NhDbFirst.Kernel;
 
 namespace Radial.Tools.NhDbFirst.Data

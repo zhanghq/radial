@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Radial.Web
+﻿namespace Radial.Web
 {
     /// <summary>
     /// Exception message output style.

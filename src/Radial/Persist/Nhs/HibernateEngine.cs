@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NHibernate;
-using NHibernate.Cfg;
+﻿using NHibernate;
 using NHibernate.Context;
-using System.IO;
-using Radial.Persist.Nhs.NamingStrategy;
-using System.Xml.Linq;
 
 
 namespace Radial.Persist.Nhs

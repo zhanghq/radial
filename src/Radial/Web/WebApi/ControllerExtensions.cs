@@ -1,12 +1,11 @@
-﻿using Radial;
-using Radial.Net;
+﻿using Radial.Net;
 using Radial.Serialization;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace RadialWeb.WebApi
+namespace Radial.Web.WebApi
 {
     /// <summary>
     /// ControllerExtensions

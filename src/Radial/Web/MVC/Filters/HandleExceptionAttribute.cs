@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Web.Mvc;
+using System.Net;
 using Radial.Net;
-using System.Web.Http.Filters;
-using System.Net.Http;
 
 namespace Radial.Web.Mvc.Filters
 {
@@ -9,7 +9,7 @@ namespace Radial.Web.Mvc.Filters
     /// Represents an attribute that is used to handle and log an exception that is thrown by an action method.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public class HandleExceptionAttribute : ExceptionFilterAttribute
+    public class HandleExceptionAttribute : HandleErrorAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HandleExceptionAttribute" /> class with ExceptionOutputStyle.System.
@@ -65,35 +65,51 @@ namespace Radial.Web.Mvc.Filters
         /// <summary>
         /// Called when an exception occurs.
         /// </summary>
-        /// <param name="actionExecutedContext">The HttpActionExecutedContext object.</param>
-        public override void OnException(HttpActionExecutedContext actionExecutedContext)
+        /// <param name="filterContext">The action-filter context.</param>
+        /// <exception cref="T:System.ArgumentNullException">The <paramref name="filterContext"/> parameter is null.</exception>
+        public override void OnException(ExceptionContext filterContext)
         {
-            Logger.Default.Fatal(actionExecutedContext.Exception);
+            Logger.Default.Fatal(filterContext.Exception);
+
 
             if (OutputStyle == ExceptionOutputStyle.System)
             {
-                base.OnException(actionExecutedContext);
+                base.OnException(filterContext);
                 return;
             }
 
-            KnownFaultException hkfe = actionExecutedContext.Exception as KnownFaultException;
+            filterContext.ExceptionHandled = true;
+
+            KnownFaultException hkfe = filterContext.Exception as KnownFaultException;
 
             ExceptionOutputData data = new ExceptionOutputData
             {
                 ErrorCode = hkfe != null ? hkfe.ErrorCode : DefaultErrorCode,
-                RequestUrl = HttpKits.MakeRelativeUrl(actionExecutedContext.Request.RequestUri.AbsoluteUri).Replace("~", string.Empty),
+                RequestUrl = HttpKits.MakeRelativeUrl(filterContext.HttpContext.Request.RawUrl).Replace("~", string.Empty),
                 ErrorMessage = hkfe != null ? hkfe.Message : DefaultErrorMessage
             };
 
-            HttpResponseMessage resp = new HttpResponseMessage(GlobalVariables.WebExceptionHttpStatusCode);
+            filterContext.HttpContext.Response.Clear();
+            filterContext.HttpContext.Response.ContentEncoding = GlobalVariables.Encoding;
+
+            string respContext = string.Empty;
 
             if (OutputStyle == ExceptionOutputStyle.Json)
-                resp.Content = new StringContent(data.ToJson(), GlobalVariables.Encoding, ContentTypes.Json);
-
+            {
+                filterContext.HttpContext.Response.ContentType = ContentTypes.Json;
+                respContext = data.ToJson();
+            }
             if (OutputStyle == ExceptionOutputStyle.Xml)
-                resp.Content = new StringContent(data.ToXml(), GlobalVariables.Encoding, ContentTypes.Xml);
+            {
+                filterContext.HttpContext.Response.ContentType = ContentTypes.Xml;
+                respContext = data.ToXml();
+            }
 
-            actionExecutedContext.Response = resp;
+            filterContext.HttpContext.Response.StatusCode = (int)GlobalVariables.WebExceptionHttpStatusCode;
+
+            filterContext.HttpContext.Response.Write(respContext);
+
+            filterContext.HttpContext.ApplicationInstance.CompleteRequest();
         }
     }
 }

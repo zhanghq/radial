@@ -683,12 +683,13 @@ namespace Radial.Persist.Lite
         /// <returns>RowDataCollection对象</returns>
         public RowDataCollection ExecuteFirstRow(TextCommandData cmdData)
         {
-            RowDataCollection collection = new RowDataCollection();
+            RowDataCollection collection = null;
 
             using (DbDataReader reader = ExecuteDataReader(cmdData))
             {
                 while (reader.Read())
                 {
+                    collection = new RowDataCollection();
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
                         collection.Add(new RowData

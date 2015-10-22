@@ -19,9 +19,7 @@ namespace Radial.Tools.Srvd
         {
             // TODO:  在此处添加代码以启动服务。
             string repath = ServiceHelper.GetParameter<string>(this.ServiceName, "path");
-            File.WriteAllText("D:\\ab1.txt", repath);
             string reargs = ServiceHelper.GetParameter<string>(this.ServiceName, "args");
-            File.WriteAllText("D:\\ab2.txt", reargs);
 
             if (string.IsNullOrWhiteSpace(repath))
                 return;

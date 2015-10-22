@@ -45,6 +45,9 @@ namespace Radial.Tools.Srvd
 
             ServiceHelper.Install(serviceName, serviceName, serviceName, daemonPath, ServiceBootFlag.AutoStart);
 
+            if (exePath.StartsWith("%"))
+                exePath = exePath.Replace("%", AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\'));
+
             ServiceHelper.SetParameter(serviceName, "path", exePath);
             ServiceHelper.SetParameter(serviceName, "args", args);
 
@@ -132,12 +135,13 @@ namespace Radial.Tools.Srvd
             Console.WriteLine("");
             Console.WriteLine("======Command Args======");
             Console.WriteLine("--service  Service name");
-            Console.WriteLine("--path      Executable file full path");
+            Console.WriteLine("--path      Executable file full path, or use % for current path");
             Console.WriteLine("--args      Arguments of executable file (optional)");
             Console.WriteLine("");
             Console.WriteLine("======Usage ======");
             Console.WriteLine("#Install as a daemon");
             Console.WriteLine("srvd.exe -i --service=xxxx --path=xxx --args=xxxx");
+            Console.WriteLine(@"srvd.exe -i --service=xxxx --path=xxx --args=%\xxxx");
             Console.WriteLine("#Uninstall  service of the specified name");
             Console.WriteLine("srvd.exe -u --service=xxxx");
             Console.WriteLine("#Start service of the specified name");

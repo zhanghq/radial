@@ -22,6 +22,16 @@ namespace Radial.Persist.Lite
         /// </summary>
         public object Value { get; set; }
 
+        /// <summary>
+        /// 获取或设置数据行的值是否不存在(DbNull).
+        /// </summary>
+        public bool IsDbNull
+        {
+            get
+            {
+                return Value == System.DBNull.Value;
+            }
+        }
 
         /// <summary>
         /// 返回表示当前对象的 <see cref="System.String" />.

@@ -2,7 +2,9 @@
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Radial.UnitTest" namespace="Radial.UnitTest.Persist.Nhs.Domain">
   <class name="Book">
     <id name="Id">
-      <generator class="assigned"/>
+      <generator class="Radial.Persist.Nhs.TimingIdGenerator, Radial">
+        <param name="prefix">BK</param>
+      </generator>
     </id>
     <property name="Name" not-null="true" length="50"/>
   </class>

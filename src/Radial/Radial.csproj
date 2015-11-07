@@ -132,6 +132,8 @@
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />
     <Compile Include="Cache\IClusterRegion.cs" />
     <Compile Include="Dependency.cs" />
+    <Compile Include="Persist\Nhs\ExtensionMethods.cs" />
+    <Compile Include="Persist\Nhs\SemiautoMapper.cs" />
     <Compile Include="Web\ExceptionOutputData.cs" />
     <Compile Include="Web\ExceptionOutputStyle.cs" />
     <Compile Include="ExtensionMethods.cs" />

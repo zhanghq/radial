@@ -96,5 +96,16 @@ namespace Radial.UnitTest.Persist.Nhs
                 var objs = repo.FindAll();
             }
         }
+
+        [Test]
+        public void TimingIdGenerator()
+        {
+            using (IUnitOfWork uow = new NhUnitOfWork())
+            {
+                Book b = new Book { Name = "342" };
+                uow.RegisterNew<Book>(b);
+                uow.Commit();
+            }
+        }
     }
 }

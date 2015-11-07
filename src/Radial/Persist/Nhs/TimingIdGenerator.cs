@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using NHibernate.Dialect;
+using NHibernate.Type;
 
 namespace Radial.Persist.Nhs
 {
@@ -6,8 +9,29 @@ namespace Radial.Persist.Nhs
     /// <summary>
     /// Identifier generator based on time.
     /// </summary>
-    public class TimingIdGenerator : NHibernate.Id.IIdentifierGenerator
+    public class TimingIdGenerator : NHibernate.Id.IIdentifierGenerator, NHibernate.Id.IConfigurable
     {
+
+        /// <summary>
+        /// Gets the prefix.
+        /// </summary>
+        public string Prefix { get; private set; }
+
+        /// <summary>
+        /// Configures the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="parms">The parms.</param>
+        /// <param name="dialect">The dialect.</param>
+        public void Configure(IType type, IDictionary<string, string> parms, Dialect dialect)
+        {
+            if (parms != null)
+            {
+                if (parms.ContainsKey("prefix") && !string.IsNullOrWhiteSpace(parms["prefix"]))
+                    Prefix = parms["prefix"].Trim().ToUpper();
+            }
+        }
+
         /// <summary>
         /// Generate a new identifier
         /// </summary>
@@ -34,7 +58,7 @@ namespace Radial.Persist.Nhs
             string objIdVal = p.GetValue(obj) as string;
 
             if (string.IsNullOrWhiteSpace(objIdVal))
-                return TimingSeq.Next();
+                return string.Format("{0}{1}", Prefix, TimingSeq.Next());
 
             return objIdVal;
         }

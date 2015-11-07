@@ -120,6 +120,8 @@
     <Compile Include="Persist\Nhs\Repository\OrderRepository.cs" />
     <Compile Include="Persist\Nhs\Repository\BookRepository.cs" />
     <Compile Include="Persist\Nhs\SchemaBuilderTest.cs" />
+    <Compile Include="Persist\Nhs\SemiautoPoolInitializer.cs" />
+    <Compile Include="Persist\Nhs\SemiautoTest.cs" />
     <Compile Include="Persist\Nhs\Shard\ShardPoolInitializer.cs" />
     <Compile Include="Persist\Nhs\Shard\ShardStoragePolicy.cs" />
     <Compile Include="Persist\Nhs\Shard\ShardTest.cs" />

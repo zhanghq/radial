@@ -134,6 +134,8 @@
     <Compile Include="Dependency.cs" />
     <Compile Include="Persist\Nhs\ExtensionMethods.cs" />
     <Compile Include="Persist\Nhs\SemiautoMapper.cs" />
+    <Compile Include="SearchCriteria.cs" />
+    <Compile Include="SearchResult.cs" />
     <Compile Include="Web\ExceptionOutputData.cs" />
     <Compile Include="Web\ExceptionOutputStyle.cs" />
     <Compile Include="ExtensionMethods.cs" />

@@ -10,6 +10,7 @@ namespace Radial.Persist
     public sealed class OrderBySnippet<TObject> where TObject : class
     {
         Expression<Func<TObject, object>> _property;
+        string _propertyName;
         bool _isAscending;
 
         /// <summary>
@@ -21,6 +22,8 @@ namespace Radial.Persist
         {
             Checker.Parameter(property != null, "the sort property can not be null");
             _property = property;
+            _propertyName = property.ToString().Split(new string[] { Property.Parameters[0].Name + "." },
+                StringSplitOptions.RemoveEmptyEntries)[1].Trim(')', '(');
             _isAscending = isAscending;
         }
 
@@ -30,6 +33,10 @@ namespace Radial.Persist
         /// </summary>
         public Expression<Func<TObject, object>> Property { get { return _property; } }
 
+        /// <summary>
+        /// Gets the name of the sort property.
+        /// </summary>
+        public string PropertyName { get { return _propertyName; } }
 
         /// <summary>
         /// Gets a value indicating whether the property will sort in ascending.

@@ -7,7 +7,7 @@ using Radial.UnitTest.Persist.Nhs.Repository;
 namespace Radial.UnitTest.Persist.Nhs
 {
     [TestFixture]
-    public class StraightQueryTest
+    public class NhNativeQueryTest
     {
         [Test]
         public void WithRepo()
@@ -68,8 +68,8 @@ namespace Radial.UnitTest.Persist.Nhs
         {
             using (IUnitOfWork uow = new NhUnitOfWork())
             {
-                StraightQuery query = new StraightQuery(uow);
-                query.PrepareTransaction();
+                uow.PrepareTransaction();
+                NhNativeQuery query = new NhNativeQuery(uow);
                 query.ExecuteNonQuery("Insert into Team (Id,Name) Values (rand(),'ces')");
                 query.SpExecuteNonQuery("TestSP1");
                 uow.Commit();
@@ -82,8 +82,8 @@ namespace Radial.UnitTest.Persist.Nhs
             using (System.Transactions.TransactionScope tc = new System.Transactions.TransactionScope())
             using (IUnitOfWork uow = new NhUnitOfWork())
             {
-                StraightQuery query = new StraightQuery(uow);
-                query.PrepareTransaction();
+                uow.PrepareTransaction();
+                NhNativeQuery query = new NhNativeQuery(uow);
                 query.ExecuteNonQuery("Insert into Team (Id,Name) Values (rand(),'ces')");
                 query.SpExecuteNonQuery("TestSP1");
                 // not affected

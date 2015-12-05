@@ -15,7 +15,7 @@ namespace Radial.UnitTest.Persist.Nhs
     [TestFixture]
     public class SemiautoTest
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             Dependency.Container.RegisterType<IFactoryPoolInitializer, SemiautoPoolInitializer>();

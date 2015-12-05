@@ -10,7 +10,7 @@ namespace Radial.UnitTest.Persist.Nhs
     [TestFixture]
     public class UnitOfWorkTest
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             //using (IUnitOfWork uow = new NhUnitOfWork())

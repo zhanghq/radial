@@ -14,7 +14,7 @@ namespace Radial.UnitTest.Persist.Nhs.Shard
     [TestFixture]
     public class ShardTest
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             Dependency.Container.RegisterType<IFactoryPoolInitializer, ShardPoolInitializer>();

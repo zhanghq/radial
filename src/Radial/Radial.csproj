@@ -145,7 +145,16 @@
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />
     <Compile Include="Cache\IClusterRegion.cs" />
     <Compile Include="Dependency.cs" />
+    <Compile Include="Persist\Efs\DbContextPool.cs" />
+    <Compile Include="Persist\Efs\DbContextWrapper.cs" />
+    <Compile Include="Persist\Efs\EfNaticeQuery.cs" />
+    <Compile Include="Persist\Efs\EfUnitOfWork.cs" />
+    <Compile Include="Persist\Efs\ExtensionMethods.cs" />
+    <Compile Include="Persist\Efs\IDbContextPoolInitializer.cs" />
+    <Compile Include="Persist\Efs\Log4NetInterceptor.cs" />
+    <Compile Include="Persist\NativeQuery.cs" />
     <Compile Include="Persist\Nhs\ExtensionMethods.cs" />
+    <Compile Include="Persist\Nhs\HibernateEngine.cs" />
     <Compile Include="Persist\Nhs\SemiautoMapper.cs" />
     <Compile Include="SearchCriteria.cs" />
     <Compile Include="SearchResult.cs" />
@@ -206,7 +215,6 @@
     </Compile>
     <Compile Include="Persist\Nhs\ContextualUnitOfWork.cs" />
     <Compile Include="Persist\Nhs\DefaultFactoryPoolInitializer.cs" />
-    <Compile Include="Persist\Nhs\HibernateEngine.cs" />
     <Compile Include="Persist\Nhs\IFactoryPoolInitializer.cs" />
     <Compile Include="Persist\Nhs\ITableShardable.cs" />
     <Compile Include="Persist\Nhs\NamingStrategy\MySqlNamingStrategy.cs" />
@@ -221,7 +229,7 @@
     <Compile Include="Persist\Nhs\SessionFactoryPool.cs" />
     <Compile Include="Persist\Nhs\ConfigurationWrapper.cs" />
     <Compile Include="Persist\Nhs\ShardTableMapping.cs" />
-    <Compile Include="Persist\Nhs\StraightQuery.cs" />
+    <Compile Include="Persist\Nhs\NhNativeQuery.cs" />
     <Compile Include="Persist\Nhs\TimingIdGenerator.cs" />
     <Compile Include="Persist\StorageAliasConfig.cs" />
     <Compile Include="RegisterInterfaceAttribute.cs" />

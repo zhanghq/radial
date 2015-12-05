@@ -16,12 +16,12 @@ namespace Radial.Persist.Nhs
     /// </summary>
     /// <typeparam name="TObject">The type of persistent object.</typeparam>
     /// <typeparam name="TKey">The type of the object key.</typeparam>
-    public abstract class BasicRepository<TObject, TKey> : IRepository<TObject, TKey> where TObject : class
+    public abstract class BasicRepository<TObject, TKey> :
+        IRepository<TObject, TKey> where TObject : class
     {
-        IUnitOfWorkEssential _uow;
-        StraightQuery _sq;
-
-        static string[] SupportedAggregationResultTypeNames = new string[] { typeof(short).FullName, typeof(ushort).FullName, typeof(int).FullName, typeof(uint).FullName, typeof(long).FullName, typeof(ulong).FullName, typeof(decimal).FullName, typeof(float).FullName, typeof(double).FullName };
+        static string[] SupportedAggregationResultTypeNames = new string[] { typeof(short).FullName,
+            typeof(ushort).FullName, typeof(int).FullName, typeof(uint).FullName, typeof(long).FullName,
+            typeof(ulong).FullName, typeof(decimal).FullName, typeof(float).FullName, typeof(double).FullName };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicRepository&lt;TObject, TKey&gt;"/> class.
@@ -30,9 +30,19 @@ namespace Radial.Persist.Nhs
         public BasicRepository(IUnitOfWorkEssential uow)
         {
             Checker.Parameter(uow != null, "the IUnitOfWorkEssential instance can not be null");
-            _uow = uow;
-            _sq = new StraightQuery(_uow);
+            UnitOfWork = uow;
             SetDefaultOrderBys();
+        }
+
+        /// <summary>
+        /// Gets the unit of work.
+        /// </summary>
+        /// <value>
+        /// The unit of work.
+        /// </value>
+        protected IUnitOfWorkEssential UnitOfWork
+        {
+            get;
         }
 
         /// <summary>
@@ -42,7 +52,7 @@ namespace Radial.Persist.Nhs
         {
             get
             {
-                return (ISession)_uow.UnderlyingContext;
+                return (ISession)UnitOfWork.UnderlyingContext;
             }
         }
 
@@ -573,7 +583,7 @@ namespace Radial.Persist.Nhs
         /// <param name="obj">The object.</param>
         public virtual void Add(TObject obj)
         {
-            _uow.RegisterNew<TObject>(obj);
+            UnitOfWork.RegisterNew<TObject>(obj);
         }
 
         /// <summary>
@@ -582,7 +592,7 @@ namespace Radial.Persist.Nhs
         /// <param name="objs">The objects.</param>
         public virtual void Add(IEnumerable<TObject> objs)
         {
-            _uow.RegisterNew<TObject>(objs);
+            UnitOfWork.RegisterNew<TObject>(objs);
         }
 
         /// <summary>
@@ -591,7 +601,7 @@ namespace Radial.Persist.Nhs
         /// <param name="obj">The object.</param>
         public virtual void Save(TObject obj)
         {
-            _uow.RegisterSave<TObject>(obj);
+            UnitOfWork.RegisterSave<TObject>(obj);
         }
 
         /// <summary>
@@ -600,7 +610,7 @@ namespace Radial.Persist.Nhs
         /// <param name="key">The object key.</param>
         public virtual void Remove(TKey key)
         {
-            _uow.RegisterDelete<TObject, TKey>(key);
+            UnitOfWork.RegisterDelete<TObject, TKey>(key);
         }
 
         /// <summary>
@@ -609,7 +619,7 @@ namespace Radial.Persist.Nhs
         /// <param name="obj">The object.</param>
         public virtual void Remove(TObject obj)
         {
-            _uow.RegisterDelete<TObject>(obj);
+            UnitOfWork.RegisterDelete<TObject>(obj);
         }
 
         /// <summary>
@@ -617,7 +627,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         public virtual void Clear()
         {
-            _uow.RegisterClear<TObject>();
+            UnitOfWork.RegisterClear<TObject>();
         }
 
         /// <summary>
@@ -1115,110 +1125,13 @@ namespace Radial.Persist.Nhs
         }
 
 
-        #region Standard Query
-
-        /// <summary>
-        /// ExecuteNonQuery.
-        /// </summary>
-        /// <param name="query">The query.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns>The number of rows affected.</returns>
-        protected int ExecuteNonQuery(string query, params DbParameter[] parameters)
-        {
-            return _sq.ExecuteNonQuery(query, parameters);
-        }
-
-        /// <summary>
-        /// ExecuteScalar.
-        /// </summary>
-        /// <param name="query">The query.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns>The first column of the first result row.</returns>
-        protected object ExecuteScalar(string query, params DbParameter[] parameters)
-        {
-            return _sq.ExecuteScalar(query, parameters);
-        }
-
-        /// <summary>
-        /// ExecuteReader.
-        /// </summary>
-        /// <param name="query">The query.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns>System.Data.IDataReader instance.</returns>
-        protected IDataReader ExecuteReader(string query, params DbParameter[] parameters)
-        {
-            return _sq.ExecuteReader(query, parameters);
-        }
-
-        /// <summary>
-        /// ExecuteDataTable.
-        /// </summary>
-        /// <param name="query">The query.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns>System.Data.DataTable instance.</returns>
-        protected DataTable ExecuteDataTable(string query, params DbParameter[] parameters)
-        {
-            return _sq.ExecuteDataTable(query, parameters);
-        }
-
-        #endregion
-
-        #region Stored Procedure
-
-        /// <summary>
-        /// Stored procedure ExecuteNonQuery.
-        /// </summary>
-        /// <param name="spName">The stored procedure name.</param>
-        /// <param name="parameters">The stored procedure parameters.</param>
-        /// <returns>The number of rows affected.</returns>
-        protected int SpExecuteNonQuery(string spName, params DbParameter[] parameters)
-        {
-            return _sq.SpExecuteNonQuery(spName, parameters);
-        }
-
-        /// <summary>
-        /// Stored procedure ExecuteScalar.
-        /// </summary>
-        /// <param name="spName">The stored procedure name.</param>
-        /// <param name="parameters">The stored procedure parameters.</param>
-        /// <returns>The first column of the first result row.</returns>
-        protected object SpExecuteScalar(string spName, params DbParameter[] parameters)
-        {
-            return _sq.SpExecuteScalar(spName, parameters);
-        }
-
-        /// <summary>
-        /// Stored procedure ExecuteReader.
-        /// </summary>
-        /// <param name="spName">The stored procedure name.</param>
-        /// <param name="parameters">The stored procedure parameters.</param>
-        /// <returns>System.Data.IDataReader instance.</returns>
-        protected IDataReader SpExecuteReader(string spName, params DbParameter[] parameters)
-        {
-            return _sq.SpExecuteReader(spName, parameters);
-        }
-
-        /// <summary>
-        /// Stored procedure ExecuteDataTable.
-        /// </summary>
-        /// <param name="spName">The stored procedure name.</param>
-        /// <param name="parameters">The stored procedure parameters.</param>
-        /// <returns>System.Data.DataTable instance.</returns>
-        protected DataTable SpExecuteDataTable(string spName, params DbParameter[] parameters)
-        {
-            return _sq.SpExecuteDataTable(spName, parameters);
-        }
-
-        #endregion
-
-
         /// <summary>
         /// Updates an object.
         /// </summary>
         /// <param name="obj">The object.</param>
         public void Update(TObject obj)
         {
-            _uow.RegisterUpdate<TObject>(obj);
+            UnitOfWork.RegisterUpdate<TObject>(obj);
         }
 
 

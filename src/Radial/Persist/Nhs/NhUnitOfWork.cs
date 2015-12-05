@@ -2,6 +2,7 @@
 using System.Linq;
 using NHibernate;
 using System.Data;
+using System;
 
 namespace Radial.Persist.Nhs
 {
@@ -11,6 +12,7 @@ namespace Radial.Persist.Nhs
     public class NhUnitOfWork : IUnitOfWork
     {
         private readonly ISession _session;
+        private readonly INativeQuery _nativeQuery;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
@@ -26,14 +28,14 @@ namespace Radial.Persist.Nhs
         /// <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
         public NhUnitOfWork(string alias)
         {
-            if (string.IsNullOrWhiteSpace(alias))
-                _session = HibernateEngine.OpenSession();
-            else
-                _session = SessionFactoryPool.OpenSession(alias);
+            _session = SessionFactoryPool.OpenSession(alias);
+
+            _nativeQuery = new NhNativeQuery(this);
         }
 
         /// <summary>
-        /// Prepares the transaction, typically this method is invoked implicitly, but it  also can be explicit used to implement custom control.
+        /// Prepares the transaction, typically this method is invoked implicitly,
+       ///  but it  also can be explicit used to implement custom control.
         /// </summary>
         /// <param name="level">The isolation level.</param>
         public void PrepareTransaction(IsolationLevel? level = null)
@@ -255,5 +257,10 @@ namespace Radial.Persist.Nhs
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the native query.
+        /// </summary>
+        public INativeQuery NativeQuery { get { return _nativeQuery; } }
     }
 }

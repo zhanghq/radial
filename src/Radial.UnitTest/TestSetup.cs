@@ -6,13 +6,13 @@ namespace Radial.UnitTest
     public class TestSetup
     {
 
-        [SetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
-             //StaticVariables.ConfigDirectory = StaticVariables.ConfigDirectory.Replace(@"\bin\Debug", string.Empty);
+            //StaticVariables.ConfigDirectory = StaticVariables.ConfigDirectory.Replace(@"\bin\Debug", string.Empty);
         }
 
-        [TearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
         }

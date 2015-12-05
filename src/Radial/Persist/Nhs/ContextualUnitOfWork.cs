@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using NHibernate;
@@ -11,6 +12,7 @@ namespace Radial.Persist.Nhs
     public class ContextualUnitOfWork : IUnitOfWork
     {
         private readonly ISession _session;
+        private readonly NativeQuery _nativeQuery;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextualUnitOfWork"/> class.
@@ -18,6 +20,7 @@ namespace Radial.Persist.Nhs
         public ContextualUnitOfWork()
         {
             _session = HibernateEngine.CurrentSession;
+            _nativeQuery = new NhNativeQuery(this);
         }
 
         /// <summary>
@@ -241,5 +244,10 @@ namespace Radial.Persist.Nhs
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the native query.
+        /// </summary>
+        public INativeQuery NativeQuery { get { return _nativeQuery; } }
     }
 }

@@ -6,19 +6,19 @@ namespace Radial.UnitTest.Persist.Nhs.Repository
 {
     class TeamRepository : BasicRepository<Team,int>
     {
-        public TeamRepository(IUnitOfWork uow)
+        public TeamRepository(IUnitOfWorkEssential uow)
             : base(uow)
         {
         }
 
         public void ExecTestAddSP1()
         {
-            SpExecuteNonQuery("TestSP1");
+            this.UnitOfWork.NativeQuery.SpExecuteNonQuery("TestSP1");
         }
 
         public void ExecTestError()
         {
-            ExecuteNonQuery("SELECT 1/0");
+            this.UnitOfWork.NativeQuery.ExecuteNonQuery("SELECT 1/0");
         }
 
         public void ExecTestSelect()

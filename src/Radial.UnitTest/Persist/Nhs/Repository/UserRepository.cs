@@ -15,7 +15,7 @@ namespace Radial.UnitTest.Persist.Nhs.Repository
 
         public DataTable FindAllDataTable()
         {
-            return SpExecuteDataTable("Sp_User_All");
+            return this.UnitOfWork.NativeQuery.SpExecuteDataTable("Sp_User_All");
         }
     }
 }

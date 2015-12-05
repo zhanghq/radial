@@ -53,26 +53,27 @@ namespace Radial.Persist.Nhs
         }
 
 
-        /// <summary>
-        /// Gets the first NHibernate.ISessionFactory instance.
-        /// </summary>
-        public static ISessionFactory First
-        {
-            get
-            {
-                ConfigurationWrapper wrapper = GetConfigurationWrappers().FirstOrDefault();
+        ///// <summary>
+        ///// Gets the first NHibernate.ISessionFactory instance.
+        ///// </summary>
+        //public static ISessionFactory First
+        //{
+        //    get
+        //    {
+        //        ConfigurationWrapper wrapper = GetConfigurationWrappers().FirstOrDefault();
 
-                return wrapper.Factory;
-            }
-        }
+        //        return wrapper.Factory;
+        //    }
+        //}
 
 
         /// <summary>
         /// Gets the ConfigurationWrapper object with the specified storage alias.
         /// </summary>
-        /// <param name="storageAlias">The storage alias (case insensitive).</param>
+        /// <param name="storageAlias">The storage alias (case insensitive),
+        /// if set to null will get the first ConfigurationWrapper object.</param>
         /// <returns>The ConfigurationWrapper object.</returns>
-        public static ConfigurationWrapper GetConfigurationWrapper(string storageAlias)
+        public static ConfigurationWrapper GetConfigurationWrapper(string storageAlias=null)
         {
             return GetConfigurationWrappers(storageAlias).FirstOrDefault();
         }
@@ -84,34 +85,40 @@ namespace Radial.Persist.Nhs
         /// <returns>The ConfigurationWrapper object array.</returns>
         public static ConfigurationWrapper[] GetConfigurationWrappers(params string[] storageAliases)
         {
-            IList<ConfigurationWrapper> list = new List<ConfigurationWrapper>();
+            var result = S_ConfigurationWrapperSet.ToArray();
 
             if (storageAliases != null && storageAliases.Length > 0)
             {
-                foreach (string alias in storageAliases)
+                storageAliases = storageAliases.Where(o => !string.IsNullOrWhiteSpace(o)).ToArray();
+
+                if (storageAliases.Length > 0)
                 {
-                    string normalizedAlias = alias.ToLower().Trim();
-                    ConfigurationWrapper wrapper = S_ConfigurationWrapperSet.SingleOrDefault(o => o.Alias == normalizedAlias);
+                    IList<ConfigurationWrapper> list = new List<ConfigurationWrapper>();
 
-                    Checker.Requires(wrapper != null, "can not find the specified ConfigurationWrapper instance, alias: {0}", normalizedAlias);
+                    foreach (string alias in storageAliases)
+                    {
+                        string normalizedAlias = alias.ToLower().Trim();
+                        ConfigurationWrapper wrapper = S_ConfigurationWrapperSet.SingleOrDefault(o => o.Alias == normalizedAlias);
 
-                    list.Add(wrapper);
+                        Checker.Requires(wrapper != null, "can not find the specified ConfigurationWrapper instance, alias: {0}", normalizedAlias);
+
+                        list.Add(wrapper);
+                    }
+
+                    return list.ToArray();
                 }
-
-                return list.ToArray();
             }
 
-            return S_ConfigurationWrapperSet.ToArray();
-
+            return result;
         }
-
 
         /// <summary>
         /// Gets the <see cref="NHibernate.ISessionFactory"/> instance with the specified storage alias.
         /// </summary>
-        /// <param name="storageAlias">The storage alias (case insensitive).</param>
+        /// <param name="storageAlias">The storage alias (case insensitive),
+        /// if set to null will get the first NHibernate.ISessionFactory instance.</param>
         /// <returns>The NHibernate.ISessionFactory instance</returns>
-        public static ISessionFactory GetFactoryInstance(string storageAlias)
+        public static ISessionFactory GetFactoryInstance(string storageAlias = null)
         {
             return GetConfigurationWrapper(storageAlias).Factory;
         }
@@ -136,9 +143,10 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Open a new session using the specified storage alias.
         /// </summary>
-        /// <param name="storageAlias">The storage alias (case insensitive).</param>
+        /// <param name="storageAlias">The storage alias (case insensitive),
+        /// if set to null will open session from the first NHibernate.ISessionFactory instance.</param>
         /// <returns>A new ISession instance.</returns>
-        public static ISession OpenSession(string storageAlias)
+        public static ISession OpenSession(string storageAlias=null)
         {
             return GetFactoryInstance(storageAlias).OpenSession();
         }

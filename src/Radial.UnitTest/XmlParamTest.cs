@@ -8,7 +8,7 @@ namespace Radial.UnitTest
     [TestFixture]
     public class XmlParamTest
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             Dependency.Container.RegisterType<IParam, XmlParam>();

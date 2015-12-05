@@ -15,10 +15,10 @@ namespace Radial.Persist
         object UnderlyingContext { get; }
 
         /// <summary>
-        /// Prepares the transaction, typically this method is invoked implicitly, but it  also can be explicit used to implement custom control.
+        /// Gets the native query.
         /// </summary>
-        /// <param name="level">The isolation level.</param>
-        void PrepareTransaction(IsolationLevel? level = null);
+        INativeQuery NativeQuery { get; }
+
 
         /// <summary>
         /// Register object which will be inserted.

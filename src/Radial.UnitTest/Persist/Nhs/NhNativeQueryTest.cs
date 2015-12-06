@@ -17,15 +17,17 @@ namespace Radial.UnitTest.Persist.Nhs
                 //all will in trans by user explicit call
                 uow.PrepareTransaction();
 
+                uow.NativeQuery.ExecuteNonQuery("Insert into Team (Id,Name) Values (rand(),'ces')");
+
                 Team t = new Team();
                 t.Name = "adfadf";
                 
 
-                TeamRepository repo = new TeamRepository(uow);
-                repo.ExecTestSelect();
+                //TeamRepository repo = new TeamRepository(uow);
+                //repo.ExecTestSelect();
 
 
-                repo.ExecTestAddSP1();
+                //repo.ExecTestAddSP1();
 
                 uow.RegisterNew(t);
 

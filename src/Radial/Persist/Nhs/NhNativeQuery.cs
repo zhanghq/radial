@@ -38,8 +38,8 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public override  IDbCommand CreateCommand(string query, params DbParameter[] parameters)
         {
-            //flush previous query to database before create new command.
-            Session.Flush();
+            ////flush previous query to database before create new command.
+            //Session.Flush();
 
             var cmd = Session.Connection.CreateCommand();
             cmd.CommandText = query;
@@ -66,8 +66,8 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public override IDbCommand SpCreateCommand(string spName, params DbParameter[] parameters)
         {
-            //flush previous query to database before create new command.
-            Session.Flush();
+            ////flush previous query to database before create new command.
+            //Session.Flush();
 
             var cmd = Session.Connection.CreateCommand();
             cmd.CommandText = spName;

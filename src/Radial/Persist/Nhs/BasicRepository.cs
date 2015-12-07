@@ -19,9 +19,9 @@ namespace Radial.Persist.Nhs
     public abstract class BasicRepository<TObject, TKey> :
         IRepository<TObject, TKey> where TObject : class
     {
-        static string[] SupportedAggregationResultTypeNames = new string[] { typeof(short).FullName,
-            typeof(ushort).FullName, typeof(int).FullName, typeof(uint).FullName, typeof(long).FullName,
-            typeof(ulong).FullName, typeof(decimal).FullName, typeof(float).FullName, typeof(double).FullName };
+        //static string[] SupportedAggregationResultTypeNames = new string[] { typeof(short).FullName,
+        //    typeof(ushort).FullName, typeof(int).FullName, typeof(uint).FullName, typeof(long).FullName,
+        //    typeof(ulong).FullName, typeof(decimal).FullName, typeof(float).FullName, typeof(double).FullName };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicRepository&lt;TObject, TKey&gt;"/> class.
@@ -950,7 +950,7 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public virtual TResult GetMin<TResult>(System.Linq.Expressions.Expression<Func<TObject, object>> selector, System.Linq.Expressions.Expression<Func<TObject, bool>> condition) where TResult : struct
         {
-            Checker.Requires(SupportedAggregationResultTypeNames.Contains(typeof(TResult).FullName), "not support the aggregation return type: {0}", typeof(TResult).FullName);
+            //Checker.Requires(SupportedAggregationResultTypeNames.Contains(typeof(TResult).FullName), "not support the aggregation return type: {0}", typeof(TResult).FullName);
             Checker.Parameter(selector != null, "the selector can not be null");
 
             if (condition == null)
@@ -981,7 +981,7 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public virtual TResult GetMax<TResult>(System.Linq.Expressions.Expression<Func<TObject, object>> selector, System.Linq.Expressions.Expression<Func<TObject, bool>> condition) where TResult : struct
         {
-            Checker.Requires(SupportedAggregationResultTypeNames.Contains(typeof(TResult).FullName), "not support the aggregation return type: {0}", typeof(TResult).FullName);
+            //Checker.Requires(SupportedAggregationResultTypeNames.Contains(typeof(TResult).FullName), "not support the aggregation return type: {0}", typeof(TResult).FullName);
             Checker.Parameter(selector != null, "the selector can not be null");
 
             if (condition == null)
@@ -1012,7 +1012,7 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public virtual TResult GetSum<TResult>(System.Linq.Expressions.Expression<Func<TObject, object>> selector, System.Linq.Expressions.Expression<Func<TObject, bool>> condition) where TResult : struct
         {
-            Checker.Requires(SupportedAggregationResultTypeNames.Contains(typeof(TResult).FullName), "not support the aggregation return type: {0}", typeof(TResult).FullName);
+            //Checker.Requires(SupportedAggregationResultTypeNames.Contains(typeof(TResult).FullName), "not support the aggregation return type: {0}", typeof(TResult).FullName);
             Checker.Parameter(selector != null, "the selector can not be null");
 
             if (condition == null)
@@ -1043,7 +1043,7 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public virtual TResult GetAverage<TResult>(System.Linq.Expressions.Expression<Func<TObject, object>> selector, System.Linq.Expressions.Expression<Func<TObject, bool>> condition) where TResult : struct
         {
-            Checker.Requires(SupportedAggregationResultTypeNames.Contains(typeof(TResult).FullName), "not support the aggregation return type: {0}", typeof(TResult).FullName);
+            //Checker.Requires(SupportedAggregationResultTypeNames.Contains(typeof(TResult).FullName), "not support the aggregation return type: {0}", typeof(TResult).FullName);
             Checker.Parameter(selector != null, "the selector can not be null");
 
             if (condition == null)
@@ -1078,7 +1078,7 @@ namespace Radial.Persist.Nhs
         /// Remove object with the specified condition.
         /// </summary>
         /// <param name="condition">The condition.</param>
-        public void Remove(System.Linq.Expressions.Expression<Func<TObject, bool>> condition)
+        public virtual void Remove(System.Linq.Expressions.Expression<Func<TObject, bool>> condition)
         {
             foreach (TObject o in FindAll(condition))
                 Remove(o);
@@ -1129,7 +1129,7 @@ namespace Radial.Persist.Nhs
         /// Updates an object.
         /// </summary>
         /// <param name="obj">The object.</param>
-        public void Update(TObject obj)
+        public virtual void Update(TObject obj)
         {
             UnitOfWork.RegisterUpdate<TObject>(obj);
         }
@@ -1143,7 +1143,7 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// If data exists, return an array, otherwise return an empty array.
         /// </returns>
-        public TKey[] FindKeys(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
+        public virtual TKey[] FindKeys(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
         {
             var metadata = this.Session.SessionFactory.GetClassMetadata(typeof(TObject));
 

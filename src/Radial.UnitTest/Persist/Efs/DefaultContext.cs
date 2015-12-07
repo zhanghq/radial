@@ -22,6 +22,8 @@ namespace Radial.UnitTest.Persist.Efs
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+
+            modelBuilder.Entity<Article>().HasKey(o => o.Id);
         }
     }
 }

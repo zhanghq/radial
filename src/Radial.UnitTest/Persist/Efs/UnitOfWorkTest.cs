@@ -25,9 +25,9 @@ namespace Radial.UnitTest.Persist.Efs
                 using (IUnitOfWork uow = new UnitOfWork())
                 {
                     var c = new Article { Id = Radial.TimingSeq.Next() };
-                    uow.RegisterNew<Article>(c);
-                    c.Content = "测试1";
-                    uow.RegisterUpdate<Article>(c);
+                    uow.RegisterSave<Article>(c);
+                    //c.Content = "测试1";
+                    //uow.RegisterUpdate<Article>(c);
                     //uow.RegisterDelete<Article>(c);
                     //uow.RegisterDelete<Article, string>(c.Id);
                     //uow.RegisterClear<Article>();

@@ -9,7 +9,6 @@ namespace Radial.UnitTest.Persist.Efs.Domain
 {
     class Article
     {
-        [Key]
         public string Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }

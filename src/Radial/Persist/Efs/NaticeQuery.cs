@@ -26,7 +26,7 @@ namespace Radial.Persist.Efs
         /// <value>
         /// The database context.
         /// </value>
-        private DbContext DbContext
+        protected DbContext DbContext
         {
             get
             {

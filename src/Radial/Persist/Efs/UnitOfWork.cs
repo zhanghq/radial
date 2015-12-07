@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
@@ -213,26 +214,34 @@ namespace Radial.Persist.Efs
         /// <param name="objs">The object set.</param>
         public void RegisterSave<TObject>(IEnumerable<TObject> objs) where TObject : class
         {
-            //if (objs != null && objs.Count() > 0)
-            //{
-            //    PrepareTransaction();
+            if (objs != null && objs.Count() > 0)
+            {
+                PrepareTransaction();
 
-            //    foreach (TObject obj in objs)
-            //    {
-            //        if (obj != null)
-            //        {
-            //            var kvs = _dbContext.GetKeyValues<TObject>(obj);
+                foreach (TObject obj in objs)
+                {
+                    if (obj != null)
+                    {
+                        ObjectContext oc = _dbContext.ToObjectContext();
+                        ObjectStateEntry stateEntry = null;
+                        oc.ObjectStateManager.TryGetObjectStateEntry(obj, out stateEntry);
 
-            //            var eobj = _dbContext.Set<TObject>().Find(kvs);
+                        var objectSet = oc.CreateObjectSet<TObject>();
+                        if (stateEntry == null || stateEntry.EntityKey.IsTemporary)
+                        {
+                            objectSet.AddObject(obj);
+                            return;
+                        }
+                        if (stateEntry.State == EntityState.Detached)
+                        {
+                            objectSet.Attach(obj);
+                            oc.ObjectStateManager.ChangeObjectState(obj, EntityState.Modified);
+                            return;
+                        }
+                    }
+                }
 
-            //            if (eobj != null)
-            //                _dbContext.Entry<TObject>(obj).State = EntityState.Modified;
-            //            else
-            //                _dbContext.Set<TObject>().Add(obj);
-            //        }
-            //    }
-
-            //}
+            }
         }
 
         /// <summary>
@@ -242,13 +251,25 @@ namespace Radial.Persist.Efs
         /// <param name="obj">The object instance.</param>
         public void RegisterSave<TObject>(TObject obj) where TObject : class
         {
-            //if (obj != null)
-            //{
-            //    if (_dbContext.Set<TObject>().Contains(obj))
-            //        _dbContext.Entry<TObject>(obj).State = EntityState.Modified;
-            //    else
-            //        _dbContext.Set<TObject>().Add(obj);
-            //}
+            if (obj != null)
+            {
+                ObjectContext oc = _dbContext.ToObjectContext();
+                ObjectStateEntry stateEntry = null;
+                oc.ObjectStateManager.TryGetObjectStateEntry(obj, out stateEntry);
+
+                var objectSet = oc.CreateObjectSet<TObject>();
+                if (stateEntry == null || stateEntry.EntityKey.IsTemporary)
+                {
+                    objectSet.AddObject(obj);
+                    return;
+                }
+                if (stateEntry.State == EntityState.Detached)
+                {
+                    objectSet.Attach(obj);
+                    oc.ObjectStateManager.ChangeObjectState(obj, EntityState.Modified);
+                    return;
+                }
+            }
         }
 
         /// <summary>

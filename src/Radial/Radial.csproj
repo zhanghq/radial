@@ -145,6 +145,7 @@
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />
     <Compile Include="Cache\IClusterRegion.cs" />
     <Compile Include="Dependency.cs" />
+    <Compile Include="Persist\Efs\BasicRepository.cs" />
     <Compile Include="Persist\Efs\DbContextPool.cs" />
     <Compile Include="Persist\Efs\DbContextWrapper.cs" />
     <Compile Include="Persist\Efs\NaticeQuery.cs" />

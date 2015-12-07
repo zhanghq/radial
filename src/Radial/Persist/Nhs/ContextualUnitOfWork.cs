@@ -12,7 +12,7 @@ namespace Radial.Persist.Nhs
     public class ContextualUnitOfWork : IUnitOfWork
     {
         private readonly ISession _session;
-        private readonly NativeQuery _nativeQuery;
+        private readonly Persist.NativeQuery _nativeQuery;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContextualUnitOfWork"/> class.
@@ -20,7 +20,7 @@ namespace Radial.Persist.Nhs
         public ContextualUnitOfWork()
         {
             _session = HibernateEngine.CurrentSession;
-            _nativeQuery = new NhNativeQuery(this);
+            _nativeQuery = new NativeQuery(this);
         }
 
         /// <summary>

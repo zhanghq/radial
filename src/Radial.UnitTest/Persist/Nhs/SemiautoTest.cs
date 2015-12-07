@@ -25,13 +25,13 @@ namespace Radial.UnitTest.Persist.Nhs
         public void Exist()
         {
             User u = new User { Id = RandomCode.NewInstance.Next(1, int.MaxValue), Name = "Name" };
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 uow.RegisterNew<User>(u);
                 uow.Commit();
             }
 
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 UserRepository userRepository = new UserRepository(uow);
 

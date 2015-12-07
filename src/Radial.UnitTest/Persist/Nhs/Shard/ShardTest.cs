@@ -48,7 +48,7 @@ namespace Radial.UnitTest.Persist.Nhs.Shard
             //保存
             foreach (var alias in aliases)
             {
-                using (var uow = new NhUnitOfWork(alias))
+                using (var uow = new UnitOfWork(alias))
                 {
                     //批量保存与当前alias相匹配的books
                     uow.RegisterNew<Book>(books.Where(o => StorageRouter.GetStorageAlias<Book>(o.Id) == alias).ToArray());
@@ -62,7 +62,7 @@ namespace Radial.UnitTest.Persist.Nhs.Shard
 
             Parallel.ForEach<string>(aliases, alias =>
             {
-                using (var uow = new NhUnitOfWork(alias))
+                using (var uow = new UnitOfWork(alias))
                 {
                     BookRepository repo = new BookRepository(uow);
                     nBooks.AddRange(repo.FindAll());
@@ -78,7 +78,7 @@ namespace Radial.UnitTest.Persist.Nhs.Shard
             //清理
             Parallel.ForEach<string>(aliases, alias =>
             {
-                using (var uow = new NhUnitOfWork(alias))
+                using (var uow = new UnitOfWork(alias))
                 {
                     uow.RegisterClear<Book>();
 

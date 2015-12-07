@@ -12,7 +12,7 @@ namespace Radial.UnitTest.Persist.Nhs
         [Test]
         public void Create()
         {
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 Team t = new Team();
                 //当Id赋值时，则从赋值，若没赋值，则自动产生Id

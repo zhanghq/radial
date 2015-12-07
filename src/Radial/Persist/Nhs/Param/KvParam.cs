@@ -74,7 +74,7 @@ namespace Radial.Persist.Nhs.Param
         {
             path = ParamObject.NormalizePath(path);
 
-            using (var uow = new NhUnitOfWork(StorageAlias))
+            using (var uow = new UnitOfWork(StorageAlias))
             {
                 ISession session = uow.UnderlyingContext as ISession;
                 var query = session.CreateSQLQuery("SELECT Path,Description,Value,HasNext FROM KvParam WHERE Path=:Path");
@@ -120,7 +120,7 @@ namespace Radial.Persist.Nhs.Param
 
             IList<ParamObject> list = new List<ParamObject>();
 
-            using (var uow = new NhUnitOfWork(StorageAlias))
+            using (var uow = new UnitOfWork(StorageAlias))
             {
                 ISession session = uow.UnderlyingContext as ISession;
                 var query = session.CreateSQLQuery("SELECT Path,Description,Value,HasNext FROM KvParam WHERE Parent=:Parent");
@@ -160,7 +160,7 @@ namespace Radial.Persist.Nhs.Param
 
             IList<ParamObject> list = new List<ParamObject>();
 
-            using (var uow = new NhUnitOfWork(StorageAlias))
+            using (var uow = new UnitOfWork(StorageAlias))
             {
                 ISession session = uow.UnderlyingContext as ISession;
                 var query = session.CreateSQLQuery("SELECT Path,Description,Value,HasNext FROM KvParam WHERE Parent=:Parent");
@@ -199,7 +199,7 @@ namespace Radial.Persist.Nhs.Param
 
             IList<ParamObject> list = new List<ParamObject>();
 
-            using (var uow = new NhUnitOfWork(StorageAlias))
+            using (var uow = new UnitOfWork(StorageAlias))
             {
                 ISession session = uow.UnderlyingContext as ISession;
                 var query = session.CreateSQLQuery("SELECT Path,Description,Value,HasNext FROM KvParam WHERE Path LIKE :Path ORDER BY Parent");
@@ -243,7 +243,7 @@ namespace Radial.Persist.Nhs.Param
 
             IList<ParamObject> list = new List<ParamObject>();
 
-            using (var uow = new NhUnitOfWork(StorageAlias))
+            using (var uow = new UnitOfWork(StorageAlias))
             {
                 ISession session = uow.UnderlyingContext as ISession;
                 var query = session.CreateSQLQuery("SELECT Path,Description,Value,HasNext FROM KvParam WHERE Path LIKE :Path ORDER BY Parent");
@@ -294,7 +294,7 @@ namespace Radial.Persist.Nhs.Param
             if (!string.IsNullOrWhiteSpace(value))
                 value = value.Trim();
 
-            using (var uow = new NhUnitOfWork(StorageAlias))
+            using (var uow = new UnitOfWork(StorageAlias))
             {
                 uow.PrepareTransaction();
 
@@ -361,7 +361,7 @@ namespace Radial.Persist.Nhs.Param
         {
             path = ParamObject.NormalizePath(path);
 
-            using (var uow = new NhUnitOfWork(StorageAlias))
+            using (var uow = new UnitOfWork(StorageAlias))
             {
                 uow.PrepareTransaction();
 

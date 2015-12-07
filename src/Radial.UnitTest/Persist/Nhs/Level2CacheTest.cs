@@ -22,7 +22,7 @@ namespace Radial.UnitTest.Persist.Nhs
             //    uow.Commit();
             //}
 
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 UserRepository usrRepo = new UserRepository(uow);
                 int total=0;
@@ -33,14 +33,14 @@ namespace Radial.UnitTest.Persist.Nhs
 
             User u = new User { Id = RandomCode.NewInstance.Next(1, int.MaxValue), Name = "测试" };
 
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 uow.RegisterNew<User>(u);
 
                 uow.Commit();
             }
 
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 UserRepository usrRepo = new UserRepository(uow);
                 int total = 0;

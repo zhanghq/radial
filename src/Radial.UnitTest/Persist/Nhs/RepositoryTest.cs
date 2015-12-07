@@ -16,13 +16,13 @@ namespace Radial.UnitTest.Persist.Nhs
         public void Exist()
         {
             User u = new User { Id = RandomCode.NewInstance.Next(1, int.MaxValue), Name = "Name" };
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 uow.RegisterNew<User>(u);
                 uow.Commit();
             }
 
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 UserRepository userRepository = new UserRepository(uow);
 
@@ -33,7 +33,7 @@ namespace Radial.UnitTest.Persist.Nhs
         [Test]
         public void FindAll()
         {
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 UserRepository userRepository = new UserRepository(uow);
 
@@ -51,14 +51,14 @@ namespace Radial.UnitTest.Persist.Nhs
             int id1 = RandomCode.NewInstance.Next(1, int.MaxValue);
             int id2 = RandomCode.NewInstance.Next(1, int.MaxValue);
 
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 uow.RegisterNew<User>(new User { Id = id1, Name = "Name" });
                 uow.RegisterNew<User>(new User { Id = id2, Name = "Name" });
                 uow.Commit();
             }
 
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 UserRepository userRepository = new UserRepository(uow);
                 var uss = userRepository.FindByKeys(new int[] { id1, id2 });
@@ -69,7 +69,7 @@ namespace Radial.UnitTest.Persist.Nhs
         [Test]
         public void FindDataTable()
         {
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 UserRepository userRepository = new UserRepository(uow);
 
@@ -89,7 +89,7 @@ namespace Radial.UnitTest.Persist.Nhs
         [Test]
         public void ExtraCondition()
         {
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 OrderRepository repo = new OrderRepository(uow);
                 //观察输出的Sql
@@ -100,7 +100,7 @@ namespace Radial.UnitTest.Persist.Nhs
         [Test]
         public void TimingIdGenerator()
         {
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 Book b = new Book { Name = "342" };
                 uow.RegisterNew<Book>(b);

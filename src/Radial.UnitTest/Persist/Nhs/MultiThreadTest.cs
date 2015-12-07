@@ -24,7 +24,7 @@ namespace Radial.UnitTest.Persist.Nhs
 
         private void InsertThread()
         {
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 User u = new User
                 {

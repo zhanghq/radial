@@ -9,28 +9,28 @@ namespace Radial.Persist.Nhs
     /// <summary>
     /// NHibernate unit of work class.
     /// </summary>
-    public class NhUnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly ISession _session;
         private readonly INativeQuery _nativeQuery;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
+        /// Initializes a new instance of the <see cref="UnitOfWork"/> class.
         /// </summary>
-        public NhUnitOfWork()
+        public UnitOfWork()
             : this(null)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NhUnitOfWork"/> class.
+        /// Initializes a new instance of the <see cref="UnitOfWork"/> class.
         /// </summary>
         /// <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
-        public NhUnitOfWork(string alias)
+        public UnitOfWork(string alias)
         {
             _session = SessionFactoryPool.OpenSession(alias);
 
-            _nativeQuery = new NhNativeQuery(this);
+            _nativeQuery = new NativeQuery(this);
         }
 
         /// <summary>

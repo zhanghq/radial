@@ -41,7 +41,7 @@ namespace Radial.Persist.Nhs.Cache
             if (string.IsNullOrWhiteSpace(cacheKey) || string.IsNullOrWhiteSpace(region))
                 return;
 
-            using (IUnitOfWork uow = new NhUnitOfWork(StorageAlias))
+            using (IUnitOfWork uow = new UnitOfWork(StorageAlias))
             {
                 ISession session = uow.UnderlyingContext as ISession;
 
@@ -68,7 +68,7 @@ namespace Radial.Persist.Nhs.Cache
             if (string.IsNullOrWhiteSpace(region))
                 return new string[] { };
 
-            using (IUnitOfWork uow = new NhUnitOfWork(StorageAlias))
+            using (IUnitOfWork uow = new UnitOfWork(StorageAlias))
             {
                 ISession session = uow.UnderlyingContext as ISession;
 
@@ -88,7 +88,7 @@ namespace Radial.Persist.Nhs.Cache
             if (string.IsNullOrWhiteSpace(cacheKey))
                 return;
 
-            using (IUnitOfWork uow = new NhUnitOfWork(StorageAlias))
+            using (IUnitOfWork uow = new UnitOfWork(StorageAlias))
             {
                 ISession session = uow.UnderlyingContext as ISession;
 
@@ -108,7 +108,7 @@ namespace Radial.Persist.Nhs.Cache
         /// </returns>
         public string[] GetRegions()
         {
-            using (IUnitOfWork uow = new NhUnitOfWork(StorageAlias))
+            using (IUnitOfWork uow = new UnitOfWork(StorageAlias))
             {
                 ISession session = uow.UnderlyingContext as ISession;
 

@@ -1,36 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NHibernate;
+using System;
 using System.Data;
 using System.Data.Common;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Radial.Persist.Efs
+namespace Radial.Persist.Nhs
 {
     /// <summary>
-    /// Native query using Entity Framework.
+    /// Native query using NHibernate.
     /// </summary>
-    public class EfNaticeQuery : NativeQuery
+    public class NativeQuery: Persist.NativeQuery
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EfNaticeQuery"/> class.
+        /// Initializes a new instance of the <see cref="NativeQuery"/> class.
         /// </summary>
         /// <param name="uow">The uow.</param>
-        public EfNaticeQuery(IUnitOfWorkEssential uow) : base(uow) { }
+        public NativeQuery(IUnitOfWorkEssential uow) : base(uow) { }
+
 
         /// <summary>
-        /// Gets the database context.
+        /// Gets the NHibernate session object.
         /// </summary>
-        /// <value>
-        /// The database context.
-        /// </value>
-        private DbContext DbContext
+        private ISession Session
         {
             get
             {
-                return (DbContext)UnitOfWork.UnderlyingContext;
+                return (ISession)UnitOfWork.UnderlyingContext;
             }
         }
 
@@ -42,16 +36,16 @@ namespace Radial.Persist.Efs
         /// <returns>
         /// System.Data.IDbCommand instance.
         /// </returns>
-        public override IDbCommand CreateCommand(string query, params DbParameter[] parameters)
+        public override  IDbCommand CreateCommand(string query, params DbParameter[] parameters)
         {
-            if (DbContext.Database.Connection.State == ConnectionState.Closed)
-                DbContext.Database.Connection.Open();
+            ////flush previous query to database before create new command.
+            //Session.Flush();
 
-            var cmd = DbContext.Database.Connection.CreateCommand();
+            var cmd = Session.Connection.CreateCommand();
             cmd.CommandText = query;
 
-            if (DbContext.Database.CurrentTransaction != null)
-                cmd.Transaction = DbContext.Database.CurrentTransaction.UnderlyingTransaction;
+            if (Session.Transaction.IsActive)
+                Session.Transaction.Enlist(cmd);
 
             if (parameters != null)
             {
@@ -72,15 +66,15 @@ namespace Radial.Persist.Efs
         /// </returns>
         public override IDbCommand SpCreateCommand(string spName, params DbParameter[] parameters)
         {
-            if (DbContext.Database.Connection.State == ConnectionState.Closed)
-                DbContext.Database.Connection.Open();
+            ////flush previous query to database before create new command.
+            //Session.Flush();
 
-            var cmd = DbContext.Database.Connection.CreateCommand();
+            var cmd = Session.Connection.CreateCommand();
             cmd.CommandText = spName;
             cmd.CommandType = CommandType.StoredProcedure;
 
-            if (DbContext.Database.CurrentTransaction != null)
-                cmd.Transaction = DbContext.Database.CurrentTransaction.UnderlyingTransaction;
+            if (Session.Transaction.IsActive)
+                Session.Transaction.Enlist(cmd);
 
             if (parameters != null)
             {

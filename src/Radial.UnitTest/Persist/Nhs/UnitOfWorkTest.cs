@@ -25,7 +25,7 @@ namespace Radial.UnitTest.Persist.Nhs
         [Test]
         public void Test1()
         {
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 UserRepository userRepository = new UserRepository(uow);
 
@@ -67,7 +67,7 @@ namespace Radial.UnitTest.Persist.Nhs
         {
             //测试Remove(System.Linq.Expressions.Expression<Func<TObject, bool>> condition)
 
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 UserRepository userRepository = new UserRepository(uow);
 
@@ -81,7 +81,7 @@ namespace Radial.UnitTest.Persist.Nhs
         {
             //测试事物回滚
 
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
 
                 uow.RegisterNew<User>(new User { Id = RandomCode.NewInstance.Next(1, int.MaxValue), Name = "测试" });

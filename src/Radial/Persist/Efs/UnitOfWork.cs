@@ -10,27 +10,27 @@ using System.Threading.Tasks;
 namespace Radial.Persist.Efs
 {
     /// <summary>
-    /// EfUnitOfWork
+    /// Entity framework unit of work class.
     /// </summary>
-    public class EfUnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly INativeQuery _nativeQuery;
         private readonly DbContext _dbContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EfUnitOfWork"/> class.
+        /// Initializes a new instance of the <see cref="UnitOfWork"/> class.
         /// </summary>
-        public EfUnitOfWork() : this(null) { }
+        public UnitOfWork() : this(null) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EfUnitOfWork" /> class.
+        /// Initializes a new instance of the <see cref="UnitOfWork" /> class.
         /// </summary>
         /// <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
-        public EfUnitOfWork(string alias)
+        public UnitOfWork(string alias)
         {
             _dbContext = DbContextPool.GetDbContext(alias);
 
-            _nativeQuery = new EfNaticeQuery(this);
+            _nativeQuery = new NaticeQuery(this);
         }
 
         /// <summary>

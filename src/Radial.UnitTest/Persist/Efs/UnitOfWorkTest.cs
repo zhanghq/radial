@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Radial.UnitTest.Persist.Efs
 {
     [TestFixture]
-    public class EfUnitOfWorkTest : EfTestBase
+    public class UnitOfWorkTest : EfTestBase
     {
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace Radial.UnitTest.Persist.Efs
         {
             Assert.DoesNotThrow(() =>
             {
-                using (IUnitOfWork uow = new EfUnitOfWork())
+                using (IUnitOfWork uow = new UnitOfWork())
                 {
                     var c = new Article { Id = Radial.TimingSeq.Next() };
                     uow.RegisterNew<Article>(c);

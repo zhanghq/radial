@@ -130,9 +130,9 @@
     <Compile Include="Persist\Efs\DefaultContext.cs" />
     <Compile Include="Persist\Efs\DefaultPoolInitializer.cs" />
     <Compile Include="Persist\Efs\Domain\Article.cs" />
-    <Compile Include="Persist\Efs\EfNativeQueryTest.cs" />
+    <Compile Include="Persist\Efs\NativeQueryTest.cs" />
     <Compile Include="Persist\Efs\EfTestBase.cs" />
-    <Compile Include="Persist\Efs\EfUnitOfWorkTest.cs" />
+    <Compile Include="Persist\Efs\UnitOfWorkTest.cs" />
     <Compile Include="Persist\Nhs\Domain\Team.cs" />
     <Compile Include="Persist\Nhs\Domain\Book.cs" />
     <Compile Include="Persist\Nhs\IdentifierTest.cs" />
@@ -148,7 +148,7 @@
     <Compile Include="Persist\Nhs\Shard\ShardPoolInitializer.cs" />
     <Compile Include="Persist\Nhs\Shard\ShardStoragePolicy.cs" />
     <Compile Include="Persist\Nhs\Shard\ShardTest.cs" />
-    <Compile Include="Persist\Nhs\NhNativeQueryTest.cs" />
+    <Compile Include="Persist\Nhs\NativeQueryTest.cs" />
     <Compile Include="PlainTextConfigTest.cs" />
     <Compile Include="Serialization\JsonTest.cs" />
     <Compile Include="Persist\Nhs\RepositoryTest.cs" />
@@ -156,7 +156,6 @@
     <Compile Include="SmtpMailTest.cs" />
     <Compile Include="Persist\Nhs\Domain\User.cs" />
     <Compile Include="Persist\Nhs\Domain\Order.cs" />
-    <Compile Include="Persist\Nhs\NhParamTest.cs" />
     <Compile Include="Persist\Nhs\Repository\UserRepository.cs" />
     <Compile Include="Persist\Nhs\UnitOfWorkTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

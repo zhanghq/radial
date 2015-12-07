@@ -7,12 +7,12 @@ using Radial.UnitTest.Persist.Nhs.Repository;
 namespace Radial.UnitTest.Persist.Nhs
 {
     [TestFixture]
-    public class NhNativeQueryTest
+    public class NativeQueryTest
     {
         [Test]
         public void WithRepo()
         {
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 //all will in trans by user explicit call
                 uow.PrepareTransaction();
@@ -42,7 +42,7 @@ namespace Radial.UnitTest.Persist.Nhs
         public void WithRepoWithScope()
         {
             using(System.Transactions.TransactionScope tc=new System.Transactions.TransactionScope())
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 Team t = new Team();
                 t.Name = "adfadf";
@@ -68,10 +68,10 @@ namespace Radial.UnitTest.Persist.Nhs
         [Test]
         public void WithoutRepo()
         {
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 uow.PrepareTransaction();
-                NhNativeQuery query = new NhNativeQuery(uow);
+                Radial.Persist.Nhs.NativeQuery query = new Radial.Persist.Nhs.NativeQuery(uow);
                 query.ExecuteNonQuery("Insert into Team (Id,Name) Values (rand(),'ces')");
                 query.SpExecuteNonQuery("TestSP1");
                 uow.Commit();
@@ -82,10 +82,10 @@ namespace Radial.UnitTest.Persist.Nhs
         public void WithoutRepoScope()
         {
             using (System.Transactions.TransactionScope tc = new System.Transactions.TransactionScope())
-            using (IUnitOfWork uow = new NhUnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 uow.PrepareTransaction();
-                NhNativeQuery query = new NhNativeQuery(uow);
+                Radial.Persist.Nhs.NativeQuery query = new Radial.Persist.Nhs.NativeQuery(uow);
                 query.ExecuteNonQuery("Insert into Team (Id,Name) Values (rand(),'ces')");
                 query.SpExecuteNonQuery("TestSP1");
                 // not affected

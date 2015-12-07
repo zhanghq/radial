@@ -24,6 +24,38 @@ namespace Radial.Persist.Efs
         {
             Checker.Parameter(uow != null, "the IUnitOfWorkEssential instance can not be null");
             UnitOfWork = uow;
+            SetDefaultOrderBys();
+        }
+
+        /// <summary>
+        /// Gets the default order by snippets.
+        /// </summary>
+        protected OrderBySnippet<TObject>[] DefaultOrderBys { get; private set; }
+
+        /// <summary>
+        /// Gets the extra condition which will be used in every default query (but not apply to multi-query, hql and your own query).
+        /// </summary>
+        protected System.Linq.Expressions.Expression<Func<TObject, bool>> ExtraCondition { get; private set; }
+
+        /// <summary>
+        /// Sets the default order by snippets.
+        /// </summary>
+        /// <param name="orderBys">The order by snippets.</param>
+        protected void SetDefaultOrderBys(params OrderBySnippet<TObject>[] orderBys)
+        {
+            if (orderBys != null && orderBys.Count() > 0)
+                DefaultOrderBys = orderBys;
+            else
+                DefaultOrderBys = new OrderBySnippet<TObject>[0];
+        }
+
+        /// <summary>
+        /// Sets the extra condition which will be used in every default query (but not apply to multi-query, hql and your own query).
+        /// </summary>
+        /// <param name="condition">The condition.</param>
+        protected void SetExtraCondition(System.Linq.Expressions.Expression<Func<TObject, bool>> condition)
+        {
+            ExtraCondition = condition;
         }
 
         /// <summary>
@@ -49,6 +81,53 @@ namespace Radial.Persist.Efs
             {
                 return (DbContext)UnitOfWork.UnderlyingContext;
             }
+        }
+
+        /// <summary>
+        /// Builds the queryable.
+        /// </summary>
+        /// <param name="withExtraCondition">if set to <c>true</c> [with extra condition].</param>
+        /// <returns></returns>
+        protected IQueryable<TObject> BuildQueryable(bool withExtraCondition = true)
+        {
+            var query=DbContext.Set<TObject>().AsQueryable<TObject>();
+
+            if (withExtraCondition && ExtraCondition != null)
+                query = query.Where(ExtraCondition);
+
+            return query;
+        }
+
+        /// <summary>
+        /// Appends custom order bys, if there is no custom value use default order bys instead.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="orderBys">The custom order bys.</param>
+        /// <returns></returns>
+        protected IQueryable<TObject> AppendOrderBys(IQueryable<TObject> query,
+            params OrderBySnippet<TObject>[] orderBys)
+        {
+            Checker.Requires(query != null, "query can not be null");
+
+            if (orderBys == null || orderBys.Length == 0)
+                orderBys = DefaultOrderBys;
+
+            if (orderBys != null)
+            {
+                for (int i = 0; i < orderBys.Length; i++)
+                {
+                    var type = typeof(TObject);
+                    var property = type.GetProperty(orderBys[0].PropertyName);
+                    var parameter = Expression.Parameter(type);
+                    var propertyAccess = Expression.MakeMemberAccess(parameter, property);
+                    var orderByExpression = Expression.Lambda(propertyAccess, parameter);
+                    string methodName = i == 0 ? (orderBys[i].IsAscending ? "OrderBy" : "OrderByDescending") : (orderBys[i].IsAscending ? "ThenBy" : "ThenByDescending");
+                    var resultExpression = Expression.Call(typeof(Queryable), methodName, new Type[] { type, property.PropertyType }, query.Expression, Expression.Quote(orderByExpression));
+                    query = query.Provider.CreateQuery<TObject>(resultExpression);
+                }
+            }
+
+            return query;
         }
 
         /// <summary>
@@ -141,7 +220,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual bool Exist(Expression<Func<TObject, bool>> condition)
         {
-            throw new NotImplementedException();
+            return GetCount(condition) > 0;
         }
 
         /// <summary>
@@ -151,7 +230,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual bool Exist(TKey key)
         {
-            throw new NotImplementedException();
+            return Find(key) != null;
         }
 
         /// <summary>
@@ -161,7 +240,8 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual TObject Find(Expression<Func<TObject, bool>> condition)
         {
-            throw new NotImplementedException();
+            Checker.Parameter(condition != null, "where condition can not be null");
+            return BuildQueryable().Where(condition).SingleOrDefault();
         }
 
         /// <summary>
@@ -171,7 +251,10 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual TObject Find(TKey key)
         {
-            throw new NotImplementedException();
+            if (key == null)
+                return null;
+
+            return DbContext.Set<TObject>().Find(key);
         }
 
         /// <summary>
@@ -355,7 +438,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual int GetCount()
         {
-            throw new NotImplementedException();
+            return GetCount(null);
         }
 
         /// <summary>
@@ -365,7 +448,9 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual int GetCount(Expression<Func<TObject, bool>> condition)
         {
-            throw new NotImplementedException();
+            if (condition != null)
+                return BuildQueryable().Count(condition);
+            return BuildQueryable().Count();
         }
 
         /// <summary>
@@ -374,7 +459,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual long GetCountInt64()
         {
-            throw new NotImplementedException();
+            return GetCountInt64(null);
         }
 
         /// <summary>
@@ -384,7 +469,9 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual long GetCountInt64(Expression<Func<TObject, bool>> condition)
         {
-            throw new NotImplementedException();
+            if (condition != null)
+                return BuildQueryable().LongCount(condition);
+            return BuildQueryable().LongCount();
         }
 
         /// <summary>

@@ -132,6 +132,8 @@
     <Compile Include="Persist\Efs\Domain\Article.cs" />
     <Compile Include="Persist\Efs\NativeQueryTest.cs" />
     <Compile Include="Persist\Efs\EfTestBase.cs" />
+    <Compile Include="Persist\Efs\RepositoryTest.cs" />
+    <Compile Include="Persist\Efs\Repos\ArticleRepository.cs" />
     <Compile Include="Persist\Efs\UnitOfWorkTest.cs" />
     <Compile Include="Persist\Nhs\Domain\Team.cs" />
     <Compile Include="Persist\Nhs\Domain\Book.cs" />

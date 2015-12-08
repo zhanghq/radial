@@ -16,13 +16,11 @@ namespace Radial.UnitTest.Persist.Efs
         {
             HashSet<DbContextWrapper> set = new HashSet<DbContextWrapper>();
 
-            var dbcontext = new DefaultContext();
-
             //var objectContext = ((IObjectContextAdapter)dbcontext).ObjectContext;
             //var mappingCollection = (StorageMappingItemCollection)objectContext.MetadataWorkspace.GetItemCollection(DataSpace.CSSpace);
             //mappingCollection.GenerateViews(new List<EdmSchemaError>());
 
-            set.Add(new DbContextWrapper("default", dbcontext));
+            set.Add(new DbContextWrapper("default", () => { return new DefaultContext(); }));
 
             return set;
         }

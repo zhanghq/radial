@@ -12,14 +12,14 @@ namespace Radial.Persist.Efs
         /// Initializes a new instance of the <see cref="DbContextWrapper"/> class.
         /// </summary>
         /// <param name="alias">The storage alias (case insensitive).</param>
-        /// <param name="dc">The DbContext instance.</param>
-        public DbContextWrapper(string alias, DbContext dc)
+        /// <param name="func">The delegate to create new DbContext instance.</param>
+        public DbContextWrapper(string alias, Func<DbContext> func)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(alias), "storage alias can not be empty or null");
-            Checker.Parameter(dc != null, "DbContext instance can not be null");
+            Checker.Parameter(func != null, "Func<DbContext> delegate can not be null");
 
             Alias = alias.ToLower().Trim();
-            DbContext = dc;
+            Func = func;
         }
 
         /// <summary>
@@ -32,12 +32,23 @@ namespace Radial.Persist.Efs
         }
 
         /// <summary>
-        /// Gets the DbContext.
+        /// Gets the delegate to create new DbContext instance.
+        /// </summary>
+        private Func<DbContext> Func
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets a new DbContext instance.
         /// </summary>
         public DbContext DbContext
         {
-            get;
-            private set;
+            get
+            {
+                return Func();
+            }
         }
 
         /// <summary>

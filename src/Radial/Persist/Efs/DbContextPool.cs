@@ -92,7 +92,7 @@ namespace Radial.Persist.Efs
                         string normalizedAlias = alias.ToLower().Trim();
                         DbContextWrapper wrapper = S_DbContextWrapperSet.SingleOrDefault(o => o.Alias == normalizedAlias);
 
-                        Checker.Requires(wrapper != null, "can not find the specified DbContext instance, alias: {0}", normalizedAlias);
+                        Checker.Requires(wrapper != null, "can not find the specified DbContextWrapper instance, alias: {0}", normalizedAlias);
 
                         list.Add(wrapper);
                     }

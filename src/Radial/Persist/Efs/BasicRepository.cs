@@ -16,6 +16,13 @@ namespace Radial.Persist.Efs
     public abstract class BasicRepository<TObject, TKey> :
         IRepository<TObject, TKey> where TObject : class
     {
+
+        /// <summary>
+        /// The not implemented exception message
+        /// </summary>
+        protected const string NotImplementedExceptionMessage = "due to the limits of Entity Framework, BasicRepository will not implement this method by default, but you can do it by yourself";
+
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicRepository&lt;TObject, TKey&gt;"/> class.
         /// </summary>
@@ -84,6 +91,33 @@ namespace Radial.Persist.Efs
         }
 
         /// <summary>
+        /// Normalizes the page index parameter.
+        /// </summary>
+        /// <param name="pageIndex">The page index parameter.</param>
+        /// <returns>The normalized page index parameter.</returns>
+        protected int NormalizePageIndex(int pageIndex)
+        {
+            if (pageIndex < 1)
+                return 1;
+
+            return pageIndex;
+        }
+
+
+        /// <summary>
+        /// Normalizes the page size parameter.
+        /// </summary>
+        /// <param name="pageSize">The page size parameter.</param>
+        /// <returns>The normalized page size parameter.</returns>
+        protected int NormalizePageSize(int pageSize)
+        {
+            if (pageSize < 0)
+                return 0;
+
+            return pageSize;
+        }
+
+        /// <summary>
         /// Builds the queryable.
         /// </summary>
         /// <param name="withExtraCondition">if set to <c>true</c> [with extra condition].</param>
@@ -128,6 +162,18 @@ namespace Radial.Persist.Efs
             }
 
             return query;
+        }
+
+        /// <summary>
+        /// To unique item list.
+        /// </summary>
+        /// <param name="collection">The collection.</param>
+        /// <returns>The list does not contains duplicate elements</returns>
+        protected virtual IList<TObject> ToUniqueList(IEnumerable<TObject> collection)
+        {
+            ISet<TObject> set = new HashSet<TObject>(collection);
+
+            return set.ToList();
         }
 
         /// <summary>
@@ -312,7 +358,7 @@ namespace Radial.Persist.Efs
             if (condition != null)
                 query = query.Where(condition.Compile()).AsQueryable<TObject>();
 
-            return query.ToList();
+            return AppendOrderBys(query, orderBys).ToList();
         }
 
         /// <summary>
@@ -324,7 +370,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, int pageSize, int pageIndex)
         {
-            throw new NotImplementedException();
+            return FindAll(condition, null, pageSize, pageIndex);
         }
 
         /// <summary>
@@ -336,7 +382,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual IList<TObject> FindAll(int pageSize, int pageIndex, out int objectTotal)
         {
-            throw new NotImplementedException();
+            return FindAll(null, pageSize, pageIndex, out objectTotal);
         }
 
         /// <summary>
@@ -348,7 +394,12 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int returnObjectCount)
         {
-            throw new NotImplementedException();
+            IQueryable<TObject> query = BuildQueryable();
+
+            if (condition != null)
+                query = query.Where(condition.Compile()).AsQueryable<TObject>();
+
+            return AppendOrderBys(query, orderBys != null ? orderBys.ToArray() : null).Take(returnObjectCount).ToList();
         }
 
         /// <summary>
@@ -361,7 +412,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, int pageSize, int pageIndex, out int objectTotal)
         {
-            throw new NotImplementedException();
+            return FindAll(condition, null, pageSize, pageIndex, out objectTotal);
         }
 
         /// <summary>
@@ -374,7 +425,15 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex)
         {
-            throw new NotImplementedException();
+            pageSize = NormalizePageSize(pageSize);
+            pageIndex = NormalizePageIndex(pageIndex);
+
+            IQueryable<TObject> query = BuildQueryable();
+
+            if (condition != null)
+                query = query.Where(condition.Compile()).AsQueryable<TObject>();
+
+            return AppendOrderBys(query, orderBys != null ? orderBys.ToArray() : null).Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
         }
 
         /// <summary>
@@ -388,8 +447,20 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex, out int objectTotal)
         {
-            throw new NotImplementedException();
+            pageSize = NormalizePageSize(pageSize);
+            pageIndex = NormalizePageIndex(pageIndex);
+
+            IQueryable<TObject> query = BuildQueryable();
+
+            if (condition != null)
+                query = query.Where(condition.Compile()).AsQueryable<TObject>();
+
+            objectTotal = query.Count();
+
+            return AppendOrderBys(query, orderBys != null ? orderBys.ToArray() : null).Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
         }
+
+
 
         /// <summary>
         /// Finds the by keys.
@@ -399,7 +470,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual IList<TObject> FindByKeys(IEnumerable<TKey> keys, params OrderBySnippet<TObject>[] orderBys)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(NotImplementedExceptionMessage);
         }
 
         /// <summary>
@@ -410,7 +481,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public TObject FindFirst(Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
         {
-            throw new NotImplementedException();
+            return FindAll(condition, orderBys, 1).FirstOrDefault();
         }
 
         /// <summary>
@@ -421,7 +492,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual TKey[] FindKeys(Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(NotImplementedExceptionMessage);
         }
 
         /// <summary>
@@ -432,7 +503,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public TResult GetAverage<TResult>(Expression<Func<TObject, object>> selector) where TResult : struct
         {
-            throw new NotImplementedException();
+            return GetAverage<TResult>(selector, null);
         }
 
         /// <summary>
@@ -444,7 +515,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual TResult GetAverage<TResult>(Expression<Func<TObject, object>> selector, Expression<Func<TObject, bool>> condition) where TResult : struct
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(NotImplementedExceptionMessage);
         }
 
         /// <summary>
@@ -497,7 +568,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public TResult GetMax<TResult>(Expression<Func<TObject, object>> selector) where TResult : struct
         {
-            throw new NotImplementedException();
+            return GetMax<TResult>(selector, null);
         }
 
         /// <summary>
@@ -509,7 +580,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual TResult GetMax<TResult>(Expression<Func<TObject, object>> selector, Expression<Func<TObject, bool>> condition) where TResult : struct
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(NotImplementedExceptionMessage);
         }
 
         /// <summary>
@@ -520,7 +591,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public TResult GetMin<TResult>(Expression<Func<TObject, object>> selector) where TResult : struct
         {
-            throw new NotImplementedException();
+            return GetMin<TResult>(selector, null);
         }
 
         /// <summary>
@@ -532,7 +603,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual TResult GetMin<TResult>(Expression<Func<TObject, object>> selector, Expression<Func<TObject, bool>> condition) where TResult : struct
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(NotImplementedExceptionMessage);
         }
 
         /// <summary>
@@ -543,7 +614,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public TResult GetSum<TResult>(Expression<Func<TObject, object>> selector) where TResult : struct
         {
-            throw new NotImplementedException();
+            return GetSum<TResult>(selector, null);
         }
 
         /// <summary>
@@ -555,7 +626,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual TResult GetSum<TResult>(Expression<Func<TObject, object>> selector, Expression<Func<TObject, bool>> condition) where TResult : struct
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(NotImplementedExceptionMessage);
         }
     }
 }

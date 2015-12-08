@@ -254,7 +254,17 @@ namespace Radial.Persist.Efs
             if (key == null)
                 return null;
 
-            return DbContext.Set<TObject>().Find(key);
+            var o = DbContext.Set<TObject>().Find(key);
+
+            if (o == null)
+                return null;
+
+            if (ExtraCondition != null)
+            {
+                if (!ExtraCondition.Compile()(o))
+                    return null;
+            }
+            return o;
         }
 
         /// <summary>
@@ -264,7 +274,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual IList<TObject> FindAll(params OrderBySnippet<TObject>[] orderBys)
         {
-            throw new NotImplementedException();
+            return FindAll(null, orderBys);
         }
 
         /// <summary>
@@ -275,7 +285,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, int returnObjectCount)
         {
-            throw new NotImplementedException();
+            return FindAll(condition, null, returnObjectCount);
         }
 
         /// <summary>
@@ -286,7 +296,7 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual IList<TObject> FindAll(int pageSize, int pageIndex)
         {
-            throw new NotImplementedException();
+            return FindAll(null, pageSize, pageIndex);
         }
 
         /// <summary>
@@ -297,7 +307,12 @@ namespace Radial.Persist.Efs
         /// <returns></returns>
         public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
         {
-            throw new NotImplementedException();
+            IQueryable<TObject> query = BuildQueryable();
+
+            if (condition != null)
+                query = query.Where(condition.Compile()).AsQueryable<TObject>();
+
+            return query.ToList();
         }
 
         /// <summary>

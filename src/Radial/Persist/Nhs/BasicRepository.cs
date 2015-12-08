@@ -346,16 +346,12 @@ namespace Radial.Persist.Nhs
             if (key == null)
                 return null;
 
-            if (ExtraCondition != null)
-            {
-                var metadata = Session.SessionFactory.GetClassMetadata(typeof(TObject));
+            var metadata = Session.SessionFactory.GetClassMetadata(typeof(TObject));
 
-                Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
+            Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
 
-                return BuildQueryOver().Where(Expression.Eq(metadata.IdentifierPropertyName, key)).SingleOrDefault();
-            }
+            return BuildQueryOver().Where(Expression.Eq(metadata.IdentifierPropertyName, key)).SingleOrDefault();
 
-            return Session.Get<TObject>(key);
         }
 
         /// <summary>

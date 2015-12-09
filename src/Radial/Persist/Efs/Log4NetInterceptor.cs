@@ -27,8 +27,6 @@ namespace Radial.Persist.Efs
             string txt = string.Format("{0} -- {1}", command.CommandText.Replace(Environment.NewLine, ""),
                 string.Join("; ", ps.ToArray())).Trim('-', ' ');
 
-            txt += string.Format(" -- Result={0}", interceptionContext.Result.ToString());
-
             Logger logger = null;
             foreach (var d in interceptionContext.DbContexts)
             {

@@ -20,7 +20,7 @@ namespace Radial.Persist.Efs
         /// <summary>
         /// The not implemented exception message
         /// </summary>
-        protected const string NotImplementedExceptionMessage = "due to the limits of Entity Framework, BasicRepository will not implement this method by default, but you can do it by yourself";
+        protected const string NotImplementedExceptionMessage = "due to the limits of Entity Framework, BasicRepository will not implement this method by default, but you can override and implement it by yourself";
 
 
         /// <summary>
@@ -356,7 +356,7 @@ namespace Radial.Persist.Efs
             IQueryable<TObject> query = BuildQueryable();
 
             if (condition != null)
-                query = query.Where(condition.Compile()).AsQueryable<TObject>();
+                query = query.Where(condition);
 
             return AppendOrderBys(query, orderBys).ToList();
         }
@@ -397,7 +397,7 @@ namespace Radial.Persist.Efs
             IQueryable<TObject> query = BuildQueryable();
 
             if (condition != null)
-                query = query.Where(condition.Compile()).AsQueryable<TObject>();
+                query = query.Where(condition);
 
             return AppendOrderBys(query, orderBys != null ? orderBys.ToArray() : null).Take(returnObjectCount).ToList();
         }
@@ -423,7 +423,8 @@ namespace Radial.Persist.Efs
         /// <param name="pageSize">Size of the page.</param>
         /// <param name="pageIndex">Index of the page.</param>
         /// <returns></returns>
-        public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex)
+        public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition,
+            IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex)
         {
             pageSize = NormalizePageSize(pageSize);
             pageIndex = NormalizePageIndex(pageIndex);
@@ -431,9 +432,10 @@ namespace Radial.Persist.Efs
             IQueryable<TObject> query = BuildQueryable();
 
             if (condition != null)
-                query = query.Where(condition.Compile()).AsQueryable<TObject>();
+                query = query.Where(condition);
 
-            return AppendOrderBys(query, orderBys != null ? orderBys.ToArray() : null).Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
+            return AppendOrderBys(query, orderBys != null ? orderBys.ToArray() : null)
+                .Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
         }
 
         /// <summary>
@@ -445,7 +447,8 @@ namespace Radial.Persist.Efs
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="objectTotal">The object total.</param>
         /// <returns></returns>
-        public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex, out int objectTotal)
+        public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition,
+            IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex, out int objectTotal)
         {
             pageSize = NormalizePageSize(pageSize);
             pageIndex = NormalizePageIndex(pageIndex);
@@ -453,11 +456,12 @@ namespace Radial.Persist.Efs
             IQueryable<TObject> query = BuildQueryable();
 
             if (condition != null)
-                query = query.Where(condition.Compile()).AsQueryable<TObject>();
+                query = query.Where(condition);
 
             objectTotal = query.Count();
 
-            return AppendOrderBys(query, orderBys != null ? orderBys.ToArray() : null).Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
+            return AppendOrderBys(query, orderBys != null ? orderBys.ToArray() : null)
+                .Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
         }
 
 
@@ -471,6 +475,16 @@ namespace Radial.Persist.Efs
         public virtual IList<TObject> FindByKeys(IEnumerable<TKey> keys, params OrderBySnippet<TObject>[] orderBys)
         {
             throw new NotImplementedException(NotImplementedExceptionMessage);
+        }
+
+        /// <summary>
+        /// Finds the first.
+        /// </summary>
+        /// <param name="orderBys">The order bys.</param>
+        /// <returns></returns>
+        public TObject FindFirst(params OrderBySnippet<TObject>[] orderBys)
+        {
+            return FindFirst(null, orderBys);
         }
 
         /// <summary>

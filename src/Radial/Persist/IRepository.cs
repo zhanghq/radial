@@ -163,12 +163,12 @@ namespace Radial.Persist
         /// </returns>
         TObject Find(Expression<Func<TObject, bool>> condition);
 
-        ///// <summary>
-        ///// Find the first object.
-        ///// </summary>
-        ///// <param name="orderBys">The order by snippets</param>
-        ///// <returns>If data exists, return the first object, otherwise return null.</returns>
-        //TObject FindFirst(params OrderBySnippet<TObject>[] orderBys);
+        /// <summary>
+        /// Find the first object.
+        /// </summary>
+        /// <param name="orderBys">The order by snippets</param>
+        /// <returns>If data exists, return the first object, otherwise return null.</returns>
+        TObject FindFirst(params OrderBySnippet<TObject>[] orderBys);
 
         /// <summary>
         /// Find the first object.

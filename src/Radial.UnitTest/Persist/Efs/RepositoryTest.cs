@@ -57,5 +57,52 @@ namespace Radial.UnitTest.Persist.Efs
                 Assert.NotNull(a);
             }
         }
+
+        [Test]
+        public void FindAll()
+        {
+            using (IUnitOfWork uow = new UnitOfWork())
+            {
+                IArticleRepository repo = new ArticleRepository(uow);
+                for (int i = 0; i < 10; i++)
+                {
+                    repo.Add(new Article
+                    {
+                        Id = Radial.TimingSeq.Next(),
+                        Content = "test"
+                    });
+                }
+
+                uow.Commit();
+            }
+
+            using (IUnitOfWork uow = new UnitOfWork())
+            {
+                IArticleRepository repo = new ArticleRepository(uow);
+
+                Assert.DoesNotThrow(() =>
+                {
+                    var objs = repo.FindAll(new OrderBySnippet<Article>(o => o.Id, false));
+
+                    objs = repo.FindAll(o => o.Content == "test", new OrderBySnippet<Article>(o => o.Id, false));
+                    objs = repo.FindAll(o => o.Content == "test", new OrderBySnippet<Article>[] { new OrderBySnippet<Article>(o => o.Id, false) }, 10);
+
+                    int objectTotal;
+
+                    objs = repo.FindAll(o => o.Content == "test", new OrderBySnippet<Article>[] { new OrderBySnippet<Article>(o => o.Id, false) }, 10, 1, out objectTotal);
+
+                });
+            }
+        }
+
+        [Test]
+        public void FindFirst()
+        {
+            using (IUnitOfWork uow = new UnitOfWork())
+            {
+                IArticleRepository repo = new ArticleRepository(uow);
+                repo.FindFirst(new OrderBySnippet<Article>(o => o.Id, false));
+            }
+        }
     }
 }

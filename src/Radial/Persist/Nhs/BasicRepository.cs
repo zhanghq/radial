@@ -1048,15 +1048,16 @@ namespace Radial.Persist.Nhs
                 return BuildQueryOver().Select(Projections.Avg(selector)).Where(condition).SingleOrDefault<TResult>();
         }
 
-        ///// <summary>
-        ///// Find the first object.
-        ///// </summary>
-        ///// <param name="orderBys">The order by snippets</param>
-        ///// <returns>If data exists, return the first object, otherwise return null.</returns>
-        //public TObject FindFirst(params OrderBySnippet<TObject>[] orderBys)
-        //{
-        //    return FindAll(orderBys, 1).FirstOrDefault();
-        //}
+
+        /// <summary>
+        /// Finds the first.
+        /// </summary>
+        /// <param name="orderBys">The order bys.</param>
+        /// <returns></returns>
+        public TObject FindFirst(params OrderBySnippet<TObject>[] orderBys)
+        {
+            return FindFirst(null, orderBys);
+        }
 
         /// <summary>
         /// Find the first object.

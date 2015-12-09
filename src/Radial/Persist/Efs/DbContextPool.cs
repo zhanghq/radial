@@ -56,7 +56,7 @@ namespace Radial.Persist.Efs
         /// <returns>The DbContext instance.</returns>
         public static DbContext GetDbContext(string storageAlias = null)
         {
-            return GetDbContextWrapper(storageAlias).DbContext;
+            return GetDbContextWrapper(storageAlias).NewDbContext();
         }
 
         /// <summary>

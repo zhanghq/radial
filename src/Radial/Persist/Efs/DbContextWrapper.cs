@@ -40,15 +40,13 @@ namespace Radial.Persist.Efs
             set;
         }
 
+
         /// <summary>
-        /// Gets a new DbContext instance.
+        /// Get a new DbContext instance.
         /// </summary>
-        public DbContext DbContext
+        public DbContext NewDbContext()
         {
-            get
-            {
-                return Func();
-            }
+            return Func();
         }
 
         /// <summary>

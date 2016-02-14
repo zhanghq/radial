@@ -15,7 +15,10 @@ namespace Radial.UnitTest.Persist.Domain
         /// Gets or sets the subject.
         /// </summary>
         public string Subject { get; set; }
-
+        /// <summary>
+        /// Phase
+        /// </summary>
+        public string Phase { get; set; }
         /// <summary>
         /// Gets or sets the create time.
         /// </summary>

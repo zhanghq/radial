@@ -20,16 +20,19 @@ namespace Radial.UnitTest.Persist.Nhs
                 uow.RegisterNew<Question>(new Question
                 {
                     Subject = "语文",
+                    Phase="初中",
                     CreateTime = DateTime.Now
                 });
                 uow.RegisterNew<Question>(new Question
                 {
                     Subject = "数学",
+                    Phase = "初中",
                     CreateTime = DateTime.Now
                 });
                 uow.RegisterNew<Question>(new Question
                 {
                     Subject = "英语",
+                    Phase = "初中",
                     CreateTime = DateTime.Now
                 });
                 uow.Commit();

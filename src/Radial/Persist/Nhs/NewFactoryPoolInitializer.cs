@@ -48,11 +48,7 @@ namespace Radial.Persist.Nhs
                         nhcfg.AddFile(ob.Mapping.Template);
 
                     if (ob.Mapping.TemplateType == ConfigValueType.Text)
-                    {
-                        var doc = new XmlDocument();
-                        doc.LoadXml(ob.Mapping.Template);
-                        nhcfg.AddDocument(doc);
-                    }
+                        nhcfg.AddXmlString(ob.Mapping.Template);
                 }
 
                 wrapperSet.Add(new ConfigurationWrapper(sc.Alias, nhcfg));

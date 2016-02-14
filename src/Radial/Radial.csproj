@@ -146,6 +146,10 @@
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />
     <Compile Include="Cache\IClusterRegion.cs" />
     <Compile Include="Dependency.cs" />
+    <Compile Include="Persist\Cfg\ConfigValueType.cs" />
+    <Compile Include="Persist\Cfg\ObjectConfig.cs" />
+    <Compile Include="Persist\Cfg\PersistenceConfig.cs" />
+    <Compile Include="Persist\Cfg\StorageConfig.cs" />
     <Compile Include="Persist\Efs\BasicRepository.cs" />
     <Compile Include="Persist\Efs\DbContextPool.cs" />
     <Compile Include="Persist\Efs\DbContextWrapper.cs" />
@@ -154,9 +158,11 @@
     <Compile Include="Persist\Efs\ExtensionMethods.cs" />
     <Compile Include="Persist\Efs\IDbContextPoolInitializer.cs" />
     <Compile Include="Persist\Efs\Log4NetInterceptor.cs" />
+    <Compile Include="Persist\IStorageRoutePolicy.cs" />
     <Compile Include="Persist\NativeQuery.cs" />
     <Compile Include="Persist\Nhs\ExtensionMethods.cs" />
     <Compile Include="Persist\Nhs\HibernateEngine.cs" />
+    <Compile Include="Persist\Nhs\NewFactoryPoolInitializer.cs" />
     <Compile Include="Persist\Nhs\SemiautoMapper.cs" />
     <Compile Include="SearchCriteria.cs" />
     <Compile Include="SearchResult.cs" />

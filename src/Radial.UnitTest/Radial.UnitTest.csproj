@@ -127,39 +127,17 @@
     <Compile Include="ExtensionsTest.cs" />
     <Compile Include="FtpClientTest.cs" />
     <Compile Include="IO\StreamKitsTest.cs" />
-    <Compile Include="Persist\Efs\DefaultContext.cs" />
-    <Compile Include="Persist\Efs\DefaultPoolInitializer.cs" />
-    <Compile Include="Persist\Efs\Domain\Article.cs" />
-    <Compile Include="Persist\Efs\NativeQueryTest.cs" />
-    <Compile Include="Persist\Efs\EfTestBase.cs" />
-    <Compile Include="Persist\Efs\RepositoryTest.cs" />
-    <Compile Include="Persist\Efs\Repos\ArticleRepository.cs" />
-    <Compile Include="Persist\Efs\UnitOfWorkTest.cs" />
-    <Compile Include="Persist\Nhs\Domain\Team.cs" />
-    <Compile Include="Persist\Nhs\Domain\Book.cs" />
-    <Compile Include="Persist\Nhs\IdentifierTest.cs" />
-    <Compile Include="Persist\Nhs\KvParamTest.cs" />
-    <Compile Include="Persist\Nhs\Level2CacheTest.cs" />
-    <Compile Include="Persist\Nhs\MultiThreadTest.cs" />
-    <Compile Include="Persist\Nhs\Repository\TeamRepository.cs" />
-    <Compile Include="Persist\Nhs\Repository\OrderRepository.cs" />
-    <Compile Include="Persist\Nhs\Repository\BookRepository.cs" />
-    <Compile Include="Persist\Nhs\SchemaBuilderTest.cs" />
-    <Compile Include="Persist\Nhs\SemiautoPoolInitializer.cs" />
-    <Compile Include="Persist\Nhs\SemiautoTest.cs" />
-    <Compile Include="Persist\Nhs\Shard\ShardPoolInitializer.cs" />
-    <Compile Include="Persist\Nhs\Shard\ShardStoragePolicy.cs" />
-    <Compile Include="Persist\Nhs\Shard\ShardTest.cs" />
-    <Compile Include="Persist\Nhs\NativeQueryTest.cs" />
+    <Compile Include="Persist\Domain\ModelBase.cs" />
+    <Compile Include="Persist\Domain\Question.cs" />
+    <Compile Include="Persist\Domain\Repos\IQuestionRepository.cs" />
+    <Compile Include="Persist\Nhs\Repos\QuestionRepository.cs" />
+    <Compile Include="Persist\Nhs\Routes\QuestionRoutePolicy.cs" />
+    <Compile Include="Persist\Nhs\SimpleTest.cs" />
+    <Compile Include="Persist\Nhs\TestSetup.cs" />
     <Compile Include="PlainTextConfigTest.cs" />
     <Compile Include="Serialization\JsonTest.cs" />
-    <Compile Include="Persist\Nhs\RepositoryTest.cs" />
     <Compile Include="RedisTest.cs" />
     <Compile Include="SmtpMailTest.cs" />
-    <Compile Include="Persist\Nhs\Domain\User.cs" />
-    <Compile Include="Persist\Nhs\Domain\Order.cs" />
-    <Compile Include="Persist\Nhs\Repository\UserRepository.cs" />
-    <Compile Include="Persist\Nhs\UnitOfWorkTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestSetup.cs" />
     <Compile Include="ToolkitsTest.cs" />
@@ -180,8 +158,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Config\NHibernate.config">
-      <SubType>Designer</SubType>
+    <None Include="Config\Persist\Nhibernate.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\Persist\Question.hbm.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Config\XmlParam.config">
@@ -194,30 +174,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Persist\Nhs\Domain\User.hbm.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Persist\Nhs\Domain\Order.hbm.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Persist\Nhs\Domain\Book.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Config\StorageAlias.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Persist\Nhs\Domain\Team.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <None Include="Config\Persistence.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

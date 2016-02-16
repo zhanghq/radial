@@ -252,7 +252,6 @@
     <Compile Include="Persist\IUnitOfWork.cs" />
     <Compile Include="Persist\IUnitOfWorkEssential.cs" />
     <Compile Include="Persist\OrderBySnippet.cs" />
-    <Compile Include="Persist\StorageRouter.cs" />
     <Compile Include="PerWebRequestLifetimeManager.cs" />
     <Compile Include="PlainTextConfig.cs" />
     <Compile Include="RangeValue.cs" />

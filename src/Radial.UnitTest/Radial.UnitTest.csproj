@@ -135,6 +135,7 @@
     <Compile Include="Persist\Efs\RepositoryTest.cs" />
     <Compile Include="Persist\Efs\Repos\ArticleRepository.cs" />
     <Compile Include="Persist\Efs\UnitOfWorkTest.cs" />
+    <Compile Include="Persist\Nhs\Domain\Question.cs" />
     <Compile Include="Persist\Nhs\Domain\Team.cs" />
     <Compile Include="Persist\Nhs\Domain\Book.cs" />
     <Compile Include="Persist\Nhs\IdentifierTest.cs" />
@@ -173,12 +174,24 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Config\Persistence.config" />
     <None Include="Config\log4net.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Config\NHibernate.config">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\Persist\db0.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\Persist\db1.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Config\Persist\Question.hbm.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Config\XmlParam.config">

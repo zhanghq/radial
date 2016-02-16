@@ -158,6 +158,7 @@
     <Compile Include="Persist\Nhs\ExtensionMethods.cs" />
     <Compile Include="Persist\Nhs\HibernateEngine.cs" />
     <Compile Include="Persist\Nhs\SemiautoMapper.cs" />
+    <Compile Include="Persist\Nhs\TableShardInterceptor.cs" />
     <Compile Include="SearchCriteria.cs" />
     <Compile Include="SearchResult.cs" />
     <Compile Include="Web\ExceptionOutputData.cs" />

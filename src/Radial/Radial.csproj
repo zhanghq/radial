@@ -218,7 +218,6 @@
     <Compile Include="Persist\Nhs\ContextualUnitOfWork.cs" />
     <Compile Include="Persist\Nhs\DefaultFactoryPoolInitializer.cs" />
     <Compile Include="Persist\Nhs\IFactoryPoolInitializer.cs" />
-    <Compile Include="Persist\Nhs\ITableShardable.cs" />
     <Compile Include="Persist\Nhs\NamingStrategy\MySqlNamingStrategy.cs" />
     <Compile Include="Persist\Nhs\NamingStrategy\NamingStrategyFactory.cs" />
     <Compile Include="Persist\Nhs\NamingStrategy\SqliteNamingStrategy.cs" />
@@ -229,7 +228,6 @@
     <Compile Include="Persist\Nhs\SchemaBuilder.cs" />
     <Compile Include="Persist\Nhs\SessionFactoryPool.cs" />
     <Compile Include="Persist\Nhs\ConfigurationWrapper.cs" />
-    <Compile Include="Persist\Nhs\ShardTableMapping.cs" />
     <Compile Include="Persist\Nhs\NativeQuery.cs" />
     <Compile Include="Persist\Nhs\TimingIdGenerator.cs" />
     <Compile Include="Persist\StorageAliasConfig.cs" />

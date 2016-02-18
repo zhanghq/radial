@@ -1,53 +1,66 @@
 ﻿using System;
-using System.Data.Entity;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Radial.Persist.Efs
+namespace Radial.Persist.Cfg
 {
     /// <summary>
-    /// DbContextWrapper
+    /// DatabaseSettingType
     /// </summary>
-    public sealed class DbContextWrapper : IEquatable<DbContextWrapper>
+    public enum DatabaseSettingType
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DbContextWrapper"/> class.
+        /// The file.
         /// </summary>
-        /// <param name="alias">The storage alias (case insensitive).</param>
-        /// <param name="func">The delegate to create new DbContext instance.</param>
-        public DbContextWrapper(string alias, Func<DbContext> func)
-        {
-            Checker.Parameter(!string.IsNullOrWhiteSpace(alias), "storage alias can not be empty or null");
-            Checker.Parameter(func != null, "Func<DbContext> delegate can not be null");
+        File = 0,
+        /// <summary>
+        /// The text.
+        /// </summary>
+        Text = 1
+    }
 
-            Alias = alias.Trim();
-            Func = func;
+    /// <summary>
+    /// DatabaseCfgSet
+    /// </summary>
+    public sealed class DatabaseCfgSet : HashSet<DatabaseCfgItem>
+    {
+        /// <summary>
+        /// Gets the <see cref="DatabaseCfgItem"/> with the specified name.
+        /// </summary>
+        /// <value>
+        /// The <see cref="DatabaseCfgItem"/>.
+        /// </value>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        public DatabaseCfgItem this[string name]
+        {
+            get
+            {
+                return this.SingleOrDefault(o => string.Compare(o.Name, name, true) == 0);
+            }
         }
+    }
+
+    /// <summary>
+    /// DatabaseCfgItem
+    /// </summary>
+    public sealed class DatabaseCfgItem : IEquatable<DatabaseCfgItem>
+    {
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// Gets or sets the type of the setting.
+        /// </summary>
+        public DatabaseSettingType SettingType { get; set; }
 
         /// <summary>
-        /// Gets the storage alias.
+        /// Gets or sets the setting value.
         /// </summary>
-        public string Alias
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets the delegate to create new DbContext instance.
-        /// </summary>
-        private Func<DbContext> Func
-        {
-            get;
-            set;
-        }
-
-
-        /// <summary>
-        /// Get a new DbContext instance.
-        /// </summary>
-        public DbContext NewDbContext()
-        {
-            return Func();
-        }
+        public string SettingValue { get; set; }
 
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
@@ -75,7 +88,7 @@ namespace Radial.Persist.Efs
         /// </returns>
         public override int GetHashCode()
         {
-            return Alias.ToLower().GetHashCode();
+            return Name.Trim().ToLower().GetHashCode();
         }
 
         /// <summary>
@@ -83,7 +96,7 @@ namespace Radial.Persist.Efs
         /// </summary>
         /// <param name="other">The other.</param>
         /// <returns></returns>
-        public bool Equals(DbContextWrapper other)
+        public bool Equals(DatabaseCfgItem other)
         {
             if (ReferenceEquals(this, other))
                 return true;
@@ -93,6 +106,5 @@ namespace Radial.Persist.Efs
 
             return this.GetHashCode() == other.GetHashCode();
         }
-
     }
 }

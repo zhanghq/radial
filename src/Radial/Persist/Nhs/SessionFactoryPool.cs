@@ -97,10 +97,9 @@ namespace Radial.Persist.Nhs
 
                     foreach (string alias in storageAliases)
                     {
-                        string normalizedAlias = alias.ToLower().Trim();
-                        ConfigurationWrapper wrapper = S_ConfigurationWrapperSet.SingleOrDefault(o => o.Alias == normalizedAlias);
+                        ConfigurationWrapper wrapper = S_ConfigurationWrapperSet.SingleOrDefault(o => string.Compare(o.Alias, alias.Trim(), true) == 0);
 
-                        Checker.Requires(wrapper != null, "can not find the specified ConfigurationWrapper instance, alias: {0}", normalizedAlias);
+                        Checker.Requires(wrapper != null, "can not find the specified ConfigurationWrapper instance, alias: {0}", alias.Trim());
 
                         list.Add(wrapper);
                     }
@@ -131,13 +130,7 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public static string[] GetStorageAliases()
         {
-            IList<string> aliases = new List<string>(S_ConfigurationWrapperSet.Count);
-
-            foreach (ConfigurationWrapper wrapper in S_ConfigurationWrapperSet)
-                aliases.Add(wrapper.Alias);
-
-            return aliases.ToArray();
-
+            return S_ConfigurationWrapperSet.Select(o=>o.Alias).ToArray();
         }
 
         /// <summary>

@@ -129,6 +129,9 @@
     <Compile Include="IO\StreamKitsTest.cs" />
     <Compile Include="Persist\Domain\ModelBase.cs" />
     <Compile Include="Persist\Domain\Question.cs" />
+    <Compile Include="Persist\Nhs\BasicTest.cs" />
+    <Compile Include="Persist\Routing\QuestionStorageRouter.cs" />
+    <Compile Include="Persist\Nhs\TestSetup.cs" />
     <Compile Include="PlainTextConfigTest.cs" />
     <Compile Include="Serialization\JsonTest.cs" />
     <Compile Include="RedisTest.cs" />
@@ -149,7 +152,9 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Config\Persistence.config" />
+    <None Include="Config\Persistence.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Config\log4net.config">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -181,9 +186,7 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Persist\Nhs\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

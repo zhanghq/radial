@@ -53,5 +53,23 @@ namespace Radial.Persist
         }
 
         #endregion
+
+        #region IStorageRouter
+
+        /// <summary>
+        /// Resolves the storage router.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="container">The container.</param>
+        /// <returns></returns>
+        public static IStorageRouter<TObject> ResolveStorageRouter<TObject>(this IUnityContainer container) where TObject : class
+        {
+            if (container == null)
+                return null;
+
+            return container.Resolve<IStorageRouter<TObject>>();
+        }
+
+        #endregion
     }
 }

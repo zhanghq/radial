@@ -146,6 +146,10 @@
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />
     <Compile Include="Cache\IClusterRegion.cs" />
     <Compile Include="Dependency.cs" />
+    <Compile Include="Persist\Cfg\ObjectCfgItem.cs" />
+    <Compile Include="Persist\Cfg\DatabaseCfgSet.cs" />
+    <Compile Include="Persist\Cfg\PersistenceCfg.cs" />
+    <Compile Include="Persist\Cfg\StorageCfgItem.cs" />
     <Compile Include="Persist\Efs\BasicRepository.cs" />
     <Compile Include="Persist\Efs\DbContextPool.cs" />
     <Compile Include="Persist\Efs\DbContextWrapper.cs" />
@@ -154,9 +158,11 @@
     <Compile Include="Persist\Efs\ExtensionMethods.cs" />
     <Compile Include="Persist\Efs\IDbContextPoolInitializer.cs" />
     <Compile Include="Persist\Efs\Log4NetInterceptor.cs" />
+    <Compile Include="Persist\StorageRouter.cs" />
     <Compile Include="Persist\NativeQuery.cs" />
     <Compile Include="Persist\Nhs\ExtensionMethods.cs" />
     <Compile Include="Persist\Nhs\HibernateEngine.cs" />
+    <Compile Include="Persist\Nhs\NewFactoryPoolInitializer.cs" />
     <Compile Include="Persist\Nhs\SemiautoMapper.cs" />
     <Compile Include="SearchCriteria.cs" />
     <Compile Include="SearchResult.cs" />
@@ -230,7 +236,6 @@
     <Compile Include="Persist\Nhs\ConfigurationWrapper.cs" />
     <Compile Include="Persist\Nhs\NativeQuery.cs" />
     <Compile Include="Persist\Nhs\TimingIdGenerator.cs" />
-    <Compile Include="Persist\StorageAliasConfig.cs" />
     <Compile Include="RegisterInterfaceAttribute.cs" />
     <Compile Include="Serialization\BsonSerializer.cs" />
     <Compile Include="Serialization\SerializeFormat.cs" />
@@ -248,7 +253,6 @@
     <Compile Include="Boot\IBootTask.cs" />
     <Compile Include="Net\ContentTypes.cs" />
     <Compile Include="Persist\IRepository.cs" />
-    <Compile Include="Persist\IStoragePolicy.cs" />
     <Compile Include="Persist\IUnitOfWork.cs" />
     <Compile Include="Persist\IUnitOfWorkEssential.cs" />
     <Compile Include="Persist\OrderBySnippet.cs" />

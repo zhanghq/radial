@@ -19,7 +19,7 @@ namespace Radial.Persist.Nhs
             Checker.Parameter(!string.IsNullOrWhiteSpace(alias), "storage alias can not be empty or null");
             Checker.Parameter(cfg != null, "configuration instance can not be null");
 
-            Alias = alias.ToLower().Trim();
+            Alias = alias.Trim();
             Configuration = cfg;
         }
 
@@ -78,7 +78,7 @@ namespace Radial.Persist.Nhs
         /// </returns>
         public override int GetHashCode()
         {
-            return Alias.GetHashCode();
+            return Alias.ToLower().GetHashCode();
         }
 
         /// <summary>
@@ -88,7 +88,13 @@ namespace Radial.Persist.Nhs
         /// <returns></returns>
         public bool Equals(ConfigurationWrapper other)
         {
-            return Equals(other);
+            if (ReferenceEquals(this, other))
+                return true;
+
+            if (other == null)
+                return false;
+
+            return this.GetHashCode() == other.GetHashCode();
         }
     }
 }

@@ -89,10 +89,9 @@ namespace Radial.Persist.Efs
 
                     foreach (string alias in storageAliases)
                     {
-                        string normalizedAlias = alias.ToLower().Trim();
-                        DbContextWrapper wrapper = S_DbContextWrapperSet.SingleOrDefault(o => o.Alias == normalizedAlias);
+                        DbContextWrapper wrapper = S_DbContextWrapperSet.SingleOrDefault(o => string.Compare(o.Alias, alias.Trim(), true) == 0);
 
-                        Checker.Requires(wrapper != null, "can not find the specified DbContextWrapper instance, alias: {0}", normalizedAlias);
+                        Checker.Requires(wrapper != null, "can not find the specified DbContextWrapper instance, alias: {0}", alias.Trim());
 
                         list.Add(wrapper);
                     }
@@ -112,13 +111,7 @@ namespace Radial.Persist.Efs
         /// </returns>
         public static string[] GetStorageAliases()
         {
-            IList<string> aliases = new List<string>(S_DbContextWrapperSet.Count);
-
-            foreach (DbContextWrapper wrapper in S_DbContextWrapperSet)
-                aliases.Add(wrapper.Alias);
-
-            return aliases.ToArray();
-
+            return S_DbContextWrapperSet.Select(o=>o.Alias).ToArray();
         }
     }
 }

@@ -20,19 +20,35 @@ namespace Radial.UnitTest.Persist.Nhs
             qs.Add(new Question
             {
                 Subject = "语文",
+                Phase = "初中",
                 CreateTime = DateTime.Now
             });
             qs.Add(new Question
             {
                 Subject = "数学",
+                Phase = "初中",
                 CreateTime = DateTime.Now
             });
             qs.Add(new Question
             {
                 Subject = "英语",
+                Phase = "初中",
                 CreateTime = DateTime.Now
             });
+
             var qsrouter = Dependency.Container.ResolveStorageRouter<Question>();
+            using (System.Transactions.TransactionScope ts = new System.Transactions.TransactionScope())
+            {
+                foreach (var q in qs)
+                {
+                    using (var uow = new UnitOfWork(qsrouter.GetStorageAlias(q)))
+                    {
+                        uow.RegisterNew(q);
+                    }
+                }
+
+                ts.Complete();
+            }
         }
     }
 }

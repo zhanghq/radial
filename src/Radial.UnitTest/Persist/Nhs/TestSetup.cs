@@ -17,6 +17,8 @@ namespace Radial.UnitTest.Persist.Nhs
         public void SetUp()
         {
             Dependency.Container.RegisterType<IFactoryPoolInitializer, NewFactoryPoolInitializer>();
+
+            SessionFactoryPool.Initialize();
         }
 
         [OneTimeTearDown]

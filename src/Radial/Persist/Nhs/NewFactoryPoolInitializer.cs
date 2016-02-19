@@ -30,14 +30,11 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Execute pool initialization.
         /// </summary>
-        /// <returns>
-        /// The configuration wrapper set.
-        /// </returns>
-        public virtual ISet<ConfigurationWrapper> Execute()
+        public virtual SessionFactoryWrapperSet Initialize()
         {
             PersistenceCfg pcfg = PersistenceCfg.Load(ConfigurationPath);
 
-            ISet<ConfigurationWrapper> wrapperSet = new HashSet<ConfigurationWrapper>();
+            SessionFactoryWrapperSet wrapperSet = new SessionFactoryWrapperSet();
 
             foreach (var sg in pcfg.Storages)
             {
@@ -76,7 +73,7 @@ namespace Radial.Persist.Nhs
                     nhcfg.AddXmlString(xml);
                 }
 
-                wrapperSet.Add(new ConfigurationWrapper(sg.Alias, nhcfg));
+                wrapperSet.Add(new SessionFactoryWrapper(sg.Alias, nhcfg.BuildSessionFactory()));
             }
 
             return wrapperSet;

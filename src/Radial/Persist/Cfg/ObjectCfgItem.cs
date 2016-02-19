@@ -42,6 +42,22 @@ namespace Radial.Persist.Cfg
                 return this.SingleOrDefault(o => string.Compare(o.ClassName, className, true) == 0);
             }
         }
+
+        /// <summary>
+        /// Gets the <see cref="ObjectCfgItem"/> at the specified index.
+        /// </summary>
+        /// <value>
+        /// The <see cref="ObjectCfgItem"/>.
+        /// </value>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        public ObjectCfgItem this[int index]
+        {
+            get
+            {
+                return this.ElementAt(index);
+            }
+        }
     }
 
     /// <summary>

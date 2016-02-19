@@ -41,6 +41,22 @@ namespace Radial.Persist.Cfg
                 return this.SingleOrDefault(o => string.Compare(o.Name, name, true) == 0);
             }
         }
+
+        /// <summary>
+        /// Gets the <see cref="DatabaseCfgItem"/> at the specified index.
+        /// </summary>
+        /// <value>
+        /// The <see cref="DatabaseCfgItem"/>.
+        /// </value>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        public DatabaseCfgItem this[int index]
+        {
+            get
+            {
+                return this.ElementAt(index);
+            }
+        }
     }
 
     /// <summary>

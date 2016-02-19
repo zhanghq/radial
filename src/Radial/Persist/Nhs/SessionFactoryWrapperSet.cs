@@ -1,26 +1,70 @@
 ﻿using System;
 using NHibernate;
 using NHibernate.Cfg;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Radial.Persist.Nhs
 {
+
     /// <summary>
-    /// A wrapper class of Configuration instance.
+    /// SessionFactoryWrapperSet
     /// </summary>
-    public sealed class ConfigurationWrapper : IEquatable<ConfigurationWrapper>
+    public sealed class SessionFactoryWrapperSet: HashSet<SessionFactoryWrapper>
     {
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurationWrapper"/> class.
+        /// Gets the <see cref="SessionFactoryWrapper"/> with the specified alias.
+        /// </summary>
+        /// <value>
+        /// The <see cref="SessionFactoryWrapper"/>.
+        /// </value>
+        /// <param name="alias">The alias.</param>
+        /// <returns></returns>
+        public SessionFactoryWrapper this[string alias]
+        {
+            get
+            {
+                return this.SingleOrDefault(o => string.Compare(o.Alias, alias, true) == 0);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the <see cref="SessionFactoryWrapper"/> at the specified index.
+        /// </summary>
+        /// <value>
+        /// The <see cref="SessionFactoryWrapper"/>.
+        /// </value>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        public SessionFactoryWrapper this[int index]
+        {
+            get
+            {
+                return this.ElementAt(index);
+            }
+        }
+    }
+
+    /// <summary>
+    /// A wrapper class of session factory wrapper instance.
+    /// </summary>
+    public sealed class SessionFactoryWrapper : IEquatable<SessionFactoryWrapper>
+    {
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SessionFactoryWrapper" /> class.
         /// </summary>
         /// <param name="alias">The storage alias (case insensitive).</param>
-        /// <param name="cfg">The configuration instance.</param>
-        public ConfigurationWrapper(string alias, Configuration cfg)
+        /// <param name="factory">The ISessionFactory instance.</param>
+        public SessionFactoryWrapper(string alias, ISessionFactory factory)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(alias), "storage alias can not be empty or null");
-            Checker.Parameter(cfg != null, "configuration instance can not be null");
+            Checker.Parameter(factory != null, "ISessionFactory instance can not be null");
 
             Alias = alias.Trim();
-            Configuration = cfg;
+            SessionFactory = factory;
         }
 
         /// <summary>
@@ -33,24 +77,14 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Gets the configuration.
+        /// Gets the session factory.
         /// </summary>
-        public Configuration Configuration
+        public ISessionFactory SessionFactory
         {
             get;
             private set;
         }
 
-        /// <summary>
-        /// Gets the factory instance.
-        /// </summary>
-        public ISessionFactory Factory
-        {
-            get
-            {
-                return Configuration.BuildSessionFactory();
-            }
-        }
 
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
@@ -86,7 +120,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <param name="other">The other.</param>
         /// <returns></returns>
-        public bool Equals(ConfigurationWrapper other)
+        public bool Equals(SessionFactoryWrapper other)
         {
             if (ReferenceEquals(this, other))
                 return true;

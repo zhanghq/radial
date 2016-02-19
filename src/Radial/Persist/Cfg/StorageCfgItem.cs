@@ -26,6 +26,22 @@ namespace Radial.Persist.Cfg
                 return this.SingleOrDefault(o => string.Compare(o.Alias, alias, true) == 0);
             }
         }
+
+        /// <summary>
+        /// Gets the <see cref="StorageCfgItem"/> at the specified index.
+        /// </summary>
+        /// <value>
+        /// The <see cref="StorageCfgItem"/>.
+        /// </value>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        public StorageCfgItem this[int index]
+        {
+            get
+            {
+                return this.ElementAt(index);
+            }
+        }
     }
 
     /// <summary>
@@ -113,6 +129,22 @@ namespace Radial.Persist.Cfg
             get
             {
                 return this.SingleOrDefault(o => string.Compare(o.ClassName, className, true) == 0);
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ContainedObjectCfgItem"/> at the specified index.
+        /// </summary>
+        /// <value>
+        /// The <see cref="ContainedObjectCfgItem"/>.
+        /// </value>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        public ContainedObjectCfgItem this[int index]
+        {
+            get
+            {
+                return this.ElementAt(index);
             }
         }
     }

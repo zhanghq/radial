@@ -27,7 +27,18 @@ namespace Radial.UnitTest.Persist.Routing
         /// <returns></returns>
         public override string GetStorageAlias(object selector)
         {
-            return PersistenceCfg.Storages.ElementAt(0).Alias;
+            if(selector is Question)
+            {
+                var tmp = selector as Question;
+
+                if(tmp.Subject=="语文")
+                    return PersistenceCfg.Storages[0].Alias;
+                if (tmp.Subject == "数学")
+                    return PersistenceCfg.Storages[1].Alias;
+                if (tmp.Subject == "英语")
+                    return PersistenceCfg.Storages[2].Alias;
+            }
+            return PersistenceCfg.Storages[0].Alias;
         }
 
         /// <summary>

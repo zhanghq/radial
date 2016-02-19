@@ -24,6 +24,14 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
+        /// Gets the storage alias.
+        /// </summary>
+        public string StorageAlias
+        {
+            get { return ConfigurationEntry.DefaultStorageAlias; }
+        }
+
+        /// <summary>
         /// Gets the underlying data context object.
         /// </summary>
         public virtual object UnderlyingContext
@@ -40,6 +48,9 @@ namespace Radial.Persist.Nhs
         /// <param name="level">The isolation level.</param>
         public void PrepareTransaction(IsolationLevel? level = null)
         {
+            Checker.Requires(!SessionFactoryPool.CurrentSet[StorageAlias].IsReadonly,
+            "prepare transaction in the READ ONLY storage is not supported, alias: {0}", StorageAlias);
+
             //nothing to do, if there has a transaction scope
             if (System.Transactions.Transaction.Current == null)
             {
@@ -190,6 +201,10 @@ namespace Radial.Persist.Nhs
         /// </summary>
         public virtual void Commit()
         {
+
+            Checker.Requires(!SessionFactoryPool.CurrentSet[StorageAlias].IsReadonly,
+                "commit data to the READ ONLY storage is not supported, alias: {0}", StorageAlias);
+
             //nothing to do, if there has no-active transaction or a transaction scope
             if (_session.Transaction.IsActive && System.Transactions.Transaction.Current == null)
             {

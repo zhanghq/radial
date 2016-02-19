@@ -20,7 +20,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         static HibernateEngine()
         {
-            SessionFactory = SessionFactoryPool.GetFactoryInstance();
+            SessionFactory = SessionFactoryPool.CurrentSet[0].GetSessionFactory();
         }
 
         /// <summary>

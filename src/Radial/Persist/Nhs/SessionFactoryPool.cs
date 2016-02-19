@@ -10,145 +10,34 @@ namespace Radial.Persist.Nhs
     /// </summary>
     public static class SessionFactoryPool
     {
-        static ISet<ConfigurationWrapper> S_ConfigurationWrapperSet;
+        static object S_SyncRoot = new object();
 
         /// <summary>
         /// Initializes the <see cref="SessionFactoryPool"/> class.
         /// </summary>
         static SessionFactoryPool()
         {
-            if (S_ConfigurationWrapperSet == null)
+            lock (S_SyncRoot)
             {
-                Logger.Debug("begin initialize session factory pool");
+                IFactoryPoolInitializer initializer = Dependency.Container.Resolve<IFactoryPoolInitializer>();
 
-                IFactoryPoolInitializer initializer = null;
-                if (Dependency.Container.IsRegistered<IFactoryPoolInitializer>())
-                {
-                    initializer = Dependency.Container.Resolve<IFactoryPoolInitializer>();
-                }
-                else
-                {
-                    //use default when not set.
-                    Logger.Debug("can not found any session factory pool initializer, using DefaultFactoryPoolInitializer instead");
-                    initializer = new DefaultFactoryPoolInitializer();
-                }
+                Checker.Requires(initializer != null, "can not found any session factory pool initializer");
 
-                S_ConfigurationWrapperSet = initializer.Execute();
+                CurrentSet = initializer.Execute();
 
-                Checker.Requires(S_ConfigurationWrapperSet != null && S_ConfigurationWrapperSet.Count > 0, "failed to initialize: ConfigurationWrapper set was null or empty");
+                Checker.Requires(CurrentSet != null && CurrentSet.Count > 0, "can not found any ConfigurationEntry instance");
 
-                Logger.Debug("end initialize session factory pool");
+                Checker.Requires(CurrentSet.All(o => o != null), "any ConfigurationEntry instances can not be null");
             }
         }
 
         /// <summary>
-        /// Gets the logger.
+        /// Gets the current configuration set.
         /// </summary>
-        private static Logger Logger
+        public static ConfigurationSet CurrentSet
         {
-            get
-            {
-                return Logger.GetInstance("SessionFactoryPool");
-            }
-        }
-
-
-        ///// <summary>
-        ///// Gets the first NHibernate.ISessionFactory instance.
-        ///// </summary>
-        //public static ISessionFactory First
-        //{
-        //    get
-        //    {
-        //        ConfigurationWrapper wrapper = GetConfigurationWrappers().FirstOrDefault();
-
-        //        return wrapper.Factory;
-        //    }
-        //}
-
-
-        /// <summary>
-        /// Gets the ConfigurationWrapper object with the specified storage alias.
-        /// </summary>
-        /// <param name="storageAlias">The storage alias (case insensitive),
-        /// if set to null will get the first ConfigurationWrapper object.</param>
-        /// <returns>The ConfigurationWrapper object.</returns>
-        public static ConfigurationWrapper GetConfigurationWrapper(string storageAlias=null)
-        {
-            return GetConfigurationWrappers(storageAlias).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the ConfigurationWrapper object with the specified storage aliases.
-        /// </summary>
-        /// <param name="storageAliases">The storage alias array (case insensitive).</param>
-        /// <returns>The ConfigurationWrapper object array.</returns>
-        public static ConfigurationWrapper[] GetConfigurationWrappers(params string[] storageAliases)
-        {
-            var result = S_ConfigurationWrapperSet.ToArray();
-
-            if (storageAliases != null && storageAliases.Length > 0)
-            {
-                storageAliases = storageAliases.Where(o => !string.IsNullOrWhiteSpace(o)).ToArray();
-
-                if (storageAliases.Length > 0)
-                {
-                    IList<ConfigurationWrapper> list = new List<ConfigurationWrapper>();
-
-                    foreach (string alias in storageAliases)
-                    {
-                        string normalizedAlias = alias.ToLower().Trim();
-                        ConfigurationWrapper wrapper = S_ConfigurationWrapperSet.SingleOrDefault(o => o.Alias == normalizedAlias);
-
-                        Checker.Requires(wrapper != null, "can not find the specified ConfigurationWrapper instance, alias: {0}", normalizedAlias);
-
-                        list.Add(wrapper);
-                    }
-
-                    return list.ToArray();
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="NHibernate.ISessionFactory"/> instance with the specified storage alias.
-        /// </summary>
-        /// <param name="storageAlias">The storage alias (case insensitive),
-        /// if set to null will get the first NHibernate.ISessionFactory instance.</param>
-        /// <returns>The NHibernate.ISessionFactory instance</returns>
-        public static ISessionFactory GetFactoryInstance(string storageAlias = null)
-        {
-            return GetConfigurationWrapper(storageAlias).Factory;
-        }
-
-        /// <summary>
-        /// Gets all storage aliases.
-        /// </summary>
-        /// <returns>
-        /// The storage aliases array.
-        /// </returns>
-        public static string[] GetStorageAliases()
-        {
-            IList<string> aliases = new List<string>(S_ConfigurationWrapperSet.Count);
-
-            foreach (ConfigurationWrapper wrapper in S_ConfigurationWrapperSet)
-                aliases.Add(wrapper.Alias);
-
-            return aliases.ToArray();
-
-        }
-
-        /// <summary>
-        /// Open a new session using the specified storage alias.
-        /// </summary>
-        /// <param name="storageAlias">The storage alias (case insensitive),
-        /// if set to null will open session from the first NHibernate.ISessionFactory instance.</param>
-        /// <returns>A new ISession instance.</returns>
-        public static ISession OpenSession(string storageAlias=null)
-        {
-            return GetFactoryInstance(storageAlias).OpenSession();
+            get;
+            private set;
         }
     }
 }

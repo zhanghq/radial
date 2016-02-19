@@ -10,7 +10,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Execute pool initialization.
         /// </summary>
-        /// <returns>The configuration wrapper set.</returns>
-        ISet<ConfigurationWrapper> Execute();
+        /// <returns></returns>
+        ConfigurationSet Execute();
     }
 }

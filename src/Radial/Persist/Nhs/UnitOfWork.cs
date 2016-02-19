@@ -28,18 +28,34 @@ namespace Radial.Persist.Nhs
         /// <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
         public UnitOfWork(string alias)
         {
-            _session = SessionFactoryPool.OpenSession(alias);
+            StorageAlias = alias;
+            if (string.IsNullOrWhiteSpace(StorageAlias))
+                StorageAlias = ConfigurationEntry.DefaultStorageAlias;
+
+            _session = SessionFactoryPool.CurrentSet[StorageAlias].GetSessionFactory().OpenSession();
 
             _nativeQuery = new NativeQuery(this);
         }
 
         /// <summary>
+        /// Gets the storage alias.
+        /// </summary>
+        public string StorageAlias
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Prepares the transaction, typically this method is invoked implicitly,
-       ///  but it  also can be explicit used to implement custom control.
+        ///  but it  also can be explicit used to implement custom control.
         /// </summary>
         /// <param name="level">The isolation level.</param>
         public void PrepareTransaction(IsolationLevel? level = null)
         {
+            Checker.Requires(!SessionFactoryPool.CurrentSet[StorageAlias].IsReadonly,
+                "prepare transaction in the READ ONLY storage is not supported, alias: {0}", StorageAlias);
+
             //nothing to do, if there has an actived transaction scope
             if (System.Transactions.Transaction.Current == null)
             {
@@ -202,6 +218,9 @@ namespace Radial.Persist.Nhs
         /// </summary>
         public virtual void Commit()
         {
+            Checker.Requires(!SessionFactoryPool.CurrentSet[StorageAlias].IsReadonly,
+                "commit data to the READ ONLY storage is not supported, alias: {0}", StorageAlias);
+
             //nothing to do, if there has no-active transaction or a transaction scope
             if (_session.Transaction.IsActive && System.Transactions.Transaction.Current == null)
             {

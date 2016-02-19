@@ -20,14 +20,12 @@ namespace Radial.Persist.Nhs
         {
             if (string.IsNullOrWhiteSpace(storageAlias))
             {
-                var cwp = SessionFactoryPool.GetConfigurationWrappers().FirstOrDefault();
-
-                Checker.Requires(cwp != null, "can not find the any ConfigurationWrapper instance without storage alias");
+                var cwp = SessionFactoryPool.CurrentSet[0];
 
                 _cfg = cwp.Configuration;
             }
             else
-                _cfg = SessionFactoryPool.GetConfigurationWrapper(storageAlias).Configuration;
+                _cfg = SessionFactoryPool.CurrentSet[storageAlias].Configuration;
         }
 
         /// <summary>

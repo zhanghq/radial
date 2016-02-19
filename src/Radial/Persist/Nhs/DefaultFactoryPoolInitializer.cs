@@ -21,12 +21,10 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Execute pool initialization.
         /// </summary>
-        /// <returns>
-        /// The session factory wrapper set.
-        /// </returns>
-        public virtual ISet<ConfigurationWrapper> Execute()
+        /// <returns></returns>
+        public virtual ConfigurationSet Execute()
         {
-            ISet<ConfigurationWrapper> wrapperSet = new HashSet<ConfigurationWrapper>();
+            ConfigurationSet set = new ConfigurationSet();
 
             Configuration configuration = new Configuration();
 
@@ -37,9 +35,9 @@ namespace Radial.Persist.Nhs
 
             configuration.Configure(ConfigurationPath);
 
-            wrapperSet.Add(new ConfigurationWrapper("default", configuration));
+            set.Add(new ConfigurationEntry(configuration));
 
-            return wrapperSet;
+            return set;
         }
 
 

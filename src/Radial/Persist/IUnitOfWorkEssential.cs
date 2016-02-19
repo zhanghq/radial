@@ -10,6 +10,11 @@ namespace Radial.Persist
     public interface IUnitOfWorkEssential : IDisposable
     {
         /// <summary>
+        /// Gets the storage alias.
+        /// </summary>
+        string StorageAlias { get; }
+
+        /// <summary>
         /// Gets the underlying data context object.
         /// </summary>
         object UnderlyingContext { get; }

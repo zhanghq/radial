@@ -10,7 +10,7 @@ namespace Radial.Persist
     public interface IUnitOfWorkEssential : IDisposable
     {
         /// <summary>
-        /// Gets the storage alias.
+        /// Gets the current storage alias.
         /// </summary>
         string StorageAlias { get; }
 

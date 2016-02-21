@@ -19,17 +19,12 @@ namespace Radial.Persist.Efs
         private readonly DbContext _dbContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnitOfWork"/> class.
-        /// </summary>
-        public UnitOfWork() : this(null) { }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="UnitOfWork" /> class.
         /// </summary>
-        /// <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
-        public UnitOfWork(string alias)
+        /// <param name="storageAlias">The storage alias (case insensitive, can be null or empty).</param>
+        public UnitOfWork(string storageAlias = null)
         {
-            StorageAlias = alias;
+            StorageAlias = storageAlias;
 
             _dbContext = DbContextPool.GetDbContext(StorageAlias);
 

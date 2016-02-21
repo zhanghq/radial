@@ -11,6 +11,6 @@ namespace Radial.Persist.Nhs
         /// Execute pool initialization.
         /// </summary>
         /// <returns></returns>
-        ConfigurationSet Execute();
+        SessionFactorySet Execute();
     }
 }

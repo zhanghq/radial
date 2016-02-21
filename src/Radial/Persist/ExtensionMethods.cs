@@ -13,27 +13,17 @@ namespace Radial.Persist
         /// Resolves the unit of work.
         /// </summary>
         /// <param name="container">The container.</param>
+        /// <param name="storageAlias">The storage alias.</param>
         /// <returns></returns>
-        public static IUnitOfWork ResolveUnitOfWork(this IUnityContainer container)
+        public static IUnitOfWork ResolveUnitOfWork(this IUnityContainer container, string storageAlias=null)
         {
             if (container == null)
                 return null;
 
-            return container.Resolve<IUnitOfWork>();
-        }
+            if (string.IsNullOrWhiteSpace(storageAlias))
+                storageAlias = string.Empty;
 
-        /// <summary>
-        /// Resolves the unit of work.
-        /// </summary>
-        /// <param name="container">The container.</param>
-        /// <param name="alias">The alias.</param>
-        /// <returns></returns>
-        public static IUnitOfWork ResolveUnitOfWork(this IUnityContainer container, string alias)
-        {
-            if (container == null)
-                return null;
-
-            return container.Resolve<IUnitOfWork>(new ParameterOverride("alias", alias));
+            return container.Resolve<IUnitOfWork>(new ParameterOverride("storageAlias", storageAlias));
         }
 
         /// <summary>

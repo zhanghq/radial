@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Radial.UnitTest" namespace="Radial.UnitTest.Persist.Domain">
-  <class name="Question" table="Question" lazy="false">
+<class name="QuestionYW" lazy="false">
     <id name="Id">
       <generator class="Radial.Persist.Nhs.TimingIdGenerator, Radial"/>
     </id>

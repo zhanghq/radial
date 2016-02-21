@@ -22,9 +22,9 @@ namespace Radial.Persist.Nhs
         /// Execute pool initialization.
         /// </summary>
         /// <returns></returns>
-        public virtual ConfigurationSet Execute()
+        public virtual SessionFactorySet Execute()
         {
-            ConfigurationSet set = new ConfigurationSet();
+            SessionFactorySet set = new SessionFactorySet();
 
             Configuration configuration = new Configuration();
 
@@ -35,7 +35,7 @@ namespace Radial.Persist.Nhs
 
             configuration.Configure(ConfigurationPath);
 
-            set.Add(new ConfigurationEntry(configuration));
+            set.Add(new SessionFactoryEntry(SessionFactoryEntry.DefaultStorageAlias, configuration.BuildSessionFactory()));
 
             return set;
         }

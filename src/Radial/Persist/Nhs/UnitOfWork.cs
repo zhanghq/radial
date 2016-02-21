@@ -6,10 +6,25 @@ using System;
 
 namespace Radial.Persist.Nhs
 {
+
+    /// <summary>
+    /// INhUnitOfWork
+    /// </summary>
+    public interface INhUnitOfWork : IUnitOfWork
+    {
+        /// <summary>
+        /// Gets the current session factory entry.
+        /// </summary>
+        /// <value>
+        /// The current session factory entry.
+        /// </value>
+        SessionFactoryEntry SessionFactoryEntry { get; }
+    }
+
     /// <summary>
     /// NHibernate unit of work class.
     /// </summary>
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : INhUnitOfWork
     {
         private readonly ISession _session;
         private readonly INativeQuery _nativeQuery;
@@ -17,30 +32,34 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Initializes a new instance of the <see cref="UnitOfWork"/> class.
         /// </summary>
-        public UnitOfWork()
-            : this(null)
+        /// <param name="storageAlias">The storage alias (case insensitive, can be null or empty).</param>
+        public UnitOfWork(string storageAlias = null)
         {
-        }
+            SessionFactoryEntry = SessionFactoryPool.GetSessionFactoryEntry(storageAlias);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UnitOfWork"/> class.
-        /// </summary>
-        /// <param name="alias">The storage alias (case insensitive, can be null or empty).</param>
-        public UnitOfWork(string alias)
-        {
-            StorageAlias = alias;
-            if (string.IsNullOrWhiteSpace(StorageAlias))
-                StorageAlias = ConfigurationEntry.DefaultStorageAlias;
+            StorageAlias = SessionFactoryEntry.StorageAlias;
 
-            _session = SessionFactoryPool.CurrentSet[StorageAlias].GetSessionFactory().OpenSession();
+            _session = SessionFactoryEntry.SessionFactory.OpenSession();
 
             _nativeQuery = new NativeQuery(this);
         }
 
         /// <summary>
-        /// Gets the storage alias.
+        /// Gets the current storage alias.
         /// </summary>
         public string StorageAlias
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the current session factory entry.
+        /// </summary>
+        /// <value>
+        /// The current session factory entry.
+        /// </value>
+        public SessionFactoryEntry SessionFactoryEntry
         {
             get;
             private set;
@@ -53,7 +72,7 @@ namespace Radial.Persist.Nhs
         /// <param name="level">The isolation level.</param>
         public void PrepareTransaction(IsolationLevel? level = null)
         {
-            Checker.Requires(!SessionFactoryPool.CurrentSet[StorageAlias].IsReadonly,
+            Checker.Requires(!SessionFactoryEntry.IsReadonly,
                 "prepare transaction in the READ ONLY storage is not supported, alias: {0}", StorageAlias);
 
             //nothing to do, if there has an actived transaction scope
@@ -218,7 +237,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         public virtual void Commit()
         {
-            Checker.Requires(!SessionFactoryPool.CurrentSet[StorageAlias].IsReadonly,
+            Checker.Requires(!SessionFactoryEntry.IsReadonly,
                 "commit data to the READ ONLY storage is not supported, alias: {0}", StorageAlias);
 
             //nothing to do, if there has no-active transaction or a transaction scope

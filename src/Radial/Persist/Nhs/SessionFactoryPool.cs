@@ -11,33 +11,55 @@ namespace Radial.Persist.Nhs
     public static class SessionFactoryPool
     {
         static object S_SyncRoot = new object();
+        static SessionFactorySet S_CurrentSet;
 
         /// <summary>
-        /// Initializes the <see cref="SessionFactoryPool"/> class.
+        /// Initializes this instance.
         /// </summary>
-        static SessionFactoryPool()
+        private static void Initialize()
         {
             lock (S_SyncRoot)
             {
-                IFactoryPoolInitializer initializer = Dependency.Container.Resolve<IFactoryPoolInitializer>();
+                if (S_CurrentSet == null)
+                {
+                    lock (S_SyncRoot)
+                    {
+                        IFactoryPoolInitializer initializer = Dependency.Container.Resolve<IFactoryPoolInitializer>();
 
-                Checker.Requires(initializer != null, "can not found any session factory pool initializer");
+                        Checker.Requires(initializer != null, "can not find any session factory pool initializer");
 
-                CurrentSet = initializer.Execute();
+                        S_CurrentSet = initializer.Execute();
 
-                Checker.Requires(CurrentSet != null && CurrentSet.Count > 0, "can not found any ConfigurationEntry instance");
-
-                Checker.Requires(CurrentSet.All(o => o != null), "any ConfigurationEntry instances can not be null");
+                        Checker.Requires(S_CurrentSet != null && S_CurrentSet.Count > 0, "can not find any SessionFactoryEntry instance");
+                    }
+                }
             }
         }
 
+
         /// <summary>
-        /// Gets the current configuration set.
+        /// Gets the session factory entry.
         /// </summary>
-        public static ConfigurationSet CurrentSet
+        /// <param name="storageAlias">The storage alias.</param>
+        /// <returns></returns>
+        public static SessionFactoryEntry GetSessionFactoryEntry(string storageAlias = null)
         {
-            get;
-            private set;
+            Initialize();
+
+            if (string.IsNullOrWhiteSpace(storageAlias))
+                return S_CurrentSet.FirstEntry;
+
+            return S_CurrentSet[storageAlias];
+        }
+
+        /// <summary>
+        /// Gets the session factory.
+        /// </summary>
+        /// <param name="storageAlias">The storage alias.</param>
+        /// <returns></returns>
+        public static ISessionFactory GetSessionFactory(string storageAlias = null)
+        {
+            return GetSessionFactoryEntry(storageAlias).SessionFactory;
         }
     }
 }

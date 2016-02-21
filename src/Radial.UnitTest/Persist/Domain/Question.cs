@@ -12,4 +12,8 @@ namespace Radial.UnitTest.Persist.Domain
         public string Phase { get; set; }
         public DateTime CreateTime { get; set; }
     }
+
+    public class QuestionYW : Question { }
+    public class QuestionSX : Question { }
+    public class QuestionYY : Question { }
 }

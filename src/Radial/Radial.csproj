@@ -155,13 +155,9 @@
     <Compile Include="Persist\Efs\IDbContextPoolInitializer.cs" />
     <Compile Include="Persist\Efs\Log4NetInterceptor.cs" />
     <Compile Include="Persist\NativeQuery.cs" />
-    <Compile Include="Persist\Nhs\AppStartModule.cs" />
-    <Compile Include="Persist\Nhs\ContextualUnitOfWork.cs" />
-    <Compile Include="Persist\Nhs\ExtensionMethods.cs" />
-    <Compile Include="Persist\Nhs\HibernateEngine.cs" />
-    <Compile Include="Persist\Nhs\SemiautoMapper.cs" />
-    <Compile Include="Persist\Nhs\ConfigurationSet.cs" />
+    <Compile Include="Persist\Nhs\SessionFactorySet.cs" />
     <Compile Include="Persist\Nhs\SessionFactoryPool.cs" />
+    <Compile Include="Persist\StorageEntry.cs" />
     <Compile Include="SearchCriteria.cs" />
     <Compile Include="SearchResult.cs" />
     <Compile Include="Web\ExceptionOutputData.cs" />
@@ -227,7 +223,6 @@
     <Compile Include="Persist\Nhs\UnitOfWork.cs" />
     <Compile Include="Persist\Nhs\Order\SqlServerRandomOrder.cs" />
     <Compile Include="Persist\Nhs\Param\KvParam.cs" />
-    <Compile Include="Persist\Nhs\SchemaBuilder.cs" />
     <Compile Include="Persist\Nhs\NativeQuery.cs" />
     <Compile Include="Persist\Nhs\TimingIdGenerator.cs" />
     <Compile Include="RegisterInterfaceAttribute.cs" />

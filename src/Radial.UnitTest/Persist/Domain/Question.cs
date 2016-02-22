@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Radial.UnitTest.Persist.Domain
 {
-    public class Question : ModelBase
+    public abstract class Question : ModelBase
     {
         public string Subject { get; set; }
         public string Phase { get; set; }

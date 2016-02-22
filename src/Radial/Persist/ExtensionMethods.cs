@@ -43,5 +43,24 @@ namespace Radial.Persist
         }
 
         #endregion
+
+
+        #region  IUnitOfWorkEssential
+
+        /// <summary>
+        /// Resolves the repository.
+        /// </summary>
+        /// <typeparam name="TRepository">The type of the repository.</typeparam>
+        /// <param name="uow">The unit of work.</param>
+        /// <returns></returns>
+        public static TRepository ResolveRepository<TRepository>(this IUnitOfWorkEssential uow)
+        {
+            if (uow == null)
+                return default(TRepository);
+
+            return Dependency.Container.Resolve<TRepository>(new ParameterOverride("uow", uow));
+        }
+
+        #endregion
     }
 }

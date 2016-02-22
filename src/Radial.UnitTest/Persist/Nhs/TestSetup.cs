@@ -20,7 +20,7 @@ namespace Radial.UnitTest.Persist.Nhs
         {
             Dependency.Container.RegisterType<IFactoryPoolInitializer, NewFactoryPoolInitializer>();
             Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork>();
-
+            Dependency.Container.RegisterInterfaces(this.GetType().Assembly);
         }
 
         [OneTimeTearDown]

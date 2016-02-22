@@ -31,6 +31,7 @@ namespace Radial.UnitTest.Persist.Nhs.Initializer
                 c.BatchSize = 20;
                 c.HqlToSqlSubstitutions = "true 1, false 0, yes 'Y', no 'N'";
                 c.LogFormattedSql = true;
+                c.LogSqlInConsole = true;
             });
             cdb.SetNamingStrategy(NamingStrategyFactory.GetStrategy(typeof(Sql2008ClientDriver)));
             //cdb.AddAssembly(this.GetType().Assembly);
@@ -48,6 +49,7 @@ namespace Radial.UnitTest.Persist.Nhs.Initializer
                 c.BatchSize = 20;
                 c.HqlToSqlSubstitutions = "true 1, false 0, yes 'Y', no 'N'";
                 c.LogFormattedSql = true;
+                c.LogSqlInConsole = true;
             });
             cdb0.SetNamingStrategy(NamingStrategyFactory.GetStrategy(typeof(Sql2008ClientDriver)));
             cdb0.AddFile(System.IO.Path.Combine(Radial.GlobalVariables.BaseDirectory, @"Persist\Nhs\Mapping\Question.hbm.xml"));
@@ -64,6 +66,7 @@ namespace Radial.UnitTest.Persist.Nhs.Initializer
                 c.BatchSize = 20;
                 c.HqlToSqlSubstitutions = "true 1, false 0, yes 'Y', no 'N'";
                 c.LogFormattedSql = true;
+                c.LogSqlInConsole = true;
             });
             cdb1.SetNamingStrategy(NamingStrategyFactory.GetStrategy(typeof(Sql2008ClientDriver)));
             cdb1.AddFile(System.IO.Path.Combine(Radial.GlobalVariables.BaseDirectory, @"Persist\Nhs\Mapping\Question.hbm.xml"));

@@ -15,7 +15,7 @@ namespace Radial.Persist.Nhs
     {
 
         /// <summary>
-        /// Gets the specified SessionFactoryEntry instance with given storage alias, throw an exception if not found or equals to null.
+        /// Gets the specified SessionFactoryEntry instance with the given storage alias, throw an exception if not found or equals to null.
         /// </summary>
         /// <param name="storageAlias">The storage alias.</param>
         /// <returns>The specified SessionFactoryEntry instance</returns>
@@ -25,23 +25,10 @@ namespace Radial.Persist.Nhs
             {
                 var ce = this.SingleOrDefault(o => string.Compare(o.StorageAlias, storageAlias.Trim(), true) == 0);
 
-                Checker.Requires(ce != null, "can not find the storage alias: {0}", storageAlias);
+                Checker.Requires(ce != null, "the specified SessionFactoryEntry instance with the given storage alias {0} can not be found or equals to null", storageAlias);
 
                 return ce;
             }
-        }
-
-        /// <summary>
-        /// Adds the specified item.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <returns></returns>
-        public new bool Add(SessionFactoryEntry item)
-        {
-            if (item == null)
-                return false;
-
-            return base.Add(item);
         }
 
         /// <summary>

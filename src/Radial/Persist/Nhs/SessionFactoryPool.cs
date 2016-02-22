@@ -26,7 +26,8 @@ namespace Radial.Persist.Nhs
                     {
                         IFactoryPoolInitializer initializer = Dependency.Container.Resolve<IFactoryPoolInitializer>();
 
-                        Checker.Requires(initializer != null, "can not find any session factory pool initializer");
+                        if (initializer == null)
+                            initializer = new DefaultFactoryPoolInitializer();
 
                         S_CurrentSet = initializer.Execute();
 

@@ -15,6 +15,11 @@ namespace Radial.Persist
         string StorageAlias { get; }
 
         /// <summary>
+        /// Gets a value indicating whether current storage is read only.
+        /// </summary>
+        bool IsReadOnly { get; }
+
+        /// <summary>
         /// Gets the underlying data context object.
         /// </summary>
         object UnderlyingContext { get; }

@@ -87,7 +87,7 @@ namespace Radial.Persist.Nhs
 
             StorageAlias = storageAlias.Trim();
             SessionFactory = sessionFactory;
-            IsReadonly = isReadonly;
+            IsReadOnly = isReadonly;
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Radial.Persist.Nhs
         /// <value>
         /// <c>true</c> if this instance is readonly; otherwise, <c>false</c>.
         /// </value>
-        public bool IsReadonly
+        public bool IsReadOnly
         {
             get;
             private set;

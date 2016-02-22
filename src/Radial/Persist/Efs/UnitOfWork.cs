@@ -41,6 +41,15 @@ namespace Radial.Persist.Efs
         }
 
         /// <summary>
+        /// Gets a value indicating whether current storage is read only.
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Gets the native query.
         /// </summary>
         public INativeQuery NativeQuery
@@ -67,6 +76,7 @@ namespace Radial.Persist.Efs
         /// </summary>
         public void Commit()
         {
+            Checker.Requires(!IsReadOnly, "commit data to the READ ONLY storage is not supported, alias: {0}", StorageAlias);
 
             if (_dbContext.Database.CurrentTransaction != null)
             {
@@ -103,6 +113,8 @@ namespace Radial.Persist.Efs
         /// <param name="level">The isolation level.</param>
         public void PrepareTransaction(IsolationLevel? level = null)
         {
+            Checker.Requires(!IsReadOnly, "prepare transaction on the READ ONLY storage is not supported, alias: {0}", StorageAlias);
+
             //nothing to do, if there has an actived transaction scope
             if (System.Transactions.Transaction.Current == null)
             {

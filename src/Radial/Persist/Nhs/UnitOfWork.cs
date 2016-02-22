@@ -6,25 +6,10 @@ using System;
 
 namespace Radial.Persist.Nhs
 {
-
-    /// <summary>
-    /// INhUnitOfWork
-    /// </summary>
-    public interface INhUnitOfWork : IUnitOfWork
-    {
-        /// <summary>
-        /// Gets the current session factory entry.
-        /// </summary>
-        /// <value>
-        /// The current session factory entry.
-        /// </value>
-        SessionFactoryEntry SessionFactoryEntry { get; }
-    }
-
     /// <summary>
     /// NHibernate unit of work class.
     /// </summary>
-    public class UnitOfWork : INhUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly ISession _session;
         private readonly INativeQuery _nativeQuery;
@@ -35,11 +20,13 @@ namespace Radial.Persist.Nhs
         /// <param name="storageAlias">The storage alias (case insensitive, can be null or empty).</param>
         public UnitOfWork(string storageAlias = null)
         {
-            SessionFactoryEntry = SessionFactoryPool.GetSessionFactoryEntry(storageAlias);
+            var sfe = SessionFactoryPool.GetSessionFactoryEntry(storageAlias);
 
-            StorageAlias = SessionFactoryEntry.StorageAlias;
+            StorageAlias = sfe.StorageAlias;
+            IsReadOnly = sfe.IsReadOnly;
 
-            _session = SessionFactoryEntry.SessionFactory.OpenSession();
+            _session = sfe.SessionFactory.OpenSession();
+            _session.DefaultReadOnly = IsReadOnly;
 
             _nativeQuery = new NativeQuery(this);
         }
@@ -54,16 +41,14 @@ namespace Radial.Persist.Nhs
         }
 
         /// <summary>
-        /// Gets the current session factory entry.
+        /// Gets a value indicating whether current storage is read only.
         /// </summary>
-        /// <value>
-        /// The current session factory entry.
-        /// </value>
-        public SessionFactoryEntry SessionFactoryEntry
+        public bool IsReadOnly
         {
             get;
             private set;
         }
+
 
         /// <summary>
         /// Prepares the transaction, typically this method is invoked implicitly,
@@ -72,8 +57,8 @@ namespace Radial.Persist.Nhs
         /// <param name="level">The isolation level.</param>
         public void PrepareTransaction(IsolationLevel? level = null)
         {
-            Checker.Requires(!SessionFactoryEntry.IsReadonly,
-                "prepare transaction in the READ ONLY storage is not supported, alias: {0}", StorageAlias);
+            Checker.Requires(!IsReadOnly, "prepare transaction on the READ ONLY storage is not supported, alias: {0}", StorageAlias);
+
 
             //nothing to do, if there has an actived transaction scope
             if (System.Transactions.Transaction.Current == null)
@@ -237,8 +222,8 @@ namespace Radial.Persist.Nhs
         /// </summary>
         public virtual void Commit()
         {
-            Checker.Requires(!SessionFactoryEntry.IsReadonly,
-                "commit data to the READ ONLY storage is not supported, alias: {0}", StorageAlias);
+            Checker.Requires(!IsReadOnly,"commit data to the READ ONLY storage is not supported, alias: {0}", StorageAlias);
+
 
             //nothing to do, if there has no-active transaction or a transaction scope
             if (_session.Transaction.IsActive && System.Transactions.Transaction.Current == null)

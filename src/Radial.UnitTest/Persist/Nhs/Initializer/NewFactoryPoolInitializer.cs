@@ -30,7 +30,6 @@ namespace Radial.UnitTest.Persist.Nhs.Initializer
                 c.ConnectionStringName = Storages.Db.Alias;
                 c.BatchSize = 20;
                 c.HqlToSqlSubstitutions = "true 1, false 0, yes 'Y', no 'N'";
-                c.LogSqlInConsole = true;
                 c.LogFormattedSql = true;
             });
             cdb.SetNamingStrategy(NamingStrategyFactory.GetStrategy(typeof(Sql2008ClientDriver)));
@@ -48,14 +47,10 @@ namespace Radial.UnitTest.Persist.Nhs.Initializer
                 c.ConnectionStringName = Storages.Db0.Alias;
                 c.BatchSize = 20;
                 c.HqlToSqlSubstitutions = "true 1, false 0, yes 'Y', no 'N'";
-                c.LogSqlInConsole = true;
                 c.LogFormattedSql = true;
             });
             cdb0.SetNamingStrategy(NamingStrategyFactory.GetStrategy(typeof(Sql2008ClientDriver)));
-            cdb0.AddClass(typeof(Question));
-            cdb0.AddClass(typeof(QuestionYW));
-            cdb0.AddClass(typeof(QuestionSX));
-            cdb0.AddClass(typeof(QuestionYY));
+            cdb0.AddFile(System.IO.Path.Combine(Radial.GlobalVariables.BaseDirectory, @"Persist\Nhs\Mapping\Question.hbm.xml"));
             set.Add(new SessionFactoryEntry(Storages.Db0.Alias, cdb0.BuildSessionFactory(), Storages.Db0.IsReadOnly));
 
             var cdb1 = new Configuration();
@@ -68,14 +63,10 @@ namespace Radial.UnitTest.Persist.Nhs.Initializer
                 c.ConnectionStringName = Storages.Db1.Alias;
                 c.BatchSize = 20;
                 c.HqlToSqlSubstitutions = "true 1, false 0, yes 'Y', no 'N'";
-                c.LogSqlInConsole = true;
                 c.LogFormattedSql = true;
             });
             cdb1.SetNamingStrategy(NamingStrategyFactory.GetStrategy(typeof(Sql2008ClientDriver)));
-            cdb1.AddClass(typeof(Question));
-            cdb1.AddClass(typeof(QuestionYW));
-            cdb1.AddClass(typeof(QuestionSX));
-            cdb1.AddClass(typeof(QuestionYY));
+            cdb1.AddFile(System.IO.Path.Combine(Radial.GlobalVariables.BaseDirectory, @"Persist\Nhs\Mapping\Question.hbm.xml"));
             set.Add(new SessionFactoryEntry(Storages.Db1.Alias, cdb1.BuildSessionFactory(), Storages.Db1.IsReadOnly));
 
 

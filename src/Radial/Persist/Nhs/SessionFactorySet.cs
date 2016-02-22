@@ -11,11 +11,40 @@ namespace Radial.Persist.Nhs
     /// <summary>
     /// SessionFactorySet
     /// </summary>
-    public class SessionFactorySet : HashSet<SessionFactoryEntry>
+    public class SessionFactorySet
     {
+        HashSet<SessionFactoryEntry> _set = new HashSet<SessionFactoryEntry>();
 
         /// <summary>
-        /// Gets the specified SessionFactoryEntry instance with the given storage alias, throw an exception if not found or equals to null.
+        /// Adds the SessionFactoryEntry instance.
+        /// </summary>
+        /// <param name="item">The SessionFactoryEntry instance.</param>
+        public void Add(SessionFactoryEntry item)
+        {
+            if (item == null)
+                return;
+
+            Checker.Requires(!_set.Contains(item), "duplicated SessionFactoryEntry alias: {0}", item.StorageAlias);
+
+            _set.Add(item);
+        }
+
+        /// <summary>
+        /// Adds the SessionFactoryEntry instances.
+        /// </summary>
+        /// <param name="items">The SessionFactoryEntry instances.</param>
+        public void Add(IEnumerable<SessionFactoryEntry> items)
+        {
+            if (items == null)
+                return;
+
+            foreach (var item in items)
+                Add(item);
+        }
+
+
+        /// <summary>
+        /// Gets the specified SessionFactoryEntry instance with the given storage alias, throw an exception if not found..
         /// </summary>
         /// <param name="storageAlias">The storage alias.</param>
         /// <returns>The specified SessionFactoryEntry instance</returns>
@@ -23,9 +52,9 @@ namespace Radial.Persist.Nhs
         {
             get
             {
-                var ce = this.SingleOrDefault(o => string.Compare(o.StorageAlias, storageAlias.Trim(), true) == 0);
+                var ce = _set.SingleOrDefault(o => string.Compare(o.StorageAlias, storageAlias.Trim(), true) == 0);
 
-                Checker.Requires(ce != null, "the specified SessionFactoryEntry instance with the given storage alias {0} can not be found or equals to null", storageAlias);
+                Checker.Requires(ce != null, "can not find the SessionFactoryEntry instance with the given storage alias {0}", storageAlias);
 
                 return ce;
             }
@@ -41,11 +70,18 @@ namespace Radial.Persist.Nhs
         {
             get
             {
-                var f= this.FirstOrDefault();
+                return _set.FirstOrDefault();
+            }
+        }
 
-                Checker.Requires(f != null, "first SessionFactoryEntry instance can not be null");
-
-                return f;
+        /// <summary>
+        /// Gets the count.
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                return _set.Count;
             }
         }
     }

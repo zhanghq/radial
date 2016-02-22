@@ -52,15 +52,5 @@ namespace Radial.Persist.Nhs
 
             return S_CurrentSet[storageAlias];
         }
-
-        /// <summary>
-        /// Gets the session factory.
-        /// </summary>
-        /// <param name="storageAlias">The storage alias.</param>
-        /// <returns></returns>
-        public static ISessionFactory GetSessionFactory(string storageAlias = null)
-        {
-            return GetSessionFactoryEntry(storageAlias).SessionFactory;
-        }
     }
 }

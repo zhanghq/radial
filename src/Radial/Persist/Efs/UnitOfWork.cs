@@ -24,9 +24,12 @@ namespace Radial.Persist.Efs
         /// <param name="storageAlias">The storage alias (case insensitive, can be null or empty).</param>
         public UnitOfWork(string storageAlias = null)
         {
-            StorageAlias = storageAlias;
+            var dse = DbContextPool.GetDbContextEntry(storageAlias);
 
-            _dbContext = DbContextPool.GetDbContext(StorageAlias);
+            StorageAlias = dse.StorageAlias;
+            IsReadOnly = dse.IsReadOnly;
+
+            _dbContext = dse.Func();
 
             _nativeQuery = new NaticeQuery(this);
         }

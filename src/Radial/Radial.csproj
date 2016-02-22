@@ -148,7 +148,7 @@
     <Compile Include="Dependency.cs" />
     <Compile Include="Persist\Efs\BasicRepository.cs" />
     <Compile Include="Persist\Efs\DbContextPool.cs" />
-    <Compile Include="Persist\Efs\DbContextWrapper.cs" />
+    <Compile Include="Persist\Efs\DbContextSet.cs" />
     <Compile Include="Persist\Efs\NaticeQuery.cs" />
     <Compile Include="Persist\Efs\UnitOfWork.cs" />
     <Compile Include="Persist\Efs\ExtensionMethods.cs" />

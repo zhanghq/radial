@@ -1,39 +1,36 @@
-﻿using NHibernate;
-using NHibernate.Cfg;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Radial.Persist.Nhs
+namespace Radial.Persist.Efs
 {
     /// <summary>
-    /// SessionFactorySet
+    /// DbContextSet
     /// </summary>
-    public sealed class SessionFactorySet
+    public sealed class DbContextSet
     {
-        HashSet<SessionFactoryEntry> _set = new HashSet<SessionFactoryEntry>();
+        HashSet<DbContextEntry> _set = new HashSet<DbContextEntry>();
 
         /// <summary>
-        /// Adds the SessionFactoryEntry instance.
+        /// Adds the DbContextEntry instance.
         /// </summary>
-        /// <param name="item">The SessionFactoryEntry instance.</param>
-        public void Add(SessionFactoryEntry item)
+        /// <param name="item">The DbContextEntry instance.</param>
+        public void Add(DbContextEntry item)
         {
             if (item == null)
                 return;
 
-            Checker.Requires(!_set.Contains(item), "duplicated SessionFactoryEntry alias: {0}", item.StorageAlias);
+            Checker.Requires(!_set.Contains(item), "duplicated DbContextEntry alias: {0}", item.StorageAlias);
 
             _set.Add(item);
         }
 
         /// <summary>
-        /// Adds the SessionFactoryEntry instances.
+        /// Adds the DbContextEntry instances.
         /// </summary>
-        /// <param name="items">The SessionFactoryEntry instances.</param>
-        public void Add(IEnumerable<SessionFactoryEntry> items)
+        /// <param name="items">The DbContextEntry instances.</param>
+        public void Add(IEnumerable<DbContextEntry> items)
         {
             if (items == null)
                 return;
@@ -44,29 +41,29 @@ namespace Radial.Persist.Nhs
 
 
         /// <summary>
-        /// Gets the specified SessionFactoryEntry instance with the given storage alias, throw an exception if not found..
+        /// Gets the specified DbContextEntry instance with the given storage alias, throw an exception if not found..
         /// </summary>
         /// <param name="storageAlias">The storage alias.</param>
-        /// <returns>The specified SessionFactoryEntry instance</returns>
-        public SessionFactoryEntry this[string storageAlias]
+        /// <returns>The specified DbContextEntry instance</returns>
+        public DbContextEntry this[string storageAlias]
         {
             get
             {
                 var ce = _set.SingleOrDefault(o => string.Compare(o.StorageAlias, storageAlias.Trim(), true) == 0);
 
-                Checker.Requires(ce != null, "can not find the SessionFactoryEntry instance with the given storage alias {0}", storageAlias);
+                Checker.Requires(ce != null, "can not find the DbContextEntry instance with the given storage alias {0}", storageAlias);
 
                 return ce;
             }
         }
 
         /// <summary>
-        /// Gets the first SessionFactoryEntry instance.
+        /// Gets the first DbContextEntry instance.
         /// </summary>
         /// <value>
-        /// The first SessionFactoryEntry instance.
+        /// The first DbContextEntry instance.
         /// </value>
-        public SessionFactoryEntry FirstEntry
+        public DbContextEntry FirstEntry
         {
             get
             {
@@ -87,29 +84,25 @@ namespace Radial.Persist.Nhs
     }
 
     /// <summary>
-    /// SessionFactoryEntry
+    /// DbContextEntry
     /// </summary>
-    public sealed class SessionFactoryEntry : IEquatable<SessionFactoryEntry>
+    public sealed class DbContextEntry: IEquatable<DbContextEntry>
     {
-        /// <summary>
-        /// The default storage alias
-        /// </summary>
-        public const string DefaultStorageAlias = "default";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SessionFactoryEntry" /> class.
+        /// Initializes a new instance of the <see cref="DbContextEntry"/> class.
         /// </summary>
         /// <param name="storageAlias">The storage alias.</param>
-        /// <param name="sessionFactory">The session factory.</param>
+        /// <param name="func">The delegate to create new DbContext instance.</param>
         /// <param name="isReadonly">if set to <c>true</c> [is readonly].</param>
-        public SessionFactoryEntry(string storageAlias, ISessionFactory sessionFactory,
+        public DbContextEntry(string storageAlias, Func<DbContext> func,
             bool isReadonly = false)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(storageAlias), "storage alias can not be empty or null");
-            Checker.Parameter(sessionFactory != null, "session factory instance can not be null");
+            Checker.Parameter(func != null, "Func<DbContext> delegate can not be null");
 
             StorageAlias = storageAlias.Trim();
-            SessionFactory = sessionFactory;
+            Func = func;
             IsReadOnly = isReadonly;
         }
 
@@ -122,13 +115,11 @@ namespace Radial.Persist.Nhs
             private set;
         }
 
+
         /// <summary>
-        /// Gets the session factory.
+        /// Gets the delegate to create new DbContext instance.
         /// </summary>
-        /// <value>
-        /// The session factory.
-        /// </value>
-        public ISessionFactory SessionFactory
+        public Func<DbContext> Func
         {
             get;
             private set;
@@ -180,7 +171,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <param name="other">The other.</param>
         /// <returns></returns>
-        public bool Equals(SessionFactoryEntry other)
+        public bool Equals(DbContextEntry other)
         {
             if (ReferenceEquals(this, other))
                 return true;
@@ -191,5 +182,4 @@ namespace Radial.Persist.Nhs
             return this.GetHashCode() == other.GetHashCode();
         }
     }
-
 }

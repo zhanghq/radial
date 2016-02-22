@@ -14,7 +14,7 @@ namespace Radial.Persist.Efs
         /// <summary>
         /// Execute pool initialization.
         /// </summary>
-        /// <returns>The DbContext wrapper set.</returns>
-        ISet<DbContextWrapper> Execute();
+        /// <returns>The DbContext set.</returns>
+        DbContextSet Execute();
     }
 }

@@ -19,9 +19,6 @@ namespace Radial.Persist.Nhs
     public abstract class BasicRepository<TObject, TKey> :
         IRepository<TObject, TKey> where TObject : class
     {
-        //static string[] SupportedAggregationResultTypeNames = new string[] { typeof(short).FullName,
-        //    typeof(ushort).FullName, typeof(int).FullName, typeof(uint).FullName, typeof(long).FullName,
-        //    typeof(ulong).FullName, typeof(decimal).FullName, typeof(float).FullName, typeof(double).FullName };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicRepository&lt;TObject, TKey&gt;"/> class.

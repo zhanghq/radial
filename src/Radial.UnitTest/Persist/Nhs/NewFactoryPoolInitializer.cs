@@ -33,7 +33,7 @@ namespace Radial.UnitTest.Persist.Nhs
                 c.LogSqlInConsole = true;
             });
             cdb0.SetNamingStrategy(NamingStrategyFactory.GetStrategy(typeof(Sql2008ClientDriver)));
-            cdb0.AddFile(System.IO.Path.Combine(Radial.GlobalVariables.BaseDirectory, @"Persist\Nhs\Mapping\Question.hbm.xml"));
+            cdb0.AddAssembly(this.GetType().Assembly);
             set.Add(new SessionFactoryEntry(Storages.Db0.Alias, cdb0.BuildSessionFactory(), Storages.Db0.IsReadOnly));
 
             var cdb1 = new Configuration();
@@ -50,7 +50,7 @@ namespace Radial.UnitTest.Persist.Nhs
                 c.LogSqlInConsole = true;
             });
             cdb1.SetNamingStrategy(NamingStrategyFactory.GetStrategy(typeof(Sql2008ClientDriver)));
-            cdb1.AddFile(System.IO.Path.Combine(Radial.GlobalVariables.BaseDirectory, @"Persist\Nhs\Mapping\Question.hbm.xml"));
+            cdb1.AddAssembly(this.GetType().Assembly);
             set.Add(new SessionFactoryEntry(Storages.Db1.Alias, cdb1.BuildSessionFactory(), Storages.Db1.IsReadOnly));
 
 

@@ -60,7 +60,6 @@ namespace Radial.Persist.Efs
         /// <param name="interceptionContext">The interception context.</param>
         public void NonQueryExecuting(DbCommand command, DbCommandInterceptionContext<int> interceptionContext)
         {
-            RenderLog<int>(command, interceptionContext);
         }
 
         /// <summary>
@@ -80,7 +79,7 @@ namespace Radial.Persist.Efs
         /// <param name="interceptionContext">The interception context.</param>
         public void ReaderExecuting(DbCommand command, DbCommandInterceptionContext<DbDataReader> interceptionContext)
         {
-            RenderLog<DbDataReader>(command, interceptionContext);
+            
         }
 
         /// <summary>
@@ -100,7 +99,7 @@ namespace Radial.Persist.Efs
         /// <param name="interceptionContext">The interception context.</param>
         public void ScalarExecuting(DbCommand command, DbCommandInterceptionContext<object> interceptionContext)
         {
-            RenderLog<object>(command, interceptionContext);
+
         }
     }
 }

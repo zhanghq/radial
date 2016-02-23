@@ -1,12 +1,7 @@
 ﻿using Radial.UnitTest.Persist.Domain;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Radial.UnitTest.Persist.Efs
 {
@@ -16,6 +11,7 @@ namespace Radial.UnitTest.Persist.Efs
         {
             Database.Connection.ConnectionString = ConfigurationManager.ConnectionStrings[connStringName].ConnectionString;
             Configuration.ValidateOnSaveEnabled = false;
+            Database.SetInitializer<DefaultDbContext>(null);
         }
 
         public DbSet<Question> Questions { get; set; }
@@ -23,7 +19,6 @@ namespace Radial.UnitTest.Persist.Efs
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
 
             modelBuilder.Entity<QuestionYW>().Map(c =>
             {

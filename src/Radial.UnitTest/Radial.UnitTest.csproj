@@ -107,6 +107,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.FtpClient, Version=1.0.5824.34026, Culture=neutral, PublicKeyToken=fa4be07daa57c2b7, processorArchitecture=MSIL">
@@ -130,10 +131,15 @@
     <Compile Include="Persist\Domain\ModelBase.cs" />
     <Compile Include="Persist\Domain\Question.cs" />
     <Compile Include="Persist\Domain\Repos\IQuestionRepository.cs" />
+    <Compile Include="Persist\Efs\BasicTest.cs" />
+    <Compile Include="Persist\Efs\DefaultDbContext.cs" />
+    <Compile Include="Persist\Efs\NewDbContextPoolInitializer.cs" />
+    <Compile Include="Persist\Efs\TestSetup.cs" />
     <Compile Include="Persist\Nhs\BasicTest.cs" />
-    <Compile Include="Persist\Nhs\Initializer\NewFactoryPoolInitializer.cs" />
+    <Compile Include="Persist\Nhs\NewFactoryPoolInitializer.cs" />
     <Compile Include="Persist\Nhs\Repos\QuestionRepository.cs" />
     <Compile Include="Persist\Nhs\TestSetup.cs" />
+    <Compile Include="Persist\Efs\Repos\QuestionRepository.cs" />
     <Compile Include="Persist\Storages.cs" />
     <Compile Include="PlainTextConfigTest.cs" />
     <Compile Include="Serialization\JsonTest.cs" />

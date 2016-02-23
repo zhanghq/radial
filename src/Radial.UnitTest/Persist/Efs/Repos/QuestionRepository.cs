@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Radial.UnitTest.Persist.Nhs.Repos
+namespace Radial.UnitTest.Persist.Efs.Repos
 {
-    [RegisterInterface(typeof(IQuestionRepository), "nhs")]
-    public class QuestionRepository : Radial.Persist.Nhs.BasicRepository<Question, string>, IQuestionRepository
+    [RegisterInterface(typeof(IQuestionRepository), "efs")]
+    public class QuestionRepository : Radial.Persist.Efs.BasicRepository<Question, string>, IQuestionRepository
     {
         public QuestionRepository(Radial.Persist.IUnitOfWorkEssential uow) : base(uow) { }
     }

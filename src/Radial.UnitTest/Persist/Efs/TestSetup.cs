@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using Radial.Persist.Nhs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
 using Radial.Persist;
+using Radial.Persist.Efs;
 
-namespace Radial.UnitTest.Persist.Nhs
+
+namespace Radial.UnitTest.Persist.Efs
 {
     [SetUpFixture]
     public class TestSetup
@@ -17,9 +18,9 @@ namespace Radial.UnitTest.Persist.Nhs
         [OneTimeSetUp]
         public void SetUp()
         {
-            Dependency.Container.RegisterType<IFactoryPoolInitializer, NewFactoryPoolInitializer>();
+            Dependency.Container.RegisterType<IDbContextPoolInitializer, NewDbContextPoolInitializer>();
             Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork>();
-            Dependency.Container.RegisterInterfaces(this.GetType().Assembly, "nhs");
+            Dependency.Container.RegisterInterfaces(this.GetType().Assembly,"efs");
         }
 
         [OneTimeTearDown]

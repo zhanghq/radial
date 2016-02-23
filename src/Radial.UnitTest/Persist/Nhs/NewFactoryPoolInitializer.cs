@@ -11,32 +11,13 @@ using NHibernate.Connection;
 using NHibernate.Dialect;
 using Radial.UnitTest.Persist.Domain;
 
-namespace Radial.UnitTest.Persist.Nhs.Initializer
+namespace Radial.UnitTest.Persist.Nhs
 {
     public class NewFactoryPoolInitializer : Radial.Persist.Nhs.IFactoryPoolInitializer
     {
         public SessionFactorySet Execute()
         {
             SessionFactorySet set = new SessionFactorySet();
-
-
-            var cdb = new Configuration();
-
-            cdb = cdb.DataBaseIntegration(c =>
-            {
-                c.Dialect<MsSql2012Dialect>();
-                c.Driver<Sql2008ClientDriver>();
-                c.ConnectionProvider<DriverConnectionProvider>();
-                c.ConnectionStringName = Storages.Db.Alias;
-                c.BatchSize = 20;
-                c.HqlToSqlSubstitutions = "true 1, false 0, yes 'Y', no 'N'";
-                c.LogFormattedSql = true;
-                c.LogSqlInConsole = true;
-            });
-            cdb.SetNamingStrategy(NamingStrategyFactory.GetStrategy(typeof(Sql2008ClientDriver)));
-            //cdb.AddAssembly(this.GetType().Assembly);
-            set.Add(new SessionFactoryEntry(Storages.Db.Alias, cdb.BuildSessionFactory(), Storages.Db.IsReadOnly));
-
 
             var cdb0 = new Configuration();
 

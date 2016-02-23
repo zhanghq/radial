@@ -193,13 +193,14 @@ namespace Radial
                     if (lifetimeManagerFunc != null)
                         fm = lifetimeManagerFunc();
 
-                    if (!string.IsNullOrWhiteSpace(attr.Symbol))
+                    //if symbol not null , types which its [attr.Symbol] equals to symbol will be registered only
+                    if (!string.IsNullOrWhiteSpace(symbol))
                     {
-                        if (attr.Symbol == symbol)
+                        if (!string.IsNullOrWhiteSpace(attr.Symbol) && attr.Symbol == symbol)
                             container.RegisterType(attr.InterfaceType, type, fm, injectionMembers);
+                        continue;
                     }
-                    else
-                        container.RegisterType(attr.InterfaceType, type, fm, injectionMembers);
+                    container.RegisterType(attr.InterfaceType, type, fm, injectionMembers);
                 }
             }
         }

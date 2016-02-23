@@ -15,7 +15,7 @@ namespace Radial.Persist
         /// <param name="container">The container.</param>
         /// <param name="storageAlias">The storage alias.</param>
         /// <returns></returns>
-        public static IUnitOfWork ResolveUnitOfWork(this IUnityContainer container, string storageAlias=null)
+        public static IUnitOfWork ResolveUnitOfWork(this IUnityContainer container, string storageAlias = null)
         {
             if (container == null)
                 return null;

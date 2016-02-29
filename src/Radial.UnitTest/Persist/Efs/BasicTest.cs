@@ -19,25 +19,27 @@ namespace Radial.UnitTest.Persist.Efs
         {
             using (var uow = Dependency.Container.ResolveUnitOfWork(Storages.Db0.Alias))
             {
+                IList<Question> qs = new List<Question>();
+
                 for (int i = 0; i < 20; i++)
                 {
-                    uow.RegisterNew<Question>(new QuestionYW
+                    qs.Add(new QuestionYW
                     {
-                        Id=Radial.TimingSeq.Next(),
+                        Id=Radial.RandomCode.GetIdentityKey(),
                         Subject = "语文",
                         Phase = "初中",
                         CreateTime = DateTime.Now
                     });
-                    uow.RegisterNew<Question>(new QuestionSX
+                    qs.Add(new QuestionSX
                     {
-                        Id = Radial.TimingSeq.Next(),
+                        Id = Radial.RandomCode.GetIdentityKey(),
                         Subject = "数学",
                         Phase = "初中",
                         CreateTime = DateTime.Now
                     });
-                    uow.RegisterNew<Question>(new QuestionYY
+                    qs.Add(new QuestionYY
                     {
-                        Id = Radial.TimingSeq.Next(),
+                        Id = Radial.RandomCode.GetIdentityKey(),
                         Subject = "英语",
                         Phase = "初中",
                         CreateTime = DateTime.Now

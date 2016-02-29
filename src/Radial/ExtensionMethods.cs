@@ -205,5 +205,17 @@ namespace Radial
             }
         }
         #endregion
+
+        #region GUID
+        /// <summary>
+        /// To the long value.
+        /// </summary>
+        /// <param name="guid">The unique identifier.</param>
+        /// <returns></returns>
+        public static long ToLong(this Guid guid)
+        {
+            return BitConverter.ToInt64(guid.ToByteArray(), 0);
+        }
+        #endregion
     }
 }

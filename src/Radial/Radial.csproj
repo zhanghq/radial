@@ -224,7 +224,7 @@
     <Compile Include="Persist\Nhs\Order\SqlServerRandomOrder.cs" />
     <Compile Include="Persist\Nhs\Param\KvParam.cs" />
     <Compile Include="Persist\Nhs\NativeQuery.cs" />
-    <Compile Include="Persist\Nhs\TimingIdGenerator.cs" />
+    <Compile Include="Persist\Nhs\IdentityGenerator.cs" />
     <Compile Include="RegisterInterfaceAttribute.cs" />
     <Compile Include="Serialization\BsonSerializer.cs" />
     <Compile Include="Serialization\SerializeFormat.cs" />
@@ -270,7 +270,6 @@
     <Compile Include="Serialization\XmlSerializer.cs" />
     <Compile Include="Net\SmtpMail.cs" />
     <Compile Include="GlobalVariables.cs" />
-    <Compile Include="TimingSeq.cs" />
     <Compile Include="Toolkits.cs" />
     <Compile Include="Web\UserIdentity.cs" />
     <Compile Include="Validator.cs" />

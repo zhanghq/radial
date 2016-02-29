@@ -7,9 +7,9 @@ namespace Radial.Persist.Nhs
 {
 
     /// <summary>
-    /// Identifier generator based on time.
+    /// Identity generator.
     /// </summary>
-    public class TimingIdGenerator : NHibernate.Id.IIdentifierGenerator, NHibernate.Id.IConfigurable
+    public class IdentityGenerator : NHibernate.Id.IIdentifierGenerator, NHibernate.Id.IConfigurable
     {
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Radial.Persist.Nhs
             string objIdVal = p.GetValue(obj) as string;
 
             if (string.IsNullOrWhiteSpace(objIdVal))
-                return string.Format("{0}{1}", Prefix, TimingSeq.Next());
+                return string.Format("{0}{1}", Prefix, RandomCode.GetIdentityKey());
 
             return objIdVal;
         }

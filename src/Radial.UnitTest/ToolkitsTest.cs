@@ -29,11 +29,5 @@ namespace Radial.UnitTest
                     Console.WriteLine("{0}, {1}, {2}", geo.Country, geo.Division, geo.City);
             }
         }
-
-        [Test]
-        public void TimingSeq()
-        {
-            Console.WriteLine(Radial.TimingSeq.Next());
-        }
     }
 }

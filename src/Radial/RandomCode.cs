@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Text;
 
 namespace Radial
@@ -9,6 +10,8 @@ namespace Radial
     public static class RandomCode
     {
         const string Character = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const string IdentityKeyAlphabet = "0123456789ABCDEFHKNRTU";
+        const string IdentityKeyPrefixConfigName = "IdentityKeyPrefix";
 
         /// <summary>
         /// Initializes a new instance of the System.Random class.
@@ -57,6 +60,32 @@ namespace Radial
 
         //    return string.Format("{0}{1}", Base36Encoder.ToBase36String(longTime), guid.Substring(RandomCode.NewInstance.Next(0, guid.Length - 2), 2));
         //}
+
+        /// <summary>
+        /// Gets the identity key.
+        /// </summary>
+        /// <returns></returns>
+        public static string GetIdentityKey()
+        {
+            string prefix = ConfigurationManager.AppSettings[IdentityKeyPrefixConfigName];
+
+            if (!string.IsNullOrWhiteSpace(prefix))
+                prefix = prefix.ToUpper();
+            else
+                prefix = null;
+
+            var lon = Guid.NewGuid().ToLong();
+
+            string key = string.Empty;
+
+            while (lon > 0)
+            {
+                key = IdentityKeyAlphabet[(int)(lon % IdentityKeyAlphabet.Length)] + key;
+                lon /= IdentityKeyAlphabet.Length;
+            }
+
+            return prefix + key;
+        }
 
     }
 }

@@ -45,6 +45,7 @@ namespace Radial.UnitTest.Persist.Efs
                         CreateTime = DateTime.Now
                     });
                 }
+                uow.RegisterNew<Question>(qs);
                 uow.Commit();
             }
         }

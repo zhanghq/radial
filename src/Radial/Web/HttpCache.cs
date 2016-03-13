@@ -79,7 +79,7 @@ namespace Radial.Web
             key = CacheStatic.NormalizeKey(key);
 
             HttpContext.Current.Cache.Insert(key, value, null,
-                cacheSeconds.HasValue ? DateTime.Now.AddSeconds(cacheSeconds.Value) :
+                cacheSeconds.HasValue ? DateTime.UtcNow.AddSeconds(cacheSeconds.Value) :
                 System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration);
 
             lock (SyncRoot)

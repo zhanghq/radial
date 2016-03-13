@@ -89,7 +89,7 @@ namespace Radial.Cache
             key = CacheStatic.NormalizeKey(key);
 
             if (cacheSeconds.HasValue)
-                ObjectCache.Set(key, value, new DateTimeOffset(DateTime.Now.AddSeconds(cacheSeconds.Value)));
+                ObjectCache.Set(key, value, new DateTimeOffset(DateTime.UtcNow.AddSeconds(cacheSeconds.Value)));
             else
                 ObjectCache.Set(key, value, null);
 

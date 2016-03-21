@@ -97,11 +97,11 @@ namespace Radial.Net
         /// <summary>
         /// Gets the logger.
         /// </summary>
-        private Logger Logger
+        private LogWriter Log
         {
             get
             {
-                return Logger.GetInstance("SmtpMail");
+                return Logger.New("SmtpMail");
             }
         }
 
@@ -169,19 +169,19 @@ namespace Radial.Net
 
             try
             {
-                Logger.Info("begin mail transaction {0}", tranId);
+                Log.Info("begin mail transaction {0}", tranId);
 
-                Logger.Debug("mail transaction {0} details: from {1} to {2}", tranId, message.From.Address, BuildToAddressString(message.To));
+                Log.Debug("mail transaction {0} details: from {1} to {2}", tranId, message.From.Address, BuildToAddressString(message.To));
 
                 client.Send(message);
 
                 isOk = true;
 
-                Logger.Info("end mail transaction {0}", tranId);
+                Log.Info("end mail transaction {0}", tranId);
             }
             catch (SmtpException ex)
             {
-                Logger.Error(ex, "can not finish mail transaction {0}", tranId);
+                Log.Error(ex, "can not finish mail transaction {0}", tranId);
             }
 
             return isOk;

@@ -146,6 +146,8 @@
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />
     <Compile Include="Cache\IClusterRegion.cs" />
     <Compile Include="Dependency.cs" />
+    <Compile Include="LogWriter.cs" />
+    <Compile Include="Log4NetWriter.cs" />
     <Compile Include="Persist\Efs\BasicRepository.cs" />
     <Compile Include="Persist\Efs\DbContextPool.cs" />
     <Compile Include="Persist\Efs\DbContextSet.cs" />

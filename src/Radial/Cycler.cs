@@ -26,7 +26,7 @@ namespace Radial
         /// <param name="waitMilliseconds">The loop wait milliseconds.</param>
         /// <param name="maxLoops">The max loop times before function return true or stop until function return true if set to null.</param>
         /// <param name="logger">The user specified log instance, if not set value, will use Logger.Default as default.</param>
-        public static void Execute(Func<bool> predicateFunc, int waitMilliseconds, int? maxLoops, Logger logger)
+        public static void Execute(Func<bool> predicateFunc, int waitMilliseconds, int? maxLoops, LogWriter logger)
         {
             if (predicateFunc == null)
                 return;
@@ -94,7 +94,7 @@ namespace Radial
         /// <param name="waitMilliseconds">The loop wait milliseconds.</param>
         /// <param name="maxLoops">The max loop times before function return true or stop until function return true if set to null.</param>
         /// <param name="logger">The user specified log instance, if not set value, will use Logger.Default as default.</param>
-        public static void ExecuteAsync(Func<bool> predicateFunc, int waitMilliseconds, int? maxLoops, Logger logger)
+        public static void ExecuteAsync(Func<bool> predicateFunc, int waitMilliseconds, int? maxLoops, LogWriter logger)
         {
             if (predicateFunc == null)
                 return;

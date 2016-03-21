@@ -31,9 +31,9 @@ namespace Radial.Persist.Efs
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public static Logger GetLogger(this DbContext context)
+        public static LogWriter GetLogger(this DbContext context)
         {
-            return Logger.GetInstance("EntityFramework");
+            return Logger.New("EntityFramework");
         }
     }
 }

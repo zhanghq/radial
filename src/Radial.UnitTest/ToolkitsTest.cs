@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Microsoft.Practices.Unity;
 
 namespace Radial.UnitTest
 {
@@ -28,6 +29,15 @@ namespace Radial.UnitTest
                 if (geo != null)
                     Console.WriteLine("{0}, {1}, {2}", geo.Country, geo.Division, geo.City);
             }
+        }
+
+        [Test]
+        public void WriteLog()
+        {
+            Dependency.Container.RegisterType<LogWriter, Log4NetWriter>();
+            Logger.Default.Info("adcd");
+            Logger.New(typeof(Toolkits)).Info("adcd");
+            Logger.New(typeof(Toolkits)).Info("adcd2");
         }
     }
 }

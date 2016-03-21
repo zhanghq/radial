@@ -40,11 +40,11 @@ namespace Radial.Param
         /// <summary>
         /// Gets the logger.
         /// </summary>
-        private static Logger Logger
+        private static LogWriter Log
         {
             get
             {
-                return Logger.GetInstance("XmlParam");
+                return Logger.New("XmlParam");
             }
         }
 
@@ -60,14 +60,14 @@ namespace Radial.Param
                 XDocument doc = null;
                 if (!File.Exists(configFilePath))
                 {
-                    Logger.Debug("create new xmlparam settings");
+                    Log.Debug("create new xmlparam settings");
                     doc = new XDocument();
                     doc.Add(new XElement(BuildXName("params")));
                     doc.Save(configFilePath);
                 }
                 else
                 {
-                    Logger.Debug("load exists xmlparam settings");
+                    Log.Debug("load exists xmlparam settings");
                     doc = XDocument.Load(configFilePath);
                 }
 

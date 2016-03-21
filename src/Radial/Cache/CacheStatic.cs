@@ -25,11 +25,11 @@ namespace Radial.Cache
             }
         }
 
-        private static Logger Logger
+        private static LogWriter Log
         {
             get
             {
-                return Logger.GetInstance(typeof(CacheStatic).Name);
+                return Logger.New(typeof(CacheStatic));
             }
         }
 
@@ -71,7 +71,7 @@ namespace Radial.Cache
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Log.Error(ex);
             }
         }
 
@@ -89,7 +89,7 @@ namespace Radial.Cache
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Log.Error(ex);
             }
 
             return null;
@@ -129,7 +129,7 @@ namespace Radial.Cache
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Log.Error(ex);
             }
         }
 
@@ -148,7 +148,7 @@ namespace Radial.Cache
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Log.Error(ex);
             }
         }
 
@@ -164,7 +164,7 @@ namespace Radial.Cache
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Log.Error(ex);
             }
         }
 
@@ -180,7 +180,7 @@ namespace Radial.Cache
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Log.Error(ex);
             }
 
             return new string[] { };

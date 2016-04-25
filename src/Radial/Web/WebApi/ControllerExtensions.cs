@@ -68,9 +68,9 @@ namespace Radial.Web.WebApi
         /// <param name="obj">The object.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage Json(this ApiController c, object obj, HttpStatusCode code = HttpStatusCode.OK)
+        public static HttpResponseMessage NewJson(this ApiController c, object obj, HttpStatusCode code = HttpStatusCode.OK)
         {
-            return Json(c, JsonSerializer.Serialize(obj), code);
+            return NewJson(c, JsonSerializer.Serialize(obj), code);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Radial.Web.WebApi
         /// <param name="json">The json.</param>
         /// <param name="code">The code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage Json(this ApiController c, string json, HttpStatusCode code = HttpStatusCode.OK)
+        public static HttpResponseMessage NewJson(this ApiController c, string json, HttpStatusCode code = HttpStatusCode.OK)
         {
             if (string.IsNullOrWhiteSpace(json))
                 json = string.Empty;

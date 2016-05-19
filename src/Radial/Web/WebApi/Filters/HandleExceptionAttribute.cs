@@ -25,7 +25,7 @@ namespace Radial.Web.WebApi.Filters
         /// <param name="outputStyle">The exception output style.</param>
         /// <param name="defaultErrorCode">The default error code, if unknown exception occurs.</param>
         /// <param name="defaultErrorMessage">The default error message, if unknown exception occurs.</param>
-        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode,
+        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode=-9999,
             string defaultErrorMessage = null)
         {
             OutputStyle = outputStyle;

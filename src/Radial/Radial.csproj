@@ -284,8 +284,6 @@
     <Compile Include="GeoInfo.cs" />
     <Compile Include="Web\WebApi\ControllerExtensions.cs" />
     <Compile Include="Web\WebApi\Filters\HandleExceptionAttribute.cs" />
-    <Compile Include="Web\WebApi\Formatting\NewJsonMediaTypeFormatter.cs" />
-    <Compile Include="Web\WebApi\Formatting\TextMediaTypeFormatter.cs" />
     <Compile Include="Windows\SingleRun.cs" />
   </ItemGroup>
   <ItemGroup>

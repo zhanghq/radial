@@ -10,7 +10,7 @@ namespace Radial.Web.WebApi.Formatting
 {
     /// <summary>
     /// A <see cref="MediaTypeFormatter"/> that supports the following media types:
-    /// "text/json", "application/json" and "application/bson" (for binary Json).
+    /// "text/json", "application/json".
     /// </summary>
     public class NewJsonMediaTypeFormatter : JsonMediaTypeFormatter
     {
@@ -53,18 +53,15 @@ namespace Radial.Web.WebApi.Formatting
         {
             // Create a serializer 
             JsonSerializer serializer = JsonSerializer.Create(_settings);
-
+            
             // Create task writing the serialized content 
             return Task.Factory.StartNew(() =>
             {
-                using (StreamWriter streamWriter = new StreamWriter(writeStream, GlobalVariables.Encoding))
-                {
-                    using (JsonTextWriter jsonTextWriter = new JsonTextWriter(streamWriter))
-                    {
-                        serializer.Serialize(jsonTextWriter, value);
-                    }
-                }
-            }); 
+                TextWriter tw = new StreamWriter(writeStream, GlobalVariables.Encoding);
+
+                serializer.Serialize(tw, value);
+                tw.Flush();
+            });
         }
 
 
@@ -86,13 +83,9 @@ namespace Radial.Web.WebApi.Formatting
             // Create task reading the content 
             return Task.Factory.StartNew(() =>
             {
-                using (StreamReader streamReader = new StreamReader(readStream, GlobalVariables.Encoding))
-                {
-                    using (JsonTextReader jsonTextReader = new JsonTextReader(streamReader))
-                    {
-                        return serializer.Deserialize(jsonTextReader, type);
-                    }
-                }
+                TextReader tr = new StreamReader(readStream, GlobalVariables.Encoding);
+
+                return serializer.Deserialize(tr, type);
             });
         }
     }

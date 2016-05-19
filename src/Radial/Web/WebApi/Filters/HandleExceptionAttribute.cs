@@ -15,7 +15,7 @@ namespace Radial.Web.WebApi.Filters
         /// Initializes a new instance of the <see cref="HandleExceptionAttribute" /> class with ExceptionOutputStyle.System.
         /// </summary>
         public HandleExceptionAttribute()
-            : this(ExceptionOutputStyle.System, 0)
+            : this(ExceptionOutputStyle.System, -999)
         {
         }
 
@@ -25,7 +25,7 @@ namespace Radial.Web.WebApi.Filters
         /// <param name="outputStyle">The exception output style.</param>
         /// <param name="defaultErrorCode">The default error code, if unknown exception occurs.</param>
         /// <param name="defaultErrorMessage">The default error message, if unknown exception occurs.</param>
-        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode=-9999,
+        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode=-999,
             string defaultErrorMessage = null)
         {
             OutputStyle = outputStyle;

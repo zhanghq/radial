@@ -15,7 +15,7 @@ namespace Radial.Test.Mvc
 
             config.Formatters.Clear();
             config.Formatters.Add(new NewJsonMediaTypeFormatter());
-            config.Formatters.Add(new TextMediaTypeFormatter());
+            //config.Formatters.Add(new TextMediaTypeFormatter());
         }
     }
 }

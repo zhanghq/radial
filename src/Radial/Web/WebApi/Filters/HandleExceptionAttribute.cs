@@ -24,14 +24,10 @@ namespace Radial.Web.WebApi.Filters
         /// </summary>
         /// <param name="outputStyle">The exception output style.</param>
         /// <param name="defaultErrorCode">The default error code, if unknown exception occurs.</param>
-        /// <param name="defaultErrorMessage">The default error message, if unknown exception occurs.</param>
-        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode=-999,
-            string defaultErrorMessage = null)
+        public HandleExceptionAttribute(ExceptionOutputStyle outputStyle, int defaultErrorCode=-999)
         {
             OutputStyle = outputStyle;
             DefaultErrorCode = defaultErrorCode;
-            if (!string.IsNullOrWhiteSpace(defaultErrorMessage))
-                DefaultErrorMessage = defaultErrorMessage.Trim();
         }
 
         /// <summary>
@@ -54,16 +50,6 @@ namespace Radial.Web.WebApi.Filters
         }
 
         /// <summary>
-        /// Gets the default error message.
-        /// </summary>
-        public string DefaultErrorMessage
-        {
-            get;
-            private set;
-        }
-
-
-        /// <summary>
         /// Called when an exception occurs.
         /// </summary>
         /// <param name="actionExecutedContext">The HttpActionExecutedContext object.</param>
@@ -83,7 +69,7 @@ namespace Radial.Web.WebApi.Filters
             {
                 ErrorCode = hkfe != null ? hkfe.ErrorCode : DefaultErrorCode,
                 RequestUrl = HttpKits.MakeRelativeUrl(actionExecutedContext.Request.RequestUri.AbsoluteUri).Replace("~", string.Empty),
-                ErrorMessage = hkfe != null ? hkfe.Message : DefaultErrorMessage
+                ErrorMessage = hkfe != null ? hkfe.Message : actionExecutedContext.Exception.Message
             };
 
 

@@ -15,13 +15,12 @@ namespace Radial.Persist.Nhs
     /// Basic class of IRepository
     /// </summary>
     /// <typeparam name="TObject">The type of persistent object.</typeparam>
-    /// <typeparam name="TKey">The type of the object key.</typeparam>
-    public abstract class BasicRepository<TObject, TKey> :
-        IRepository<TObject, TKey> where TObject : class
+    public abstract class BasicRepository<TObject> :
+        IRepository<TObject> where TObject : class
     {
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BasicRepository&lt;TObject, TKey&gt;"/> class.
+        /// Initializes a new instance of the <see cref="BasicRepository&lt;TObject&gt;"/> class.
         /// </summary>
         /// <param name="uow">The IUnitOfWorkEssential instance.</param>
         public BasicRepository(IUnitOfWorkEssential uow)
@@ -219,7 +218,7 @@ namespace Radial.Persist.Nhs
         /// <returns>
         ///   <c>true</c> if the object is exists; otherwise, <c>false</c>.
         /// </returns>
-        public virtual bool Exist(TKey key)
+        public virtual bool Exist(object key)
         {
             var metadata = Session.SessionFactory.GetClassMetadata(typeof(TObject));
 
@@ -336,7 +335,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <param name="key">The object key.</param>
         /// <returns>If data exists, return the object, otherwise return null.</returns>
-        public virtual TObject Find(TKey key)
+        public virtual TObject Find(object key)
         {
             if (key == null)
                 return null;
@@ -378,7 +377,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Find the object with the specified key.
         /// </summary>
-        public TObject this[TKey key]
+        public TObject this[object key]
         {
             get { return Find(key); }
         }
@@ -598,8 +597,9 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Remove an object with the specified key.
         /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
         /// <param name="key">The object key.</param>
-        public virtual void Remove(TKey key)
+        public virtual void Remove<TKey>(TKey key)
         {
             UnitOfWork.RegisterDelete<TObject, TKey>(key);
         }
@@ -1084,7 +1084,7 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// If data exists and keys not empty, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindByKeys(IEnumerable<TKey> keys, params IObjectOrderBy[] orderBys)
+        public virtual IList<TObject> FindByKeys(IEnumerable<object> keys, params IObjectOrderBy[] orderBys)
         {
             if (keys == null || keys.Count() == 0)
                 return new List<TObject>();
@@ -1093,7 +1093,7 @@ namespace Radial.Persist.Nhs
 
             Checker.Requires(metadata.HasIdentifierProperty, "{0} does not has identifier property", typeof(TObject).FullName);
 
-            var query = BuildQueryOver().Where(Expression.InG<TKey>(metadata.IdentifierPropertyName, keys));
+            var query = BuildQueryOver().Where(Expression.InG<object>(metadata.IdentifierPropertyName, keys));
 
             return SetQueryCacheable(AppendOrderBys(query, orderBys)).List();
         }
@@ -1135,7 +1135,7 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// If data exists, return an array, otherwise return an empty array.
         /// </returns>
-        public virtual TKey[] FindKeys(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params IObjectOrderBy[] orderBys)
+        public virtual object[] FindKeys(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params IObjectOrderBy[] orderBys)
         {
             var metadata = this.Session.SessionFactory.GetClassMetadata(typeof(TObject));
 
@@ -1143,7 +1143,7 @@ namespace Radial.Persist.Nhs
 
             var query = AppendOrderBys(BuildQueryOver().Where(condition), orderBys);
 
-            return query.Select(Projections.Property(metadata.IdentifierPropertyName)).List<TKey>().ToArray();
+            return query.Select(Projections.Property(metadata.IdentifierPropertyName)).List<object>().ToArray();
         }
     }
 }

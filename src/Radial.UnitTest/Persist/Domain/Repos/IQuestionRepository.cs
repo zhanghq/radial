@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Radial.UnitTest.Persist.Domain.Repos
 {
-    public interface IQuestionRepository : Radial.Persist.IRepository<Question, string>
+    public interface IQuestionRepository : Radial.Persist.IRepository<Question>
     {
     }
 }

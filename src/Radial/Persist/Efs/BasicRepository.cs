@@ -12,9 +12,8 @@ namespace Radial.Persist.Efs
     /// Basic class of IRepository
     /// </summary>
     /// <typeparam name="TObject">The type of persistent object.</typeparam>
-    /// <typeparam name="TKey">The type of the object key.</typeparam>
-    public abstract class BasicRepository<TObject, TKey> :
-        IRepository<TObject, TKey> where TObject : class
+    public abstract class BasicRepository<TObject> :
+        IRepository<TObject> where TObject : class
     {
 
         /// <summary>
@@ -24,7 +23,7 @@ namespace Radial.Persist.Efs
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BasicRepository&lt;TObject, TKey&gt;"/> class.
+        /// Initializes a new instance of the <see cref="BasicRepository&lt;TObject&gt;"/> class.
         /// </summary>
         /// <param name="uow">The IUnitOfWorkEssential instance.</param>
         public BasicRepository(IUnitOfWorkEssential uow)
@@ -177,7 +176,7 @@ namespace Radial.Persist.Efs
         /// <summary>
         /// Find the object with the specified key.
         /// </summary>
-        public TObject this[TKey key]
+        public TObject this[object key]
         {
             get
             {
@@ -215,8 +214,9 @@ namespace Radial.Persist.Efs
         /// <summary>
         /// Remove an object with the specified key.
         /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
         /// <param name="key">The object key.</param>
-        public virtual void Remove(TKey key)
+        public virtual void Remove<TKey>(TKey key)
         {
             UnitOfWork.RegisterDelete<TObject, TKey>(key);
         }
@@ -272,7 +272,7 @@ namespace Radial.Persist.Efs
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        public virtual bool Exist(TKey key)
+        public virtual bool Exist(object key)
         {
             return Find(key) != null;
         }
@@ -293,7 +293,7 @@ namespace Radial.Persist.Efs
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        public virtual TObject Find(TKey key)
+        public virtual TObject Find(object key)
         {
             if (key == null)
                 return null;
@@ -470,7 +470,7 @@ namespace Radial.Persist.Efs
         /// <param name="keys">The keys.</param>
         /// <param name="orderBys">The order bys.</param>
         /// <returns></returns>
-        public virtual IList<TObject> FindByKeys(IEnumerable<TKey> keys, params IObjectOrderBy[] orderBys)
+        public virtual IList<TObject> FindByKeys(IEnumerable<object> keys, params IObjectOrderBy[] orderBys)
         {
             throw new NotImplementedException(NotImplementedExceptionMessage);
         }
@@ -502,7 +502,7 @@ namespace Radial.Persist.Efs
         /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order bys.</param>
         /// <returns></returns>
-        public virtual TKey[] FindKeys(Expression<Func<TObject, bool>> condition, params IObjectOrderBy[] orderBys)
+        public virtual object[] FindKeys(Expression<Func<TObject, bool>> condition, params IObjectOrderBy[] orderBys)
         {
             throw new NotImplementedException(NotImplementedExceptionMessage);
         }

@@ -91,7 +91,8 @@ namespace Radial.UnitTest.Persist.Efs
             {
                 var repo = uow.ResolveRepository<IQuestionRepository>();
                 var q = repo.FindFirst(o => o.Subject == "语文");
-                uow.RegisterDelete(q);
+                //uow.RegisterDelete(q);
+                uow.RegisterDelete<Question, string>(q.Id);
                 uow.Commit();
 
                 var q2 = repo[q.Id];

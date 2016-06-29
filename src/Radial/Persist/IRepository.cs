@@ -8,8 +8,7 @@ namespace Radial.Persist
     /// IRepository interface.
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    /// <typeparam name="TKey">The type of the object key.</typeparam>
-    public interface IRepository<TObject, TKey> where TObject : class
+    public interface IRepository<TObject> where TObject : class
     {
         /// <summary>
         /// Determine whether the object is exists.
@@ -18,7 +17,7 @@ namespace Radial.Persist
         /// <returns>
         ///   <c>true</c> if the object is exists; otherwise, <c>false</c>.
         /// </returns>
-        bool Exist(TKey key);
+        bool Exist(object key);
 
         /// <summary>
         /// Determine whether contains objects that match The condition.
@@ -147,12 +146,12 @@ namespace Radial.Persist
         /// </summary>
         /// <param name="key">The object key.</param>
         /// <returns>If data exists, return the object, otherwise return null.</returns>
-        TObject Find(TKey key);
+        TObject Find(object key);
 
         /// <summary>
         /// Find the object with the specified key.
         /// </summary>
-        TObject this[TKey key] { get; }
+        TObject this[object key] { get; }
 
         /// <summary>
         /// Find object.
@@ -315,7 +314,7 @@ namespace Radial.Persist
         /// <returns>
         /// If data exists and keys not empty, return an objects list, otherwise return an empty list.
         /// </returns>
-        IList<TObject> FindByKeys(IEnumerable<TKey> keys, params IObjectOrderBy[] orderBys);
+        IList<TObject> FindByKeys(IEnumerable<object> keys, params IObjectOrderBy[] orderBys);
 
 
         /// <summary>
@@ -326,7 +325,7 @@ namespace Radial.Persist
         /// <returns>
         /// If data exists, return an array, otherwise return an empty array.
         /// </returns>
-        TKey[] FindKeys(Expression<Func<TObject, bool>> condition, params IObjectOrderBy[] orderBys);
+        object[] FindKeys(Expression<Func<TObject, bool>> condition, params IObjectOrderBy[] orderBys);
 
         /// <summary>
         /// Add an object.
@@ -355,8 +354,9 @@ namespace Radial.Persist
         /// <summary>
         /// Remove an object with the specified key.
         /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
         /// <param name="key">The object key.</param>
-        void Remove(TKey key);
+        void Remove<TKey>(TKey key);
 
         /// <summary>
         /// Remove an object.

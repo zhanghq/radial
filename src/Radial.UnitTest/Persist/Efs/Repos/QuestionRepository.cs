@@ -11,6 +11,9 @@ namespace Radial.UnitTest.Persist.Efs.Repos
     [RegisterInterface(typeof(IQuestionRepository), "efs")]
     public class QuestionRepository : Radial.Persist.Efs.BasicRepository<Question, string>, IQuestionRepository
     {
-        public QuestionRepository(Radial.Persist.IUnitOfWorkEssential uow) : base(uow) { }
+        public QuestionRepository(Radial.Persist.IUnitOfWorkEssential uow) : base(uow)
+        {
+            SetDefaultOrderBys(new Radial.Persist.ObjectOrderBy<Question>(o => o.CreateTime, false));
+        }
     }
 }

@@ -37,7 +37,7 @@ namespace Radial.Persist.Efs
         /// <summary>
         /// Gets the default order by snippets.
         /// </summary>
-        protected OrderBySnippet<TObject>[] DefaultOrderBys { get; private set; }
+        protected IObjectOrderBy[] DefaultOrderBys { get; private set; }
 
         /// <summary>
         /// Gets the extra condition which will be used in every default query (but not apply to multi-query, hql and your own query).
@@ -48,12 +48,10 @@ namespace Radial.Persist.Efs
         /// Sets the default order by snippets.
         /// </summary>
         /// <param name="orderBys">The order by snippets.</param>
-        protected void SetDefaultOrderBys(params OrderBySnippet<TObject>[] orderBys)
+        protected void SetDefaultOrderBys(params IObjectOrderBy[] orderBys)
         {
             if (orderBys != null && orderBys.Count() > 0)
                 DefaultOrderBys = orderBys;
-            else
-                DefaultOrderBys = new OrderBySnippet<TObject>[0];
         }
 
         /// <summary>
@@ -139,7 +137,7 @@ namespace Radial.Persist.Efs
         /// <param name="orderBys">The custom order bys.</param>
         /// <returns></returns>
         protected IQueryable<TObject> AppendOrderBys(IQueryable<TObject> query,
-            params OrderBySnippet<TObject>[] orderBys)
+            params IObjectOrderBy[] orderBys)
         {
             Checker.Requires(query != null, "query can not be null");
 
@@ -318,7 +316,7 @@ namespace Radial.Persist.Efs
         /// </summary>
         /// <param name="orderBys">The order bys.</param>
         /// <returns></returns>
-        public virtual IList<TObject> FindAll(params OrderBySnippet<TObject>[] orderBys)
+        public virtual IList<TObject> FindAll(params IObjectOrderBy[] orderBys)
         {
             return FindAll(null, orderBys);
         }
@@ -351,7 +349,7 @@ namespace Radial.Persist.Efs
         /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order bys.</param>
         /// <returns></returns>
-        public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
+        public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, params IObjectOrderBy[] orderBys)
         {
             IQueryable<TObject> query = BuildQueryable();
 
@@ -392,7 +390,7 @@ namespace Radial.Persist.Efs
         /// <param name="orderBys">The order bys.</param>
         /// <param name="returnObjectCount">The return object count.</param>
         /// <returns></returns>
-        public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int returnObjectCount)
+        public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition, IEnumerable<IObjectOrderBy> orderBys, int returnObjectCount)
         {
             IQueryable<TObject> query = BuildQueryable();
 
@@ -424,7 +422,7 @@ namespace Radial.Persist.Efs
         /// <param name="pageIndex">Index of the page.</param>
         /// <returns></returns>
         public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition,
-            IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex)
+            IEnumerable<IObjectOrderBy> orderBys, int pageSize, int pageIndex)
         {
             pageSize = NormalizePageSize(pageSize);
             pageIndex = NormalizePageIndex(pageIndex);
@@ -448,7 +446,7 @@ namespace Radial.Persist.Efs
         /// <param name="objectTotal">The object total.</param>
         /// <returns></returns>
         public virtual IList<TObject> FindAll(Expression<Func<TObject, bool>> condition,
-            IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex, out int objectTotal)
+            IEnumerable<IObjectOrderBy> orderBys, int pageSize, int pageIndex, out int objectTotal)
         {
             pageSize = NormalizePageSize(pageSize);
             pageIndex = NormalizePageIndex(pageIndex);
@@ -472,7 +470,7 @@ namespace Radial.Persist.Efs
         /// <param name="keys">The keys.</param>
         /// <param name="orderBys">The order bys.</param>
         /// <returns></returns>
-        public virtual IList<TObject> FindByKeys(IEnumerable<TKey> keys, params OrderBySnippet<TObject>[] orderBys)
+        public virtual IList<TObject> FindByKeys(IEnumerable<TKey> keys, params IObjectOrderBy[] orderBys)
         {
             throw new NotImplementedException(NotImplementedExceptionMessage);
         }
@@ -482,7 +480,7 @@ namespace Radial.Persist.Efs
         /// </summary>
         /// <param name="orderBys">The order bys.</param>
         /// <returns></returns>
-        public TObject FindFirst(params OrderBySnippet<TObject>[] orderBys)
+        public TObject FindFirst(params IObjectOrderBy[] orderBys)
         {
             return FindFirst(null, orderBys);
         }
@@ -493,7 +491,7 @@ namespace Radial.Persist.Efs
         /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order bys.</param>
         /// <returns></returns>
-        public TObject FindFirst(Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
+        public TObject FindFirst(Expression<Func<TObject, bool>> condition, params IObjectOrderBy[] orderBys)
         {
             return FindAll(condition, orderBys, 1).FirstOrDefault();
         }
@@ -504,7 +502,7 @@ namespace Radial.Persist.Efs
         /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order bys.</param>
         /// <returns></returns>
-        public virtual TKey[] FindKeys(Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
+        public virtual TKey[] FindKeys(Expression<Func<TObject, bool>> condition, params IObjectOrderBy[] orderBys)
         {
             throw new NotImplementedException(NotImplementedExceptionMessage);
         }

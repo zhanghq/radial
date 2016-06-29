@@ -156,12 +156,13 @@
     <Compile Include="Persist\Efs\ExtensionMethods.cs" />
     <Compile Include="Persist\Efs\IDbContextPoolInitializer.cs" />
     <Compile Include="Persist\Efs\Log4NetInterceptor.cs" />
+    <Compile Include="Persist\IObjectOrderBy.cs" />
     <Compile Include="Persist\NativeQuery.cs" />
     <Compile Include="Persist\Nhs\SessionFactorySet.cs" />
     <Compile Include="Persist\Nhs\SessionFactoryPool.cs" />
     <Compile Include="Persist\StorageEntry.cs" />
-    <Compile Include="SearchCriteria.cs" />
-    <Compile Include="SearchResult.cs" />
+    <Compile Include="Persist\SearchCriteria.cs" />
+    <Compile Include="Persist\SearchResult.cs" />
     <Compile Include="Web\ExceptionOutputData.cs" />
     <Compile Include="Web\ExceptionOutputStyle.cs" />
     <Compile Include="ExtensionMethods.cs" />
@@ -246,7 +247,7 @@
     <Compile Include="Persist\IRepository.cs" />
     <Compile Include="Persist\IUnitOfWork.cs" />
     <Compile Include="Persist\IUnitOfWorkEssential.cs" />
-    <Compile Include="Persist\OrderBySnippet.cs" />
+    <Compile Include="Persist\ObjectOrderBy.cs" />
     <Compile Include="PerWebRequestLifetimeManager.cs" />
     <Compile Include="PlainTextConfig.cs" />
     <Compile Include="RangeValue.cs" />

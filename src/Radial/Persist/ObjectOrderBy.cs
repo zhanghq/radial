@@ -4,34 +4,34 @@ using System.Linq.Expressions;
 namespace Radial.Persist
 {
     /// <summary>
-    /// The order by snippet
+    /// The object order by
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public sealed class OrderBySnippet<TObject> where TObject : class
+    public sealed class ObjectOrderBy<TObject> : IObjectOrderBy where TObject : class
     {
-        Expression<Func<TObject, object>> _property;
+        //Expression<Func<TObject, object>> _property;
         string _propertyName;
         bool _isAscending;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OrderBySnippet&lt;TObject&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ObjectOrderBy&lt;TObject&gt;"/> class.
         /// </summary>
         /// <param name="property">The sort property.</param>
         /// <param name="isAscending">if set to <c>true</c> [the property will sort in ascending].</param>
-        public OrderBySnippet(Expression<Func<TObject, object>> property, bool isAscending = true)
+        public ObjectOrderBy(Expression<Func<TObject, object>> property, bool isAscending = true)
         {
             Checker.Parameter(property != null, "the sort property can not be null");
-            _property = property;
-            _propertyName = property.ToString().Split(new string[] { Property.Parameters[0].Name + "." },
+            //_property = property;
+            _propertyName = property.ToString().Split(new string[] { property.Parameters[0].Name + "." },
                 StringSplitOptions.RemoveEmptyEntries)[1].Trim(')', '(');
             _isAscending = isAscending;
         }
 
 
-        /// <summary>
-        /// Gets the sort property.
-        /// </summary>
-        public Expression<Func<TObject, object>> Property { get { return _property; } }
+        ///// <summary>
+        ///// Gets the sort property.
+        ///// </summary>
+        //public Expression<Func<TObject, object>> Property { get { return _property; } }
 
         /// <summary>
         /// Gets the name of the sort property.

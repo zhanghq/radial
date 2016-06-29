@@ -64,7 +64,7 @@ namespace Radial.Persist.Nhs
         /// <summary>
         /// Gets the default order by snippets.
         /// </summary>
-        protected OrderBySnippet<TObject>[] DefaultOrderBys { get; private set; }
+        protected IObjectOrderBy[] DefaultOrderBys { get; private set; }
 
         /// <summary>
         /// Gets the extra condition which will be used in every default query (but not apply to multi-query, hql and your own query).
@@ -75,12 +75,10 @@ namespace Radial.Persist.Nhs
         /// Sets the default order by snippets.
         /// </summary>
         /// <param name="orderBys">The order by snippets.</param>
-        protected void SetDefaultOrderBys(params OrderBySnippet<TObject>[] orderBys)
+        protected void SetDefaultOrderBys(params IObjectOrderBy[] orderBys)
         {
             if (orderBys != null && orderBys.Count() > 0)
                 DefaultOrderBys = orderBys;
-            else
-                DefaultOrderBys = new OrderBySnippet<TObject>[0];
         }
 
         /// <summary>
@@ -114,7 +112,7 @@ namespace Radial.Persist.Nhs
         /// <param name="orderBys">The custom order bys.</param>
         /// <returns></returns>
         protected IQueryOver<TObject, TObject> AppendOrderBys(IQueryOver<TObject, TObject> query,
-            params OrderBySnippet<TObject>[] orderBys)
+            params IObjectOrderBy[] orderBys)
         {
             Checker.Requires(query != null, "query can not be null");
 
@@ -126,9 +124,9 @@ namespace Radial.Persist.Nhs
                 foreach (var order in orderBys)
                 {
                     if (order.IsAscending)
-                        query = query.OrderBy(order.Property).Asc;
+                        query = query.OrderBy(Projections.Property(order.PropertyName)).Asc;
                     else
-                        query = query.OrderBy(order.Property).Desc;
+                        query = query.OrderBy(Projections.Property(order.PropertyName)).Desc;
                 }
             }
 
@@ -392,7 +390,7 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindAll(params OrderBySnippet<TObject>[] orderBys)
+        public virtual IList<TObject> FindAll(params IObjectOrderBy[] orderBys)
         {
             return FindAll(null, orderBys);
         }
@@ -403,7 +401,7 @@ namespace Radial.Persist.Nhs
         /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <returns>If data exists, return an objects list, otherwise return an empty list.</returns>
-        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params IObjectOrderBy[] orderBys)
         {
             IQueryOver<TObject, TObject> query = BuildQueryOver();
 
@@ -453,7 +451,7 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex, out int objectTotal)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, IEnumerable<IObjectOrderBy> orderBys, int pageSize, int pageIndex, out int objectTotal)
         {
             IQueryOver<TObject, TObject> query = BuildQueryOver();
 
@@ -484,7 +482,7 @@ namespace Radial.Persist.Nhs
         ///// <returns>
         ///// If data exists, return an objects list, otherwise return an empty list.
         ///// </returns>
-        //public virtual IList<TObject> FindAll(IEnumerable<OrderBySnippet<TObject>> orderBys, int returnObjectCount)
+        //public virtual IList<TObject> FindAll(IEnumerable<IObjectOrderBy> orderBys, int returnObjectCount)
         //{
         //    return FindAll(null, orderBys, returnObjectCount);
         //}
@@ -511,7 +509,7 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int returnObjectCount)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, IEnumerable<IObjectOrderBy> orderBys, int returnObjectCount)
         {
             IQueryOver<TObject, TObject> query = BuildQueryOver();
 
@@ -559,7 +557,7 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// If data exists, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, IEnumerable<OrderBySnippet<TObject>> orderBys, int pageSize, int pageIndex)
+        public virtual IList<TObject> FindAll(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, IEnumerable<IObjectOrderBy> orderBys, int pageSize, int pageIndex)
         {
             IQueryOver<TObject, TObject> query = BuildQueryOver();
 
@@ -1051,7 +1049,7 @@ namespace Radial.Persist.Nhs
         /// </summary>
         /// <param name="orderBys">The order bys.</param>
         /// <returns></returns>
-        public TObject FindFirst(params OrderBySnippet<TObject>[] orderBys)
+        public TObject FindFirst(params IObjectOrderBy[] orderBys)
         {
             return FindFirst(null, orderBys);
         }
@@ -1062,7 +1060,7 @@ namespace Radial.Persist.Nhs
         /// <param name="condition">The condition.</param>
         /// <param name="orderBys">The order by snippets</param>
         /// <returns>If data exists, return the first object, otherwise return null.</returns>
-        public TObject FindFirst(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
+        public TObject FindFirst(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params IObjectOrderBy[] orderBys)
         {
             return FindAll(condition, orderBys, 1).FirstOrDefault();
         }
@@ -1086,7 +1084,7 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// If data exists and keys not empty, return an objects list, otherwise return an empty list.
         /// </returns>
-        public virtual IList<TObject> FindByKeys(IEnumerable<TKey> keys, params OrderBySnippet<TObject>[] orderBys)
+        public virtual IList<TObject> FindByKeys(IEnumerable<TKey> keys, params IObjectOrderBy[] orderBys)
         {
             if (keys == null || keys.Count() == 0)
                 return new List<TObject>();
@@ -1137,7 +1135,7 @@ namespace Radial.Persist.Nhs
         /// <returns>
         /// If data exists, return an array, otherwise return an empty array.
         /// </returns>
-        public virtual TKey[] FindKeys(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params OrderBySnippet<TObject>[] orderBys)
+        public virtual TKey[] FindKeys(System.Linq.Expressions.Expression<Func<TObject, bool>> condition, params IObjectOrderBy[] orderBys)
         {
             var metadata = this.Session.SessionFactory.GetClassMetadata(typeof(TObject));
 

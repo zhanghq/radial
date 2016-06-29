@@ -209,9 +209,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\NHibernate.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Home\PdfToImage.cshtml" />
   </ItemGroup>
   <ItemGroup>

@@ -53,7 +53,7 @@ namespace Radial.UnitTest.Persist.Nhs
             using (var uow = Dependency.Container.ResolveUnitOfWork(Storages.Db0.Alias))
             {
                 var repo = uow.ResolveRepository<IQuestionRepository>();
-
+                
                 var qs = repo.FindAll(o => o.Subject == "数学");
 
                 Assert.True(qs.All(o => o.GetType() == typeof(QuestionSX)));

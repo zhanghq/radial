@@ -1,4 +1,7 @@
 ﻿using Microsoft.Practices.Unity;
+using System;
+using System.Linq;
+using System.Text;
 
 namespace Radial.Persist
 {
@@ -26,21 +29,6 @@ namespace Radial.Persist
             return container.Resolve<IUnitOfWork>(new ParameterOverride("storageAlias", storageAlias));
         }
 
-        /// <summary>
-        /// Resolves the repository.
-        /// </summary>
-        /// <typeparam name="TRepository">The type of the repository.</typeparam>
-        /// <param name="container">The container.</param>
-        /// <param name="uow">The unit of work.</param>
-        /// <returns></returns>
-        public static TRepository ResolveRepository<TRepository>(this IUnityContainer container, IUnitOfWorkEssential uow)
-            where TRepository : class
-        {
-            if (container == null)
-                return null;
-
-            return container.Resolve<TRepository>(new ParameterOverride("uow", uow));
-        }
 
         #endregion
 
@@ -54,9 +42,24 @@ namespace Radial.Persist
         /// <param name="uow">The unit of work.</param>
         /// <returns></returns>
         public static TRepository ResolveRepository<TRepository>(this IUnitOfWorkEssential uow)
+            where TRepository : class
         {
             if (uow == null)
                 return default(TRepository);
+
+            if (!Dependency.Container.IsRegistered<TRepository>())
+            {
+                AnonymousRepository<TRepository> drepo = new AnonymousRepository<TRepository>(uow);
+
+                TRepository instance = drepo.GetInstance();
+
+                Checker.Requires(instance != null, "no instance of {0} type has been registered, and failed to create anonymous repository", typeof(TRepository).FullName);
+
+                //register as ContainerControlledLifetime
+                Dependency.Container.RegisterInstance<TRepository>(instance, new ContainerControlledLifetimeManager());
+
+                return instance;
+            }
 
             return Dependency.Container.Resolve<TRepository>(new ParameterOverride("uow", uow));
         }

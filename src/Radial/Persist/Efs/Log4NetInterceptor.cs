@@ -11,6 +11,17 @@ namespace Radial.Persist.Efs
     /// <seealso cref="System.Data.Entity.Infrastructure.Interception.IDbCommandInterceptor" />
     public class Log4NetInterceptor : IDbCommandInterceptor
     {
+        const string LogWriterName = "EntityFramwork";
+        LogWriter _logger;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Log4NetInterceptor"/> class.
+        /// </summary>
+        public Log4NetInterceptor()
+        {
+            _logger = Logger.New(LogWriterName);
+        }
+
         /// <summary>
         /// Renders the log.
         /// </summary>
@@ -27,20 +38,10 @@ namespace Radial.Persist.Efs
             string txt = string.Format("{0} -- {1}", command.CommandText.Replace(Environment.NewLine, ""),
                 string.Join("; ", ps.ToArray())).Trim('-', ' ');
 
-            LogWriter logger = null;
-            foreach (var d in interceptionContext.DbContexts)
-            {
-                logger = d.GetLogger();
-                break;
-            }
-
-            if (logger == null)
-                return;
-
             if (interceptionContext.OriginalException != null)
-                logger.Fatal(interceptionContext.OriginalException, txt);
+                _logger.Fatal(interceptionContext.OriginalException, txt);
             else
-                logger.Info(txt);
+                _logger.Info(txt);
         }
 
         /// <summary>

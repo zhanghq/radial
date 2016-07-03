@@ -34,14 +34,13 @@ namespace Radial.Persist
             _uow = uow;
         }
 
+
         /// <summary>
-        /// Gets the instance.
+        /// Gets the type of the instance.
         /// </summary>
         /// <returns></returns>
-        public TRepository GetInstance()
+        public Type GetInstanceType()
         {
-
-            TRepository instance = default(TRepository);
 
             Type repoType = typeof(TRepository);
 
@@ -55,7 +54,7 @@ namespace Radial.Persist
 
                 if (tobjType != null)
                 {
-                    string nsName ="N"+Guid.NewGuid().ToString("N").ToUpper();
+                    string nsName = "N" + Guid.NewGuid().ToString("N").ToUpper();
                     string tobjTypeName = tobjType.FullName;
                     string repositoryInterfaceName = repoType.FullName;
                     string repositoryClassName = Toolkits.FirstCharUpperCase(repoType.Name.TrimStart('I'));
@@ -87,12 +86,12 @@ namespace Radial.Persist
                     objCompilerParameters.GenerateInMemory = true;
                     System.CodeDom.Compiler.CompilerResults cr = objCSharpCodePrivoder.CompileAssemblyFromSource(objCompilerParameters, source);
                     if (cr.Errors.Count == 0)
-                        instance = Activator.CreateInstance(cr.CompiledAssembly.GetType(repositoryClassFullName), _uow) as TRepository;
+                        return cr.CompiledAssembly.GetType(repositoryClassFullName);
                 }
             }
 
 
-            return instance;
+            return null;
         }
     }
 }

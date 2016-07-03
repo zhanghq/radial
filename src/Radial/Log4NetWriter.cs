@@ -19,6 +19,29 @@ namespace Radial
         static object S_SyncRoot = new object();
 
         /// <summary>
+        /// Prepares this instance.
+        /// </summary>
+        public static void Prepare()
+        {
+            if (!S_IsStart)
+            {
+                lock (S_SyncRoot)
+                {
+                    if (!S_IsStart)
+                    {
+                        var cfgp = GlobalVariables.GetConfigPath("log4net.config");
+
+                        if (File.Exists(cfgp))
+                        {
+                            XmlConfigurator.ConfigureAndWatch(new FileInfo(cfgp));
+                            S_IsStart = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Log4NetWriter" /> class.
         /// </summary>
         /// <param name="logName">Name of the log.</param>
@@ -26,34 +49,11 @@ namespace Radial
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(logName), "log name can not be empty or null.");
 
-            if (!S_IsStart)
-            {
-                lock (S_SyncRoot)
-                {
-                    if (!S_IsStart)
-                    {
-                        if (File.Exists(ConfigurationPath))
-                        {
-                            XmlConfigurator.ConfigureAndWatch(new FileInfo(ConfigurationPath));
-                            S_IsStart = true;
-                        }
-                    }
-                }
-            }
+            Prepare();
 
             _log =LogManager.GetLogger(logName);
         }
 
-        /// <summary>
-        /// Gets the configuration path.
-        /// </summary>
-        public string ConfigurationPath
-        {
-            get
-            {
-                return GlobalVariables.GetConfigPath("log4net.config");
-            }
-        }
 
         /// <summary>
         /// Logs a message string with the Debug level.

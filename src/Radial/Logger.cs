@@ -47,7 +47,7 @@ namespace Radial
                 var instance = Dependency.Container.Resolve<LogWriter>(new ParameterOverride("logName", logName));
 
                 if (instance != null)
-                    Dependency.Container.RegisterInstance<LogWriter>(instanceLogName, instance, new ContainerControlledLifetimeManager());
+                    Dependency.Container.RegisterInstance(instanceLogName, instance, new ContainerControlledLifetimeManager());
 
                 return instance;
             }

@@ -10,6 +10,8 @@ namespace Radial.UnitTest
         public void SetUp()
         {
             //StaticVariables.ConfigDirectory = StaticVariables.ConfigDirectory.Replace(@"\bin\Debug", string.Empty);
+            //use log4net writer must  invoke prepare at bootup
+            Log4NetWriter.Prepare();
         }
 
         [OneTimeTearDown]

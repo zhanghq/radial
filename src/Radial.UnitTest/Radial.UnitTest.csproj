@@ -147,7 +147,7 @@
     </None>
     <None Include="Config\log4net.config">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Config\XmlParam.config">
       <SubType>Designer</SubType>

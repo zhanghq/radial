@@ -55,7 +55,7 @@ namespace Radial.Persist
 
                 if (tobjType != null)
                 {
-                    string nsName = Radial.RandomCode.GetIdentityKey();
+                    string nsName ="N"+Guid.NewGuid().ToString("N").ToUpper();
                     string tobjTypeName = tobjType.FullName;
                     string repositoryInterfaceName = repoType.FullName;
                     string repositoryClassName = Toolkits.FirstCharUpperCase(repoType.Name.TrimStart('I'));

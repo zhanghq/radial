@@ -57,8 +57,8 @@ namespace Radial.Persist
 
                 Checker.Requires(instance != null, "no instance of {0} type has been registered, and failed to create anonymous repository", typeof(TRepository).FullName);
 
-                //register as ContainerControlledLifetime
-                Dependency.Container.RegisterInstance<TRepository>(instance, new ContainerControlledLifetimeManager());
+
+                Dependency.Container.RegisterInstance<TRepository>(instance);
 
                 return instance;
             }

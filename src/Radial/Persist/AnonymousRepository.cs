@@ -10,6 +10,7 @@ namespace Radial.Persist
     /*
      * create In-Memory anonymous repository implementing the TRepository Interface.
      * TRepository must implement  Raidal.Persist.IRepository<> interface and no custom methods
+     * IUnitOfWorkEssential instance must be Nhs.UnitOfWork or Efs.UnitOfWork
      */
 
     /// <summary>
@@ -60,11 +61,14 @@ namespace Radial.Persist
                     string repositoryClassName = Toolkits.FirstCharUpperCase(repoType.Name.TrimStart('I'));
                     string repositoryClassFullName = string.Format("{0}.{1}", nsName, repositoryClassName);
 
-                    string persistenceNamespace = _uow.GetType().Namespace;
+                    var uowType = _uow.GetType();
+
+                    Checker.Requires(uowType.FullName == "Radial.Persist.Efs.UnitOfWork" || uowType.FullName == "Radial.Persist.Nhs.UnitOfWork"
+                        , "unit of work instance must be Radial.Persist.Efs.UnitOfWork or Radial.Persist.Nhs.UnitOfWork");
 
                     string source = CodeTemp.Replace("{Namespace}", nsName)
                     .Replace("{RepositoryClassName}", repositoryClassName)
-                    .Replace("{PersistenceNamespace}", persistenceNamespace)
+                    .Replace("{PersistenceNamespace}", uowType.Namespace)
                     .Replace("{TObjectType}", tobjTypeName)
                     .Replace("{RepositoryInterfaceName}", repositoryInterfaceName);
 
@@ -73,15 +77,13 @@ namespace Radial.Persist
                     System.CodeDom.Compiler.CompilerParameters objCompilerParameters = new System.CodeDom.Compiler.CompilerParameters();
                     objCompilerParameters.ReferencedAssemblies.Add("System.Core.dll");
 
-                    foreach (var ass in AppDomain.CurrentDomain.GetAssemblies())
-                    {
-                        if (ass.FullName == repoBaseInterfaceType.Assembly.FullName || ass.FullName == tobjType.Assembly.FullName
-                            || ass.FullName == repoType.Assembly.FullName)
-                        {
-                            if (!objCompilerParameters.ReferencedAssemblies.Contains(ass.Location))
-                                objCompilerParameters.ReferencedAssemblies.Add(ass.Location);
-                        }
-                    }
+                    if (!objCompilerParameters.ReferencedAssemblies.Contains(repoBaseInterfaceType.Assembly.Location))
+                        objCompilerParameters.ReferencedAssemblies.Add(repoBaseInterfaceType.Assembly.Location);
+                    if (!objCompilerParameters.ReferencedAssemblies.Contains(tobjType.Assembly.Location))
+                        objCompilerParameters.ReferencedAssemblies.Add(tobjType.Assembly.Location);
+                    if (!objCompilerParameters.ReferencedAssemblies.Contains(repoType.Assembly.Location))
+                        objCompilerParameters.ReferencedAssemblies.Add(repoType.Assembly.Location);
+
                     objCompilerParameters.GenerateExecutable = false;
                     objCompilerParameters.GenerateInMemory = true;
                     System.CodeDom.Compiler.CompilerResults cr = objCSharpCodePrivoder.CompileAssemblyFromSource(objCompilerParameters, source);

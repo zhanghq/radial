@@ -42,7 +42,7 @@ namespace Radial.Web
         {
             get
             {
-                return !string.IsNullOrWhiteSpace(System.Web.HttpRuntime.AppDomainAppId);
+                return !string.IsNullOrWhiteSpace(System.Web.HttpRuntime.AppDomainAppId) && HttpContext.Current != null;
             }
         }
 

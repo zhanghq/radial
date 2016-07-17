@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Radial.Drawing
@@ -80,13 +81,64 @@ namespace Radial.Drawing
 
             Checker.Requires(bmp != null, "can not cast original image to bitmap");
 
+
+
             int w = bmp.Width;
             int h = bmp.Height;
+            int depth = Image.GetPixelFormatSize(bmp.PixelFormat);
+            Checker.Requires(depth == 8 || depth == 24 || depth == 32, "only 8, 24 and 32 bpp images are supported.");
+
+            //y,x
+            Color[][] totalColors = new Color[bmp.Height][];
+
+            #region Get Colors
+
+            System.Drawing.Imaging.BitmapData bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, bmp.PixelFormat);
+            IntPtr intPtr = bmpData.Scan0;
+            var pixelBytes = new byte[bmpData.Height * bmpData.Stride];
+            System.Runtime.InteropServices.Marshal.Copy(intPtr, pixelBytes, 0, pixelBytes.Length);
+            int bytesPerPixel = depth / 8;
+            int widthInBytes = bmp.Width * bytesPerPixel;
+
+            for (var y = 0; y < h; y++)
+            {
+                int yidx = y * bmpData.Stride; // line start index.
+                Color[] yCoiors = new Color[w];
+                for (var x = 0; x < widthInBytes; x = x + bytesPerPixel)
+                {
+                    if (depth == 8)
+                    {
+                        byte c = pixelBytes[yidx + x];
+                        yCoiors[x/ bytesPerPixel]=Color.FromArgb(c,c,c);
+                    }
+                    if (depth == 24)
+                    {
+                        byte b = pixelBytes[yidx + x];
+                        byte g = pixelBytes[yidx + x + 1];
+                        byte r = pixelBytes[yidx + x + 2];
+                        yCoiors[x / bytesPerPixel] = Color.FromArgb(r, g, b);
+                    }
+                    if (depth == 32)
+                    {
+                        byte b = pixelBytes[yidx + x];
+                        byte g = pixelBytes[yidx + x + 1];
+                        byte r = pixelBytes[yidx + x + 2];
+                        byte a = pixelBytes[yidx + x + 3];
+                        yCoiors[x / bytesPerPixel] = Color.FromArgb(a, r, g, b);
+                    }
+                }
+                totalColors[y] = yCoiors;
+            }
+
+            bmp.UnlockBits(bmpData);
+
+            #endregion
+
 
             Func<int, bool> allWhiteRow = row =>
             {
                 for (int i = 0; i < w; ++i)
-                    if (bmp.GetPixel(i, row).R != 255)
+                    if (totalColors[row][i].R != 255)
                         return false;
                 return true;
             };
@@ -94,7 +146,7 @@ namespace Radial.Drawing
             Func<int, bool> allWhiteColumn = col =>
             {
                 for (int i = 0; i < h; ++i)
-                    if (bmp.GetPixel(col, i).R != 255)
+                    if (totalColors[i][col].R != 255)
                         return false;
                 return true;
             };

@@ -111,6 +111,7 @@
     <Compile Include="ExcelToolsTest.cs" />
     <Compile Include="ExtensionsTest.cs" />
     <Compile Include="FtpClientTest.cs" />
+    <Compile Include="ImageKitsTest.cs" />
     <Compile Include="IO\StreamKitsTest.cs" />
     <Compile Include="Persist\Domain\ModelBase.cs" />
     <Compile Include="Persist\Domain\Question.cs" />
@@ -154,7 +155,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="demo.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -164,7 +165,11 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="CropWhitespace.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

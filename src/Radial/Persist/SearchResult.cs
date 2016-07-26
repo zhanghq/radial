@@ -9,22 +9,22 @@ namespace Radial.Persist
     /// <summary>
     /// Search result..
     /// </summary>
-    /// <typeparam name="TResult">The type of the result.</typeparam>
-    public class SearchResult<TResult> where TResult : class
+    /// <typeparam name="TData">The type of the data.</typeparam>
+    public class SearchResult<TData> where TData : class
     {
 
         /// <summary>
-        /// Gets or sets the result.
+        /// Gets or sets the data.
         /// </summary>
-        public TResult Result { get; set; }
+        public TData Data { get; set; }
 
         /// <summary>
-        /// Gets or sets the object total.
+        /// Gets or sets the object total if pageable.
         /// </summary>
         public int? ObjectTotal { get; set; }
 
         /// <summary>
-        /// Gets or sets the page total.
+        /// Gets or sets the page total if pageable.
         /// </summary>
         public int? PageTotal { get; set; }
     }

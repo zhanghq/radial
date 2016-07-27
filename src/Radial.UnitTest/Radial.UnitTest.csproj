@@ -125,6 +125,7 @@
     <Compile Include="Persist\Nhs\Repos\QuestionRepository.cs" />
     <Compile Include="Persist\Nhs\TestSetup.cs" />
     <Compile Include="Persist\Efs\Repos\QuestionRepository.cs" />
+    <Compile Include="Persist\SearchResultTest.cs" />
     <Compile Include="Persist\Storages.cs" />
     <Compile Include="PlainTextConfigTest.cs" />
     <Compile Include="Serialization\JsonTest.cs" />

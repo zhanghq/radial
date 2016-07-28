@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Web.Mvc;
-using System.Net;
 using Radial.Net;
+using System.Web.Http.Filters;
+using System.Net.Http;
 
-namespace Radial.Web.Mvc.Filters
+namespace Radial.Web.Http.Filters
 {
     /// <summary>
     /// Represents an attribute that is used to handle and log an exception that is thrown by an action method.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public class HandleExceptionAttribute : HandleErrorAttribute
+    public class HandleExceptionAttribute : ExceptionFilterAttribute
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="HandleExceptionAttribute" /> class.
         /// </summary>
@@ -62,26 +61,23 @@ namespace Radial.Web.Mvc.Filters
         /// <summary>
         /// Called when an exception occurs.
         /// </summary>
-        /// <param name="filterContext">The action-filter context.</param>
-        public override void OnException(ExceptionContext filterContext)
+        /// <param name="actionExecutedContext">The HttpActionExecutedContext object.</param>
+        public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
-            Logger.Default.Fatal(filterContext.Exception);
+            Logger.Default.Fatal(actionExecutedContext.Exception);
 
-            KnownFaultException hkfe = filterContext.Exception as KnownFaultException;
+
+            KnownFaultException hkfe = actionExecutedContext.Exception as KnownFaultException;
 
             var stdJsonOutput = new StdJsonOutput();
             stdJsonOutput.Error = hkfe != null ? hkfe.ErrorCode : DefaultErrorCode;
-            stdJsonOutput.Message = hkfe != null ? hkfe.Message : (string.IsNullOrWhiteSpace(DefaultErrorMessage) ? filterContext.Exception.Message : DefaultErrorMessage);
+            stdJsonOutput.Message = hkfe != null ? hkfe.Message : (string.IsNullOrWhiteSpace(DefaultErrorMessage) ? actionExecutedContext.Exception.Message : DefaultErrorMessage);
 
-            filterContext.ExceptionHandled = true;
-            filterContext.HttpContext.Response.Clear();
-            filterContext.HttpContext.Response.ContentEncoding = GlobalVariables.Encoding;
+            HttpResponseMessage resp = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
 
-            filterContext.HttpContext.Response.ContentType = ContentType;
-            filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            filterContext.HttpContext.Response.Write(stdJsonOutput.ToJson());
-            filterContext.HttpContext.ApplicationInstance.CompleteRequest();
+            resp.Content = new StringContent(stdJsonOutput.ToJson(), GlobalVariables.Encoding, ContentType);
 
+            actionExecutedContext.Response = resp;
         }
     }
 }

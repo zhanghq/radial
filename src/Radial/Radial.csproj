@@ -164,10 +164,10 @@
     <Compile Include="Persist\StorageEntry.cs" />
     <Compile Include="Persist\SearchCriteria.cs" />
     <Compile Include="Persist\SearchResult.cs" />
-    <Compile Include="Web\ExceptionOutputData.cs" />
-    <Compile Include="Web\ExceptionOutputStyle.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Web\FormsAuth.cs" />
+    <Compile Include="Web\MVC\StdJsonOutputResult.cs" />
+    <Compile Include="Web\StdJsonOutput.cs" />
     <Compile Include="Web\GeneralUpload.cs" />
     <Compile Include="Web\HttpCache.cs" />
     <Compile Include="Web\HttpKits.cs" />
@@ -284,9 +284,9 @@
     <Compile Include="Net\HttpWebClient.cs" />
     <Compile Include="Base36Encoder.cs" />
     <Compile Include="GeoInfo.cs" />
-    <Compile Include="Web\WebApi\ControllerExtensions.cs" />
-    <Compile Include="Web\WebApi\Filters\HandleExceptionAttribute.cs" />
-    <Compile Include="Web\WebApi\Formatting\NewJsonMediaTypeFormatter.cs" />
+    <Compile Include="Web\Http\ControllerExtensions.cs" />
+    <Compile Include="Web\Http\Filters\HandleExceptionAttribute.cs" />
+    <Compile Include="Web\Http\Formatting\NewJsonMediaTypeFormatter.cs" />
     <Compile Include="Windows\SingleRun.cs" />
   </ItemGroup>
   <ItemGroup>

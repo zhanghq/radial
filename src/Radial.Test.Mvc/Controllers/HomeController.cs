@@ -156,5 +156,22 @@ namespace Radial.Test.Mvc.Controllers
 
             return View();
         }
+
+        public string StdJson_Exception()
+        {
+            int a = 0;
+            int x = 2 / a;
+            return x.ToString();
+        }
+        public ActionResult StdJson_Error()
+        {
+            return this.StdErrorJson();
+        }
+
+        [HttpGet]
+        public ActionResult StdJson_Success()
+        {
+            return this.StdSuccessJson();
+        }
     }
 }

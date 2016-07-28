@@ -6,7 +6,7 @@ namespace Radial.Test.Mvc
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            filters.Add(new Web.Mvc.Filters.HandleExceptionAttribute());
         }
     }
 }

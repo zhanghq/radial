@@ -29,10 +29,6 @@ namespace Radial
         /// </summary>
         public static string[] ImageFileExtensions = new string[] { ".jpg", ".jpeg", ".jfif", ".gif", ".bmp", ".png", ".tif", ".tiff" };
 
-        /// <summary>
-        /// The global variable of web exception HTTP status code
-        /// </summary>
-        public static System.Net.HttpStatusCode WebExceptionHttpStatusCode = System.Net.HttpStatusCode.InternalServerError;
 
 
         /// <summary>

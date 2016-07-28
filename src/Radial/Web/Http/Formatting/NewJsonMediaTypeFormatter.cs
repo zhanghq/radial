@@ -6,7 +6,7 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace Radial.Web.WebApi.Formatting
+namespace Radial.Web.Http.Formatting
 {
     /// <summary>
     /// A <see cref="MediaTypeFormatter"/> that supports the following media types:

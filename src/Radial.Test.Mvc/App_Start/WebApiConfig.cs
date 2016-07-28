@@ -1,4 +1,4 @@
-﻿using Radial.Web.WebApi.Formatting;
+﻿using Radial.Web.Http.Formatting;
 using System.Web.Http;
 
 namespace Radial.Test.Mvc
@@ -16,6 +16,8 @@ namespace Radial.Test.Mvc
             config.Formatters.Clear();
             config.Formatters.Add(new NewJsonMediaTypeFormatter());
             //config.Formatters.Add(new TextMediaTypeFormatter());
+
+            config.Filters.Add(new Radial.Web.Http.Filters.HandleExceptionAttribute());
         }
     }
 }

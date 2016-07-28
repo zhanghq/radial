@@ -15,18 +15,6 @@ namespace Radial.Web.Mvc
     /// </summary>
     public static class ControllerExtensions
     {
-
-        /// <summary>
-        /// Popup javascript alert window.
-        /// </summary>
-        /// <param name="c">The controller.</param>
-        /// <param name="message">The message.</param>
-        /// <returns>AlertResult instance.</returns>
-        public static AlertResult Alert(this Controller c, string message)
-        {
-            return Alert(c, message, string.Empty);
-        }
-
         /// <summary>
         /// Popup javascript alert window.
         /// </summary>
@@ -34,7 +22,7 @@ namespace Radial.Web.Mvc
         /// <param name="message">The message.</param>
         /// <param name="redirect">The redirect.</param>
         /// <returns>AlertResult instance.</returns>
-        public static AlertResult Alert(this Controller c, string message, string redirect)
+        public static AlertResult Alert(this Controller c, string message, string redirect = null)
         {
             return new AlertResult(message, redirect);
         }
@@ -88,18 +76,6 @@ namespace Radial.Web.Mvc
             return new XmlResult(xml);
         }
 
-
-        /// <summary>
-        /// Renders json to the response.
-        /// </summary>
-        /// <param name="c">The controller.</param>
-        /// <param name="data">The data.</param>
-        /// <returns>NewJsonResult instance.</returns>
-        public static NewJsonResult NewJson(this Controller c, object data)
-        {
-            return new NewJsonResult(data);
-        }
-
         /// <summary>
         /// Renders json to the response.
         /// </summary>
@@ -109,24 +85,39 @@ namespace Radial.Web.Mvc
         /// <returns>
         /// NewJsonResult instance.
         /// </returns>
-        public static NewJsonResult NewJson(this Controller c, object data,string contentType)
+        public static NewJsonResult NewJson(this Controller c, object data,string contentType = null)
         {
             return new NewJsonResult(data, contentType);
         }
 
-
         /// <summary>
-        /// Throws a new KnownFaultException and let the system itself to decide how to deal with.
+        /// Renders standard Error json output to the response.
         /// </summary>
         /// <param name="c">The controller.</param>
         /// <param name="errorCode">The error code.</param>
         /// <param name="message">The message.</param>
+        /// <param name="contentType">Type of the content.</param>
         /// <returns>
-        /// ThrowKnownFaultResult instance.
+        /// NewJsonResult instance.
         /// </returns>
-        public static KnownFaultResult KnownFault(this Controller c, int errorCode, string message)
+        public static StdJsonOutputResult StdErrorJson(this Controller c, int errorCode=-9999, string message = null, string contentType = null)
         {
-            return KnownFault(c, errorCode, message, null);
+            return new StdJsonOutputResult(new StdJsonOutput { Error = errorCode, Message = message },contentType);
+        }
+
+        /// <summary>
+        /// Renders standard Success json output to the response.
+        /// </summary>
+        /// <param name="c">The controller.</param>
+        /// <param name="payload">The data payload.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="contentType">Type of the content.</param>
+        /// <returns>
+        /// NewJsonResult instance.
+        /// </returns>
+        public static StdJsonOutputResult StdSuccessJson(this Controller c, object payload=null, string message = null, string contentType = null)
+        {
+            return new StdJsonOutputResult(new StdJsonOutput { Payload= payload }, contentType);
         }
 
         /// <summary>
@@ -137,7 +128,7 @@ namespace Radial.Web.Mvc
         /// <param name="message">The message.</param>
         /// <param name="innerException">The inner exception.</param>
         /// <returns>ThrowKnownFaultResult instance.</returns>
-        public static KnownFaultResult KnownFault(this Controller c, int errorCode, string message, Exception innerException)
+        public static KnownFaultResult KnownFault(this Controller c, int errorCode, string message = null, Exception innerException = null)
         {
             return new KnownFaultResult(errorCode, message, innerException);
         }

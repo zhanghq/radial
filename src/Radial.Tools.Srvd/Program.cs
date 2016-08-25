@@ -49,7 +49,8 @@ namespace Radial.Tools.Srvd
                 exePath = exePath.Replace("%", AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\'));
 
             ServiceHelper.SetParameter(serviceName, "path", exePath);
-            ServiceHelper.SetParameter(serviceName, "args", args);
+            if (!string.IsNullOrWhiteSpace(args))
+                ServiceHelper.SetParameter(serviceName, "args", args);
 
             Console.WriteLine("service {0} install completed, waiting for start", serviceName);
         }

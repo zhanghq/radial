@@ -17,7 +17,7 @@ namespace Radial.UnitTest.Persist.Nhs
         [OneTimeSetUp]
         public void SetUp()
         {
-            Dependency.Container.RegisterType<IFactoryPoolInitializer, NewFactoryPoolInitializer>();
+            Dependency.Container.RegisterType<IFactoryPoolInitializer, NewFactoryPoolInitializer>(new ContainerControlledLifetimeManager());
             Dependency.Container.RegisterType<IUnitOfWork, UnitOfWork>();
             Dependency.Container.RegisterInterfaces(this.GetType().Assembly, "nhs");
         }

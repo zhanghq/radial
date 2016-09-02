@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Radial.Persist
+namespace Radial
 {
     /// <summary>
-    /// The object order by
+    /// The object order by.
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
     public sealed class ObjectOrderBy<TObject> : IObjectOrderBy where TObject : class
     {
-        //Expression<Func<TObject, object>> _property;
         string _propertyName;
         bool _isAscending;
 
@@ -27,11 +26,6 @@ namespace Radial.Persist
             _isAscending = isAscending;
         }
 
-
-        ///// <summary>
-        ///// Gets the sort property.
-        ///// </summary>
-        //public Expression<Func<TObject, object>> Property { get { return _property; } }
 
         /// <summary>
         /// Gets the name of the sort property.

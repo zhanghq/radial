@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Radial.Persist
+namespace Radial
 {
     /// <summary>
     /// Search criteria.
     /// </summary>
     /// <typeparam name="TFilter">The type of the filter.</typeparam>
-    public class SearchCriteria<TFilter>
-        where TFilter : class
+    public class SearchCriteria<TFilter> where TFilter : class
     {
         /// <summary>
         /// Gets or sets the filter.
@@ -60,7 +57,7 @@ namespace Radial.Persist
     /// </summary>
     /// <typeparam name="TFilter">The type of the filter.</typeparam>
     /// <typeparam name="TOrderBy">The type of the order by.</typeparam>
-    public class SearchCriteria<TFilter, TOrderBy>:SearchCriteria<TFilter>
+    public class SearchCriteria<TFilter, TOrderBy> : SearchCriteria<TFilter>
         where TFilter : class
         where TOrderBy : IObjectOrderBy
     {

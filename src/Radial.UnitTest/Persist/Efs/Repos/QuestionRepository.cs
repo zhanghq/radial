@@ -13,7 +13,7 @@ namespace Radial.UnitTest.Persist.Efs.Repos
     {
         public QuestionRepository(Radial.Persist.IUnitOfWorkEssential uow) : base(uow)
         {
-            SetDefaultOrderBys(new Radial.Persist.ObjectOrderBy<Question>(o => o.CreateTime, false));
+            SetDefaultOrderBys(new ObjectOrderBy<Question>(o => o.CreateTime, false));
         }
     }
 }

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Radial.Persist
+namespace Radial
 {
     /// <summary>
-    /// IObjectOrderBy.
+    /// Object order by interface.
     /// </summary>
     public interface IObjectOrderBy
     {

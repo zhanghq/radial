@@ -12,7 +12,7 @@ namespace Radial.UnitTest.Persist.Nhs.Repos
     public class QuestionRepository : Radial.Persist.Nhs.BasicRepository<Question>, IQuestionRepository
     {
         public QuestionRepository(Radial.Persist.IUnitOfWorkEssential uow) : base(uow) {
-            SetDefaultOrderBys(new Radial.Persist.ObjectOrderBy<Question>(o => o.CreateTime, false));
+            SetDefaultOrderBys(new ObjectOrderBy<Question>(o => o.CreateTime, false));
         }
     }
 }

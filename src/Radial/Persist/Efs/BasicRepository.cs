@@ -148,7 +148,7 @@ namespace Radial.Persist.Efs
                 for (int i = 0; i < orderBys.Length; i++)
                 {
                     var type = typeof(TObject);
-                    var property = type.GetProperty(orderBys[0].PropertyName);
+                    var property = type.GetProperty(orderBys[i].PropertyName);
                     var parameter = Expression.Parameter(type);
                     var propertyAccess = Expression.MakeMemberAccess(parameter, property);
                     var orderByExpression = Expression.Lambda(propertyAccess, parameter);

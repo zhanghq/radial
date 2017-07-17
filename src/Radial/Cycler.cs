@@ -14,19 +14,7 @@ namespace Radial
         /// <param name="predicateFunc">The predicate function, return true to circulate this function.</param>
         /// <param name="waitMilliseconds">The loop wait milliseconds.</param>
         /// <param name="maxLoops">The max loop times before function return true or stop until function return true if set to null.</param>
-        public static void Execute(Func<bool> predicateFunc, int waitMilliseconds, int? maxLoops = null)
-        {
-            Execute(predicateFunc, waitMilliseconds, maxLoops, null);
-        }
-
-        /// <summary>
-        /// Execute function cyclically .
-        /// </summary>
-        /// <param name="predicateFunc">The predicate function, return true to circulate this function.</param>
-        /// <param name="waitMilliseconds">The loop wait milliseconds.</param>
-        /// <param name="maxLoops">The max loop times before function return true or stop until function return true if set to null.</param>
-        /// <param name="logger">The user specified log instance, if not set value, will use Logger.Default as default.</param>
-        public static void Execute(Func<bool> predicateFunc, int waitMilliseconds, int? maxLoops, LogWriter logger)
+        public static void Execute(Func<bool> predicateFunc, int waitMilliseconds, int? maxLoops)
         {
             if (predicateFunc == null)
                 return;
@@ -36,9 +24,6 @@ namespace Radial
 
             if (waitMilliseconds < 0)
                 waitMilliseconds = 0;
-
-            if (logger == null)
-                logger = Logger.Default;
 
             string cycleId = Guid.NewGuid().ToString("N");
 
@@ -49,11 +34,11 @@ namespace Radial
                 do
                 {
                     if (nextLoop > 0)
-                        logger.Debug("[cycle: {0} loop: {1}] cycle start", cycleId, nextLoop);
+                        Logger.Get(typeof(Cycler)).Debug("[cycle: {0} loop: {1}] cycle start", cycleId, nextLoop);
 
                     if (!predicateFunc())
                     {
-                        logger.Debug("[cycle: {0} loop: {1}] cycle exited due to function return false", cycleId, nextLoop);
+                        Logger.Get(typeof(Cycler)).Debug("[cycle: {0} loop: {1}] cycle exited due to function return false", cycleId, nextLoop);
                         break;
                     }
 
@@ -61,18 +46,18 @@ namespace Radial
 
                     if (maxLoops.HasValue && nextLoop > maxLoops)
                     {
-                        logger.Debug("[cycle: {0} loop: {1}] cycle completed", cycleId, maxLoops);
+                        Logger.Get(typeof(Cycler)).Debug("[cycle: {0} loop: {1}] cycle completed", cycleId, maxLoops);
                         break;
                     }
 
-                    logger.Debug("[cycle: {0} next loop: {1}] execute again after waiting {2} ms", cycleId, nextLoop, waitMilliseconds);
+                    Logger.Get(typeof(Cycler)).Debug("[cycle: {0} next loop: {1}] execute again after waiting {2} ms", cycleId, nextLoop, waitMilliseconds);
                     Thread.Sleep(waitMilliseconds);
                 }
                 while (true);
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "[cycle: {0} loop: {1}] cycle terminated", cycleId, nextLoop);
+                Logger.Get(typeof(Cycler)).Error(ex, "[cycle: {0} loop: {1}] cycle terminated", cycleId, nextLoop);
             }
         }
 
@@ -82,19 +67,7 @@ namespace Radial
         /// <param name="predicateFunc">The predicate function, return true to circulate this function.</param>
         /// <param name="waitMilliseconds">The loop wait milliseconds.</param>
         /// <param name="maxLoops">The max loop times before function return true or stop until function return true if set to null.</param>
-        public static void ExecuteAsync(Func<bool> predicateFunc, int waitMilliseconds, int? maxLoops = null)
-        {
-            ExecuteAsync(predicateFunc, waitMilliseconds, maxLoops, null);
-        }
-
-        /// <summary>
-        /// Execute function asynchronous cyclically .
-        /// </summary>
-        /// <param name="predicateFunc">The predicate function, return true to circulate this function.</param>
-        /// <param name="waitMilliseconds">The loop wait milliseconds.</param>
-        /// <param name="maxLoops">The max loop times before function return true or stop until function return true if set to null.</param>
-        /// <param name="logger">The user specified log instance, if not set value, will use Logger.Default as default.</param>
-        public static void ExecuteAsync(Func<bool> predicateFunc, int waitMilliseconds, int? maxLoops, LogWriter logger)
+        public static void ExecuteAsync(Func<bool> predicateFunc, int waitMilliseconds, int? maxLoops)
         {
             if (predicateFunc == null)
                 return;
@@ -104,9 +77,6 @@ namespace Radial
 
             if (waitMilliseconds < 0)
                 waitMilliseconds = 0;
-
-            if (logger == null)
-                logger = Logger.Default;
 
             ThreadPool.QueueUserWorkItem(o =>
             {
@@ -119,11 +89,11 @@ namespace Radial
                     do
                     {
                         if (nextLoop > 0)
-                            logger.Debug("[cycle: {0} loop: {1}] cycle start", cycleId, nextLoop);
+                            Logger.Get(typeof(Cycler)).Debug("[cycle: {0} loop: {1}] cycle start", cycleId, nextLoop);
 
                         if (!predicateFunc())
                         {
-                            logger.Debug("[cycle: {0} loop: {1}] cycle exited due to function return false", cycleId, nextLoop);
+                            Logger.Get(typeof(Cycler)).Debug("[cycle: {0} loop: {1}] cycle exited due to function return false", cycleId, nextLoop);
                             break;
                         }
 
@@ -131,18 +101,18 @@ namespace Radial
 
                         if (maxLoops.HasValue && nextLoop > maxLoops)
                         {
-                            logger.Debug("[cycle: {0} loop: {1}] cycle completed", cycleId, maxLoops);
+                            Logger.Get(typeof(Cycler)).Debug("[cycle: {0} loop: {1}] cycle completed", cycleId, maxLoops);
                             break;
                         }
 
-                        logger.Debug("[cycle: {0} next loop: {1}] execute again after waiting {2} ms", cycleId, nextLoop, waitMilliseconds);
+                        Logger.Get(typeof(Cycler)).Debug("[cycle: {0} next loop: {1}] execute again after waiting {2} ms", cycleId, nextLoop, waitMilliseconds);
                         Thread.Sleep(waitMilliseconds);
                     }
                     while (true);
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex, "[cycle: {0} loop: {1}] cycle terminated", cycleId, nextLoop);
+                    Logger.Get(typeof(Cycler)).Error(ex, "[cycle: {0} loop: {1}] cycle terminated", cycleId, nextLoop);
                 }
             });
         }

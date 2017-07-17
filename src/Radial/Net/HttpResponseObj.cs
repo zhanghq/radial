@@ -63,7 +63,7 @@ namespace Radial.Net
                     }
                     catch (Exception ex)
                     {
-                        Logger.Default.Warn(ex);
+                        Logger.Warn(ex);
                     }
 
                     StreamReader sr = null;

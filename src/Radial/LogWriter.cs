@@ -11,11 +11,25 @@ namespace Radial
     /// </summary>
     public abstract class LogWriter
     {
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LogWriter"/> class.
         /// </summary>
-        /// <param name="logName">Name of the log.</param>
-        public LogWriter(string logName) { }
+        /// <param name="name">Name of the logger.</param>
+        public LogWriter(string name)
+        {
+            Checker.Parameter(!string.IsNullOrWhiteSpace(name), "logger name can not be empty or null.");
+
+            Name = name.Trim();
+        }
+
+        /// <summary>
+        /// Gets the name of the logger.
+        /// </summary>
+        /// <value>
+        /// The name of the logger.
+        /// </value>
+        public string Name { get; private set; }
 
         /// <summary>
         /// Writes a log with the Debug level.

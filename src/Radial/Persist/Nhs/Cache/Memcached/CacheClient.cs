@@ -14,7 +14,7 @@ namespace Radial.Persist.Nhs.Cache.Memcached
     {
         IMemcachedClient _enyimClient;
 
-        static readonly IInternalLogger Logger = LoggerProvider.LoggerFor(typeof(CacheClient));
+        static readonly IInternalLogger Logger = NHibernate.LoggerProvider.LoggerFor(typeof(CacheClient));
 
         string _regionName;
         string _region_prefix;

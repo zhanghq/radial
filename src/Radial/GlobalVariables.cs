@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace Radial
@@ -30,7 +31,6 @@ namespace Radial
         public static string[] ImageFileExtensions = new string[] { ".jpg", ".jpeg", ".jfif", ".gif", ".bmp", ".png", ".tif", ".tiff" };
 
 
-
         /// <summary>
         /// Gets the physical path of configuration file.
         /// </summary>
@@ -39,7 +39,10 @@ namespace Radial
         public static string GetConfigPath(string filePath)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(filePath), "configuration file path can not be empty or null.");
-            return Path.Combine(ConfigDirectory, filePath.Trim('\\', ' '));
+
+            filePath=filePath.Trim('\\', '~', '/', ' ').Replace('/', Path.PathSeparator);
+
+            return Path.Combine(ConfigDirectory, filePath);
         }
 
         /// <summary>
@@ -50,7 +53,10 @@ namespace Radial
         public static string GetPath(string filePath)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(filePath), "file path can not be empty or null.");
-            return Path.Combine(BaseDirectory, filePath.Trim('\\', ' '));
+
+            filePath = filePath.Trim('\\', '~', '/', ' ').Replace('/', Path.PathSeparator);
+
+            return Path.Combine(BaseDirectory, filePath);
         }
     }
 }

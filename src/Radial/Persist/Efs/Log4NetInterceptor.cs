@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity.Infrastructure.Interception;
+using Microsoft.Practices.Unity;
+using System.Data.Entity;
 
 namespace Radial.Persist.Efs
 {
@@ -11,16 +13,6 @@ namespace Radial.Persist.Efs
     /// <seealso cref="System.Data.Entity.Infrastructure.Interception.IDbCommandInterceptor" />
     public class Log4NetInterceptor : IDbCommandInterceptor
     {
-        const string LogWriterName = "EntityFramwork";
-        LogWriter _logger;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Log4NetInterceptor"/> class.
-        /// </summary>
-        public Log4NetInterceptor()
-        {
-            _logger = Logger.New(LogWriterName);
-        }
 
         /// <summary>
         /// Renders the log.
@@ -31,17 +23,41 @@ namespace Radial.Persist.Efs
         private void RenderLog<T>(DbCommand command, DbCommandInterceptionContext<T> interceptionContext)
         {
             List<string> ps = new List<string>();
+
             foreach (DbParameter p in command.Parameters)
-                ps.Add(string.Format("{0}='{1}' [Type={2}, Size={3}, Direction={4}]", p.ParameterName, p.Value.ToString(),
-                    p.DbType.ToString(), p.Size, p.Direction.ToString()));
+            {
+                if (p != null && (p.Direction == System.Data.ParameterDirection.Input || p.Direction == System.Data.ParameterDirection.InputOutput))
+                {
+                    object pValue = null;
+
+                    switch (p.DbType)
+                    {
+                        case System.Data.DbType.AnsiString:
+                        case System.Data.DbType.AnsiStringFixedLength:
+                        case System.Data.DbType.Date:
+                        case System.Data.DbType.DateTime:
+                        case System.Data.DbType.DateTime2:
+                        case System.Data.DbType.DateTimeOffset:
+                        case System.Data.DbType.Guid:
+                        case System.Data.DbType.String:
+                        case System.Data.DbType.StringFixedLength:
+                        case System.Data.DbType.Time:
+                        case System.Data.DbType.Xml:
+                            pValue = string.Format("'{0}'", p.Value); break;
+                        default: pValue = p.Value; break;
+                    }
+
+                    ps.Add(string.Format("{0}={1} [Type={2}, Size={3}]", p.ParameterName, pValue, p.DbType, p.Size));
+                }
+            }
 
             string txt = string.Format("{0} -- {1}", command.CommandText.Replace(Environment.NewLine, ""),
                 string.Join("; ", ps.ToArray())).Trim('-', ' ');
 
             if (interceptionContext.OriginalException != null)
-                _logger.Fatal(interceptionContext.OriginalException, txt);
+                Logger.Get<Log4NetInterceptor>().Error(interceptionContext.OriginalException, txt);
             else
-                _logger.Info(txt);
+                Logger.Get<Log4NetInterceptor>().Debug(txt);
         }
 
         /// <summary>

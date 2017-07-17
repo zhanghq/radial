@@ -24,16 +24,5 @@ namespace Radial.Persist.Efs
         {
             return ((IObjectContextAdapter)context).ObjectContext;
         }
-
-
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns></returns>
-        public static LogWriter GetLogger(this DbContext context)
-        {
-            return Logger.New("EntityFramework");
-        }
     }
 }

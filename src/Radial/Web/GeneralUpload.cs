@@ -253,7 +253,7 @@ namespace Radial.Web
             }
             catch (Exception ex)
             {
-                Logger.Default.Error(ex, "General Upload Error");
+                Logger.Error(ex, "General Upload Error");
 
                 if (ex is UnauthorizedAccessException)
                     return new UploadResult { State = UploadState.PermissionDenied };
@@ -315,7 +315,7 @@ namespace Radial.Web
             }
             catch (Exception ex)
             {
-                Logger.Default.Error(ex, "General Upload Error");
+                Logger.Error(ex, "General Upload Error");
 
                 if (ex is UnauthorizedAccessException)
                     return new UploadResult { State = UploadState.PermissionDenied };
@@ -386,7 +386,7 @@ namespace Radial.Web
             }
             catch (Exception ex)
             {
-                Logger.Default.Error(ex, "General Upload Error");
+                Logger.Error(ex, "General Upload Error");
 
                 if (ex is UnauthorizedAccessException)
                     return new UploadResult { State = UploadState.PermissionDenied };

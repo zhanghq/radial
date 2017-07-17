@@ -101,7 +101,7 @@ namespace Radial.Net
         {
             get
             {
-                return Logger.New("SmtpMail");
+                return Logger.Get("SmtpMail");
             }
         }
 

@@ -109,7 +109,7 @@ namespace Radial
                 if (S_File_Reload_Dict.ContainsKey(file))
                 {
                     S_File_Reload_Dict[file].BeginInvoke(file, null, null);
-                    Logger.New("FileWatcher").Debug("file changed: {0}", file);
+                    Logger.Get("FileWatcher").Debug("file changed: {0}", file);
                 }
             }
         }

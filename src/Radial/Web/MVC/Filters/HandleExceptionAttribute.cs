@@ -65,7 +65,7 @@ namespace Radial.Web.Mvc.Filters
         /// <param name="filterContext">The action-filter context.</param>
         public override void OnException(ExceptionContext filterContext)
         {
-            Logger.Default.Fatal(filterContext.Exception);
+            Logger.Fatal(filterContext.Exception);
 
             KnownFaultException hkfe = filterContext.Exception as KnownFaultException;
 

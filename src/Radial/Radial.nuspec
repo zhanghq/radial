@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Radial</id>
+    <version>2.4.0.3</version>
+    <title>Radial</title>
+    <authors>Ethan Zhang</authors>
+    <owners>ethansh </owners>
+    <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
+    <projectUrl>https://github.com/zhanghq/radial</projectUrl>
+    <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>
+      <![CDATA[ Radial is a lightweight c# framework licensed under LGPL. It is designed to improve developers working efficiency, more convenient and efficient to build applications.It integrated with many components: 
+
+• Dependency Injection (based on Unity) 
+• Json (install Newtonsoft.Json first) 
+• Serialization (Json, Xml, Binary) 
+• Logging (based on log4net) 
+• Caching (in-memory, or install EnyimMemcached first) 
+• Persistence (install NHibernate first) 
+• Web & Network (include MVC extensions, install Microsoft.AspNet.Mvc and Microsoft.AspNet.WebApi first) 
+• Parameter (an easy way to store settings in xml or database) 
+• ExcelTools (install EPPlus first) 
+• Drawing (Captcha, ImageKits) 
+• And Others... ]]>
+    </description>
+    <releaseNotes></releaseNotes>
+    <copyright>Licensed Under LGPL</copyright>
+    <tags></tags>
+  </metadata>
+</package>

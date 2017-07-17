@@ -1,4 +1,6 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System;
+using System.Collections.Specialized;
+using Microsoft.Practices.Unity;
 using Quartz;
 using Quartz.Impl;
 using Radial.Boot;
@@ -13,7 +15,8 @@ namespace Radial.Test.Mvc
         IJobDetail testJob;
         ITrigger testTrigger;
 
-        public void Initialize()
+
+        public void Initialize(NameValueCollection args)
         {
             Dependency.Container.RegisterType<IParam, KvParam>();
 

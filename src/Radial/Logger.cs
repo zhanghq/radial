@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Practices.Unity;
 
-
 namespace Radial
 {
     /// <summary>
@@ -10,69 +9,209 @@ namespace Radial
     public sealed class Logger
     {
         /// <summary>
-        /// The default log name
+        /// Retrieve or create a specified logger writer.
         /// </summary>
-        public const string DefaultName = "Default";
-
-        /// <summary>
-        /// Gets the default log instance.
-        /// </summary>
-        public static LogWriter Default
+        /// <param name="name">Name of the logger.</param>
+        /// <returns>logger writer instance.</returns>
+        public static LogWriter Get(string name)
         {
-            get
-            {
-                return New(DefaultName);
-            }
-        }
+            Checker.Parameter(!string.IsNullOrWhiteSpace(name), "logger name can not be empty or null.");
 
-        /// <summary>
-        /// Create a new instance with the specified log name.
-        /// </summary>
-        /// <param name="logName">The log name.</param>
-        /// <returns>log instance.</returns>
-        public static LogWriter New(string logName)
-        {
-            if (string.IsNullOrWhiteSpace(logName))
-                logName = DefaultName;
+            name = name.Trim();
 
-            logName = logName.Trim();
+            var instanceLoggerName = string.Format("__LogWriter_{0}__", name);
 
-            var instanceLogName = string.Format("__LogName_{0}__", logName);
+            if (Dependency.Container.IsRegistered<LogWriter>(instanceLoggerName))
+                return Dependency.Container.Resolve<LogWriter>(instanceLoggerName);
 
-            if (Dependency.Container.IsRegistered<LogWriter>(instanceLogName))
-                return Dependency.Container.Resolve<LogWriter>(instanceLogName);
+            LogWriter instance = null;
 
             if (Dependency.Container.IsRegistered<LogWriter>())
-            {
-                var instance = Dependency.Container.Resolve<LogWriter>(new ParameterOverride("logName", logName));
+                instance = Dependency.Container.Resolve<LogWriter>(new ParameterOverride("name", name));
 
-                if (instance != null)
-                    Dependency.Container.RegisterInstance(instanceLogName, instance, new ContainerControlledLifetimeManager());
+            if (instance != null)
+                Dependency.Container.RegisterInstance(instanceLoggerName, instance, new ContainerControlledLifetimeManager());
+            else
+                instance = new Logging.EmptyWriter(name);
 
-                return instance;
-            }
-
-            return new Log4NetWriter(logName);
+            return instance;
         }
 
         /// <summary>
-        /// Create a new instance with the specified log type.
+        /// Retrieve or create a specified logger writer.
         /// </summary>
-        /// <param name="logType">The log type.</param>
-        /// <returns>log instance.</returns>
-        public static LogWriter New(Type logType)
+        /// <param name="type">Type of the logger.</param>
+        /// <returns>
+        /// logger writer instance.
+        /// </returns>
+        public static LogWriter Get(Type type)
         {
-            return New(logType.Name);
+            Checker.Parameter(type != null, "logger type can not be  null.");
+
+            return Get(type.FullName);
         }
 
         /// <summary>
-        /// Create a new instance with the specified log type.
+        /// Retrieve or create a specified logger writer.
         /// </summary>
-        /// <typeparam name="T">the type.</typeparam>
-        /// <returns>log instance.</returns>
-        public static LogWriter New<T>()
+        /// <typeparam name="T">Type of the logger.</typeparam>
+        /// <returns>logger writer instance.</returns>
+        public static LogWriter Get<T>()
         {
-            return New(typeof(T));
+            return Get(typeof(T));
         }
+
+
+        /// <summary>
+        /// Writes a log with the Debug level using default logger name.
+        /// </summary>
+        /// <param name="format">The message format.</param>
+        /// <param name="args">The message arguments.</param>
+        public static void Debug(string format, params object[] args)
+        {
+            Get<Logger>().Debug(format, args);
+        }
+
+        /// <summary>
+        /// Writes a log with the Debug level using default logger name.
+        /// </summary>
+        /// <param name="exception">The exception obj.</param>
+        public static void Debug(Exception exception)
+        {
+            Get<Logger>().Debug(exception);
+        }
+
+        /// <summary>
+        /// Writes a log with the Debug level using default logger name.
+        /// </summary>
+        /// <param name="exception">The exception obj.</param>
+        /// <param name="format">The message format.</param>
+        /// <param name="args">The message arguments.</param>
+        public static void Debug(Exception exception, string format, params object[] args)
+        {
+            Get<Logger>().Debug(exception, format, args);
+        }
+
+
+        /// <summary>
+        /// Writes a log with the Info level using default logger name.
+        /// </summary>
+        /// <param name="format">The message format.</param>
+        /// <param name="args">The message arguments.</param>
+        public static void Info(string format, params object[] args)
+        {
+            Get<Logger>().Info(format, args);
+        }
+
+        /// <summary>
+        /// Writes a log with the Info level using default logger name.
+        /// </summary>
+        /// <param name="exception">The exception obj.</param>
+        public static void Info(Exception exception)
+        {
+            Get<Logger>().Info(exception);
+        }
+
+        /// <summary>
+        /// Writes a log with the Info level using default logger name.
+        /// </summary>
+        /// <param name="exception">The exception obj.</param>
+        /// <param name="format">The message format.</param>
+        /// <param name="args">The message arguments.</param>
+        public static void Info(Exception exception, string format, params object[] args)
+        {
+            Get<Logger>().Info(exception, format, args);
+        }
+
+        /// <summary>
+        /// Writes a log with the Warn level using default logger name.
+        /// </summary>
+        /// <param name="format">The message format.</param>
+        /// <param name="args">The message arguments.</param>
+        public static void Warn(string format, params object[] args)
+        {
+            Get<Logger>().Warn(format, args);
+        }
+
+        /// <summary>
+        /// Writes a log with the Warn level using default logger name.
+        /// </summary>
+        /// <param name="exception">The exception obj.</param>
+        public static void Warn(Exception exception)
+        {
+            Get<Logger>().Warn(exception);
+        }
+
+        /// <summary>
+        /// Writes a log with the Warn level using default logger name.
+        /// </summary>
+        /// <param name="exception">The exception obj.</param>
+        /// <param name="format">The message format.</param>
+        /// <param name="args">The message arguments.</param>
+        public static void Warn(Exception exception, string format, params object[] args)
+        {
+            Get<Logger>().Warn(exception, format, args);
+        }
+
+        /// <summary>
+        /// Writes a log with the Error level using default logger name.
+        /// </summary>
+        /// <param name="format">The message format.</param>
+        /// <param name="args">The message arguments.</param>
+        public static void Error(string format, params object[] args)
+        {
+            Get<Logger>().Error(format, args);
+        }
+
+        /// <summary>
+        /// Logs a message string with the Error level using default logger name.
+        /// </summary>
+        /// <param name="exception">The exception obj.</param>
+        public static void Error(Exception exception)
+        {
+            Get<Logger>().Error(exception);
+        }
+
+        /// <summary>
+        /// Writes a log with the Error level using default logger name.
+        /// </summary>
+        /// <param name="exception">The exception obj.</param>
+        /// <param name="format">The message format.</param>
+        /// <param name="args">The message arguments.</param>
+        public static void Error(Exception exception, string format, params object[] args)
+        {
+            Get<Logger>().Error(exception, format, args);
+        }
+
+        /// <summary>
+        /// Writes a log with the Fatal level using default logger name.
+        /// </summary>
+        /// <param name="format">The message format.</param>
+        /// <param name="args">The message arguments.</param>
+        public static void Fatal(string format, params object[] args)
+        {
+            Get<Logger>().Fatal(format, args);
+        }
+
+        /// <summary>
+        /// Writes a log with the Fatal level using default logger name.
+        /// </summary>
+        /// <param name="exception">The exception obj.</param>
+        public static void Fatal(Exception exception)
+        {
+            Get<Logger>().Fatal(exception);
+        }
+
+        /// <summary>
+        /// Writes a log with the Fatal level using default logger name.
+        /// </summary>
+        /// <param name="exception">The exception obj.</param>
+        /// <param name="format">The message format.</param>
+        /// <param name="args">The message arguments.</param>
+        public static void Fatal(Exception exception, string format, params object[] args)
+        {
+            Get<Logger>().Fatal(exception, format, args);
+        }
+
     }
 }

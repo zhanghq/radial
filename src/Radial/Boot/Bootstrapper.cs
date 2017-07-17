@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using Radial.Boot.Cfg;
+using System.Collections.Specialized;
+using System.Web.Configuration;
+using System.Web;
 
 namespace Radial.Boot
 {
@@ -13,10 +16,17 @@ namespace Radial.Boot
     {
         static object SyncRoot = new object();
 
-        static List<KeyValuePair<int, IBootTask>> Tasks = new List<KeyValuePair<int, IBootTask>>();
-        static List<KeyValuePair<int, IBootTask>> ReversedTasks = new List<KeyValuePair<int, IBootTask>>();
+        static List<BootTaskInstance> Tasks = new List<BootTaskInstance>();
+        static List<BootTaskInstance> ReversedTasks = new List<BootTaskInstance>();
 
         static bool Initialized = false;
+
+        class BootTaskInstance
+        {
+           public IBootTask Instance { get; set; }
+           public int Priority { get; set; }
+           public NameValueCollection Arguments { get; set; }
+        }
 
         /// <summary>
         /// Gets a value indicating whether system is successful initialized.
@@ -39,17 +49,9 @@ namespace Radial.Boot
         /// Registers boot task.
         /// </summary>
         /// <param name="task">The boot task.</param>
-        public static void RegisterTask(IBootTask task)
-        {
-            RegisterTask(task, 0);
-        }
-
-        /// <summary>
-        /// Registers boot task.
-        /// </summary>
-        /// <param name="task">The boot task.</param>
+        /// <param name="args">The arguments.</param>
         /// <param name="priority">The priority.</param>
-        public static void RegisterTask(IBootTask task, int priority)
+        public static void RegisterTask(IBootTask task, NameValueCollection args = null, int priority = 0)
         {
             lock (SyncRoot)
             {
@@ -57,9 +59,10 @@ namespace Radial.Boot
 
                 if (task != null)
                 {
-                    Checker.Requires(!Tasks.Contains(o => o.Value.GetType() == task.GetType()), "duplicated boot task: {0}", task.GetType().FullName);
+                    Checker.Requires(!Tasks.Contains(o => o.Instance.GetType() == task.GetType()),
+                        "duplicated boot task: {0}", task.GetType().FullName);
 
-                    Tasks.Add(new KeyValuePair<int, IBootTask>(priority, task));
+                    Tasks.Add(new BootTaskInstance { Priority = priority, Instance = task, Arguments = args });
                 }
             }
         }
@@ -73,6 +76,7 @@ namespace Radial.Boot
             {
                 if (Initialized)
                     return;
+
 
                 BootTaskSection section = ConfigurationManager.GetSection("boot") as BootTaskSection;
 
@@ -91,29 +95,30 @@ namespace Radial.Boot
 
                         if (task != null)
                         {
-                            Checker.Requires(!Tasks.Contains(o => o.Value.GetType() == task.GetType()), "duplicated boot task: {0}", task.GetType().FullName);
+                            Checker.Requires(!Tasks.Contains(o => o.Instance.GetType() == task.GetType()), 
+                                "duplicated boot task: {0}", task.GetType().FullName);
 
-                            Tasks.Add(new KeyValuePair<int, IBootTask>(e.Priority, task));
+                            Tasks.Add(new BootTaskInstance { Priority = e.Priority, Instance = task, Arguments = e.GetArgumentCollection() });
                         }
                     }
                 }
 
                 //The larger value the higher priority
-                Tasks.Sort((a, b) =>
+                Tasks.Sort((a,b) =>
                 {
-                    if (a.Key > b.Key)
+                    if (a.Priority > b.Priority)
                         return -1;
 
-                    if (a.Key < b.Key)
+                    if (a.Priority < b.Priority)
                         return 1;
 
                     return 0;
                 });
 
-                ReversedTasks = new List<KeyValuePair<int, IBootTask>>(Tasks.Reverse<KeyValuePair<int, IBootTask>>());
+                ReversedTasks = new List<BootTaskInstance>(Tasks.Reverse<BootTaskInstance>());
 
                 //higher priority initialize first
-                Tasks.ForEach(o => o.Value.Initialize());
+                Tasks.ForEach(o => o.Instance.Initialize(o.Arguments));
 
                 Initialized = true;
             }
@@ -129,7 +134,7 @@ namespace Radial.Boot
                 //higher priority start first
                 if (Initialized)
                 {
-                    Tasks.ForEach(o => o.Value.Start());
+                    Tasks.ForEach(o => o.Instance.Start());
                 }
 
             }
@@ -145,7 +150,7 @@ namespace Radial.Boot
                 //higher priority stop last
                 if (Initialized)
                 {
-                    ReversedTasks.ForEach(o => o.Value.Stop());
+                    ReversedTasks.ForEach(o => o.Instance.Stop());
                 }
             }
         }

@@ -10,7 +10,8 @@ namespace Radial.Boot.Cfg
         /// <summary>
         /// Gets the boot tasks.
         /// </summary>
-        [ConfigurationProperty("tasks", Options = ConfigurationPropertyOptions.IsDefaultCollection | ConfigurationPropertyOptions.IsRequired)]
+        [ConfigurationProperty("tasks", IsRequired = true)]
+        [ConfigurationCollection(typeof(BootTaskElementCollection), AddItemName = "task")]
         public BootTaskElementCollection Tasks
         {
             get

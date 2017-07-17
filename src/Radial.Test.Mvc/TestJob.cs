@@ -7,7 +7,7 @@ namespace Radial.Test.Mvc
     {
         public void Execute(IJobExecutionContext context)
         {
-            Logger.Default.Info("Test Job, {0}", DateTime.Now);
+            Logger.Info("Test Job, {0}", DateTime.Now);
         }
     }
 }

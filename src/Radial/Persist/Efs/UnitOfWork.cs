@@ -92,7 +92,7 @@ namespace Radial.Persist.Efs
                 {
                     _dbContext.Database.CurrentTransaction.Rollback();
 
-                    _dbContext.GetLogger().Fatal(ex);
+                    Logger.Get<UnitOfWork>().Fatal(ex);
 
                     throw;
                 }

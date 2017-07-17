@@ -64,7 +64,7 @@ namespace Radial.Web.Http.Filters
         /// <param name="actionExecutedContext">The HttpActionExecutedContext object.</param>
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
-            Logger.Default.Fatal(actionExecutedContext.Exception);
+            Logger.Fatal(actionExecutedContext.Exception);
 
 
             KnownFaultException hkfe = actionExecutedContext.Exception as KnownFaultException;

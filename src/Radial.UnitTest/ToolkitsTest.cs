@@ -20,24 +20,24 @@ namespace Radial.UnitTest
             });
         }
 
-        [Test]
-        public void GetGeoInfo()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                var geo = Toolkits.GetGeoInfo("5" + i + ".246.87.15" + i);
-                if (geo != null)
-                    Console.WriteLine("{0}, {1}, {2}", geo.Country, geo.Division, geo.City);
-            }
-        }
+        //[Test]
+        //public void GetGeoInfo()
+        //{
+        //    for (int i = 0; i < 10; i++)
+        //    {
+        //        var geo = Toolkits.GetGeoInfo("5" + i + ".246.87.15" + i);
+        //        if (geo != null)
+        //            Console.WriteLine("{0}, {1}, {2}", geo.Country, geo.Division, geo.City);
+        //    }
+        //}
 
-        [Test]
-        public void WriteLog()
-        {
-            Dependency.Container.RegisterType<LogWriter, Log4NetWriter>();
-            Logger.Default.Info("adcd");
-            Logger.New(typeof(Toolkits)).Info("adcd");
-            Logger.New(typeof(Toolkits)).Info("adcd2");
-        }
+        //[Test]
+        //public void WriteLog()
+        //{
+        //    Dependency.Container.RegisterType<LogWriter, Log4NetWriter>();
+        //    Logger.Default.Info("adcd");
+        //    Logger.New(typeof(Toolkits)).Info("adcd");
+        //    Logger.New(typeof(Toolkits)).Info("adcd2");
+        //}
     }
 }

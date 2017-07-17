@@ -119,7 +119,7 @@ namespace Radial
         /// <returns>int array of ip string.</returns>
         private static int[] ToIntArray(string ip)
         {
-            Checker.Requires(Validator.IsIP(ip), "ip format is incorrect:{0}.", ip);
+            Checker.Requires(Validator.IsIPv4(ip), "ip format is incorrect:{0}.", ip);
 
             ip = ip.Trim();
 
@@ -146,9 +146,9 @@ namespace Radial
         /// <returns><c>true</c> if the input ip string is in range ; otherwise, <c>false</c>.</returns>
         public static bool IsIncludedInScope(string ip, string beginIp, string endIp)
         {
-            Checker.Requires(Validator.IsIP(ip), "ip format is incorrect:{0}.", ip);
-            Checker.Requires(Validator.IsIP(beginIp), "beginIp format is incorrect:{0}.", beginIp);
-            Checker.Requires(Validator.IsIP(endIp), "endIp format is incorrect:{0}.", endIp);
+            Checker.Requires(Validator.IsIPv4(ip), "ip format is incorrect:{0}.", ip);
+            Checker.Requires(Validator.IsIPv4(beginIp), "beginIp format is incorrect:{0}.", beginIp);
+            Checker.Requires(Validator.IsIPv4(endIp), "endIp format is incorrect:{0}.", endIp);
 
             ip = ip.Trim();
             beginIp = beginIp.Trim();
@@ -538,48 +538,6 @@ namespace Radial
 
             return c;
         }
-
-        /// <summary>
-        /// Gets the Geo information based on ip address.
-        /// </summary>
-        /// <param name="ipAddress">The ip address.</param>
-        /// <returns>If no location matched return null, otherwise return the Geo information based on ip address.</returns>
-        public static GeoInfo GetGeoInfo(string ipAddress)
-        {
-            Checker.Parameter(Validator.IsIP(ipAddress), "ip address format error: {0}", ipAddress);
-
-            string serverUrl = string.Format("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip={0}", ipAddress.Trim());
-
-            GeoInfo geo = null;
-
-            HttpResponseObj resp = HttpWebClient.Get(serverUrl);
-
-            if (resp.Code == System.Net.HttpStatusCode.OK)
-            {
-                try
-                {
-                    dynamic obj = Serialization.JsonSerializer.Deserialize<dynamic>(resp.Text);
-
-                    if (obj != null && obj.ret != null && obj.ret == 1)
-                    {
-                        geo = new GeoInfo();
-                        if (obj.country != null)
-                            geo.Country = obj.country;
-                        if (obj.province != null)
-                            geo.Division = obj.province;
-                        if (obj.city != null)
-                            geo.City = obj.city;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Default.Warn(ex, "GetGeoInfo response: {0}", resp.Text);
-                }
-            }
-
-            return geo;
-        }
-
 
         /// <summary>
         /// Determines whether the specified file is image.

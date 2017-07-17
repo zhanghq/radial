@@ -50,7 +50,7 @@ namespace Radial.Persist
             if (!Dependency.Container.IsRegistered<TRepository>())
             {
                 var repoType = typeof(TRepository);
-                Logger.Default.Debug("no instance of {0} type has been registered, try to create anonymous repository", repoType.FullName);
+                Logger.Debug("no instance of {0} type has been registered, try to create anonymous repository", repoType.FullName);
 
                 AnonymousRepository <TRepository> drepo = new AnonymousRepository<TRepository>(uow);
 

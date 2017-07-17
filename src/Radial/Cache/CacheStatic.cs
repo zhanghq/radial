@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Practices.Unity;
 using Radial.Serialization;
 using Radial.Security;
+using Radial.Logging;
 
 namespace Radial.Cache
 {
@@ -22,14 +23,6 @@ namespace Radial.Cache
                 if (!Dependency.Container.IsRegistered<ICache>())
                     return new EmptyCache();
                 return Dependency.Container.Resolve<ICache>();
-            }
-        }
-
-        private static LogWriter Log
-        {
-            get
-            {
-                return Logger.New(typeof(CacheStatic));
             }
         }
 
@@ -71,7 +64,7 @@ namespace Radial.Cache
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Logger.Get(typeof(CacheStatic)).Error(ex);
             }
         }
 
@@ -89,7 +82,7 @@ namespace Radial.Cache
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Logger.Get(typeof(CacheStatic)).Error(ex);
             }
 
             return null;
@@ -129,7 +122,7 @@ namespace Radial.Cache
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Logger.Get(typeof(CacheStatic)).Error(ex);
             }
         }
 
@@ -148,7 +141,7 @@ namespace Radial.Cache
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Logger.Get(typeof(CacheStatic)).Error(ex);
             }
         }
 
@@ -164,7 +157,7 @@ namespace Radial.Cache
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Logger.Get(typeof(CacheStatic)).Error(ex);
             }
         }
 
@@ -180,7 +173,7 @@ namespace Radial.Cache
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Logger.Get(typeof(CacheStatic)).Error(ex);
             }
 
             return new string[] { };

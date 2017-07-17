@@ -133,26 +133,26 @@ namespace Radial
         #region Validate IP
 
         /// <summary>
-        /// Determines whether the specified source is IP.
+        /// Determines whether the specified source is IPv4.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>
         ///   <c>true</c> if the specified source is IP; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsIP(string source)
+        public static bool IsIPv4(string source)
         {
             if (string.IsNullOrWhiteSpace(source))
                 return false;
             return Regex.IsMatch(source.Trim(), @"^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$", RegexOptions.IgnoreCase);
         }
         /// <summary>
-        /// Determines whether the specified source has IP.
+        /// Determines whether the specified source has IPv4.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>
         ///   <c>true</c> if the specified source has IP; otherwise, <c>false</c>.
         /// </returns>
-        public static bool HasIP(string source)
+        public static bool HasIPv4(string source)
         {
             if (string.IsNullOrWhiteSpace(source))
                 return false;

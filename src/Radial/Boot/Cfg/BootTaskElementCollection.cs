@@ -7,7 +7,6 @@ namespace Radial.Boot.Cfg
     /// </summary>
     public sealed class BootTaskElementCollection : ConfigurationElementCollection
     {
-
         /// <summary>
         /// When overridden in a derived class, creates a new <see cref="T:System.Configuration.ConfigurationElement" />.
         /// </summary>

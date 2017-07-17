@@ -11,6 +11,12 @@ namespace Radial.Param
     /// </summary>
     public class XmlParam : IParam
     {
+
+        /// <summary>
+        /// The Xml namespace.
+        /// </summary>
+        public const string XmlNs = "urn:jr-trc-xmlparam";
+
         static object SyncRoot = new object();
 
         static XElement S_Root;
@@ -38,17 +44,6 @@ namespace Radial.Param
         }
 
         /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        private static LogWriter Log
-        {
-            get
-            {
-                return Logger.New("XmlParam");
-            }
-        }
-
-        /// <summary>
         /// Initials the specified config file path.
         /// </summary>
         /// <param name="configFilePath">The config file path.</param>
@@ -60,14 +55,14 @@ namespace Radial.Param
                 XDocument doc = null;
                 if (!File.Exists(configFilePath))
                 {
-                    Log.Debug("create new xmlparam settings");
+                    Logger.Get<XmlParam>().Debug("create new xmlparam settings");
                     doc = new XDocument();
                     doc.Add(new XElement(BuildXName("params")));
                     doc.Save(configFilePath);
                 }
                 else
                 {
-                    Log.Debug("load exists xmlparam settings");
+                    Logger.Get<XmlParam>().Debug("load exists xmlparam settings");
                     doc = XDocument.Load(configFilePath);
                 }
 
@@ -85,7 +80,7 @@ namespace Radial.Param
         private static XName BuildXName(string name)
         {
             Checker.Parameter(!string.IsNullOrWhiteSpace(name), "name can not be empty or null");
-            XNamespace ns = ParamObject.XmlNs;
+            XNamespace ns = XmlNs;
             return ns + name;
         }
 

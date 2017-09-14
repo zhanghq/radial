@@ -7,12 +7,26 @@ namespace Radial
     /// Search criteria.
     /// </summary>
     /// <typeparam name="TFilter">The type of the filter.</typeparam>
-    public class SearchCriteria<TFilter> where TFilter : class
+    public class SearchCriteria<TFilter> where TFilter : ISearchFilter
     {
+        TFilter filter;
+
         /// <summary>
         /// Gets or sets the filter.
         /// </summary>
-        public TFilter Filter { get; set; }
+        public TFilter Filter
+        {
+            get
+            {
+                return filter;
+            }
+            set
+            {
+                if (value != null)
+                    value.AssertValid();
+                filter = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the size of the page if pageable.
@@ -58,7 +72,7 @@ namespace Radial
     /// <typeparam name="TFilter">The type of the filter.</typeparam>
     /// <typeparam name="TOrderBy">The type of the order by.</typeparam>
     public class SearchCriteria<TFilter, TOrderBy> : SearchCriteria<TFilter>
-        where TFilter : class
+        where TFilter : ISearchFilter
         where TOrderBy : IObjectOrderBy
     {
 

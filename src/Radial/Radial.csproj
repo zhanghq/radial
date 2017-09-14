@@ -149,6 +149,7 @@
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />
     <Compile Include="Cache\IClusterRegion.cs" />
     <Compile Include="Dependency.cs" />
+    <Compile Include="ISearchFilter.cs" />
     <Compile Include="Logging\EmptyWriter.cs" />
     <Compile Include="Logging\Log4NetWriter.cs" />
     <Compile Include="LogWriter.cs" />
@@ -213,10 +214,9 @@
     <Compile Include="Persist\Lite\Query\MySqlQuery.cs" />
     <Compile Include="Persist\Lite\Query\SqliteQuery.cs" />
     <Compile Include="Persist\Lite\Query\SqlServerQuery.cs" />
+    <Compile Include="Persist\Lite\FieldData.cs" />
     <Compile Include="Persist\Lite\RowData.cs" />
-    <Compile Include="Persist\Lite\RowDataCollection.cs" />
     <Compile Include="Persist\Lite\SqlQuery.cs" />
-    <Compile Include="Persist\Lite\TextCommandData.cs" />
     <Compile Include="Persist\Nhs\BasicRepository.cs" />
     <Compile Include="Persist\Nhs\Cache\Memcached\CacheClient.cs" />
     <Compile Include="Persist\Nhs\Cache\Memcached\CacheProvider.cs" />
@@ -235,7 +235,6 @@
     <Compile Include="Persist\Nhs\NativeQuery.cs" />
     <Compile Include="Persist\Nhs\IdentityGenerator.cs" />
     <Compile Include="RegisterInterfaceAttribute.cs" />
-    <Compile Include="Serialization\BsonSerializer.cs" />
     <Compile Include="Serialization\SerializeFormat.cs" />
     <Compile Include="Cache\CacheStatic.cs" />
     <Compile Include="Cache\EmptyCache.cs" />

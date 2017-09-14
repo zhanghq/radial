@@ -14,12 +14,12 @@ namespace Radial.Persist.Lite
     {
         #region Fields
 
-        DataSource _ds;
-        DbConnection _connection;
-        DbTransaction _transaction;
-        SqlQuery _sqlQuery;
+        DataSource ds;
+        DbConnection connection;
+        DbTransaction transaction;
+        SqlQuery sqlQuery;
 
-        int _commandTimeout=30;//default 30 seconds
+        int commandTimeout = 30;//default 30 seconds
 
         #endregion
 
@@ -91,7 +91,7 @@ namespace Radial.Persist.Lite
             ConnectionElement settings = section.Connections[settingsName];
             if (settings == null)
                 throw new ArgumentException("无法找到名称为\"" + settingsName + "\"的数据库设置");
-            
+
             string connectionString = settings.ConnectionString;
 
             if (substitution != null)
@@ -108,46 +108,6 @@ namespace Radial.Persist.Lite
         public DbSession(string connectionString, DataSource ds)
         {
             Initialize(connectionString, ds);
-        }
-
-        /// <summary>
-        /// 新建SqlServer数据会话
-        /// </summary>
-        /// <param name="connectionString">连接字符串</param>
-        /// <returns>数据会话对象</returns>
-        public static DbSession NewSqlServerSession(string connectionString)
-        {
-            return new DbSession(connectionString, DataSource.SqlServer);
-        }
-
-        /// <summary>
-        /// 新建MySql数据会话
-        /// </summary>
-        /// <param name="connectionString">连接字符串</param>
-        /// <returns>数据会话对象</returns>
-        public static DbSession NewMySqlSession(string connectionString)
-        {
-            return new DbSession(connectionString, DataSource.MySql);
-        }
-
-        /// <summary>
-        /// 新建MsAccess数据会话
-        /// </summary>
-        /// <param name="connectionString">连接字符串</param>
-        /// <returns>数据会话对象</returns>
-        public static DbSession NewMsAccessSession(string connectionString)
-        {
-            return new DbSession(connectionString, DataSource.MsAccess);
-        }
-
-        /// <summary>
-        /// 新建Sqlite数据会话
-        /// </summary>
-        /// <param name="connectionString">连接字符串</param>
-        /// <returns>数据会话对象</returns>
-        public static DbSession NewSqliteSession(string connectionString)
-        {
-            return new DbSession(connectionString, DataSource.Sqlite);
         }
 
         /// <summary>
@@ -191,7 +151,7 @@ namespace Radial.Persist.Lite
         {
             get
             {
-                return _connection.ConnectionString;
+                return connection.ConnectionString;
             }
         }
 
@@ -202,11 +162,11 @@ namespace Radial.Persist.Lite
         {
             get
             {
-                return _ds;
+                return ds;
             }
             private set
             {
-                _ds = value;
+                ds = value;
             }
         }
 
@@ -217,11 +177,11 @@ namespace Radial.Persist.Lite
         {
             get
             {
-                return _connection;
+                return connection;
             }
             set
             {
-                _connection = value;
+                connection = value;
             }
         }
 
@@ -232,11 +192,11 @@ namespace Radial.Persist.Lite
         {
             get
             {
-                return _transaction;
+                return transaction;
             }
             private set
             {
-                _transaction = value;
+                transaction = value;
             }
         }
 
@@ -247,11 +207,11 @@ namespace Radial.Persist.Lite
         {
             get
             {
-                return _sqlQuery;
+                return sqlQuery;
             }
             set
             {
-                _sqlQuery = value;
+                sqlQuery = value;
             }
         }
 
@@ -262,13 +222,14 @@ namespace Radial.Persist.Lite
         {
             get
             {
-                return _commandTimeout;
+                return commandTimeout;
             }
             set
             {
                 if (value < 0)
                     throw new ArgumentException("CommandTimeout所分配的属性值不得小于0");
-                _commandTimeout = value;
+
+                commandTimeout = value;
             }
         }
 
@@ -351,15 +312,181 @@ namespace Radial.Persist.Lite
 
         #endregion
 
-        #region Create DbParameter
+        #region Create DbParameter/DbCommand
 
         /// <summary>
-        /// 返回实现 System.Data.Common.DbParameter 类的提供程序的类的一个新实例。
+        /// 返回实现 System.Data.Common.DbCommand 类的提供程序的类的一个新实例。
         /// </summary>
-        /// <returns>System.Data.Common.DbParameter 的新实例。</returns>
-        public DbParameter CreateParameter()
+        /// <param name="cmdText">命令文本</param>
+        /// <param name="parameters">命令参数</param>
+        /// <returns>System.Data.Common.DbCommand 的新实例。</returns>
+        private DbCommand CreateCommand(string cmdText, params DbParameter[] parameters)
         {
-            return SqlQuery.DbProvider.CreateParameter();
+            return CreateCommand(cmdText, CommandType.Text, parameters);
+        }
+
+        /// <summary>
+        /// 返回实现 System.Data.Common.DbCommand 类的提供程序的类的一个新实例。
+        /// </summary>
+        /// <param name="cmdText">命令文本</param>
+        /// <param name="cmdType">命令类型</param>
+        /// <param name="parameters">命令参数</param>
+        /// <returns>System.Data.Common.DbCommand 的新实例。</returns>
+        private DbCommand CreateCommand(string cmdText, CommandType cmdType, params DbParameter[] parameters)
+        {
+            if (string.IsNullOrWhiteSpace(cmdText))
+                throw new ArgumentNullException("cmdText", "cmdText不能为空");
+
+            DbCommand cmd = SqlQuery.DbProvider.CreateCommand();
+            cmd.CommandText = cmdText;
+            cmd.CommandTimeout = CommandTimeout;
+            cmd.CommandType = cmdType;
+
+            if (parameters != null)
+            {
+                foreach (DbParameter p in parameters)
+                    cmd.Parameters.Add(p);
+            }
+            return cmd;
+        }
+
+
+        /// <summary>
+        /// 返回 System.Data.SqlClient.SqlParameter 类的新实例。
+        /// </summary>
+        /// <param name="name">参数名称</param>
+        /// <param name="value">参数的值</param>
+        /// <param name="dbType">参数类型</param>
+        /// <param name="size">参数最大大小</param>
+        /// <param name="direction">参数方向</param>
+        /// <returns>System.Data.SqlClient.SqlParameter 的新实例。</returns>
+        public System.Data.SqlClient.SqlParameter CreateSqlParameter(string name, object value,
+            SqlDbType? dbType, int? size, ParameterDirection? direction)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException("name", "name不能为空");
+
+            if (value == null)
+                value = DBNull.Value;
+
+            var obj = new System.Data.SqlClient.SqlParameter
+            {
+                ParameterName = name,
+                Value = value
+            };
+
+            if (dbType.HasValue)
+                obj.SqlDbType = dbType.Value;
+            if (size.HasValue)
+                obj.Size = size.Value;
+            if (direction.HasValue)
+                obj.Direction = direction.Value;
+
+            return obj;
+        }
+
+
+        /// <summary>
+        /// 返回 System.Data.OleDb.OleDbParameter 类的新实例。
+        /// </summary>
+        /// <param name="name">参数名称</param>
+        /// <param name="value">参数的值</param>
+        /// <param name="dbType">参数类型</param>
+        /// <param name="size">参数最大大小</param>
+        /// <param name="direction">参数方向</param>
+        /// <returns>System.Data.OleDb.OleDbParameter 的新实例。</returns>
+        public System.Data.OleDb.OleDbParameter CreateOleDbParameter(string name, object value,
+            System.Data.OleDb.OleDbType? dbType, int? size, ParameterDirection? direction)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException("name", "name不能为空");
+
+            if (value == null)
+                value = DBNull.Value;
+
+            var obj = new System.Data.OleDb.OleDbParameter
+            {
+                ParameterName = name,
+                Value = value
+            };
+
+            if (dbType.HasValue)
+                obj.OleDbType = dbType.Value;
+            if (size.HasValue)
+                obj.Size = size.Value;
+            if (direction.HasValue)
+                obj.Direction = direction.Value;
+
+            return obj;
+        }
+
+
+        /// <summary>
+        /// 返回 MySql.Data.MySqlClient.MySqlParameter 类的新实例。
+        /// </summary>
+        /// <param name="name">参数名称</param>
+        /// <param name="value">参数的值</param>
+        /// <param name="dbType">参数类型</param>
+        /// <param name="size">参数最大大小</param>
+        /// <param name="direction">参数方向</param>
+        /// <returns>MySql.Data.MySqlClient.MySqlParameter 的新实例。</returns>
+        public MySql.Data.MySqlClient.MySqlParameter CreateMySqlParameter(string name, object value,
+            MySql.Data.MySqlClient.MySqlDbType? dbType, int? size, ParameterDirection? direction)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException("name", "name不能为空");
+
+            if (value == null)
+                value = DBNull.Value;
+
+            var obj = new MySql.Data.MySqlClient.MySqlParameter
+            {
+                ParameterName = name,
+                Value = value
+            };
+
+            if (dbType.HasValue)
+                obj.MySqlDbType = dbType.Value;
+            if (size.HasValue)
+                obj.Size = size.Value;
+            if (direction.HasValue)
+                obj.Direction = direction.Value;
+
+            return obj;
+        }
+
+        /// <summary>
+        /// 返回 System.Data.Odbc.OdbcParameter  类的新实例。
+        /// </summary>
+        /// <param name="name">参数名称</param>
+        /// <param name="value">参数的值</param>
+        /// <param name="dbType">参数类型</param>
+        /// <param name="size">参数最大大小</param>
+        /// <param name="direction">参数方向</param>
+        /// <returns>System.Data.Odbc.OdbcParameter  的新实例。</returns>
+        public System.Data.Odbc.OdbcParameter CreateOdbcParameter(string name, object value,
+            System.Data.Odbc.OdbcType? dbType, int? size, ParameterDirection? direction)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException("name", "name不能为空");
+
+            if (value == null)
+                value = DBNull.Value;
+
+            var obj = new System.Data.Odbc.OdbcParameter
+            {
+                ParameterName = name,
+                Value = value
+            };
+
+            if (dbType.HasValue)
+                obj.OdbcType = dbType.Value;
+            if (size.HasValue)
+                obj.Size = size.Value;
+            if (direction.HasValue)
+                obj.Direction = direction.Value;
+
+            return obj;
         }
 
         #endregion
@@ -379,12 +506,11 @@ namespace Radial.Persist.Lite
             DataSet ds = new DataSet();
 
             command.Connection = Connection;
-            command.CommandTimeout = CommandTimeout;
 
             if (Transaction != null)
                 command.Transaction = Transaction;
 
-           
+
             DbDataAdapter adapter = SqlQuery.DbProvider.CreateDataAdapter();
             adapter.SelectCommand = command;
 
@@ -409,7 +535,6 @@ namespace Radial.Persist.Lite
 
 
             command.Connection = Connection;
-            command.CommandTimeout = CommandTimeout;
 
             if (Transaction != null)
                 command.Transaction = Transaction;
@@ -435,7 +560,6 @@ namespace Radial.Persist.Lite
 
 
             command.Connection = Connection;
-            command.CommandTimeout = CommandTimeout;
 
             if (Transaction != null)
                 command.Transaction = Transaction;
@@ -457,7 +581,6 @@ namespace Radial.Persist.Lite
 
 
             command.Connection = Connection;
-            command.CommandTimeout = CommandTimeout;
 
             if (Transaction != null)
                 command.Transaction = Transaction;
@@ -480,15 +603,13 @@ namespace Radial.Persist.Lite
 
 
             command.Connection = Connection;
-            command.CommandTimeout = CommandTimeout;
 
             if (Transaction != null)
                 command.Transaction = Transaction;
 
             OpenConnection();
 
-            object obj = command.ExecuteScalar();
-            return obj;
+            return command.ExecuteScalar();
         }
 
         #endregion
@@ -499,172 +620,66 @@ namespace Radial.Persist.Lite
         /// ExecuteDataSet方法
         /// </summary>
         /// <param name="cmdText">命令文本</param>
-        /// <param name="paramValues">参数数组</param>
+        /// <param name="parameters">命令参数</param>
         /// <returns>DataSet对象</returns>
-        public DataSet ExecuteDataSet(string cmdText, params object[] paramValues)
+        public DataSet ExecuteDataSet(string cmdText, params DbParameter[] parameters)
         {
-            if (string.IsNullOrEmpty(cmdText))
+            if (string.IsNullOrWhiteSpace(cmdText))
                 throw new ArgumentNullException("cmdText", "cmdText不能为空");
 
-            TextCommandData data = new TextCommandData(cmdText, paramValues);
-
-            return ExecuteDataSet(data);
+            return ExecuteDataSet(CreateCommand(cmdText, parameters));
         }
 
         /// <summary>
         /// ExecuteDataTable方法
         /// </summary>
         /// <param name="cmdText">命令文本</param>
-        /// <param name="paramValues">参数数组</param>
+        /// <param name="parameters">命令参数</param>
         /// <returns>DataTable对象</returns>
-        public DataTable ExecuteDataTable(string cmdText, params object[] paramValues)
+        public DataTable ExecuteDataTable(string cmdText, params DbParameter[] parameters)
         {
-            if (string.IsNullOrEmpty(cmdText))
+            if (string.IsNullOrWhiteSpace(cmdText))
                 throw new ArgumentNullException("cmdText", "cmdText不能为空");
 
-            TextCommandData data = new TextCommandData(cmdText, paramValues);
-
-            return ExecuteDataTable(data);
+            return ExecuteDataTable(CreateCommand(cmdText, parameters));
         }
 
         /// <summary>
         /// ExecuteDataReader方法
         /// </summary>
         /// <param name="cmdText">命令文本</param>
-        /// <param name="paramValues">参数数组</param>
-        /// <returns>DataReader对象</returns>
-        public DbDataReader ExecuteDataReader(string cmdText, params object[] paramValues)
-        {
-            if (string.IsNullOrEmpty(cmdText))
-                throw new ArgumentNullException("cmdText", "cmdText不能为空");
-
-            TextCommandData data = new TextCommandData(cmdText, paramValues);
-
-            return ExecuteDataReader(data);
-        }
-
-        /// <summary>
-        /// ExecuteNonQuery方法
-        /// </summary>
-        /// <param name="cmdText">命令文本</param>
-        /// <param name="paramValues">参数数组</param>
-        /// <returns>影响的行数</returns>
-        public int ExecuteNonQuery(string cmdText, params object[] paramValues)
-        {
-            if (string.IsNullOrEmpty(cmdText))
-                throw new ArgumentNullException("cmdText", "cmdText不能为空");
-
-            TextCommandData data = new TextCommandData(cmdText, paramValues);
-
-            return ExecuteNonQuery(data);
-        }
-
-        /// <summary>
-        /// ExecuteRows方法
-        /// </summary>
-        /// <param name="cmdText">命令文本</param>
-        /// <param name="paramValues">参数数组</param>
-        /// <returns>IList&lt;RowDataCollection&gt;对象</returns>
-        public IList<RowDataCollection> ExecuteRows(string cmdText, params object[] paramValues)
-        {
-            return ExecuteRows(new TextCommandData(cmdText, paramValues));
-        }
-
-
-        /// <summary>
-        /// ExecuteFirstRow方法
-        /// </summary>
-        /// <param name="cmdText">命令文本</param>
-        /// <param name="paramValues">参数数组</param>
-        /// <returns>RowDataCollection对象</returns>
-        public RowDataCollection ExecuteFirstRow(string cmdText, params object[] paramValues)
-        {
-            return ExecuteFirstRow(new TextCommandData(cmdText, paramValues));
-        }
-
-
-        /// <summary>
-        /// ExecuteScalar方法
-        /// </summary>
-        /// <param name="cmdText">命令文本</param>
-        /// <param name="paramValues">参数数组</param>
-        /// <returns>object对象</returns>
-        public object ExecuteScalar(string cmdText, params object[] paramValues)
-        {
-            if (string.IsNullOrEmpty(cmdText))
-                throw new ArgumentNullException("cmdText", "cmdText不能为空");
-
-            TextCommandData data = new TextCommandData(cmdText, paramValues);
-
-            return ExecuteScalar(data);
-        }
-
-        /// <summary>
-        /// ExecuteDataSet方法
-        /// </summary>
-        /// <param name="cmdData">文本命令对象</param>
-        /// <returns>DataSet对象</returns>
-        public DataSet ExecuteDataSet(TextCommandData cmdData)
-        {
-            if (cmdData == null)
-                throw new ArgumentNullException("cmdData","cmdData不能为空");
-
-            DbCommand cmd = cmdData.CreateCommand(SqlQuery.DbProvider, SqlQuery.CreateParameterName);
-
-            return ExecuteDataSet(cmd);
-        }
-
-        /// <summary>
-        /// ExecuteDataTable方法
-        /// </summary>
-        /// <param name="cmdData">文本命令对象</param>
-        /// <returns>DataTable对象</returns>
-        public DataTable ExecuteDataTable(TextCommandData cmdData)
-        {
-            if (cmdData == null)
-                throw new ArgumentNullException("cmdData", "cmdData不能为空");
-
-            DbCommand cmd = cmdData.CreateCommand(SqlQuery.DbProvider, SqlQuery.CreateParameterName);
-
-            return ExecuteDataTable(cmd);
-        }
-
-        /// <summary>
-        /// ExecuteDataReader方法
-        /// </summary>
-        /// <param name="cmdData">文本命令对象</param>
+        /// <param name="parameters">命令参数</param>
         /// <returns>DbDataReader对象</returns>
-        public DbDataReader ExecuteDataReader(TextCommandData cmdData)
+        public DbDataReader ExecuteDataReader(string cmdText, params DbParameter[] parameters)
         {
-            if (cmdData == null)
-                throw new ArgumentNullException("cmdData", "cmdData不能为空");
+            if (string.IsNullOrWhiteSpace(cmdText))
+                throw new ArgumentNullException("cmdText", "cmdText不能为空");
 
-            DbCommand cmd = cmdData.CreateCommand(SqlQuery.DbProvider, SqlQuery.CreateParameterName);
-
-            return ExecuteDataReader(cmd);
+            return ExecuteDataReader(CreateCommand(cmdText, parameters));
         }
 
         /// <summary>
         /// ExecuteRows方法
         /// </summary>
-        /// <param name="cmdData">文本命令对象</param>
-        /// <returns>IList&lt;RowDataCollection&gt;对象</returns>
-        public IList<RowDataCollection> ExecuteRows(TextCommandData cmdData)
+        /// <param name="cmdText">命令文本</param>
+        /// <param name="parameters">命令参数</param>
+        /// <returns>IList&lt;RowData&gt;对象</returns>
+        public IList<RowData> ExecuteRows(string cmdText, params DbParameter[] parameters)
         {
-            IList<RowDataCollection> list = new List<RowDataCollection>();
+            IList<RowData> list = new List<RowData>();
 
-            using (DbDataReader reader = ExecuteDataReader(cmdData))
+            using (DbDataReader reader = ExecuteDataReader(cmdText, parameters))
             {
                 while (reader.Read())
                 {
-                    RowDataCollection collection = new RowDataCollection();
+                    RowData collection = new RowData();
 
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
-                        collection.Add(new RowData
+                        collection.Add(new FieldData
                         {
-                            FieldName = reader.GetName(i),
-                            FieldType = reader.GetFieldType(i),
+                            Name = reader.GetName(i),
+                            Type = reader.GetFieldType(i),
                             Value = reader[i]
                         });
                     }
@@ -679,25 +694,26 @@ namespace Radial.Persist.Lite
         /// <summary>
         /// ExecuteFirstRow方法
         /// </summary>
-        /// <param name="cmdData">文本命令对象</param>
-        /// <returns>RowDataCollection对象</returns>
-        public RowDataCollection ExecuteFirstRow(TextCommandData cmdData)
+        /// <param name="cmdText">命令文本</param>
+        /// <param name="parameters">命令参数</param>
+        /// <returns>RowData对象</returns>
+        public RowData ExecuteFirstRow(string cmdText, params DbParameter[] parameters)
         {
-            RowDataCollection collection = null;
+            RowData collection = null;
 
-            using (DbDataReader reader = ExecuteDataReader(cmdData))
+            using (DbDataReader reader = ExecuteDataReader(cmdText, parameters))
             {
                 while (reader.Read())
                 {
-                    collection = new RowDataCollection();
+                    collection = new RowData();
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
-                        collection.Add(new RowData
-                            {
-                                FieldName = reader.GetName(i),
-                                FieldType = reader.GetFieldType(i),
-                                Value = reader[i]
-                            });
+                        collection.Add(new FieldData
+                        {
+                            Name = reader.GetName(i),
+                            Type = reader.GetFieldType(i),
+                            Value = reader[i]
+                        });
                     }
                     break;
                 }
@@ -709,31 +725,30 @@ namespace Radial.Persist.Lite
         /// <summary>
         /// ExecuteNonQuery方法
         /// </summary>
-        /// <param name="cmdData">文本命令对象</param>
+        /// <param name="cmdText">命令文本</param>
+        /// <param name="parameters">命令参数</param>
         /// <returns>影响的行数</returns>
-        public int ExecuteNonQuery(TextCommandData cmdData)
+        public int ExecuteNonQuery(string cmdText, params DbParameter[] parameters)
         {
-            if (cmdData == null)
-                throw new ArgumentNullException("cmdData", "cmdData不能为空");
+            if (string.IsNullOrWhiteSpace(cmdText))
+                throw new ArgumentNullException("cmdText", "cmdText不能为空");
 
-            DbCommand cmd = cmdData.CreateCommand(SqlQuery.DbProvider, SqlQuery.CreateParameterName);
-
-            return ExecuteNonQuery(cmd);
+            return ExecuteNonQuery(CreateCommand(cmdText, parameters));
         }
 
         /// <summary>
         /// ExecuteScalar方法
         /// </summary>
-        /// <param name="cmdData">文本命令对象</param>
+        /// <param name="cmdText">命令文本</param>
+        /// <param name="parameters">命令参数</param>
         /// <returns>object对象</returns>
-        public object ExecuteScalar(TextCommandData cmdData)
+        public object ExecuteScalar(string cmdText, params DbParameter[] parameters)
         {
-            if (cmdData == null)
-                throw new ArgumentNullException("cmdData", "cmdData不能为空");
+            if (string.IsNullOrWhiteSpace(cmdText))
+                throw new ArgumentNullException("cmdText", "cmdText不能为空");
 
-            DbCommand cmd = cmdData.CreateCommand(SqlQuery.DbProvider, SqlQuery.CreateParameterName);
 
-            return ExecuteScalar(cmd);
+            return ExecuteScalar(CreateCommand(cmdText, parameters));
         }
 
         #endregion
@@ -751,28 +766,7 @@ namespace Radial.Persist.Lite
             if (string.IsNullOrEmpty(spName))
                 throw new ArgumentNullException("spName", "存储过程名不能为空");
 
-            DbCommand cmd = SqlQuery.DbProvider.CreateCommand();
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = spName;
-
-            if (CommandTimeout < 0)
-                throw new ArgumentException("CommandTimeout所分配的属性值不得小于0");
-            cmd.CommandTimeout = CommandTimeout;
-
-            if (parameters != null)
-            {
-                foreach (DbParameter p in parameters)
-                {
-                    //check for derived output value with no value assigned
-                    if ((p.Direction == ParameterDirection.InputOutput) && (p.Value == null))
-                    {
-                        p.Value = DBNull.Value;
-                    }
-
-                    cmd.Parameters.Add(p);
-                }
-            }
-            return ExecuteDataSet(cmd);
+            return ExecuteDataSet(CreateCommand(spName, CommandType.StoredProcedure, parameters));
         }
 
 
@@ -787,29 +781,8 @@ namespace Radial.Persist.Lite
             if (string.IsNullOrEmpty(spName))
                 throw new ArgumentNullException("spName", "存储过程名不能为空");
 
-            DbCommand cmd = SqlQuery.DbProvider.CreateCommand();
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = spName;
 
-            if (CommandTimeout < 0)
-                throw new ArgumentException("CommandTimeout所分配的属性值不得小于0");
-            cmd.CommandTimeout = CommandTimeout;
-
-            if (parameters != null)
-            {
-                foreach (DbParameter p in parameters)
-                {
-                    //check for derived output value with no value assigned
-                    if ((p.Direction == ParameterDirection.InputOutput) && (p.Value == null))
-                    {
-                        p.Value = DBNull.Value;
-                    }
-
-                    cmd.Parameters.Add(p);
-                }
-            }
-
-            return ExecuteDataTable(cmd);
+            return ExecuteDataTable(CreateCommand(spName, CommandType.StoredProcedure, parameters));
         }
 
 
@@ -824,28 +797,7 @@ namespace Radial.Persist.Lite
             if (string.IsNullOrEmpty(spName))
                 throw new ArgumentNullException("spName", "存储过程名不能为空");
 
-            DbCommand cmd = SqlQuery.DbProvider.CreateCommand();
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = spName;
-
-            if (CommandTimeout < 0)
-                throw new ArgumentException("CommandTimeout所分配的属性值不得小于0");
-            cmd.CommandTimeout = CommandTimeout;
-
-            if (parameters != null)
-            {
-                foreach (DbParameter p in parameters)
-                {
-                    //check for derived output value with no value assigned
-                    if ((p.Direction == ParameterDirection.InputOutput) && (p.Value == null))
-                    {
-                        p.Value = DBNull.Value;
-                    }
-
-                    cmd.Parameters.Add(p);
-                }
-            }
-            return ExecuteDataReader(cmd);
+            return ExecuteDataReader(CreateCommand(spName, CommandType.StoredProcedure, parameters));
         }
 
         /// <summary>
@@ -853,25 +805,25 @@ namespace Radial.Persist.Lite
         /// </summary>
         /// <param name="spName">存储过程名</param>
         /// <param name="parameters">存储过程参数</param>
-        /// <returns>IList&lt;RowDataCollection&gt;对象</returns>
-        public IList<RowDataCollection> ExecuteSpRows(string spName, params DbParameter[] parameters)
+        /// <returns>IList&lt;RowData&gt;对象</returns>
+        public IList<RowData> ExecuteSpRows(string spName, params DbParameter[] parameters)
         {
-            IList<RowDataCollection> list = new List<RowDataCollection>();
+            IList<RowData> list = new List<RowData>();
 
             using (DbDataReader reader = ExecuteSpDataReader(spName, parameters))
             {
                 while (reader.Read())
                 {
-                    RowDataCollection collection = new RowDataCollection();
+                    RowData collection = new RowData();
 
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
-                        collection.Add(new RowData
-                            {
-                                FieldName = reader.GetName(i),
-                                FieldType = reader.GetFieldType(i),
-                                Value = reader[i]
-                            });
+                        collection.Add(new FieldData
+                        {
+                            Name = reader.GetName(i),
+                            Type = reader.GetFieldType(i),
+                            Value = reader[i]
+                        });
                     }
 
                     list.Add(collection);
@@ -886,10 +838,10 @@ namespace Radial.Persist.Lite
         /// </summary>
         /// <param name="spName">存储过程名</param>
         /// <param name="parameters">存储过程参数</param>
-        /// <returns>RowDataCollection对象</returns>
-        public RowDataCollection ExecuteSpFirstRow(string spName, params DbParameter[] parameters)
+        /// <returns>RowData对象</returns>
+        public RowData ExecuteSpFirstRow(string spName, params DbParameter[] parameters)
         {
-            RowDataCollection collection = new RowDataCollection();
+            RowData collection = new RowData();
 
             using (DbDataReader reader = ExecuteSpDataReader(spName, parameters))
             {
@@ -897,10 +849,10 @@ namespace Radial.Persist.Lite
                 {
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
-                        collection.Add(new RowData
+                        collection.Add(new FieldData
                         {
-                            FieldName = reader.GetName(i),
-                            FieldType = reader.GetFieldType(i),
+                            Name = reader.GetName(i),
+                            Type = reader.GetFieldType(i),
                             Value = reader[i]
                         });
                     }
@@ -922,28 +874,7 @@ namespace Radial.Persist.Lite
             if (string.IsNullOrEmpty(spName))
                 throw new ArgumentNullException("spName", "存储过程名不能为空");
 
-            DbCommand cmd = SqlQuery.DbProvider.CreateCommand();
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = spName;
-
-            if (CommandTimeout < 0)
-                throw new ArgumentException("CommandTimeout所分配的属性值不得小于0");
-            cmd.CommandTimeout = CommandTimeout;
-
-            if (parameters != null)
-            {
-                foreach (DbParameter p in parameters)
-                {
-                    //check for derived output value with no value assigned
-                    if ((p.Direction == ParameterDirection.InputOutput) && (p.Value == null))
-                    {
-                        p.Value = DBNull.Value;
-                    }
-
-                    cmd.Parameters.Add(p);
-                }
-            }
-            return ExecuteNonQuery(cmd);
+            return ExecuteNonQuery(CreateCommand(spName, CommandType.StoredProcedure, parameters));
         }
 
 
@@ -958,29 +889,7 @@ namespace Radial.Persist.Lite
             if (string.IsNullOrEmpty(spName))
                 throw new ArgumentNullException("spName", "存储过程名不能为空");
 
-            DbCommand cmd = SqlQuery.DbProvider.CreateCommand();
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = spName;
-
-            if (CommandTimeout < 0)
-                throw new ArgumentException("CommandTimeout所分配的属性值不得小于0");
-            cmd.CommandTimeout = CommandTimeout;
-
-            if (parameters != null)
-            {
-                foreach (DbParameter p in parameters)
-                {
-                    //check for derived output value with no value assigned
-                    if ((p.Direction == ParameterDirection.InputOutput) && (p.Value == null))
-                    {
-                        p.Value = DBNull.Value;
-                    }
-
-                    cmd.Parameters.Add(p);
-                }
-            }
-
-            return ExecuteScalar(cmd);
+            return ExecuteScalar(CreateCommand(spName, CommandType.StoredProcedure, parameters));
         }
 
         #endregion

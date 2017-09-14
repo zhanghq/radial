@@ -1,47 +1,80 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Radial.Persist.Lite
 {
     /// <summary>
-    /// 表示某一行的数据
+    /// 表示数据行
     /// </summary>
-    public sealed class RowData
+    public sealed class RowData : ReadOnlyCollectionBase, IEnumerable<FieldData>
     {
-        /// <summary>
-        /// 获取或设置数据行的字段名
-        /// </summary>
-        public string FieldName { get; set; }
+        private readonly IList<FieldData> genericList;
 
         /// <summary>
-        /// 获取或设置数据行的字段类型
+        /// 初始化一个 <see cref="RowData"/> 类的对象.
         /// </summary>
-        public Type FieldType { get; set; }
+        public RowData()
+        {
+            genericList = new List<FieldData>();
+        }
 
         /// <summary>
-        /// 获取或设置数据行的值
+        /// 将数据行添加到集合中的内部方法
         /// </summary>
-        public object Value { get; set; }
+        /// <param name="row">数据行</param>
+        internal void Add(FieldData row)
+        {
+            genericList.Add(row);
+        }
 
         /// <summary>
-        /// 获取或设置数据行的值是否不存在(DbNull).
+        /// 按索引获取数据行
         /// </summary>
-        public bool IsDbNull
+        /// <param name="index">从0开始的数据行索引</param>
+        public FieldData this[int index]
+        {
+            get { return genericList[index]; }
+        }
+
+        /// <summary>
+        /// 按字段名获取数据行
+        /// </summary>
+        /// <param name="fieldName">数据行的字段名</param>
+        public FieldData this[string fieldName]
         {
             get
             {
-                return Value == System.DBNull.Value;
+                foreach (var r in genericList)
+                {
+                    if (string.Compare(r.Name, fieldName, StringComparison.OrdinalIgnoreCase) == 0)
+                        return r;
+                }
+
+                return null;
             }
         }
 
         /// <summary>
-        /// 返回表示当前对象的 <see cref="System.String" />.
+        /// 获取包含在 <see cref="T:System.Collections.ReadOnlyCollectionBase" /> 实例中的元素数。
         /// </summary>
-        /// <returns>
-        ///  一个 <see cref="System.String" /> 表示当前的对象.
-        /// </returns>
-        public override string ToString()
+        /// <returns>包含在 <see cref="T:System.Collections.ReadOnlyCollectionBase" /> 实例中的元素数。检索此属性的值的运算复杂度为 O(1)。</returns>
+        public override int Count
         {
-            return Value.ToString();
+            get
+            {
+                return genericList.Count;
+            }
+        }
+
+
+        /// <summary>
+        /// 返回一个循环访问集合的枚举数。.
+        /// </summary>
+        /// <returns>可用于循环访问集合的 System.Collections.Generic.IEnumerator&lt;RowData&gt;</returns>
+        public new IEnumerator<FieldData> GetEnumerator()
+        {
+            return genericList.GetEnumerator();
         }
     }
 }

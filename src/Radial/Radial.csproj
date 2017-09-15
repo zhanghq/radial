@@ -148,6 +148,9 @@
     <Compile Include="Boot\Cfg\BootTaskElementCollection.cs" />
     <Compile Include="Boot\Cfg\BootTaskSection.cs" />
     <Compile Include="Cache\IClusterRegion.cs" />
+    <Compile Include="DbResultField.cs" />
+    <Compile Include="DbResultRow.cs" />
+    <Compile Include="DbResultSet.cs" />
     <Compile Include="Dependency.cs" />
     <Compile Include="ISearchFilter.cs" />
     <Compile Include="Logging\EmptyWriter.cs" />
@@ -214,8 +217,6 @@
     <Compile Include="Persist\Lite\Query\MySqlQuery.cs" />
     <Compile Include="Persist\Lite\Query\SqliteQuery.cs" />
     <Compile Include="Persist\Lite\Query\SqlServerQuery.cs" />
-    <Compile Include="Persist\Lite\FieldData.cs" />
-    <Compile Include="Persist\Lite\RowData.cs" />
     <Compile Include="Persist\Lite\SqlQuery.cs" />
     <Compile Include="Persist\Nhs\BasicRepository.cs" />
     <Compile Include="Persist\Nhs\Cache\Memcached\CacheClient.cs" />

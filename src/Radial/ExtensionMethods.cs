@@ -14,56 +14,40 @@ namespace Radial
     public static class ExtensionMethods
     {
         #region IDataReader
+
         /// <summary>
-        /// To the row list.
+        /// To the result set.
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns></returns>
-        public static IList<IList<object>> ToRowList(this IDataReader reader)
+        public static DbResultSet ToResultSet(this IDataReader reader)
         {
-            IList<IList<object>> list = new List<IList<object>>();
-
             if (reader == null)
-                return list;
+                return new DbResultSet();
+
+            IList<DbResultRow> rows = new List<DbResultRow>();
 
 
             while (reader.Read())
             {
-                List<object> alist = new List<object>(reader.FieldCount);
+                IList<DbResultField> fields = new List<DbResultField>();
+
                 for (int i = 0; i < reader.FieldCount; i++)
-                    alist.Add(reader[i]);
-                list.Add(alist);
+                {
+                    fields.Add(new DbResultField
+                    {
+                        Name = reader.GetName(i),
+                        Type = reader.GetFieldType(i),
+                        Value = reader[i]
+                    });
+                }
+
+                rows.Add(new DbResultRow(fields));
             }
 
-            return list;
+            return new DbResultSet(rows);
         }
 
-        /// <summary>
-        /// To the row list.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <param name="topRowCount">The top row count.</param>
-        /// <returns></returns>
-        public static IList<IList<object>> ToRowList(this IDataReader reader, int topRowCount)
-        {
-            IList<IList<object>> list = new List<IList<object>>();
-
-            if (reader == null)
-                return list;
-
-            while (reader.Read())
-            {
-                List<object> alist = new List<object>(reader.FieldCount);
-                for (int i = 0; i < reader.FieldCount; i++)
-                    alist.Add(reader[i]);
-                list.Add(alist);
-
-                if (list.Count >= topRowCount)
-                    break;
-            }
-
-            return list;
-        }
         #endregion
 
         #region IEnumerable

@@ -15,7 +15,7 @@ namespace Radial.Param
         /// <summary>
         /// The Xml namespace.
         /// </summary>
-        public const string XmlNs = "urn:jr-trc-xmlparam";
+        public const string XmlNs = "urn:radial-xmlparam";
 
         static object SyncRoot = new object();
 

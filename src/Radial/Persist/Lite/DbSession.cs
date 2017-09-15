@@ -553,7 +553,7 @@ namespace Radial.Persist.Lite
         /// </summary>
         /// <param name="command">DbCommand对象</param>
         /// <returns>DataReader对象</returns>
-        private DbDataReader ExecuteDataReader(DbCommand command)
+        private IDataReader ExecuteDataReader(DbCommand command)
         {
             if (command == null || string.IsNullOrEmpty(command.CommandText))
                 throw new ArgumentNullException("command", "DbCommand对象及其命令文本不能为空");
@@ -650,76 +650,12 @@ namespace Radial.Persist.Lite
         /// <param name="cmdText">命令文本</param>
         /// <param name="parameters">命令参数</param>
         /// <returns>DbDataReader对象</returns>
-        public DbDataReader ExecuteDataReader(string cmdText, params DbParameter[] parameters)
+        public IDataReader ExecuteDataReader(string cmdText, params DbParameter[] parameters)
         {
             if (string.IsNullOrWhiteSpace(cmdText))
                 throw new ArgumentNullException("cmdText", "cmdText不能为空");
 
             return ExecuteDataReader(CreateCommand(cmdText, parameters));
-        }
-
-        /// <summary>
-        /// ExecuteRows方法
-        /// </summary>
-        /// <param name="cmdText">命令文本</param>
-        /// <param name="parameters">命令参数</param>
-        /// <returns>IList&lt;RowData&gt;对象</returns>
-        public IList<RowData> ExecuteRows(string cmdText, params DbParameter[] parameters)
-        {
-            IList<RowData> list = new List<RowData>();
-
-            using (DbDataReader reader = ExecuteDataReader(cmdText, parameters))
-            {
-                while (reader.Read())
-                {
-                    RowData collection = new RowData();
-
-                    for (int i = 0; i < reader.FieldCount; i++)
-                    {
-                        collection.Add(new FieldData
-                        {
-                            Name = reader.GetName(i),
-                            Type = reader.GetFieldType(i),
-                            Value = reader[i]
-                        });
-                    }
-
-                    list.Add(collection);
-                }
-            }
-
-            return list;
-        }
-
-        /// <summary>
-        /// ExecuteFirstRow方法
-        /// </summary>
-        /// <param name="cmdText">命令文本</param>
-        /// <param name="parameters">命令参数</param>
-        /// <returns>RowData对象</returns>
-        public RowData ExecuteFirstRow(string cmdText, params DbParameter[] parameters)
-        {
-            RowData collection = null;
-
-            using (DbDataReader reader = ExecuteDataReader(cmdText, parameters))
-            {
-                while (reader.Read())
-                {
-                    collection = new RowData();
-                    for (int i = 0; i < reader.FieldCount; i++)
-                    {
-                        collection.Add(new FieldData
-                        {
-                            Name = reader.GetName(i),
-                            Type = reader.GetFieldType(i),
-                            Value = reader[i]
-                        });
-                    }
-                    break;
-                }
-            }
-
-            return collection;
         }
 
         /// <summary>
@@ -792,7 +728,7 @@ namespace Radial.Persist.Lite
         /// <param name="spName">存储过程名</param>
         /// <param name="parameters">存储过程参数</param>
         /// <returns>DbDataReader对象</returns>
-        public DbDataReader ExecuteSpDataReader(string spName, params DbParameter[] parameters)
+        public IDataReader ExecuteSpDataReader(string spName, params DbParameter[] parameters)
         {
             if (string.IsNullOrEmpty(spName))
                 throw new ArgumentNullException("spName", "存储过程名不能为空");
@@ -800,68 +736,7 @@ namespace Radial.Persist.Lite
             return ExecuteDataReader(CreateCommand(spName, CommandType.StoredProcedure, parameters));
         }
 
-        /// <summary>
-        /// Stored Procedure ExecuteRows
-        /// </summary>
-        /// <param name="spName">存储过程名</param>
-        /// <param name="parameters">存储过程参数</param>
-        /// <returns>IList&lt;RowData&gt;对象</returns>
-        public IList<RowData> ExecuteSpRows(string spName, params DbParameter[] parameters)
-        {
-            IList<RowData> list = new List<RowData>();
 
-            using (DbDataReader reader = ExecuteSpDataReader(spName, parameters))
-            {
-                while (reader.Read())
-                {
-                    RowData collection = new RowData();
-
-                    for (int i = 0; i < reader.FieldCount; i++)
-                    {
-                        collection.Add(new FieldData
-                        {
-                            Name = reader.GetName(i),
-                            Type = reader.GetFieldType(i),
-                            Value = reader[i]
-                        });
-                    }
-
-                    list.Add(collection);
-                }
-            }
-
-            return list;
-        }
-
-        /// <summary>
-        /// Stored Procedure ExecuteFirstRow
-        /// </summary>
-        /// <param name="spName">存储过程名</param>
-        /// <param name="parameters">存储过程参数</param>
-        /// <returns>RowData对象</returns>
-        public RowData ExecuteSpFirstRow(string spName, params DbParameter[] parameters)
-        {
-            RowData collection = new RowData();
-
-            using (DbDataReader reader = ExecuteSpDataReader(spName, parameters))
-            {
-                while (reader.Read())
-                {
-                    for (int i = 0; i < reader.FieldCount; i++)
-                    {
-                        collection.Add(new FieldData
-                        {
-                            Name = reader.GetName(i),
-                            Type = reader.GetFieldType(i),
-                            Value = reader[i]
-                        });
-                    }
-                    break;
-                }
-            }
-
-            return collection;
-        }
 
         /// <summary>
         /// Stored Procedure ExecuteNonQuery

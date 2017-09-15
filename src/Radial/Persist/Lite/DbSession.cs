@@ -361,7 +361,7 @@ namespace Radial.Persist.Lite
         /// <param name="direction">参数方向</param>
         /// <returns>System.Data.SqlClient.SqlParameter 的新实例。</returns>
         public System.Data.SqlClient.SqlParameter CreateSqlParameter(string name, object value,
-            SqlDbType? dbType, int? size, ParameterDirection? direction)
+            SqlDbType? dbType = null, int? size = null, ParameterDirection? direction = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException("name", "name不能为空");
@@ -396,7 +396,7 @@ namespace Radial.Persist.Lite
         /// <param name="direction">参数方向</param>
         /// <returns>System.Data.OleDb.OleDbParameter 的新实例。</returns>
         public System.Data.OleDb.OleDbParameter CreateOleDbParameter(string name, object value,
-            System.Data.OleDb.OleDbType? dbType, int? size, ParameterDirection? direction)
+            System.Data.OleDb.OleDbType? dbType = null, int? size = null, ParameterDirection? direction = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException("name", "name不能为空");
@@ -431,7 +431,7 @@ namespace Radial.Persist.Lite
         /// <param name="direction">参数方向</param>
         /// <returns>MySql.Data.MySqlClient.MySqlParameter 的新实例。</returns>
         public MySql.Data.MySqlClient.MySqlParameter CreateMySqlParameter(string name, object value,
-            MySql.Data.MySqlClient.MySqlDbType? dbType, int? size, ParameterDirection? direction)
+            MySql.Data.MySqlClient.MySqlDbType? dbType = null, int? size = null, ParameterDirection? direction = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException("name", "name不能为空");
@@ -465,7 +465,7 @@ namespace Radial.Persist.Lite
         /// <param name="direction">参数方向</param>
         /// <returns>System.Data.Odbc.OdbcParameter  的新实例。</returns>
         public System.Data.Odbc.OdbcParameter CreateOdbcParameter(string name, object value,
-            System.Data.Odbc.OdbcType? dbType, int? size, ParameterDirection? direction)
+            System.Data.Odbc.OdbcType? dbType = null, int? size = null, ParameterDirection? direction = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException("name", "name不能为空");

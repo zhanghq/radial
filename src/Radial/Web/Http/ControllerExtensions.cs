@@ -110,14 +110,14 @@ namespace Radial.Web.Http
         /// Writes the standard Success json to HttpResponseMessage.
         /// </summary>
         /// <param name="c">The c.</param>
-        /// <param name="payload">The payload data.</param>
+        /// <param name="data">The payload data.</param>
         /// <param name="message">The message.</param>
         /// <param name="httpCode">The http code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage StdSuccessJson(this ApiController c, object payload = null, string message = null, HttpStatusCode httpCode = HttpStatusCode.OK)
+        public static HttpResponseMessage StdSuccessJson(this ApiController c, object data = null, string message = null, HttpStatusCode httpCode = HttpStatusCode.OK)
         {
             var resp = new HttpResponseMessage(httpCode);
-            resp.Content = new StringContent((new StdJsonOutput { Payload= payload, Message = message }).ToJson(),
+            resp.Content = new StringContent((new StdJsonOutput { Data= data, Message = message }).ToJson(),
                 GlobalVariables.Encoding, ContentTypes.Json);
             return resp;
         }

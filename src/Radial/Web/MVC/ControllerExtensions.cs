@@ -109,15 +109,15 @@ namespace Radial.Web.Mvc
         /// Renders standard Success json output to the response.
         /// </summary>
         /// <param name="c">The controller.</param>
-        /// <param name="payload">The data payload.</param>
+        /// <param name="data">The data payload.</param>
         /// <param name="message">The message.</param>
         /// <param name="contentType">Type of the content.</param>
         /// <returns>
         /// NewJsonResult instance.
         /// </returns>
-        public static StdJsonOutputResult StdSuccessJson(this Controller c, object payload=null, string message = null, string contentType = null)
+        public static StdJsonOutputResult StdSuccessJson(this Controller c, object data=null, string message = null, string contentType = null)
         {
-            return new StdJsonOutputResult(new StdJsonOutput { Payload= payload }, contentType);
+            return new StdJsonOutputResult(new StdJsonOutput { Data= data }, contentType);
         }
 
         /// <summary>

@@ -19,14 +19,14 @@ namespace Radial.Web
         /// <summary>
         /// The message text.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("message", Order = 2)]
+        [Newtonsoft.Json.JsonProperty("msg", Order = 2, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Message { get; set; }
 
         /// <summary>
-        /// The payload object.
+        /// The payload data.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("payload", Order = 3)]
-        public object Payload { get; set; }
+        [Newtonsoft.Json.JsonProperty("data", Order = 3, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public object Data { get; set; }
 
         /// <summary>
         /// To JSON string.

@@ -85,7 +85,7 @@ namespace Radial.Web.Mvc
         /// <returns>
         /// NewJsonResult instance.
         /// </returns>
-        public static NewJsonResult NewJson(this Controller c, object data,string contentType = null)
+        public static NewJsonResult NewJson(this Controller c, object data, string contentType = null)
         {
             return new NewJsonResult(data, contentType);
         }
@@ -94,15 +94,15 @@ namespace Radial.Web.Mvc
         /// Renders standard Error json output to the response.
         /// </summary>
         /// <param name="c">The controller.</param>
-        /// <param name="errorCode">The error code.</param>
+        /// <param name="code">The status code.</param>
         /// <param name="message">The message.</param>
         /// <param name="contentType">Type of the content.</param>
         /// <returns>
         /// NewJsonResult instance.
         /// </returns>
-        public static StdJsonOutputResult StdErrorJson(this Controller c, int errorCode=-9999, string message = null, string contentType = null)
+        public static StdJsonOutputResult StdErrorJson(this Controller c, int code, string message = null, string contentType = null)
         {
-            return new StdJsonOutputResult(new StdJsonOutput { Error = errorCode, Message = message },contentType);
+            return new StdJsonOutputResult(new StdJsonOutput { Code = code, Message = message }, contentType);
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Radial.Web.Mvc
         /// </returns>
         public static StdJsonOutputResult StdSuccessJson(this Controller c, object data=null, string message = null, string contentType = null)
         {
-            return new StdJsonOutputResult(new StdJsonOutput { Data= data }, contentType);
+            return new StdJsonOutputResult(new StdJsonOutput { Data = data }, contentType);
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace Radial.Web.Mvc
         /// <returns></returns>
         public static TransferToRouteResult TransferToAction(this Controller c, string actionName)
         {
-            
+
             return TransferToAction(c, actionName, null, null);
         }
 

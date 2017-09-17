@@ -12,10 +12,10 @@ namespace Radial.Web
     public class StdJsonOutput
     {
         /// <summary>
-        /// The error code, should be 0 if no error.
+        /// The status code, should be 200 if no error.
         /// </summary>
-        [Newtonsoft.Json.JsonProperty("error", Order = 1)]
-        public int Error { get; set; }
+        [Newtonsoft.Json.JsonProperty("code", Order = 1)]
+        public int Code { get; set; } = 200;
         /// <summary>
         /// The message text.
         /// </summary>

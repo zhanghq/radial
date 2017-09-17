@@ -94,14 +94,14 @@ namespace Radial.Web.Http
         /// Writes the standard Error json to HttpResponseMessage.
         /// </summary>
         /// <param name="c">The c.</param>
-        /// <param name="errorCode">The error code.</param>
+        /// <param name="code">The status code.</param>
         /// <param name="message">The message.</param>
         /// <param name="httpCode">The http code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage StdErrorJson(this ApiController c, int errorCode = -9999, string message = null, HttpStatusCode httpCode = HttpStatusCode.InternalServerError)
+        public static HttpResponseMessage StdErrorJson(this ApiController c, int code, string message = null, HttpStatusCode httpCode = HttpStatusCode.OK)
         {
             var resp = new HttpResponseMessage(httpCode);
-            resp.Content = new StringContent((new StdJsonOutput { Error = errorCode, Message = message }).ToJson(),
+            resp.Content = new StringContent((new StdJsonOutput { Code = code, Message = message }).ToJson(),
                 GlobalVariables.Encoding, ContentTypes.Json);
             return resp;
         }

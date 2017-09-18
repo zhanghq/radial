@@ -100,7 +100,7 @@ namespace Radial.Web.Mvc
         /// <returns>
         /// NewJsonResult instance.
         /// </returns>
-        public static StdJsonOutputResult StdErrorJson(this Controller c, int code, string message = null, string contentType = null)
+        public static StdJsonOutputResult StdErrorJson(this Controller c, int code = 500, string message = null, string contentType = null)
         {
             return new StdJsonOutputResult(new StdJsonOutput { Code = code, Message = message }, contentType);
         }
@@ -115,7 +115,7 @@ namespace Radial.Web.Mvc
         /// <returns>
         /// NewJsonResult instance.
         /// </returns>
-        public static StdJsonOutputResult StdSuccessJson(this Controller c, object data=null, string message = null, string contentType = null)
+        public static StdJsonOutputResult StdSuccessJson(this Controller c, object data = null, string message = null, string contentType = null)
         {
             return new StdJsonOutputResult(new StdJsonOutput { Data = data }, contentType);
         }

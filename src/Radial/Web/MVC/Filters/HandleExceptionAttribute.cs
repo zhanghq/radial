@@ -15,13 +15,13 @@ namespace Radial.Web.Mvc.Filters
         /// <summary>
         /// Initializes a new instance of the <see cref="HandleExceptionAttribute" /> class.
         /// </summary>
-        /// <param name="defaultErrorCode">The default error code, if unknown exception occurs.</param>
+        /// <param name="defaultStatusCode">The default status code, if unknown exception occurs.</param>
         /// <param name="defaultErrorMessage">The default error message, if unknown exception occurs.</param>
         /// <param name="contentType">The content type.</param>
-        public HandleExceptionAttribute(int defaultErrorCode = -9999, string defaultErrorMessage = null,
+        public HandleExceptionAttribute(int defaultStatusCode = 500, string defaultErrorMessage = null,
             string contentType = null)
         {
-            DefaultErrorCode = defaultErrorCode;
+            DefaultStatusCode = defaultStatusCode;
             ContentType = contentType;
 
             if (string.IsNullOrWhiteSpace(ContentType))
@@ -42,9 +42,9 @@ namespace Radial.Web.Mvc.Filters
 
 
         /// <summary>
-        /// Gets the default error code.
+        /// Gets the default status code.
         /// </summary>
-        public int DefaultErrorCode
+        public int DefaultStatusCode
         {
             get;
             private set;
@@ -70,7 +70,7 @@ namespace Radial.Web.Mvc.Filters
             KnownFaultException hkfe = filterContext.Exception as KnownFaultException;
 
             var stdJsonOutput = new StdJsonOutput();
-            stdJsonOutput.Error = hkfe != null ? hkfe.ErrorCode : DefaultErrorCode;
+            stdJsonOutput.Code = hkfe != null ? hkfe.ErrorCode : DefaultStatusCode;
             stdJsonOutput.Message = hkfe != null ? hkfe.Message : (string.IsNullOrWhiteSpace(DefaultErrorMessage) ? filterContext.Exception.Message : DefaultErrorMessage);
 
             filterContext.ExceptionHandled = true;

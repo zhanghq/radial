@@ -98,7 +98,7 @@ namespace Radial.Web.Http
         /// <param name="message">The message.</param>
         /// <param name="httpCode">The http code.</param>
         /// <returns></returns>
-        public static HttpResponseMessage StdErrorJson(this ApiController c, int code, string message = null, HttpStatusCode httpCode = HttpStatusCode.OK)
+        public static HttpResponseMessage StdErrorJson(this ApiController c, int code = 500, string message = null, HttpStatusCode httpCode = HttpStatusCode.OK)
         {
             var resp = new HttpResponseMessage(httpCode);
             resp.Content = new StringContent((new StdJsonOutput { Code = code, Message = message }).ToJson(),
@@ -117,7 +117,7 @@ namespace Radial.Web.Http
         public static HttpResponseMessage StdSuccessJson(this ApiController c, object data = null, string message = null, HttpStatusCode httpCode = HttpStatusCode.OK)
         {
             var resp = new HttpResponseMessage(httpCode);
-            resp.Content = new StringContent((new StdJsonOutput { Data= data, Message = message }).ToJson(),
+            resp.Content = new StringContent((new StdJsonOutput { Data = data, Message = message }).ToJson(),
                 GlobalVariables.Encoding, ContentTypes.Json);
             return resp;
         }

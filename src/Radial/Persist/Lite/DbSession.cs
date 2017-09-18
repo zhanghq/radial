@@ -305,6 +305,8 @@ namespace Radial.Persist.Lite
         {
             if (Connection != null)
             {
+                if (Transaction != null)
+                    Transaction.Dispose();
                 Connection.Close();
                 Connection.Dispose();
             }

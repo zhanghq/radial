@@ -175,7 +175,7 @@
     <Compile Include="SearchResult.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Web\FormsAuth.cs" />
-    <Compile Include="Web\MVC\StdJsonOutputResult.cs" />
+    <Compile Include="Web\MVC\StdJsonResult.cs" />
     <Compile Include="Web\StdJsonOutput.cs" />
     <Compile Include="Web\GeneralUpload.cs" />
     <Compile Include="Web\HttpCache.cs" />

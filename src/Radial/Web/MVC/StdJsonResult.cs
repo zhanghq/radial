@@ -7,23 +7,23 @@ namespace Radial.Web.Mvc
     /// <summary>
     /// The standard JSON output result.
     /// </summary>
-    public class StdJsonOutputResult : ActionResult
+    public class StdJsonResult : ActionResult
     {
         StdJsonOutput _obj;
         string _contentType;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StdJsonOutputResult" /> class.
+        /// Initializes a new instance of the <see cref="StdJsonResult" /> class.
         /// </summary>
         /// <param name="obj">The standard json ouput object.</param>
-        public StdJsonOutputResult(StdJsonOutput obj) : this(obj, null) { }
+        public StdJsonResult(StdJsonOutput obj) : this(obj, null) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StdJsonOutputResult" /> class.
+        /// Initializes a new instance of the <see cref="StdJsonResult" /> class.
         /// </summary>
         /// <param name="obj">The standard json ouput object.</param>
         /// <param name="contentType">Type of the content.</param>
-        public StdJsonOutputResult(StdJsonOutput obj, string contentType)
+        public StdJsonResult(StdJsonOutput obj, string contentType)
         {
             Checker.Parameter(obj != null, "the standard json ouput object can not be null");
             _obj = obj;

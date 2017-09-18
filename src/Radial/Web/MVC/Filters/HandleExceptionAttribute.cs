@@ -11,40 +11,37 @@ namespace Radial.Web.Mvc.Filters
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     public class HandleExceptionAttribute : HandleErrorAttribute
     {
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="HandleExceptionAttribute" /> class.
+        /// Initializes a new instance of the <see cref="HandleExceptionAttribute"/> class.
         /// </summary>
-        /// <param name="defaultStatusCode">The default status code, if unknown exception occurs.</param>
+        /// <param name="defaultErrorCode">The default error code, if unknown exception occurs.</param>
         /// <param name="defaultErrorMessage">The default error message, if unknown exception occurs.</param>
-        /// <param name="contentType">The content type.</param>
-        public HandleExceptionAttribute(int defaultStatusCode = 500, string defaultErrorMessage = null,
-            string contentType = null)
+        /// <param name="httpStatusCode">The HTTP status code.</param>
+        public HandleExceptionAttribute(int defaultErrorCode = 500, string defaultErrorMessage = null, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
         {
-            DefaultStatusCode = defaultStatusCode;
-            ContentType = contentType;
-
-            if (string.IsNullOrWhiteSpace(ContentType))
-                ContentType = ContentTypes.Json;
+            DefaultErrorCode = defaultErrorCode;
+            HttpStatusCode = HttpStatusCode;
 
             if (!string.IsNullOrWhiteSpace(defaultErrorMessage))
                 DefaultErrorMessage = defaultErrorMessage.Trim();
         }
 
         /// <summary>
-        /// Gets the content type.
+        /// Gets the HTTP status code.
         /// </summary>
-        public string ContentType
+        /// <value>
+        /// The HTTP status code.
+        /// </value>
+        public HttpStatusCode HttpStatusCode
         {
             get;
             private set;
         }
 
-
         /// <summary>
-        /// Gets the default status code.
+        /// Gets the default error code.
         /// </summary>
-        public int DefaultStatusCode
+        public int DefaultErrorCode
         {
             get;
             private set;
@@ -70,15 +67,15 @@ namespace Radial.Web.Mvc.Filters
             KnownFaultException hkfe = filterContext.Exception as KnownFaultException;
 
             var stdJsonOutput = new StdJsonOutput();
-            stdJsonOutput.Code = hkfe != null ? hkfe.ErrorCode : DefaultStatusCode;
+            stdJsonOutput.Code = hkfe != null ? hkfe.ErrorCode : DefaultErrorCode;
             stdJsonOutput.Message = hkfe != null ? hkfe.Message : (string.IsNullOrWhiteSpace(DefaultErrorMessage) ? filterContext.Exception.Message : DefaultErrorMessage);
 
             filterContext.ExceptionHandled = true;
             filterContext.HttpContext.Response.Clear();
             filterContext.HttpContext.Response.ContentEncoding = GlobalVariables.Encoding;
 
-            filterContext.HttpContext.Response.ContentType = ContentType;
-            filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            filterContext.HttpContext.Response.ContentType = ContentTypes.Json;
+            filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode;
             filterContext.HttpContext.Response.Write(stdJsonOutput.ToJson());
             filterContext.HttpContext.ApplicationInstance.CompleteRequest();
 

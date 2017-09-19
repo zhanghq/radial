@@ -594,66 +594,6 @@ namespace Radial.Web
             page.ClientScript.RegisterStartupScript(page.GetType(), "", sb.ToString());
         }
 
-        /// <summary>
-        /// Strip html code from a hypertext string.
-        /// </summary>
-        /// <param name="strHtml">The hypertext string</param>
-        /// <returns>Plain text string</returns>
-        public static string StripHtml(string strHtml)
-        {
-            string[] aryReg ={
-          @"<script[^>]*?>.*?</script>",
-          @"<(\/\s*)?!?((\w+:)?\w+)(\w+(\s*=?\s*(([""'])(\\[""'tbnr]|[^\7])*?\7|\w+)|.{0})|\s)*?(\/\s*)?>",
-          @"([\r\n])[\s]+",
-          @"&(quot|#34);",
-          @"&(amp|#38);",
-          @"&(lt|#60);",
-          @"&(gt|#62);", 
-          @"&(nbsp|#160);", 
-          @"&(iexcl|#161);",
-          @"&(cent|#162);",
-          @"&(pound|#163);",
-          @"&(copy|#169);",
-          @"&#(\d+);",
-          @"-->",
-          @"<!--.*\n"
-         };
-            string[] aryRep = {
-           "",
-           "",
-           "",
-           "\"",
-           "&",
-           "<",
-           ">",
-           " ",
-           "\xa1",//chr(161),
-           "\xa2",//chr(162),
-           "\xa3",//chr(163),
-           "\xa9",//chr(169),
-           "",
-           "\r\n",
-           ""
-          };
-
-            string strOutput = strHtml;
-
-            if (string.IsNullOrWhiteSpace(strOutput))
-            {
-                for (int i = 0; i < aryReg.Length; i++)
-                {
-                    Regex regex = new Regex(aryReg[i], RegexOptions.IgnoreCase);
-                    strOutput = regex.Replace(strOutput, aryRep[i]);
-                }
-
-                strOutput.Replace("<", "");
-                strOutput.Replace(">", "");
-                strOutput.Replace("\r\n", "");
-            }
-
-            return strOutput;
-        }
-
 
         /// <summary>
         /// Converts a url string to its escaped representation.

@@ -21,7 +21,7 @@ namespace Radial.Boot
         public void Initialize(NameValueCollection args)
         {
             //file relative path.
-            string configPath = args["configPath"];
+            string configPath = args != null ? args["configPath"] : null;
 
             if (!string.IsNullOrWhiteSpace(configPath))
                 configPath = GlobalVariables.GetPath(configPath);
